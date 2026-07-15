@@ -19,7 +19,7 @@ export async function addReference(name, { dryRun = true } = {}) {
   const root = path.resolve(process.cwd(), "reference");
   const target = path.join(root, name);
   const alreadyPresent = await exists(target);
-  const result = { name, url, target, dryRun, alreadyPresent, command: `git clone --depth 1 ${url} ${target}` };
+  const result = { name, url, target, dryRun, alreadyPresent, command: `git clone --depth 1 ${url} ${target}`, scope: "workspace reference directory", dataImpact: "Downloads the public repository history and working tree.", affectedPaths: [target], rollback: "Delete only the cloned reference directory after confirming it contains no local work." };
   if (dryRun || alreadyPresent) return result;
   await mkdir(root, { recursive: true });
   await exec("git", ["clone", "--depth", "1", url, target], { windowsHide: true });

@@ -1,18 +1,13 @@
-# Phase 2 Foundation
+# Phase 2: Platform Foundation
 
 ## Implemented
 
-- Safe CLI command dispatcher with structured JSON output, help, dry-run, apply confirmation, and exit-code propagation.
-- Foundation module contract with initialize, validate, install, update, status, remove, and rollback lifecycle methods.
-- Read-only project detector for Git, Node, Python, React, Next.js, FastAPI, Express, Flutter, Docker, package managers, and GitHub Actions signals.
-- Project bootstrap engine with transactional writes, registry backups, no-overwrite behavior, and Git initialization for new projects.
-- Project configuration defaults and validated persisted configuration.
-- Project registry, separate command logs, rotation, rollback preview, provider and plugin extension boundaries.
+- CLI dispatch, structured output, dry-run/apply semantics, verbose diagnostics, and non-interactive safeguards.
+- Read-only environment and project detection for supported operating systems, runtimes, frameworks, Git, Docker, and agent CLIs.
+- Additive module lifecycle contracts with validation, status, update planning, and safe no-delete removal behavior.
+- Project registry schema versioning, configuration, JSONL command logging, backups, and managed transaction tracking.
+- Consent-gated official installation and reference-clone plans.
 
-## Deferred
+## Boundary
 
-External tool integrations, real provider integrations, and plugin execution are intentionally deferred to the next approved phase.
-
-## Existing Project Initialization
-
-`ai init` analyzes the current project and reports detected frameworks, existing signals, planned additions, skipped files, and protected application directories. Existing files use the `skip-existing-files` policy; merge and replace are intentionally unavailable until they have reviewable, format-aware implementations.
+The foundation never overwrites user files, installs third-party tools without explicit consent, or treats a placeholder as a production deployment decision.

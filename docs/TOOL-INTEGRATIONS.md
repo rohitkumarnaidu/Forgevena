@@ -1,16 +1,17 @@
 # Tool Integrations
 
-This workspace keeps official third-party installation separate from project configuration.
+Every integration has metadata, detection, registration, project initialization, validation, health status, update metadata, registry-only removal, rollback limits, and documentation.
 
-| Tool | Workspace handling | Official next step |
-| --- | --- | --- |
-| OpenSpec | `add openspec` creates workflow guidance only. | Install `@fission-ai/openspec` globally, then manually run `openspec init` in the target project after reviewing its changes. |
-| gstack | Deferred adapter. | Install with the upstream `setup` script targeting the agent host; it supports Codex through `--host codex`. |
-| SkillOpt | Deferred adapter. | Use its Python 3.10+ package/repository setup and keep training artifacts project-scoped. |
-| design.md | `add design` creates a local `DESIGN.md`. | Use the upstream specification as the design-system reference. |
-| astryx | Reference only. | Evaluate components and licensing before selecting it for an application. |
-| claude-mem | Deferred adapter. | Configure its supported agent integration and review its local memory/data settings before enabling it. |
-| GitNexus | Deferred adapter. | Run its analysis command from a Git repository after installation. |
-| Understand Anything | Deferred adapter. | Install using the upstream plugin or installer for the selected coding agent. |
+## Consent
 
-Do not put API credentials in workspace files. Use an environment-specific secret manager or untracked environment files.
+Use `install <tool>` or `reference <name>` to inspect prerequisites, network/data impact, paths, and rollback guidance. Use `--apply` only after review; use `--apply --yes` in non-interactive sessions.
+
+## Supported Tools
+
+- OpenSpec, SkillOpt, and GitNexus have official command plans.
+- gstack, claude-mem, and Understand Anything remain host-specific/manual workflows; the workspace records and validates their resulting artifacts instead of inventing installers.
+- design.md creates or validates a project `DESIGN.md`; astryx remains a reference-only evaluation target.
+
+## Provider and MCP Boundary
+
+`providers init <name>` creates a profile containing only an environment-variable or host-managed credential reference. It never stores, reads, or transmits a key. Live provider calls and MCP/plugin activation require Phase 5 provider-specific authentication and data-use decisions.

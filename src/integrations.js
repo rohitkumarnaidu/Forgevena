@@ -2,14 +2,14 @@ import { access, mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const integrations = {
-  openspec: { kind: "cli", install: "npm install -g @fission-ai/openspec@latest", project: "openspec init", artifacts: ["openspec"] },
-  skillopt: { kind: "python-package", install: "pip install skillopt", artifacts: [".skillopt", "best_skill.md"] },
-  gstack: { kind: "agent-skill", manual: "Clone upstream gstack and run ./setup --host codex (or another supported host).", artifacts: [".agents/skills/gstack"] },
-  "design-md": { kind: "project-artifact", install: "npx @google/design.md lint DESIGN.md", artifacts: ["DESIGN.md"] },
-  astryx: { kind: "reference", manual: "Evaluate the upstream repository and licensing before adopting components.", artifacts: [] },
-  "claude-mem": { kind: "agent-plugin", install: "npx claude-mem install", artifacts: [".claude-mem"] },
-  gitnexus: { kind: "project-cli", install: "npx gitnexus analyze", artifacts: [".gitnexus"] },
-  "understand-anything": { kind: "agent-plugin", manual: "Use the upstream plugin marketplace or platform installer for the selected AI agent.", artifacts: [".understand-anything"] }
+  openspec: { kind: "cli", install: "npm install -g @fission-ai/openspec@latest", project: "openspec init", artifacts: ["openspec"], scope: "global CLI plus project specification files", dataImpact: "The official CLI may write project specification files after separate user approval.", rollback: "Use the upstream CLI and review generated specification files manually." },
+  skillopt: { kind: "python-package", install: "pip install skillopt", artifacts: [".skillopt", "best_skill.md"], scope: "Python environment and project skill artifacts", dataImpact: "Training may use the model provider configured by the user.", rollback: "Remove only project artifacts you own; uninstall the package through pip if desired." },
+  gstack: { kind: "agent-skill", manual: "Clone upstream gstack and run ./setup --host codex (or another supported host).", artifacts: [".agents/skills/gstack"], scope: "selected agent host", dataImpact: "Host-specific skill setup may modify agent configuration.", rollback: "Use upstream host-specific removal guidance." },
+  "design-md": { kind: "project-artifact", install: "npx @google/design.md lint DESIGN.md", artifacts: ["DESIGN.md"], scope: "project design document", dataImpact: "Linting reads DESIGN.md and may download the package through npx.", rollback: "The workspace creates only an absent DESIGN.md template." },
+  astryx: { kind: "reference", manual: "Evaluate the upstream repository and licensing before adopting components.", artifacts: [], scope: "reference material", dataImpact: "No project changes are made by the workspace.", rollback: "No workspace rollback is required." },
+  "claude-mem": { kind: "agent-plugin", install: "npx claude-mem install", artifacts: [".claude-mem"], scope: "agent host and local memory", dataImpact: "The plugin may persist local agent context.", rollback: "Use the upstream plugin removal guidance." },
+  gitnexus: { kind: "project-cli", install: "npx gitnexus analyze", artifacts: [".gitnexus"], scope: "repository analysis", dataImpact: "Analysis may create a local repository index.", rollback: "Remove only the reviewed local index through the upstream workflow." },
+  "understand-anything": { kind: "agent-plugin", manual: "Use the upstream plugin marketplace or platform installer for the selected AI agent.", artifacts: [".understand-anything"], scope: "agent host and repository index", dataImpact: "The plugin may read and index the selected repository.", rollback: "Use the upstream plugin removal guidance." }
 };
 
 export function listIntegrations() { return Object.entries(integrations).map(([name, value]) => ({ name, ...value })); }
@@ -30,7 +30,7 @@ export async function recordIntegration(root, name, { dryRun = true } = {}) {
   let registry;
   try { registry = JSON.parse(await readFile(registryPath, "utf8")); } catch { registry = { initialized: true, workspaceVersion: "0.1.0", modules: [], integrations: {} }; }
   registry.integrations ??= {};
-  registry.integrations[name] = { kind: integrations[name].kind, installationMethod: integrations[name].install ?? "official-manual-workflow", configurationStatus: "pending", health: "not-validated", initializedAt: new Date().toISOString(), lastValidation: null };
+  registry.integrations[name] = { kind: integrations[name].kind, installationMethod: integrations[name].install ?? "official-manual-workflow", scope: integrations[name].scope, dataImpact: integrations[name].dataImpact, rollback: integrations[name].rollback, consentRequired: true, configurationStatus: "pending", health: "not-validated", initializedAt: new Date().toISOString(), lastValidation: null };
   await mkdir(path.dirname(registryPath), { recursive: true });
   await writeFile(registryPath, `${JSON.stringify(registry, null, 2)}\n`);
   return { ...plan, dryRun: false, registered: true };

@@ -50,10 +50,10 @@ test("merge and skip options are explicit and never overwrite files", async () =
 });
 
 for (const [template, expectedFiles] of Object.entries({
-  react: ["src/main.jsx", "Dockerfile", ".github/workflows/ci.yml"],
-  nextjs: ["app/page.js", "Dockerfile", ".github/workflows/ci.yml"],
+  react: ["src/main.tsx", "Dockerfile", ".github/workflows/ci.yml"],
+  nextjs: ["app/page.tsx", "Dockerfile", ".github/workflows/ci.yml"],
   fastapi: ["src/app/main.py", "Dockerfile", ".github/workflows/ci.yml"],
-  express: ["src/server.js", "Dockerfile", ".github/workflows/ci.yml"],
+  express: ["src/server.ts", "Dockerfile", ".github/workflows/ci.yml"],
   python: ["src/app/main.py", "Dockerfile", ".github/workflows/ci.yml"],
 })) {
   test(`${template} template generates stack-owned Docker and CI assets`, async () => {
@@ -67,6 +67,17 @@ for (const [template, expectedFiles] of Object.entries({
       assert.doesNotMatch(dockerfile, /FROM scratch/);
       const workflow = await readFile(path.join(project, ".github", "workflows", "ci.yml"), "utf8");
       assert.doesNotMatch(workflow, /Configure stack-specific/);
+    } finally { await rm(root, { recursive: true, force: true }); }
+  });
+}
+
+for (const template of ["flutter", "ai-agent", "rag", "full-stack-ai", "microservices", "library", "cli", "blank", "enterprise"]) {
+  test(`${template} template creates a validated project`, async () => {
+    const root = await mkdtemp(path.join(tmpdir(), "phase4-template-"));
+    const project = path.join(root, "app");
+    try {
+      const result = await initializeProject(project, { dryRun: false, createProject: true, template });
+      assert.equal(result.validation.valid, true);
     } finally { await rm(root, { recursive: true, force: true }); }
   });
 }
