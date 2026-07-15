@@ -12,7 +12,9 @@ import { validateBootstrap } from "./bootstrap-validator.js";
 import { approveExternalAction } from "./consent.js";
 import { installTool, listToolPlans } from "./tool-adapters.js";
 import { addReference, listReferences } from "./references.js";
-import { initializeProviderProfile, listProviderProfiles, providerStatus } from "./providers.js";
+import { configureProviderCredential, initializeProviderProfile, listProviderProfiles, providerStatus } from "./providers.js";
+import { promptSecret } from "./secret-prompt.js";
+import { dockerPlan, executeDockerPlan, validateDockerAssets } from "./docker.js";
 
 const ADDABLE_MODULES = new Set(supportedModules());
 
@@ -41,6 +43,7 @@ export async function run(args) {
     case "install": return printJson(await toolCommand(subject, options), options);
     case "reference": return printJson(await referenceCommand(subject, options), options);
     case "providers": return printJson(await providerCommand(root, args.slice(1), options), options);
+    case "docker": return printJson(await dockerCommand(root, args.slice(1), options), options);
     case "init": return printJson(await initializeProject(root, options), options);
     case "add":
       if (["openspec", "skillopt", "gstack", "design", "astryx", "claude-mem", "gitnexus", "understand-anything"].includes(subject)) return printJson(await recordIntegration(root, subject === "design" ? "design-md" : subject, options), options);
@@ -61,7 +64,7 @@ export async function run(args) {
 function printJson(value, options = {}) { console.log(JSON.stringify(options.verbose ? { result: value, diagnostics: { dryRun: options.dryRun, nonInteractive: options.nonInteractive, mergePolicy: options.mergePolicy } } : value, null, 2)); }
 
 function help() {
-  return `AI Engineering Workspace\n\nAll modifying commands preview changes by default. Add --apply to write files. Existing files are always skipped.\n\nCommands:\n  doctor | init | create <name> | add <module> | remove <module>\n  install [tool] | reference [name] | providers <list|init|status|mcp> [provider]\n  capabilities [name] [preferred-integration]\n  integrations <list|status|doctor|install|init|update|remove|validate|health> [tool]\n  update | status | rollback [operation] | version | help\n  plugins | templates | config [key value]\n\nCreate:\n  create <name> --template <template> [--provider <name>] [--output <path>] [--apply]\n\nSafety options:\n  --dry-run | --apply | --yes | --non-interactive | --verbose | --merge skip|merge|replace | --skip <module-or-path,...>\n  External install/reference actions show scope and require confirmation; use --apply --yes for non-interactive execution.\n  Provider profiles store references only, never keys. Merge and replace requests never overwrite files.\n\nFoundation modules:\n  ${[...ADDABLE_MODULES].join(", ")}`;
+  return `AI Engineering Workspace\n\nAll modifying commands preview changes by default. Add --apply to write files. Existing files are always skipped.\n\nCommands:\n  doctor | init | create <name> | add <module> | remove <module>\n  install [tool] | reference [name] | providers <list|init|configure|status|mcp> [provider]\n  capabilities [name] [preferred-integration]\n  integrations <list|status|doctor|install|init|update|remove|validate|health> [tool]\n  docker <plan|validate|up|down> | update | status | rollback [operation] | version | help\n  plugins | templates | config [key value]\n\nCreate:\n  create <name> --template <template> [--provider <name>] [--output <path>] [--apply]\n\nSafety options:\n  --dry-run | --apply | --yes | --non-interactive | --verbose | --merge skip|merge|replace | --skip <module-or-path,...>\n  External install/reference actions show scope and require confirmation; use --apply --yes for non-interactive execution.\n  providers configure accepts a key only through an interactive masked prompt and creates an absent local .env file. Merge and replace requests never overwrite files.\n\nFoundation modules:\n  ${[...ADDABLE_MODULES].join(", ")}`;
 }
 
 async function withLog(root, type, promise) { const result = await promise; await logEvent(root, type, { completed: true }); return result; }
@@ -87,8 +90,29 @@ async function providerCommand(root, args, options) {
   const [action = "list", name] = args;
   if (action === "list") return { providers: listProviderProfiles() };
   if (action === "init") return initializeProviderProfile(root, name, options);
+  if (action === "configure") {
+    const preview = await configureProviderCredential(root, name, undefined, { dryRun: true });
+    if (options.dryRun) return preview;
+    if (options.nonInteractive) throw new Error("Provider key entry is intentionally unavailable in non-interactive mode. Set the documented environment variable yourself.");
+    const secret = await promptSecret(`Enter ${preview.environmentVariable} for ${name} (input is masked): `);
+    return configureProviderCredential(root, name, secret, { dryRun: false });
+  }
   if (action === "status" || action === "mcp") return providerStatus(root, name);
-  throw new Error("Usage: providers <list|init|status|mcp> [provider]");
+  throw new Error("Usage: providers <list|init|configure|status|mcp> [provider]");
+}
+async function dockerCommand(root, args, options) {
+  const [action = "plan"] = args;
+  const status = await readStatus(root);
+  if (!status.initialized || !status.registry?.template) throw new Error("Initialize or create a workspace project before using Docker commands.");
+  if (action === "validate") return validateDockerAssets(root, status.registry.template);
+  if (!["plan", "up", "down"].includes(action)) throw new Error("Usage: docker <plan|validate|up|down>");
+  const plan = await dockerPlan(root, status.registry.template, action === "down" ? "down" : "up");
+  if (action === "plan" || options.dryRun) return { ...plan, dryRun: true };
+  const approval = await approveExternalAction(plan, options);
+  if (!approval.approved) return { ...plan, approval };
+  const result = await executeDockerPlan(plan);
+  await logEvent(root, "workspace", { command: "docker", action, command: plan.command });
+  return { ...result, approval };
 }
 async function integrationCommand(root, args, options = {}) { const [action = "list", name] = args; if (action === "list") return listIntegrations(); if (action === "status" || action === "doctor") return statusIntegrations(root, name); if (action === "install") return recordIntegration(root, name, options); if (action === "init") return initializeIntegrationProject(root, name, options); if (["update", "remove", "validate", "health"].includes(action)) return manageIntegration(root, action, name, options); throw new Error("Usage: integrations <list|status|doctor|install|init|update|remove|validate|health> [tool]"); }
 function valueAfter(args, flag) { const index = args.indexOf(flag); return index === -1 ? undefined : args[index + 1]; }

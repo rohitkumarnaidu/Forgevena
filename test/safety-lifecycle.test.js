@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { approveExternalAction } from "../src/consent.js";
 import { initializeProject, rollbackProject } from "../src/project.js";
-import { initializeProviderProfile, providerStatus } from "../src/providers.js";
+import { configureProviderCredential, initializeProviderProfile, providerStatus } from "../src/providers.js";
 import { installTool } from "../src/tool-adapters.js";
 
 test("external actions remain previews until explicit approval", async () => {
@@ -24,6 +24,20 @@ test("provider profiles record references and never a secret", async () => {
     const profile = await readFile(path.join(root, ".ai-workspace", "providers", "openai.json"), "utf8");
     assert.doesNotMatch(profile, /sk-/);
     assert.equal((await providerStatus(root, "openai"))[0].storesSecrets, false);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("provider configuration creates an absent local environment file without returning the key", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "provider-configure-"));
+  try {
+    const result = await configureProviderCredential(root, "openai", "test-secret-value", { dryRun: false });
+    assert.equal(result.configured, true);
+    assert.doesNotMatch(JSON.stringify(result), /test-secret-value/);
+    assert.match(await readFile(path.join(root, ".env"), "utf8"), /^OPENAI_API_KEY=test-secret-value$/m);
+    await writeFile(path.join(root, ".env"), "OPENAI_API_KEY=preserve\n");
+    const protectedResult = await configureProviderCredential(root, "openai", "new-secret", { dryRun: false });
+    assert.equal(protectedResult.manualRequired, true);
+    assert.equal(await readFile(path.join(root, ".env"), "utf8"), "OPENAI_API_KEY=preserve\n");
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 

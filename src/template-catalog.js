@@ -2,7 +2,7 @@ const templates = ["react", "nextjs", "fastapi", "express", "flutter", "python",
 const providers = ["claude", "codex", "cursor", "gemini", "openai", "openrouter", "windsurf"];
 const file = (path, contents) => ({ path, contents: `${contents.trim()}\n` });
 
-const nodeCi = (directory = ".") => file(".github/workflows/ci.yml", `name: CI
+const nodeCi = (directory = ".", buildContainer = false) => file(".github/workflows/ci.yml", `name: CI
 on: [push, pull_request]
 permissions:
   contents: read
@@ -20,8 +20,8 @@ jobs:
       - run: npm install
       - run: npm test --if-present
       - run: npm run build --if-present
-      - run: npm audit --omit=dev --audit-level=high`);
-const pythonCi = (directory = ".") => file(".github/workflows/ci.yml", `name: CI
+      - run: npm audit --omit=dev --audit-level=high${buildContainer ? "\n      - run: docker build -t workspace-template:ci ." : ""}`);
+const pythonCi = (directory = ".", buildContainer = false) => file(".github/workflows/ci.yml", `name: CI
 on: [push, pull_request]
 permissions:
   contents: read
@@ -40,7 +40,7 @@ jobs:
       - run: pip install . pytest pip-audit
       - run: python -m pytest
       - run: python -m compileall src
-      - run: pip-audit`);
+      - run: pip-audit${buildContainer ? "\n      - run: docker build -t workspace-template:ci ." : ""}`);
 const flutterCi = file(".github/workflows/ci.yml", `name: CI
 on: [push, pull_request]
 permissions:
@@ -56,7 +56,8 @@ jobs:
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter test
-      - run: flutter build web`);
+      - run: flutter build web
+      - run: docker build -t workspace-template:ci .`);
 const dependencyPolicy = file("security/dependency-policy.md", "# Dependency Policy\n\nCommit reviewed lockfiles, scan dependencies in CI, and remediate critical findings before release.");
 const dependabot = (ecosystems) => file(".github/dependabot.yml", `version: 2
 updates:
@@ -67,6 +68,9 @@ const flutterSecurity = () => [dependencyPolicy, dependabot(["pub"])];
 const mixedSecurity = () => [dependencyPolicy, dependabot(["npm", "pip"])];
 const compose = (services) => file("docker-compose.yml", `services:
 ${services.map((service) => `  ${service.name}:\n    build: ${service.build ?? "."}${service.ports ? `\n    ports:\n      - "${service.ports}"` : ""}`).join("\n")}`);
+const productionCompose = (services) => file("docker-compose.production.yml", `services:
+${services.map((service) => `  ${service.name}:\n    build: ${service.build ?? "."}\n    restart: unless-stopped${service.ports ? `\n    ports:\n      - "${service.ports}"` : ""}${service.health ? `\n    healthcheck:\n      test: ["CMD-SHELL", "${service.health}"]\n      interval: 30s\n      timeout: 5s\n      retries: 3` : ""}`).join("\n")}`);
+const dockerIgnore = file(".dockerignore", ".git\nnode_modules\n.venv\n__pycache__\n.env\n.env.*\n.ai-workspace\ncoverage\ndist\n.next\nbuild");
 const tsConfig = file("tsconfig.json", `{"compilerOptions":{"target":"ES2022","module":"NodeNext","moduleResolution":"NodeNext","strict":true,"outDir":"dist","skipLibCheck":true},"include":["src"]}`);
 
 export function listTemplates() { return templates; }
@@ -84,7 +88,7 @@ export function templateAssets(template) {
       file("vite.config.ts", "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\n\nexport default defineConfig({ plugins: [react()] });"),
       tsConfig,
       file("Dockerfile", "FROM node:22-alpine AS build\nWORKDIR /app\nCOPY package*.json ./\nRUN npm install\nCOPY . .\nRUN npm run build\n\nFROM nginx:1.27-alpine\nCOPY --from=build /app/dist /usr/share/nginx/html\nEXPOSE 80"),
-      compose([{ name: "app", ports: "8080:80" }]), nodeCi(), ...nodeSecurity(),
+      compose([{ name: "app", ports: "8080:80" }]), productionCompose([{ name: "app", ports: "8080:80", health: "wget -q -O - http://localhost/ || exit 1" }]), dockerIgnore, nodeCi(".", true), ...nodeSecurity(),
     ],
     nextjs: [
       file("package.json", `{"private":true,"scripts":{"dev":"next dev","test":"node --test","build":"next build","start":"next start"},"dependencies":{"next":"^15.0.0","react":"^19.0.0","react-dom":"^19.0.0"},"devDependencies":{"typescript":"^5.7.0","@types/node":"^22.0.0","@types/react":"^19.0.0","@types/react-dom":"^19.0.0"}}`),
@@ -94,7 +98,7 @@ export function templateAssets(template) {
       file("public/.gitkeep", ""),
       file("tsconfig.json", `{"compilerOptions":{"target":"ES2022","lib":["dom","dom.iterable","esnext"],"strict":true,"noEmit":true,"module":"esnext","moduleResolution":"bundler","jsx":"preserve"},"include":["next-env.d.ts","**/*.ts","**/*.tsx"]}`),
       file("Dockerfile", "FROM node:22-alpine AS build\nWORKDIR /app\nCOPY package*.json ./\nRUN npm install\nCOPY . .\nRUN npm run build\n\nFROM node:22-alpine\nWORKDIR /app\nENV NODE_ENV=production\nCOPY --from=build /app/public ./public\nCOPY --from=build /app/.next/standalone ./\nCOPY --from=build /app/.next/static ./.next/static\nUSER node\nEXPOSE 3000\nCMD [\"node\", \"server.js\"]"),
-      compose([{ name: "app", ports: "3000:3000" }]), nodeCi(), ...nodeSecurity(),
+      compose([{ name: "app", ports: "3000:3000" }]), productionCompose([{ name: "app", ports: "3000:3000", health: "wget -q -O - http://localhost:3000/ || exit 1" }]), dockerIgnore, nodeCi(".", true), ...nodeSecurity(),
     ],
     fastapi: pythonApiAssets("app", "FastAPI project", "fastapi"),
     express: [
@@ -102,14 +106,14 @@ export function templateAssets(template) {
       file("src/server.ts", "import express from 'express';\n\nconst app = express();\napp.get('/health', (_request, response) => response.json({ status: 'ok' }));\napp.listen(process.env.PORT ?? 3000);"),
       tsConfig,
       file("Dockerfile", "FROM node:22-alpine AS build\nWORKDIR /app\nCOPY package*.json ./\nRUN npm install\nCOPY src ./src\nCOPY tsconfig.json ./\nRUN npm run build\n\nFROM node:22-alpine\nWORKDIR /app\nENV NODE_ENV=production\nCOPY package*.json ./\nRUN npm install --omit=dev\nCOPY --from=build /app/dist ./dist\nUSER node\nEXPOSE 3000\nCMD [\"npm\", \"start\"]"),
-      compose([{ name: "app", ports: "3000:3000" }]), nodeCi(), ...nodeSecurity(),
+      compose([{ name: "app", ports: "3000:3000" }]), productionCompose([{ name: "app", ports: "3000:3000", health: "wget -q -O - http://localhost:3000/health || exit 1" }]), dockerIgnore, nodeCi(".", true), ...nodeSecurity(),
     ],
     flutter: [
       file("pubspec.yaml", "name: project\ndescription: Enterprise Flutter starter\nenvironment:\n  sdk: '>=3.0.0 <4.0.0'\ndependencies:\n  flutter:\n    sdk: flutter\ndev_dependencies:\n  flutter_test:\n    sdk: flutter"),
       file("lib/main.dart", "import 'package:flutter/material.dart';\n\nvoid main() => runApp(const App());\nclass App extends StatelessWidget { const App({super.key}); @override Widget build(BuildContext context) => const MaterialApp(home: Scaffold(body: Center(child: Text('Flutter project')))); }"),
       file("test/widget_test.dart", "import 'package:flutter_test/flutter_test.dart';\n\nvoid main() { test('starter test', () => expect(true, isTrue)); }"),
       file("Dockerfile", "FROM ghcr.io/cirruslabs/flutter:stable AS build\nWORKDIR /app\nCOPY . .\nRUN flutter build web\n\nFROM nginx:1.27-alpine\nCOPY --from=build /app/build/web /usr/share/nginx/html\nEXPOSE 80"),
-      compose([{ name: "app", ports: "8080:80" }]), flutterCi, ...flutterSecurity(),
+      compose([{ name: "app", ports: "8080:80" }]), productionCompose([{ name: "app", ports: "8080:80", health: "wget -q -O - http://localhost/ || exit 1" }]), dockerIgnore, flutterCi, ...flutterSecurity(),
     ],
     python: pythonPackageAssets("app", "Python project"),
     "ai-agent": pythonPackageAssets("agent", "AI agent starter", "agent"),
@@ -139,7 +143,7 @@ function pythonPackageAssets(packageName, title, entry = "app") {
     file(`src/${packageName}/main.py`, `def main() -> str:\n    return "${title}"`),
     file(`tests/unit/test_main.py`, `from ${packageName}.main import main\n\ndef test_main():\n    assert main() == "${title}"`),
     file("Dockerfile", `FROM python:3.12-slim\nWORKDIR /app\nRUN adduser --disabled-password --gecos \"\" appuser\nCOPY pyproject.toml ./\nCOPY src ./src\nRUN pip install --no-cache-dir .\nUSER appuser\nCMD [\"python\", \"-c\", \"from ${packageName}.main import main; print(main())\"]`),
-    compose([{ name: "app" }]), pythonCi(), ...pythonSecurity(),
+    compose([{ name: "app" }]), productionCompose([{ name: "app" }]), dockerIgnore, pythonCi(".", true), ...pythonSecurity(),
   ];
 }
 function pythonApiAssets(packageName, title, route) {
@@ -148,20 +152,27 @@ function pythonApiAssets(packageName, title, route) {
     file(`src/${packageName}/__init__.py`, ""),
     file(`src/${packageName}/main.py`, `from fastapi import FastAPI\n\napp = FastAPI(title="${title}")\n\n@app.get("/health")\ndef health() -> dict[str, str]:\n    return {"status": "ok", "service": "${route}"}`),
     file("tests/unit/test_health.py", `from ${packageName}.main import health\n\ndef test_health():\n    assert health()["status"] == "ok"`),
-    file("Dockerfile", `FROM python:3.12-slim\nWORKDIR /app\nRUN adduser --disabled-password --gecos \"\" appuser\nCOPY pyproject.toml ./\nCOPY src ./src\nRUN pip install --no-cache-dir .\nUSER appuser\nEXPOSE 8000\nCMD [\"uvicorn\", \"${packageName}.main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]`),
-    compose([{ name: "app", ports: "8000:8000" }]), pythonCi(), ...pythonSecurity(),
+    file("Dockerfile", `FROM python:3.12-slim\nWORKDIR /app\nRUN apt-get update && apt-get install -y --no-install-recommends wget && rm -rf /var/lib/apt/lists/* && adduser --disabled-password --gecos \"\" appuser\nCOPY pyproject.toml ./\nCOPY src ./src\nRUN pip install --no-cache-dir .\nUSER appuser\nEXPOSE 8000\nCMD [\"uvicorn\", \"${packageName}.main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]`),
+    compose([{ name: "app", ports: "8000:8000" }]), productionCompose([{ name: "app", ports: "8000:8000", health: "wget -q -O - http://localhost:8000/health || exit 1" }]), dockerIgnore, pythonCi(".", true), ...pythonSecurity(),
   ];
 }
 function fullStackAssets() {
   return [
-    file("frontend/package.json", `{"private":true,"scripts":{"dev":"next dev","build":"next build","start":"next start"},"dependencies":{"next":"^15.0.0","react":"^19.0.0","react-dom":"^19.0.0"}}`),
+    file("frontend/package.json", `{"private":true,"scripts":{"dev":"next dev","build":"next build","start":"next start"},"dependencies":{"next":"^15.0.0","react":"^19.0.0","react-dom":"^19.0.0"},"devDependencies":{"typescript":"^5.7.0","@types/node":"^22.0.0","@types/react":"^19.0.0","@types/react-dom":"^19.0.0"}}`),
+    file("frontend/next.config.mjs", "export default { output: 'standalone' };"),
+    file("frontend/app/layout.tsx", "export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) { return <html><body>{children}</body></html>; }"),
     file("frontend/app/page.tsx", "export default function Home() { return <main>Full Stack AI frontend</main>; }"),
-    file("backend/pyproject.toml", "[project]\nname = \"backend\"\nrequires-python = \">=3.11\"\ndependencies = [\"fastapi>=0.115\", \"uvicorn[standard]>=0.30\"]"),
+    file("backend/pyproject.toml", "[project]\nname = \"backend\"\nversion = \"0.1.0\"\nrequires-python = \">=3.11\"\ndependencies = [\"fastapi>=0.115\", \"uvicorn[standard]>=0.30\"]\n\n[build-system]\nrequires = [\"setuptools>=68\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[tool.setuptools.packages.find]\nwhere = [\"src\"]"),
+    file("backend/src/app/__init__.py", ""),
     file("backend/src/app/main.py", "from fastapi import FastAPI\napp = FastAPI()\n@app.get('/health')\ndef health(): return {'status': 'ok'}"),
     file("frontend/Dockerfile", "FROM node:22-alpine\nWORKDIR /app\nCOPY . .\nRUN npm install && npm run build\nEXPOSE 3000\nCMD [\"npm\", \"start\"]"),
-    file("backend/Dockerfile", "FROM python:3.12-slim\nWORKDIR /app\nCOPY . .\nRUN pip install .\nEXPOSE 8000\nCMD [\"uvicorn\", \"src.app.main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]"),
+    file("frontend/.dockerignore", "node_modules\n.next\n.env\n.env.*"),
+    file("backend/Dockerfile", "FROM python:3.12-slim\nWORKDIR /app\nRUN apt-get update && apt-get install -y --no-install-recommends wget && rm -rf /var/lib/apt/lists/*\nCOPY . .\nRUN pip install .\nEXPOSE 8000\nCMD [\"uvicorn\", \"app.main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]"),
+    file("backend/.dockerignore", ".venv\n__pycache__\n.env\n.env.*"),
     file("docker-compose.yml", "services:\n  frontend:\n    build: ./frontend\n    ports:\n      - \"3000:3000\"\n  backend:\n    build: ./backend\n    ports:\n      - \"8000:8000\""),
-    file(".github/workflows/ci.yml", "name: CI\non: [push, pull_request]\njobs:\n  quality:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - run: echo 'Run frontend and backend checks in their dedicated workflows.'"),
+    file("docker-compose.production.yml", "services:\n  frontend:\n    build: ./frontend\n    restart: unless-stopped\n    ports:\n      - \"3000:3000\"\n  backend:\n    build: ./backend\n    restart: unless-stopped\n    ports:\n      - \"8000:8000\"\n    healthcheck:\n      test: [\"CMD-SHELL\", \"wget -q -O - http://localhost:8000/health || exit 1\"]\n      interval: 30s\n      timeout: 5s\n      retries: 3"),
+    dockerIgnore,
+    file(".github/workflows/ci.yml", "name: CI\non: [push, pull_request]\npermissions:\n  contents: read\njobs:\n  containers:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - run: docker compose -f docker-compose.production.yml build"),
     ...mixedSecurity(),
   ];
 }
@@ -172,7 +183,9 @@ function microserviceAssets() {
     file("services/catalog/README.md", "# Catalog Service\n\nDocument the contract, ownership, data, and operational dependencies."),
     file("services/gateway/Dockerfile", "FROM node:22-alpine\nWORKDIR /app\nCOPY package*.json ./\nRUN npm install --omit=dev\nCOPY src ./src\nUSER node\nEXPOSE 3000\nCMD [\"npm\", \"start\"]"),
     file("docker-compose.yml", "services:\n  gateway:\n    build: ./services/gateway\n    ports:\n      - \"3000:3000\""),
-    file(".github/workflows/ci.yml", "name: CI\non: [push, pull_request]\njobs:\n  gateway:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: 22\n      - run: cd services/gateway && npm install\n      - run: cd services/gateway && npm audit --omit=dev --audit-level=high"),
+    file("docker-compose.production.yml", "services:\n  gateway:\n    build: ./services/gateway\n    restart: unless-stopped\n    ports:\n      - \"3000:3000\"\n    healthcheck:\n      test: [\"CMD-SHELL\", \"wget -q -O - http://localhost:3000/health || exit 1\"]\n      interval: 30s\n      timeout: 5s\n      retries: 3"),
+    dockerIgnore,
+    file(".github/workflows/ci.yml", "name: CI\non: [push, pull_request]\npermissions:\n  contents: read\njobs:\n  gateway:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: 22\n      - run: cd services/gateway && npm install\n      - run: cd services/gateway && npm audit --omit=dev --audit-level=high\n      - run: docker compose -f docker-compose.production.yml build"),
     ...nodeSecurity(),
   ];
 }

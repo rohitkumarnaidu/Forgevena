@@ -8,6 +8,7 @@ import { promisify } from "node:util";
 import { initializeProject, rollbackProject } from "../src/project.js";
 import { moduleContract } from "../src/modules.js";
 import { initializeIntegrationProject, manageIntegration, recordIntegration } from "../src/integrations.js";
+import { validateDockerAssets } from "../src/docker.js";
 
 const execute = promisify(execFile);
 const cli = path.resolve("bin", "ai-workspace.js");
@@ -59,5 +60,16 @@ test("rollback requires latest operation order", async () => {
     const second = await initializeProject(root, { dryRun: false });
     await assert.rejects(() => rollbackProject(root, first.transaction, { dryRun: true }), /latest managed operation/);
     assert.equal((await rollbackProject(root, second.transaction, { dryRun: true })).operation, second.transaction);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("Docker validation recognizes production Compose assets", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "docker-validation-"));
+  const project = path.join(root, "app");
+  try {
+    await initializeProject(project, { dryRun: false, createProject: true, template: "fastapi" });
+    const validation = await validateDockerAssets(project, "fastapi");
+    assert.equal(validation.valid, true);
+    assert.equal(validation.composePath, "docker-compose.production.yml");
   } finally { await rm(root, { recursive: true, force: true }); }
 });
