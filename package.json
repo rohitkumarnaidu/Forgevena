@@ -1,0 +1,17 @@
+{
+  "name": "ai-engineering-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Safe, modular bootstrap tooling for AI-assisted software projects.",
+  "type": "module",
+  "bin": {
+    "ai-workspace": "./bin/ai-workspace.js"
+  },
+  "scripts": {
+    "test": "node --test",
+    "start": "node ./bin/ai-workspace.js"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  }
+}
