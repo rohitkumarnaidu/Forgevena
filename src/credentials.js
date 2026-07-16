@@ -1,6 +1,8 @@
-import { createCipheriv, createDecipheriv, createHash, randomBytes } from "node:crypto";
-import { access, copyFile, mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import { createCipheriv, createDecipheriv, createHash, pbkdf2, randomBytes } from "node:crypto";
+import { access, copyFile, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { promisify } from "node:util";
+import { Algorithm, hashRaw } from "@node-rs/argon2";
 
 export const CREDENTIAL_DEFINITIONS = Object.freeze({
   openai: "OPENAI_API_KEY",
@@ -19,6 +21,9 @@ export const CREDENTIAL_DEFINITIONS = Object.freeze({
 });
 
 const SECRET_DIRECTORY = path.join(".ai-workspace", "local-secrets");
+const VAULT_SCHEMA_VERSION = 2;
+const PBKDF2_ITERATIONS = 600_000;
+const derivePbkdf2 = promisify(pbkdf2);
 
 export function listCredentialDefinitions() {
   return Object.entries(CREDENTIAL_DEFINITIONS).map(([name, environmentVariable]) => ({ name, environmentVariable }));
@@ -59,7 +64,7 @@ export async function configureCredential(root, name, secret, { dryRun = true, s
   if (!secret?.trim()) throw new Error(`A non-empty ${environmentVariable} value is required.`);
   if (exists) return { ...plan, dryRun: false, configured: false, manualRequired: true, message: `${relative} already exists and was not modified. Rotate it manually to preserve the never-overwrite guarantee.` };
   await mkdir(path.dirname(target), { recursive: true });
-  const contents = storage === "encrypted" ? encryptCredential(environmentVariable, secret.trim()) : `${environmentVariable}=${secret.trim()}\n`;
+  const contents = storage === "encrypted" ? await encryptCredential(environmentVariable, secret.trim()) : `${environmentVariable}=${secret.trim()}\n`;
   await writeFile(target, contents, { encoding: "utf8", mode: 0o600, flag: "wx" });
   return { ...plan, dryRun: false, configured: true, credentialStored: relative };
 }
@@ -104,10 +109,25 @@ export async function rotateCredential(root, name, secret, { dryRun = true, stor
   const plan = { credential: name, dryRun, move: { from: source, to: archive }, replacementStorage: storage, secretReturned: false };
   if (dryRun) return plan;
   if (!secret?.trim()) throw new Error("A non-empty replacement credential is required.");
-  await mkdir(path.join(root, path.dirname(archive)), { recursive: true });
-  await rename(path.join(root, source), path.join(root, archive));
-  const configured = await configureCredential(root, name, secret, { dryRun: false, storage });
-  return { ...plan, dryRun: false, rotated: configured.configured, archived: archive, credentialStored: configured.credentialStored };
+  const sourcePath = path.join(root, source);
+  const archivePath = path.join(root, archive);
+  const replacement = storage === "encrypted" ? path.join(root, ".credentials", `${name}.enc.json`) : path.join(root, SECRET_DIRECTORY, `${name}.env`);
+  const temporary = `${replacement}.${Date.now()}.rotation`;
+  await mkdir(path.dirname(archivePath), { recursive: true });
+  await mkdir(path.dirname(replacement), { recursive: true });
+  const contents = storage === "encrypted" ? await encryptCredential(credentialVariable(name), secret.trim(), { previousVersion: await credentialVersion(sourcePath) }) : `${credentialVariable(name)}=${secret.trim()}\n`;
+  await writeFile(temporary, contents, { encoding: "utf8", mode: 0o600, flag: "wx" });
+  try {
+    await copyFile(sourcePath, archivePath);
+    await rm(sourcePath, { force: true });
+    await rename(temporary, replacement);
+  } catch (error) {
+    await rm(temporary, { force: true });
+    if (await pathExists(archivePath) && !(await pathExists(sourcePath))) await copyFile(archivePath, sourcePath);
+    throw error;
+  }
+  await pruneHistory(path.join(root, ".credentials", "archive"), name, 5);
+  return { ...plan, dryRun: false, rotated: true, archived: archive, credentialStored: path.relative(root, replacement), vaultVersion: storage === "encrypted" ? VAULT_SCHEMA_VERSION : null };
 }
 
 export async function removeCredential(root, name, { dryRun = true } = {}) {
@@ -147,23 +167,66 @@ async function readVariable(target, variable) {
   } catch { return null; }
 }
 async function pathExists(target) { try { await access(target); return true; } catch { return false; } }
-function encryptionKey() {
+function vaultPassphrase() {
   const passphrase = process.env.AI_WORKSPACE_CREDENTIAL_KEY;
   if (!passphrase) throw new Error("Encrypted credential storage requires AI_WORKSPACE_CREDENTIAL_KEY from an OS credential store or approved secret manager.");
-  return createHash("sha256").update(passphrase).digest();
+  return passphrase;
 }
-function encryptCredential(variable, secret) {
+async function encryptCredential(variable, secret, { previousVersion = null } = {}) {
+  const salt = randomBytes(16);
+  const { key, metadata } = await deriveEncryptionKey(vaultPassphrase(), salt);
   const iv = randomBytes(12);
-  const cipher = createCipheriv("aes-256-gcm", encryptionKey(), iv);
+  const cipher = createCipheriv("aes-256-gcm", key, iv);
+  const protectedMetadata = Buffer.from(JSON.stringify({ variable, credentialVersion: (previousVersion ?? 0) + 1 }), "utf8");
+  cipher.setAAD(protectedMetadata);
   const ciphertext = Buffer.concat([cipher.update(secret, "utf8"), cipher.final()]);
-  return `${JSON.stringify({ schemaVersion: 1, variable, algorithm: "aes-256-gcm", iv: iv.toString("base64"), tag: cipher.getAuthTag().toString("base64"), ciphertext: ciphertext.toString("base64") }, null, 2)}\n`;
+  return `${JSON.stringify({ schemaVersion: VAULT_SCHEMA_VERSION, algorithm: "aes-256-gcm", kdf: metadata, salt: salt.toString("base64"), iv: iv.toString("base64"), tag: cipher.getAuthTag().toString("base64"), protected: protectedMetadata.toString("base64"), ciphertext: ciphertext.toString("base64") }, null, 2)}\n`;
 }
 async function readEncryptedCredential(target, variable) {
   try {
     const payload = JSON.parse(await readFile(target, "utf8"));
-    if (payload.variable !== variable || payload.algorithm !== "aes-256-gcm") throw new Error("Encrypted credential metadata is invalid.");
-    const decipher = createDecipheriv("aes-256-gcm", encryptionKey(), Buffer.from(payload.iv, "base64"));
+    if (payload.algorithm !== "aes-256-gcm") throw new Error("Encrypted credential metadata is invalid.");
+    if (payload.schemaVersion === 1) return decryptLegacyCredential(payload, variable);
+    if (payload.schemaVersion !== VAULT_SCHEMA_VERSION) throw new Error(`Unsupported credential vault schema version: ${payload.schemaVersion}.`);
+    const protectedMetadata = Buffer.from(payload.protected, "base64");
+    const metadata = JSON.parse(protectedMetadata.toString("utf8"));
+    if (metadata.variable !== variable || !Number.isInteger(metadata.credentialVersion)) throw new Error("Encrypted credential protected metadata is invalid.");
+    const { key } = await deriveEncryptionKey(vaultPassphrase(), Buffer.from(payload.salt, "base64"), payload.kdf);
+    const decipher = createDecipheriv("aes-256-gcm", key, Buffer.from(payload.iv, "base64"));
+    decipher.setAAD(protectedMetadata);
     decipher.setAuthTag(Buffer.from(payload.tag, "base64"));
     return Buffer.concat([decipher.update(Buffer.from(payload.ciphertext, "base64")), decipher.final()]).toString("utf8");
   } catch (error) { if (error?.code === "ENOENT") return null; throw error; }
+}
+async function deriveEncryptionKey(passphrase, salt, requested) {
+  if (!requested || requested.name === "argon2id") {
+    try {
+      const parameters = { memoryCost: requested?.memoryCost ?? 65_536, timeCost: requested?.timeCost ?? 3, parallelism: requested?.parallelism ?? 1, outputLen: 32, algorithm: Algorithm.Argon2id, salt };
+      return { key: await hashRaw(passphrase, parameters), metadata: { name: "argon2id", memoryCost: parameters.memoryCost, timeCost: parameters.timeCost, parallelism: parameters.parallelism, outputLength: 32 } };
+    } catch (error) {
+      if (requested?.name === "argon2id") throw new Error(`Argon2id key derivation failed: ${error.message}`);
+    }
+  }
+  const iterations = requested?.iterations ?? PBKDF2_ITERATIONS;
+  return { key: await derivePbkdf2(passphrase, salt, iterations, 32, "sha256"), metadata: { name: "pbkdf2-sha256", iterations, outputLength: 32 } };
+}
+function decryptLegacyCredential(payload, variable) {
+  if (payload.variable !== variable) throw new Error("Encrypted credential metadata is invalid.");
+  const legacyKey = createHash("sha256").update(vaultPassphrase()).digest();
+  const decipher = createDecipheriv("aes-256-gcm", legacyKey, Buffer.from(payload.iv, "base64"));
+  decipher.setAuthTag(Buffer.from(payload.tag, "base64"));
+  return Buffer.concat([decipher.update(Buffer.from(payload.ciphertext, "base64")), decipher.final()]).toString("utf8");
+}
+async function credentialVersion(target) {
+  try {
+    const payload = JSON.parse(await readFile(target, "utf8"));
+    if (payload.schemaVersion !== VAULT_SCHEMA_VERSION || !payload.protected) return 1;
+    return JSON.parse(Buffer.from(payload.protected, "base64").toString("utf8")).credentialVersion ?? 1;
+  } catch { return 0; }
+}
+async function pruneHistory(directory, name, limit) {
+  try {
+    const entries = (await (await import("node:fs/promises")).readdir(directory, { withFileTypes: true })).filter((entry) => entry.isFile() && entry.name.startsWith(`${name}-`)).map((entry) => entry.name).sort().reverse();
+    await Promise.all(entries.slice(limit).map((entry) => rm(path.join(directory, entry), { force: true })));
+  } catch (error) { if (error?.code !== "ENOENT") throw error; }
 }

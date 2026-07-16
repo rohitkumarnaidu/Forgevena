@@ -1,7 +1,9 @@
 {
   "schemaVersion": 1,
-  "name": "ai-engineering-workspace",
-  "version": "1.0.0",
+  "name": "forgevena",
+  "displayName": "Forgevena",
+  "caption": "Governed engineering from idea to production.",
+  "version": "1.1.0",
   "status": "stable-ready",
   "node": ">=20.19.0",
   "operatingSystems": ["win32", "linux", "darwin"],

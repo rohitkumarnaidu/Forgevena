@@ -1,0 +1,11 @@
+# Default ownership
+* @rohitkumarnaidu
+
+# Security, governance, and release surfaces
+/SECURITY.md @rohitkumarnaidu
+/.github/ @rohitkumarnaidu
+/docs/security/ @rohitkumarnaidu
+/docs/release/ @rohitkumarnaidu
+/src/credentials.js @rohitkumarnaidu
+/src/plugins.js @rohitkumarnaidu
+/src/mcp.js @rohitkumarnaidu

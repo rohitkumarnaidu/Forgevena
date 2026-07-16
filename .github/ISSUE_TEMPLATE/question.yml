@@ -1,0 +1,29 @@
+name: Question
+description: Ask a usage or documentation question
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: Check the documentation and support policy before submitting. Never include credentials or private data.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: 1.0.0
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options: [Windows, WSL/Linux, Linux, macOS, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: Explain what you are trying to accomplish and what documentation you consulted.
+    validations:
+      required: true

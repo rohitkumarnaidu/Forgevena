@@ -1,36 +1,160 @@
-# AI Engineering Workspace
+<div align="center">
 
-A local, safety-first developer platform for bootstrapping projects, configuring live AI providers, governing MCP/plugin integrations, and preparing Git-backed Render deployments.
+![Forgevena banner](docs/assets/forgevena-banner.svg)
 
-Current release: `1.0.0`. Install with `npm install --global ai-engineering-workspace@1.0.0` after publication, or use the verified offline archive.
+# Forgevena
+
+**Governed engineering from idea to production.**
+
+[![CI](https://github.com/rohitkumarnaidu/Work-Space/actions/workflows/ci.yml/badge.svg)](https://github.com/rohitkumarnaidu/Work-Space/actions/workflows/ci.yml)
+[![Documentation](https://github.com/rohitkumarnaidu/Work-Space/actions/workflows/docs.yml/badge.svg)](https://rohitkumarnaidu.github.io/Work-Space/)
+[![Security](https://github.com/rohitkumarnaidu/Work-Space/actions/workflows/security.yml/badge.svg)](https://github.com/rohitkumarnaidu/Work-Space/security)
+[![Release](https://img.shields.io/github/v/release/rohitkumarnaidu/Work-Space)](https://github.com/rohitkumarnaidu/Work-Space/releases)
+[![npm](https://img.shields.io/npm/v/forgevena)](https://www.npmjs.com/package/forgevena)
+[![npm downloads](https://img.shields.io/npm/dm/forgevena)](https://www.npmjs.com/package/forgevena)
+[![License](https://img.shields.io/github/license/rohitkumarnaidu/Work-Space)](LICENSE)
+[![Node](https://img.shields.io/node/v/forgevena)](package.json)
+[![Coverage](https://img.shields.io/badge/coverage-enforced%20in%20CI-2ea44f)](.github/workflows/ci.yml)
+[![Stars](https://img.shields.io/github/stars/rohitkumarnaidu/Work-Space)](https://github.com/rohitkumarnaidu/Work-Space/stargazers)
+[![Forks](https://img.shields.io/github/forks/rohitkumarnaidu/Work-Space)](https://github.com/rohitkumarnaidu/Work-Space/forks)
+[![Issues](https://img.shields.io/github/issues/rohitkumarnaidu/Work-Space)](https://github.com/rohitkumarnaidu/Work-Space/issues)
+[![Pull requests](https://img.shields.io/github/issues-pr/rohitkumarnaidu/Work-Space)](https://github.com/rohitkumarnaidu/Work-Space/pulls)
+
+Enterprise project bootstrap, governed AI providers, MCP and plugin controls, cloud preparation, validation, upgrades, and release engineering through one safety-first CLI.
+
+[Documentation](https://rohitkumarnaidu.github.io/Work-Space/) · [Quick Start](#quick-start) · [Architecture](#architecture) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md)
+
+</div>
+
+## Why Forgevena?
+
+Modern engineering teams repeatedly solve the same setup, governance, integration, and release problems. Forgevena turns those practices into an additive and auditable developer platform without replacing application code or silently transmitting project data.
+
+## Features
+
+- **Enterprise bootstrap:** React, Next.js, FastAPI, Express, Python, Flutter, AI agent, RAG, full-stack AI, microservices, library, CLI, blank, and enterprise templates.
+- **Existing-project safety:** preview-first initialization that skips every existing file and protects application directories.
+- **Governed integrations:** OpenSpec, SkillOpt, gstack, design.md, claude-mem, GitNexus, Understand Anything, MCP servers, and declarative plugins.
+- **Provider controls:** OpenAI, Anthropic, Gemini, OpenRouter, Ollama, Codex, Claude, Cursor, and Windsurf profiles with secret-reference-only tracked configuration.
+- **Cloud preparation:** Render, Railway, Vercel, AWS, Azure, and Google Cloud preflight plans, validation, dry runs, health checks, and rollback guidance.
+- **Release engineering:** checksums, package validation, documentation deployment, semantic versioning, migration guidance, and distribution metadata.
+- **Cross-platform:** Windows 11, WSL2/Linux, and macOS on x64 and arm64 with Node.js 20.19 or newer.
+
+## Quick Start
+
+```bash
+npm install --global forgevena@1.1.0
+forgevena doctor
+forgevena create DemoApi --template fastapi --dry-run --verbose
+forgevena create DemoApi --template fastapi --apply
+cd DemoApi
+forgevena validate
+```
+
+For an existing repository, always preview first:
+
+```bash
+cd ExistingProject
+forgevena init --dry-run --verbose
+forgevena init --apply
+```
+
+The legacy `ai-workspace` executable and `.ai-workspace/` state directory remain supported throughout the 1.x release line. See the [migration guide](docs/migration/FORGEVENA_1_1.md).
 
 ## Safety Model
 
-- Every project change previews by default; use `--apply` to write.
-- Existing files, manifests, and application directories are always skipped.
-- Global tool installation and reference cloning display scope, network/data impact, paths, and rollback limits before execution.
-- Non-interactive external actions require `--apply --yes`.
-- Provider profiles contain only environment-variable or host-managed references. Optional masked development setup may create a new ignored `.env`, but never modifies an existing file.
-- Prompts, responses, credentials, authorization headers, and MCP payloads are never written to logs.
-- MCP servers and declarative plugins are disabled until explicitly activated.
+- Project changes preview by default; local writes require `--apply`.
+- Existing files, manifests, and application directories are never overwritten.
+- External commands require an impact plan and explicit approval.
+- Tracked provider configuration stores environment-variable references, never secret values.
+- Prompts, responses, credentials, authorization headers, and MCP payloads are redacted from logs.
+- MCP servers and plugins remain disabled until explicitly trusted and activated.
+- Rollback removes only unchanged files recorded as managed assets.
 
-## Core Commands
+## CLI Examples
 
-```powershell
-node .\bin\ai-workspace.js doctor
-node .\bin\ai-workspace.js create DemoApi --template fastapi
-node .\bin\ai-workspace.js init --dry-run --verbose
-node .\bin\ai-workspace.js install openspec
-node .\bin\ai-workspace.js reference design-md
-node .\bin\ai-workspace.js providers init openai
-node .\bin\ai-workspace.js providers limits openai --mode budgeted --monthly-request-limit 100 --apply
-node .\bin\ai-workspace.js providers invoke openai --prompt "Hello" --apply
-node .\bin\ai-workspace.js dashboard
-node .\bin\ai-workspace.js mcp list
-node .\bin\ai-workspace.js plugins list
-node .\bin\ai-workspace.js cloud render generate --apply
-node .\bin\ai-workspace.js validate
-node .\bin\ai-workspace.js rollback
+```bash
+forgevena templates
+forgevena integrations
+forgevena providers init openai --apply
+forgevena credentials configure openai --apply
+forgevena providers verify openai
+forgevena mcp list
+forgevena plugins list
+forgevena cloud render generate --dry-run
+forgevena docker validate
+forgevena status
 ```
 
-See `docs/CLI.md`, `docs/SECURITY.md`, `docs/EXTERNAL_INTEGRATION_COMMANDS.md`, `docs/PROVIDER_CONFIGURATION.md`, `docs/MCP_AND_PLUGINS.md`, `docs/CLOUD_PLATFORMS.md`, `docs/RENDER_DEPLOYMENT.md`, `docs/TROUBLESHOOTING.md`, `docs/FAQ.md`, `docs/DEVELOPMENT.md`, `docs/RELEASE_GUIDE.md`, and `docs/PHASE_TRACEABILITY.md` for full usage.
+## Enterprise Workflow
+
+```mermaid
+flowchart LR
+  Idea["Idea"] --> Spec["Requirements and specification"]
+  Spec --> Preview["Forgevena dry run"]
+  Preview --> Approval["Human approval"]
+  Approval --> Apply["Additive apply"]
+  Apply --> Validate["Validation and tests"]
+  Validate --> Release["Governed release"]
+  Release --> Operate["Health and operations"]
+```
+
+## Architecture
+
+```mermaid
+flowchart TB
+  CLI["Forgevena CLI"] --> Foundation["Foundation services"]
+  Foundation --> Bootstrap["Bootstrap and templates"]
+  Foundation --> Registry["Registry and managed assets"]
+  Foundation --> Integrations["Integrations and capabilities"]
+  Foundation --> Providers["Providers, credentials, MCP, plugins"]
+  Foundation --> Delivery["Docker, cloud, docs, and release"]
+  Bootstrap --> Project["Developer-selected project"]
+  Registry --> Project
+  Integrations --> Project
+  Providers --> Project
+  Delivery --> Project
+```
+
+The architecture is intentionally modular and frozen for the 1.x line. New core abstractions require demonstrated need and an approved ADR. Read the [architecture guide](docs/architecture/overview.md) and [ADR index](docs/ADR_INDEX.md).
+
+## Documentation and Examples
+
+- [Installation](docs/installation/index.md)
+- [CLI reference](docs/cli/reference.md)
+- [Bootstrap guide](docs/bootstrap/guide.md)
+- [Provider configuration](docs/providers/reference.md)
+- [Integrations](docs/integrations/reference.md)
+- [Security guide](docs/security/guide.md)
+- [Examples catalog](docs/examples/production-catalog.md)
+- [Operations and runbooks](docs/operations/runbooks.md)
+- [Release guide](docs/release/index.md)
+
+## Project Preview
+
+![Forgevena CLI preview placeholder](docs/assets/cli-preview.svg)
+
+The repository includes placeholders for future verified screenshots and terminal demonstrations. Published media must redact credentials, personal paths, project data, and provider responses.
+
+## Roadmap
+
+The stable platform prioritizes compatibility, validation, security hardening, account-backed integration verification, and community-requested improvements. See [ROADMAP.md](ROADMAP.md).
+
+## Community
+
+- Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing changes.
+- Use [GitHub Discussions](https://github.com/rohitkumarnaidu/Work-Space/discussions) for design questions and ideas.
+- Use [GitHub Issues](https://github.com/rohitkumarnaidu/Work-Space/issues) for reproducible defects and accepted feature requests.
+- Follow [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) in every project space.
+
+## Security and Support
+
+Do not report vulnerabilities publicly. Follow [SECURITY.md](SECURITY.md) and use GitHub private vulnerability reporting when available. General support channels and response expectations are documented in [SUPPORT.md](SUPPORT.md).
+
+## Contributing
+
+Focused contributions are welcome. Every change must preserve additive safety, consent gates, secret isolation, backward compatibility, tests, and documentation. See [CONTRIBUTING.md](CONTRIBUTING.md) and [GOVERNANCE.md](GOVERNANCE.md).
+
+## License
+
+Forgevena is available under the [MIT License](LICENSE). Third-party notices are documented in [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) and [NOTICE](NOTICE).

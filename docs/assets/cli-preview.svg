@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520" role="img" aria-labelledby="title desc">
+  <title id="title">Forgevena CLI preview</title><desc id="desc">A safe dry-run project creation preview.</desc>
+  <rect width="1080" height="520" rx="20" fill="#0b1220"/><circle cx="34" cy="30" r="7" fill="#ff6b6b"/><circle cx="58" cy="30" r="7" fill="#ffd166"/><circle cx="82" cy="30" r="7" fill="#55d6be"/>
+  <g fill="#dbeafe" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="22"><text x="34" y="86">$ forgevena create DemoApi --template fastapi --dry-run</text><text x="34" y="136" fill="#55d6be">Forgevena · governed engineering from idea to production</text><text x="34" y="194">Mode: preview</text><text x="34" y="234">Template: fastapi</text><text x="34" y="274">Existing files: protected</text><text x="34" y="326" fill="#7aa2ff">+ docs/   + tests/   + Dockerfile   + .github/</text><text x="34" y="378">No files written. Review the plan, then run with --apply.</text><text x="34" y="444" fill="#94a3b8">$ _</text></g>
+</svg>

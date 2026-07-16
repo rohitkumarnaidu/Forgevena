@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
+import { PLATFORM_VERSION } from "../src/version.js";
 
 test("CLI help documents bootstrap options", async () => {
   const { stdout } = await promisify(execFile)("node", ["./bin/ai-workspace.js", "--help"]);
@@ -15,5 +16,29 @@ test("CLI help documents bootstrap options", async () => {
   assert.match(stdout, /cloud <provider> <prepare\|validate\|verify\|deploy\|status/);
   assert.match(stdout, /plugins <list\|install\|update\|trust/);
   assert.match(stdout, /upgrade \[rollback\]/);
-  assert.match(stdout, /1\.0\.0/);
+  assert.match(stdout, /state <validate\|repair\|snapshot\|migrate\|history>/);
+  assert.match(stdout, /vault <initialize\|rotate\|recover\|audit>/);
+  assert.match(stdout, /--structured/);
+  assert.match(stdout, /Forgevena/);
+  assert.match(stdout, /Governed engineering from idea to production\./);
+  assert.match(stdout, new RegExp(PLATFORM_VERSION.replaceAll(".", "\\.")));
+  assert.match(stdout, /ai-workspace remains supported/);
+});
+
+test("structured output exposes a stable operation envelope", async () => {
+  const { stdout } = await promisify(execFile)("node", ["./bin/forgevena.js", "version", "--structured"]);
+  const output = JSON.parse(stdout);
+  assert.equal(output.schemaVersion, 1);
+  assert.equal(output.status, "success");
+  assert.match(output.operationId, /^[0-9a-f-]{36}$/);
+  assert.equal(output.result.version, PLATFORM_VERSION);
+});
+
+test("preferred and legacy CLI aliases expose the same version contract", async () => {
+  const execute = promisify(execFile);
+  const [preferred, legacy] = await Promise.all([
+    execute("node", ["./bin/forgevena.js", "version"]),
+    execute("node", ["./bin/ai-workspace.js", "version"]),
+  ]);
+  assert.deepEqual(JSON.parse(preferred.stdout), JSON.parse(legacy.stdout));
 });

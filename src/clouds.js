@@ -3,6 +3,7 @@ import path from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { credentialStatus, readCredential } from "./credentials.js";
+import { readStateDocument, writeStateDocument } from "./state-documents.js";
 
 const executeFile = promisify(execFile);
 
@@ -75,8 +76,8 @@ export async function executeCloudAction(root, plan, { execImpl = executeFile } 
 
 function definition(name) { const cloud = CLOUDS[name]; if (!cloud) throw new Error(`Choose one of: ${Object.keys(CLOUDS).join(", ")}.`); return cloud; }
 function guide(name, cloud) { return `# ${cloud.product}\n\nGenerated preparation artifact: \`${cloud.artifact}\`.\n\nConfigure the documented credential through the credential CLI or an approved secret manager. Review repository access, billing, regions, data residency, and service limits before deployment. This workspace does not deploy ${name} resources automatically.\n`; }
-async function updateRegistry(root, name, status, metadata = {}) { const target = path.join(root, ".ai-workspace", "cloud", "registry.json"); const registry = await readCloudRegistry(root); registry[name] = { ...(registry[name] ?? {}), status, deploymentAutomatic: false, ...metadata, updatedAt: new Date().toISOString() }; await mkdir(path.dirname(target), { recursive: true }); await writeFile(target, `${JSON.stringify({ schemaVersion: 1, platforms: registry }, null, 2)}\n`, "utf8"); }
-async function readCloudRegistry(root) { try { return JSON.parse(await readFile(path.join(root, ".ai-workspace", "cloud", "registry.json"), "utf8")).platforms ?? {}; } catch { return {}; } }
+async function updateRegistry(root, name, status, metadata = {}) { const registry = await readCloudRegistry(root); registry[name] = { ...(registry[name] ?? {}), status, deploymentAutomatic: false, ...metadata, updatedAt: new Date().toISOString() }; await writeStateDocument(root, path.join(".ai-workspace", "cloud", "registry.json"), { schemaVersion: 1, platforms: registry }); }
+async function readCloudRegistry(root) { return (await readStateDocument(root, path.join(".ai-workspace", "cloud", "registry.json"), { schemaVersion: 1, platforms: {} })).platforms ?? {}; }
 async function exists(target) { try { await access(target); return true; } catch { return false; } }
 function slug(value) { return String(value).toLowerCase().replace(/[^a-z0-9-]+/g, "-").replace(/^-|-$/g, "").slice(0, 50) || "workspace-app"; }
 async function locateExecutable(executable, execImpl) { try { await execImpl(process.platform === "win32" ? "where.exe" : "which", [executable], { windowsHide: true, timeout: 5000 }); return true; } catch { return false; } }

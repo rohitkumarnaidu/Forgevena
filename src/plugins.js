@@ -1,6 +1,7 @@
 import { createHash, createPublicKey, verify } from "node:crypto";
 import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { readStateDocument, writeStateDocument } from "./state-documents.js";
 
 const REGISTRY_PATH = path.join(".ai-workspace", "plugins", "registry.json");
 const TRUST_PATH = path.join(".ai-workspace", "plugins", "trusted-publishers.json");
@@ -131,10 +132,10 @@ async function loadManifest(source, fetchImpl) {
   if ((await stat(target)).size > 256 * 1024) throw new Error("Plugin manifest exceeds 256 KiB.");
   return JSON.parse(await readFile(target, "utf8"));
 }
-async function readRegistry(root) { try { return { schemaVersion: 1, plugins: {}, ...JSON.parse(await readFile(path.join(root, REGISTRY_PATH), "utf8")) }; } catch { return { schemaVersion: 1, plugins: {} }; } }
-async function writeRegistry(root, registry) { const target = path.join(root, REGISTRY_PATH); registry.updatedAt = new Date().toISOString(); await mkdir(path.dirname(target), { recursive: true }); await writeFile(target, `${JSON.stringify(registry, null, 2)}\n`, "utf8"); }
-async function readTrustStore(root) { try { return { schemaVersion: 1, publishers: {}, ...JSON.parse(await readFile(path.join(root, TRUST_PATH), "utf8")) }; } catch { return { schemaVersion: 1, publishers: {} }; } }
-async function writeTrustStore(root, trust) { const target = path.join(root, TRUST_PATH); trust.updatedAt = new Date().toISOString(); await mkdir(path.dirname(target), { recursive: true }); await writeFile(target, `${JSON.stringify(trust, null, 2)}\n`, "utf8"); }
+async function readRegistry(root) { return { schemaVersion: 1, plugins: {}, ...(await readStateDocument(root, REGISTRY_PATH, { schemaVersion: 1, plugins: {} })) }; }
+async function writeRegistry(root, registry) { registry.updatedAt = new Date().toISOString(); await writeStateDocument(root, REGISTRY_PATH, registry, (value) => value?.schemaVersion === 1 && value.plugins && typeof value.plugins === "object" ? true : ["Plugin registry requires schemaVersion 1 and plugins."]); }
+async function readTrustStore(root) { return { schemaVersion: 1, publishers: {}, ...(await readStateDocument(root, TRUST_PATH, { schemaVersion: 1, publishers: {} })) }; }
+async function writeTrustStore(root, trust) { trust.updatedAt = new Date().toISOString(); await writeStateDocument(root, TRUST_PATH, trust, (value) => value?.schemaVersion === 1 && value.publishers && typeof value.publishers === "object" ? true : ["Plugin trust store requires schemaVersion 1 and publishers."]); }
 function canonicalManifest(manifest) { const { signature: _signature, ...unsigned } = manifest; return JSON.stringify(sortObject(unsigned)); }
 function sortObject(value) { if (Array.isArray(value)) return value.map(sortObject); if (value && typeof value === "object") return Object.fromEntries(Object.keys(value).sort().map((key) => [key, sortObject(value[key])])); return value; }
 function compareVersions(left, right) { const parse = (value) => value.split("-")[0].split(".").map(Number); const a = parse(left), b = parse(right); for (let index = 0; index < 3; index += 1) if (a[index] !== b[index]) return a[index] - b[index]; return 0; }

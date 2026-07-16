@@ -1,5 +1,6 @@
-import { access, mkdir, readFile, writeFile } from "node:fs/promises";
+import { access } from "node:fs/promises";
 import path from "node:path";
+import { readStateDocument, updateStateDocument, writeStateDocument } from "./state-documents.js";
 
 const DEFAULT_POLICY = Object.freeze({
   mode: "guarded",
@@ -20,32 +21,24 @@ export async function setProviderPolicy(root, provider, updates, { dryRun = true
   const policy = validatePolicy({ ...(await readProviderPolicy(root, provider)), ...updates });
   const relative = path.join(".ai-workspace", "providers", "policies.json");
   if (dryRun) return { provider, dryRun: true, path: relative, policy };
-  const target = path.join(root, relative);
   const document = await readPolicyDocument(root);
   document.providers = { ...(document.providers ?? {}), [provider]: stripUsage(policy) };
   document.updatedAt = new Date().toISOString();
-  await mkdir(path.dirname(target), { recursive: true });
-  await writeFile(target, `${JSON.stringify(document, null, 2)}\n`, "utf8");
+  await writeStateDocument(root, relative, document);
   return { provider, dryRun: false, path: relative, policy };
 }
 
 export async function recordProviderUsage(root, provider, usage) {
-  const target = path.join(root, ".ai-workspace", "providers", "policies.json");
-  const document = await readPolicyDocument(root);
-  const current = currentUsage(document.usage?.[provider]);
-  document.usage = {
-    ...(document.usage ?? {}),
-    [provider]: {
+  await updateStateDocument(root, path.join(".ai-workspace", "providers", "policies.json"), (document) => {
+    const current = currentUsage(document.usage?.[provider]);
+    return { ...document, usage: { ...(document.usage ?? {}), [provider]: {
       month: current.month,
       requests: current.requests + 1,
       inputCharacters: current.inputCharacters + Number(usage.inputCharacters ?? 0),
       outputCharacters: current.outputCharacters + Number(usage.outputCharacters ?? 0),
       lastUsedAt: new Date().toISOString(),
-    },
-  };
-  document.updatedAt = new Date().toISOString();
-  await mkdir(path.dirname(target), { recursive: true });
-  await writeFile(target, `${JSON.stringify(document, null, 2)}\n`, "utf8");
+    } }, updatedAt: new Date().toISOString() };
+  }, { schemaVersion: 1, providers: {}, usage: {} });
 }
 
 function validatePolicy(policy) {
@@ -62,5 +55,5 @@ function validatePolicy(policy) {
 function stripUsage(policy) { const { usage, ...stored } = policy; return stored; }
 function monthKey() { return new Date().toISOString().slice(0, 7); }
 function currentUsage(value = {}) { return value.month === monthKey() ? { month: value.month, requests: Number(value.requests ?? 0), inputCharacters: Number(value.inputCharacters ?? 0), outputCharacters: Number(value.outputCharacters ?? 0), lastUsedAt: value.lastUsedAt ?? null } : { month: monthKey(), requests: 0, inputCharacters: 0, outputCharacters: 0, lastUsedAt: null }; }
-async function readPolicyDocument(root) { try { return JSON.parse(await readFile(path.join(root, ".ai-workspace", "providers", "policies.json"), "utf8")); } catch { return { schemaVersion: 1, providers: {}, usage: {} }; } }
+async function readPolicyDocument(root) { return readStateDocument(root, path.join(".ai-workspace", "providers", "policies.json"), { schemaVersion: 1, providers: {}, usage: {} }); }
 export async function providerPolicyExists(root) { try { await access(path.join(root, ".ai-workspace", "providers", "policies.json")); return true; } catch { return false; } }

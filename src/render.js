@@ -3,6 +3,7 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import path from "node:path";
 import { readCredential } from "./credentials.js";
+import { readStateDocument, writeStateDocument } from "./state-documents.js";
 
 const executeFile = promisify(execFile);
 const CLOUD_STATE = path.join(".ai-workspace", "cloud", "render.json");
@@ -111,9 +112,9 @@ function slug(value) { return String(value).toLowerCase().replace(/[^a-z0-9-]+/g
 function renderDeeplink(remote) { return `https://dashboard.render.com/blueprint/new?repo=${encodeURIComponent(toHttpsRemote(remote))}`; }
 function toHttpsRemote(remote) { if (/^git@github\.com:/.test(remote)) return remote.replace(/^git@github\.com:/, "https://github.com/").replace(/\.git$/, ""); if (/^git@gitlab\.com:/.test(remote)) return remote.replace(/^git@gitlab\.com:/, "https://gitlab.com/").replace(/\.git$/, ""); if (/^git@bitbucket\.org:/.test(remote)) return remote.replace(/^git@bitbucket\.org:/, "https://bitbucket.org/").replace(/\.git$/, ""); return remote.replace(/\.git$/, ""); }
 async function gitRemote(root) { try { const { stdout } = await executeFile("git", ["remote", "get-url", "origin"], { cwd: root, windowsHide: true, timeout: 5000 }); return stdout.trim() || null; } catch { return null; } }
-async function readWorkspace(root) { try { return JSON.parse(await readFile(path.join(root, ".ai-workspace", "workspace.json"), "utf8")); } catch { throw new Error("Initialize the project before generating Render assets."); } }
-async function readRenderState(root) { try { return { schemaVersion: 1, provider: "render", ...JSON.parse(await readFile(path.join(root, CLOUD_STATE), "utf8")) }; } catch { return { schemaVersion: 1, provider: "render", serviceIds: [] }; } }
-async function updateRenderState(root, updates) { const target = path.join(root, CLOUD_STATE); const state = { ...(await readRenderState(root)), ...updates, updatedAt: new Date().toISOString() }; await mkdir(path.dirname(target), { recursive: true }); await writeFile(target, `${JSON.stringify(state, null, 2)}\n`, "utf8"); }
+async function readWorkspace(root) { const value = await readStateDocument(root, path.join(".ai-workspace", "workspace.json"), null); if (!value) throw new Error("Initialize the project before generating Render assets."); return value; }
+async function readRenderState(root) { return { schemaVersion: 1, provider: "render", ...(await readStateDocument(root, CLOUD_STATE, { schemaVersion: 1, provider: "render", serviceIds: [] })) }; }
+async function updateRenderState(root, updates) { const state = { ...(await readRenderState(root)), ...updates, updatedAt: new Date().toISOString() }; await writeStateDocument(root, CLOUD_STATE, state); }
 async function renderToken(root) { return readCredential(root, "render"); }
 async function exists(target) { try { await access(target); return true; } catch { return false; } }
 async function renderRequest(fetchImpl, url, options, retries = 2) {

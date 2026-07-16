@@ -1,6 +1,7 @@
-import { access, mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import { access, mkdir, stat, writeFile } from "node:fs/promises";
 import { PLATFORM_VERSION } from "./version.js";
 import path from "node:path";
+import { readStateDocument, updateStateDocument } from "./state-documents.js";
 
 const integrations = {
   openspec: { kind: "cli", install: "npm install -g @fission-ai/openspec@latest", project: "openspec init", artifacts: ["openspec"], scope: "global CLI plus project specification files", dataImpact: "The official CLI may write project specification files after separate user approval.", rollback: "Use the upstream CLI and review generated specification files manually." },
@@ -27,20 +28,13 @@ export function integrationPlan(name) { const integration = integrations[name]; 
 export async function recordIntegration(root, name, { dryRun = true } = {}) {
   const plan = integrationPlan(name);
   if (dryRun) return plan;
-  const registryPath = path.join(root, ".ai-workspace", "workspace.json");
-  let registry;
-  try { registry = JSON.parse(await readFile(registryPath, "utf8")); } catch { registry = { initialized: true, workspaceVersion: PLATFORM_VERSION, modules: [], integrations: {} }; }
-  registry.integrations ??= {};
-  registry.integrations[name] = { kind: integrations[name].kind, installationMethod: integrations[name].install ?? "official-manual-workflow", scope: integrations[name].scope, dataImpact: integrations[name].dataImpact, rollback: integrations[name].rollback, consentRequired: true, configurationStatus: "pending", health: "not-validated", initializedAt: new Date().toISOString(), lastValidation: null };
-  await mkdir(path.dirname(registryPath), { recursive: true });
-  await writeFile(registryPath, `${JSON.stringify(registry, null, 2)}\n`);
+  await updateStateDocument(root, ".ai-workspace/workspace.json", (registry) => ({ ...registry, integrations: { ...(registry.integrations ?? {}), [name]: { kind: integrations[name].kind, installationMethod: integrations[name].install ?? "official-manual-workflow", scope: integrations[name].scope, dataImpact: integrations[name].dataImpact, rollback: integrations[name].rollback, consentRequired: true, configurationStatus: "pending", health: "not-validated", initializedAt: new Date().toISOString(), lastValidation: null } } }), { initialized: true, workspaceVersion: PLATFORM_VERSION, schemaVersion: 2, modules: [], integrations: {} });
   return { ...plan, dryRun: false, registered: true };
 }
 export async function manageIntegration(root, action, name, { dryRun = true } = {}) {
   const plan = integrationPlan(name);
-  const registryPath = path.join(root, ".ai-workspace", "workspace.json");
-  let registry;
-  try { registry = JSON.parse(await readFile(registryPath, "utf8")); } catch { throw new Error("Initialize the project before managing integrations."); }
+  const registry = await readStateDocument(root, ".ai-workspace/workspace.json", null);
+  if (!registry) throw new Error("Initialize the project before managing integrations.");
   const current = registry.integrations?.[name];
   if (!current) throw new Error(`${name} is not registered in this project.`);
   const status = (await statusIntegrations(root, name))[0];
@@ -52,7 +46,7 @@ export async function manageIntegration(root, action, name, { dryRun = true } = 
     if (dryRun) return { ...plan, action, dryRun: true, health: status.health };
     registry.integrations[name] = next;
   }
-  await writeFile(registryPath, `${JSON.stringify(registry, null, 2)}\n`);
+  await updateStateDocument(root, ".ai-workspace/workspace.json", () => registry, registry);
   return { name, action, dryRun: false, health: status.health, registryUpdated: true };
 }
 export async function initializeIntegrationProject(root, name, { dryRun = true } = {}) {

@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
-const REQUIRED_PACKAGE_FILES = ["bin/ai-workspace.js", "src/cli.js", "README.md", "CHANGELOG.md", "CONTRIBUTING.md", "VERSION", "completions/", "examples/", "man/", "package.json"];
+const REQUIRED_PACKAGE_FILES = ["bin/forgevena.js", "bin/ai-workspace.js", "src/cli.js", "README.md", "CHANGELOG.md", "CONTRIBUTING.md", "VERSION", "completions/", "examples/", "man/", "package.json"];
 const FORBIDDEN_PATTERNS = [
   /^\.env(?:\.|$)/,
   /^\.ai-workspace\/local-secrets\//,
@@ -15,7 +15,8 @@ export async function verifyReleasePackage(root, { packageFiles } = {}) {
   const files = packageFiles ?? packageJson.files ?? [];
   const issues = [];
   if (packageJson.private === true) issues.push("package.json must not be private for npm distribution.");
-  if (!packageJson.bin?.["ai-workspace"]) issues.push("The ai-workspace executable is not declared.");
+  if (!packageJson.bin?.forgevena) issues.push("The forgevena executable is not declared.");
+  if (!packageJson.bin?.["ai-workspace"]) issues.push("The legacy ai-workspace executable is not declared.");
   if (!packageJson.engines?.node) issues.push("A Node.js compatibility range is required.");
   if (!Array.isArray(files) || files.length === 0) issues.push("Explicit package files are required.");
   for (const required of REQUIRED_PACKAGE_FILES) if (!isIncluded(files, required)) issues.push(`${required} is not included in the package allowlist.`);

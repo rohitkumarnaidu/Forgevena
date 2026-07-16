@@ -11,6 +11,7 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { createHash } from "node:crypto";
 import { PLATFORM_VERSION, REGISTRY_SCHEMA_VERSION } from "./version.js";
+import { FileStateEngine } from "./state-engine.js";
 
 const DEFAULT_MODULES = ["core", "doctor", "registry", "logging", "config", "templates", "providers", "project", "docs"];
 const NEW_PROJECT_MODULES = ["bootstrap", ...DEFAULT_MODULES, "design", "ai", "github", "testing", "docker", "monitoring"];
@@ -45,18 +46,20 @@ export async function addModules(root, modules, { dryRun = true, initialize = fa
       created.push(entry.target);
     }
     if (createProject) await initializeGit(root);
-    const registry = await getRegistry(root);
-    registry.schemaVersion ??= REGISTRY_SCHEMA_VERSION;
-    registry.workspaceVersion = PLATFORM_VERSION;
-    registry.projectName ??= projectName ?? path.basename(root);
-    registry.template ??= template ?? "enterprise";
-    registry.providers = [...new Set([...(registry.providers ?? []), ...(provider ? [provider] : [])])];
-    registry.modules = [...new Set([...registry.modules, ...selectedModules])].sort();
-    registry.detectedStack = detectedProject.frameworks;
-    registry.bootstrapMode = createProject ? "new-project" : "existing-project";
-    registry.toolVersions = Object.fromEntries((await inspectEnvironment(root)).tools.filter((tool) => tool.installed).map((tool) => [tool.name, tool.version]));
-    registry.updatedAt = new Date().toISOString();
-    await writeRegistry(root, registry);
+    const toolVersions = Object.fromEntries((await inspectEnvironment(root)).tools.filter((tool) => tool.installed).map((tool) => [tool.name, tool.version]));
+    await stateEngine(root).update(registryPath(), (registry) => normalizeRegistry({
+      ...registry,
+      schemaVersion: registry.schemaVersion ?? REGISTRY_SCHEMA_VERSION,
+      workspaceVersion: PLATFORM_VERSION,
+      projectName: registry.projectName ?? projectName ?? path.basename(root),
+      template: registry.template ?? template ?? "enterprise",
+      providers: [...new Set([...(registry.providers ?? []), ...(provider ? [provider] : [])])],
+      modules: [...new Set([...(registry.modules ?? []), ...selectedModules])].sort(),
+      detectedStack: detectedProject.frameworks,
+      bootstrapMode: createProject ? "new-project" : "existing-project",
+      toolVersions,
+      updatedAt: new Date().toISOString(),
+    }), { fallback: normalizeRegistry({ initialized: true, workspaceVersion: PLATFORM_VERSION, createdAt: new Date().toISOString() }), validate: validateRegistry });
     await recordManagedOperation(root, {
       id: transaction.id,
       command: createProject ? "create" : initialize ? "init" : "add",
@@ -148,14 +151,10 @@ async function beginTransaction(root) {
   return { id, registryBackup, manifestBackup };
 }
 
-async function getRegistry(root) {
-  try { return normalizeRegistry(JSON.parse(await readFile(path.join(root, ROOT, REGISTRY), "utf8"))); }
-  catch { return normalizeRegistry({ initialized: true, workspaceVersion: PLATFORM_VERSION, createdAt: new Date().toISOString() }); }
-}
+async function getRegistry(root) { return normalizeRegistry(await stateEngine(root).read(registryPath(), { fallback: normalizeRegistry({ initialized: true, workspaceVersion: PLATFORM_VERSION, createdAt: new Date().toISOString() }), validate: validateRegistry })); }
 async function registryExists(root) { return fileExists(path.join(root, ROOT, REGISTRY)); }
-async function writeRegistry(root, registry) { await mkdir(path.join(root, ROOT), { recursive: true }); await writeFile(path.join(root, ROOT, REGISTRY), `${JSON.stringify(registry, null, 2)}\n`, "utf8"); }
-async function restoreRegistry(root, backup) { if (backup) await cp(backup, path.join(root, ROOT, REGISTRY)); else await rm(path.join(root, ROOT, REGISTRY), { force: true }); }
-async function restoreManifest(root, backup) { if (backup) await cp(backup, path.join(root, ROOT, MANIFEST)); else await rm(path.join(root, ROOT, MANIFEST), { force: true }); }
+async function restoreRegistry(root, backup) { if (backup) await stateEngine(root).write(registryPath(), JSON.parse(await readFile(backup, "utf8")), { validate: validateRegistry }); else { await rm(path.join(root, ROOT, REGISTRY), { force: true }); await rm(`${path.join(root, ROOT, REGISTRY)}.sha256`, { force: true }); } }
+async function restoreManifest(root, backup) { if (backup) await stateEngine(root).write(manifestPath(), JSON.parse(await readFile(backup, "utf8")), { validate: validateManifest }); else { await rm(path.join(root, ROOT, MANIFEST), { force: true }); await rm(`${path.join(root, ROOT, MANIFEST)}.sha256`, { force: true }); } }
 async function fileExists(filePath) { try { return (await stat(filePath)).isFile(); } catch { return false; } }
 async function directoryHasEntries(directory) { try { return (await readdir(directory)).length > 0; } catch { return false; } }
 async function directoryEntries(directory) { try { return (await readdir(directory)).sort(); } catch { return []; } }
@@ -166,18 +165,11 @@ async function initializeGit(root) {
 }
 async function backupFile(source, target) { if (!(await fileExists(source))) return null; await cp(source, target); return target; }
 async function getManagedManifest(root) {
-  try { return JSON.parse(await readFile(path.join(root, ROOT, MANIFEST), "utf8")); }
-  catch { return { schemaVersion: 1, operations: [] }; }
+  return stateEngine(root).read(manifestPath(), { fallback: { schemaVersion: 1, operations: [] }, validate: validateManifest });
 }
-async function writeManagedManifest(root, manifest) {
-  await mkdir(path.join(root, ROOT), { recursive: true });
-  await writeFile(path.join(root, ROOT, MANIFEST), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
-}
+async function writeManagedManifest(root, manifest) { await stateEngine(root).write(manifestPath(), manifest, { validate: validateManifest }); }
 async function recordManagedOperation(root, operation) {
-  const manifest = await getManagedManifest(root);
-  manifest.operations.push({ ...operation, at: new Date().toISOString() });
-  manifest.updatedAt = new Date().toISOString();
-  await writeManagedManifest(root, manifest);
+  await stateEngine(root).update(manifestPath(), (manifest) => ({ ...manifest, operations: [...manifest.operations, { ...operation, at: new Date().toISOString() }], updatedAt: new Date().toISOString() }), { fallback: { schemaVersion: 1, operations: [] }, validate: validateManifest });
 }
 function hashContents(contents) { return createHash("sha256").update(contents).digest("hex"); }
 function normalizeRegistry(registry) {
@@ -192,3 +184,8 @@ function normalizeRegistry(registry) {
     ...registry,
   };
 }
+function stateEngine(root) { return new FileStateEngine(root); }
+function registryPath() { return path.join(ROOT, REGISTRY); }
+function manifestPath() { return path.join(ROOT, MANIFEST); }
+function validateRegistry(value) { return value && typeof value === "object" && Number.isInteger(value.schemaVersion) && Array.isArray(value.modules) ? true : ["Registry requires an integer schemaVersion and modules array."]; }
+function validateManifest(value) { return value && typeof value === "object" && value.schemaVersion === 1 && Array.isArray(value.operations) ? true : ["Managed asset manifest requires schemaVersion 1 and an operations array."]; }

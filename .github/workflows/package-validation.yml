@@ -1,0 +1,32 @@
+name: Package Validation
+
+on:
+  pull_request:
+    paths: ["package.json", "package-lock.json", "bin/**", "src/**", "scripts/**", "Dockerfile.cli", ".github/workflows/package-validation.yml"]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  npm-and-container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run release:verify
+      - run: npm pack
+      - name: Smoke-test archive
+        shell: bash
+        run: |
+          mkdir smoke
+          npm install --prefix smoke --ignore-scripts ./forgevena-*.tgz
+          node smoke/node_modules/forgevena/bin/forgevena.js version
+      - run: docker build -f Dockerfile.cli -t forgevena:ci .
+      - run: docker run --rm forgevena:ci version

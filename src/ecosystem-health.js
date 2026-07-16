@@ -5,8 +5,8 @@ import { listPlugins, validatePlugin } from "./plugins.js";
 import { providerStatus } from "./providers.js";
 import { validateBootstrap } from "./bootstrap-validator.js";
 import { validateRenderBlueprint } from "./render.js";
-import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { writeStateDocument } from "./state-documents.js";
 
 export async function inspectEcosystem(root) {
   const checkedAt = new Date().toISOString();
@@ -43,8 +43,6 @@ export async function recordEcosystemHealth(root, health, { dryRun = true } = {}
   const relative = path.join(".ai-workspace", "health.json");
   const snapshot = { schemaVersion: 1, ...health };
   if (dryRun) return { dryRun: true, path: relative, summary: health.counts };
-  const target = path.join(root, relative);
-  await mkdir(path.dirname(target), { recursive: true });
-  await writeFile(target, `${JSON.stringify(snapshot, null, 2)}\n`, "utf8");
+  await writeStateDocument(root, relative, snapshot);
   return { dryRun: false, path: relative, recorded: true, summary: health.counts };
 }

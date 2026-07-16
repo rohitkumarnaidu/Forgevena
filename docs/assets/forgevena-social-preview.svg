@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">Forgevena</title><desc id="desc">Governed engineering from idea to production.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="0.55" stop-color="#112b4d"/><stop offset="1" stop-color="#1b4269"/></linearGradient><linearGradient id="mark" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#55d6be"/><stop offset="1" stop-color="#7aa2ff"/></linearGradient><radialGradient id="glow"><stop stop-color="#55d6be" stop-opacity=".18"/><stop offset="1" stop-color="#55d6be" stop-opacity="0"/></radialGradient></defs>
+  <rect width="1280" height="640" fill="url(#bg)"/><circle cx="1080" cy="80" r="420" fill="url(#glow)"/>
+  <g transform="translate(108 176)"><path d="M128 0 240 65v130l-112 65-112-65V65Z" fill="#0c1d33" stroke="url(#mark)" stroke-width="16"/><path d="M70 80h120M70 130h100M70 180h64" stroke="#f2f8ff" stroke-width="16" stroke-linecap="round"/></g>
+  <text x="410" y="260" fill="#fff" font-family="Inter,Segoe UI,sans-serif" font-size="104" font-weight="750">Forgevena</text>
+  <text x="416" y="340" fill="#c6d9ef" font-family="Inter,Segoe UI,sans-serif" font-size="34">Governed engineering from idea to production.</text>
+  <g transform="translate(416 396)" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="24"><text x="0" y="0" fill="#55d6be">BOOTSTRAP</text><text x="190" y="0" fill="#7aa2ff">INTEGRATE</text><text x="385" y="0" fill="#55d6be">VALIDATE</text><text x="570" y="0" fill="#7aa2ff">RELEASE</text></g>
+  <rect x="416" y="448" width="660" height="2" fill="#6b8aac" opacity=".55"/><text x="416" y="500" fill="#9eb6d0" font-family="Inter,Segoe UI,sans-serif" font-size="24">Enterprise developer platform · safety-first · open source</text>
+</svg>

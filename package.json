@@ -1,10 +1,29 @@
 {
-  "name": "ai-engineering-workspace",
-  "version": "1.0.0",
+  "name": "forgevena",
+  "version": "1.1.0",
   "private": false,
-  "description": "Safe, modular bootstrap tooling for AI-assisted software projects.",
+  "description": "Governed engineering from idea to production.",
+  "keywords": [
+    "developer-platform",
+    "cli",
+    "ai",
+    "bootstrap",
+    "devops",
+    "mcp",
+    "release-engineering"
+  ],
+  "homepage": "https://rohitkumarnaidu.github.io/Work-Space/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rohitkumarnaidu/Work-Space.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rohitkumarnaidu/Work-Space/issues"
+  },
+  "funding": "https://github.com/sponsors/rohitkumarnaidu",
   "type": "module",
   "bin": {
+    "forgevena": "./bin/forgevena.js",
     "ai-workspace": "./bin/ai-workspace.js"
   },
   "files": [
@@ -29,11 +48,19 @@
     "AGENTS.md",
     "LICENSE"
   ],
-  "os": ["darwin", "linux", "win32"],
-  "cpu": ["x64", "arm64"],
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
   "scripts": {
     "test": "node --test",
-    "start": "node ./bin/ai-workspace.js",
+    "test:coverage": "node --test --experimental-test-coverage",
+    "start": "node ./bin/forgevena.js",
     "release:verify": "node ./scripts/verify-release.js",
     "release:assets": "node ./scripts/generate-distribution.js",
     "benchmark": "node ./scripts/benchmark.js",
@@ -42,5 +69,8 @@
   "engines": {
     "node": ">=20.19.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@node-rs/argon2": "^2.0.2"
+  }
 }

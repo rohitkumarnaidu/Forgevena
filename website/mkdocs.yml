@@ -1,0 +1,154 @@
+site_name: Forgevena
+site_description: Governed engineering from idea to production.
+site_description: Safety-first developer platform for enterprise project bootstrap and governed AI tooling.
+site_url: https://rohitkumarnaidu.github.io/Work-Space/
+repo_url: https://github.com/rohitkumarnaidu/Work-Space
+repo_name: rohitkumarnaidu/Work-Space
+edit_uri: edit/main/docs/
+docs_dir: ../docs
+site_dir: ../dist/docs-site
+exclude_docs: |
+  README.md
+  examples/README.md
+copyright: Copyright &copy; 2026 Rohit Kumar Naidu · MIT License
+strict: true
+
+theme:
+  name: material
+  language: en
+  favicon: assets/favicon.svg
+  logo: assets/logo.svg
+  features:
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - navigation.footer
+    - navigation.indexes
+    - navigation.instant
+    - navigation.path
+    - navigation.sections
+    - navigation.tabs
+    - navigation.top
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - git-revision-date-localized:
+      enable_creation_date: true
+      enable_git_follow: false
+      type: timeago
+      fallback_to_build_date: true
+  - minify:
+      minify_html: true
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra_css:
+  - assets/stylesheets/extra.css
+extra_javascript:
+  - assets/javascripts/extra.js
+
+extra:
+  version:
+    provider: mike
+    default: latest
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/rohitkumarnaidu/Work-Space
+  generator: false
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Overview: getting-started/index.md
+      - Installation: installation/index.md
+      - Quick Start: QUICK_START.md
+      - Troubleshooting: troubleshooting/index.md
+  - Platform:
+      - Architecture: architecture/overview.md
+      - Diagrams: architecture/diagrams.md
+      - CLI: cli/reference.md
+      - Modules: modules/reference.md
+      - Capabilities: capabilities/reference.md
+      - Bootstrap: bootstrap/guide.md
+      - Templates: templates/reference.md
+      - Registry: registry/reference.md
+      - Configuration: configuration/reference.md
+  - Ecosystem:
+      - Providers: providers/reference.md
+      - Integrations: integrations/reference.md
+      - Plugins and MCP: plugins/guide.md
+      - Cloud Platforms: CLOUD_PLATFORMS.md
+  - Operations:
+      - Security: security/guide.md
+      - Deployment: deployment/guide.md
+      - Runbooks: operations/runbooks.md
+      - Testing: testing/guide.md
+      - Release Engineering: release/index.md
+  - Learn:
+      - Examples: examples/index.md
+      - Production Catalog: examples/production-catalog.md
+      - Tutorials: tutorials/index.md
+      - Cookbook: cookbook/index.md
+      - FAQ: faq/index.md
+      - Glossary: glossary/index.md
+  - Contribute:
+      - Developer Guide: developer/index.md
+      - Contributor Guide: contributor/index.md
+      - Maintainer Guide: maintainer/index.md
+      - ADRs: adrs/index.md
+  - Reference:
+      - API: API_REFERENCE.md
+      - Schemas: schemas/index.md
+      - Environment Variables: reference/environment-variables.md
+      - Exit Codes: reference/exit-codes.md
+      - Repository Map: REPOSITORY_MAP.md
+  - Project:
+      - Roadmap: roadmap/index.md
+      - Releases: releases/index.md
+      - Migration: migration/index.md
+      - Support: https://github.com/rohitkumarnaidu/Work-Space/blob/main/SUPPORT.md

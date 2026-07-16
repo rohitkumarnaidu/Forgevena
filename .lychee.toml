@@ -1,0 +1,9 @@
+cache = true
+max_cache_age = "1d"
+max_redirects = 10
+timeout = 20
+retry_wait_time = 2
+max_retries = 2
+accept = [200, 204, 206, 429]
+exclude_path = ["dist", "node_modules", ".venv-docs"]
+exclude = ["^mailto:", "http://localhost", "http://127.0.0.1"]

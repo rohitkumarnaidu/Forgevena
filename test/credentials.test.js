@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { backupCredentials, configureCredential, credentialStatus, initializeCredentialPlaceholders, readCredential, removeCredential, rotateCredential, validateCredential } from "../src/credentials.js";
@@ -33,15 +33,40 @@ test("encrypted credentials rotate, validate, back up, and remove without deleti
   process.env.AI_WORKSPACE_CREDENTIAL_KEY = "test-only-master-key";
   try {
     await configureCredential(root, "openai", "first-value", { dryRun: false, storage: "encrypted" });
+    const initialPayload = JSON.parse(await readFile(path.join(root, ".credentials", "openai.enc.json"), "utf8"));
+    assert.equal(initialPayload.schemaVersion, 2);
+    assert.equal(initialPayload.kdf.name, "argon2id");
+    assert.equal(initialPayload.salt.length > 20, true);
+    assert.equal(initialPayload.variable, undefined);
     assert.equal(await readCredential(root, "openai"), "first-value");
     assert.equal((await validateCredential(root, "openai")).valid, true);
     const rotated = await rotateCredential(root, "openai", "second-value", { dryRun: false, storage: "encrypted" });
     assert.equal(rotated.rotated, true);
     assert.equal(await readCredential(root, "openai"), "second-value");
+    const rotatedPayload = JSON.parse(await readFile(path.join(root, ".credentials", "openai.enc.json"), "utf8"));
+    const protectedMetadata = JSON.parse(Buffer.from(rotatedPayload.protected, "base64").toString("utf8"));
+    assert.equal(protectedMetadata.credentialVersion, 2);
     assert.deepEqual((await backupCredentials(root, { dryRun: false })).backedUp, ["openai"]);
     const removed = await removeCredential(root, "openai", { dryRun: false });
     assert.equal(removed.destructiveDelete, false);
     assert.equal((await credentialStatus(root, "openai")).configured, false);
+  } finally {
+    if (previous === undefined) delete process.env.AI_WORKSPACE_CREDENTIAL_KEY; else process.env.AI_WORKSPACE_CREDENTIAL_KEY = previous;
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("encrypted vault rejects ciphertext and metadata tampering", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "credential-tamper-"));
+  const previous = process.env.AI_WORKSPACE_CREDENTIAL_KEY;
+  process.env.AI_WORKSPACE_CREDENTIAL_KEY = "test-only-master-key";
+  try {
+    await configureCredential(root, "openai", "protected-value", { dryRun: false, storage: "encrypted" });
+    const target = path.join(root, ".credentials", "openai.enc.json");
+    const payload = JSON.parse(await readFile(target, "utf8"));
+    payload.protected = Buffer.from(JSON.stringify({ variable: "render", credentialVersion: 1 })).toString("base64");
+    await writeFile(target, `${JSON.stringify(payload, null, 2)}\n`);
+    await assert.rejects(() => readCredential(root, "openai"), /protected metadata|authenticate data/i);
   } finally {
     if (previous === undefined) delete process.env.AI_WORKSPACE_CREDENTIAL_KEY; else process.env.AI_WORKSPACE_CREDENTIAL_KEY = previous;
     await rm(root, { recursive: true, force: true });

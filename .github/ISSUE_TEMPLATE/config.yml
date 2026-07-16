@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Support and questions
+    url: https://github.com/rohitkumarnaidu/Work-Space/discussions
+    about: Ask usage questions in Discussions.
+  - name: Private security reporting
+    url: https://github.com/rohitkumarnaidu/Work-Space/security/advisories/new
+    about: Report vulnerabilities privately.

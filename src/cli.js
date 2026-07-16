@@ -29,6 +29,11 @@ import { inspectEcosystem, recordEcosystemHealth } from "./ecosystem-health.js";
 import { exportSafeConfiguration, importSafeConfiguration } from "./config-transfer.js";
 import { PLATFORM_VERSION, versionInfo } from "./version.js";
 import { rollbackUpgrade, upgradeWorkspace } from "./upgrade.js";
+import { BRAND } from "./brand.js";
+import { parseGlobalOptions, valueAfter } from "./cli/options.js";
+import { renderResult } from "./cli/output.js";
+import { createApplicationContext } from "./cli/context.js";
+import { migrateState, repairState, snapshotState, stateHistory, stateStatus } from "./state-service.js";
 
 const ADDABLE_MODULES = new Set(supportedModules());
 
@@ -39,9 +44,8 @@ export async function run(args) {
   }
   const [command, subject] = args;
   const root = process.cwd();
-  if (args.includes("--apply") && args.includes("--dry-run")) throw new Error("Choose either --apply or --dry-run, not both.");
-  const apply = args.includes("--apply") || args.includes("--yes");
-  const options = { dryRun: !apply, apply, yes: args.includes("--yes"), force: args.includes("--force"), nonInteractive: args.includes("--non-interactive"), verbose: args.includes("--verbose"), mergePolicy: valueAfter(args, "--merge") ?? "skip", skip: valueAfter(args, "--skip")?.split(",").filter(Boolean) ?? [] };
+  const options = parseGlobalOptions(args);
+  const context = createApplicationContext(root);
 
   switch (command) {
     case "integrations": return printJson(await integrationCommand(root, args.slice(1), options), options);
@@ -50,6 +54,8 @@ export async function run(args) {
     case "status": return printJson(await readStatus(root), options);
     case "version": return printJson(versionInfo(), options);
     case "validate": return printJson(await validateBootstrap(root), options);
+    case "state": return printJson(await stateCommand(context, args.slice(1), options), options);
+    case "vault": return printJson(await vaultCommand(root, args.slice(1), options), options);
     case "help": return console.log(`${help()}\n\n${releaseHelp()}`);
     case "plugins": return printJson(await pluginCommand(root, args.slice(1), options), options);
     case "mcp": return printJson(await mcpCommand(root, args.slice(1), options), options);
@@ -74,7 +80,7 @@ export async function run(args) {
       if (!ADDABLE_MODULES.has(subject)) throw new Error(`Choose one of: ${[...ADDABLE_MODULES].join(", ")}.`);
       return printJson({ root, module: subject, dryRun: true, supported: false, message: "Removal is intentionally disabled to honor the never-delete-user-files safety guarantee." }, options);
     case "create":
-      if (!subject) throw new Error("Usage: ai-workspace create <project-name> [--apply]");
+      if (!subject) throw new Error(`Usage: ${BRAND.executable} create <project-name> [--apply]`);
       return printJson(await initializeProject(path.resolve(root, valueAfter(args, "--output") ?? subject), { ...options, createProject: true, projectName: subject, template: validateTemplate(valueAfter(args, "--template") ?? "enterprise"), provider: validateProvider(valueAfter(args, "--provider")) }), options);
     case "update": return printJson(await updateProject(root, options), options);
     case "upgrade": return printJson(subject === "rollback" ? await rollbackUpgrade(root, options) : await upgradeWorkspace(root, options), options);
@@ -83,14 +89,16 @@ export async function run(args) {
   }
 }
 
-function printJson(value, options = {}) { console.log(JSON.stringify(options.verbose ? { result: value, diagnostics: { dryRun: options.dryRun, nonInteractive: options.nonInteractive, mergePolicy: options.mergePolicy } } : value, null, 2)); }
+function printJson(value, options = {}) { console.log(renderResult(value, options)); }
 function releaseHelp() { return `Release:\n  version (${PLATFORM_VERSION}) | upgrade [rollback]`; }
 
 function help() {
-  return `AI Engineering Workspace\n\nModifying commands preview by default. Use --apply for local writes; external operations also require explicit consent. Existing files are skipped.\n\nCommands:\n  doctor [--apply] | status | validate | version | help\n  init | create <name> | add <module> | remove <module> | update | rollback [operation]\n  install [tool] | reference [name] | capabilities | integrations\n  credentials <init|list|configure|rotate|validate|status|backup|remove> [name]\n  providers <list|init|configure|status|doctor|validate|update|remove|models|project|mcp|invoke|test|verify|login|logout|limits|dashboard> [provider]\n  mcp <list|add|validate|health|activate|deactivate|remove> [name]\n  plugins <list|install|update|trust|enable|disable|validate|health|remove> [source-or-id]\n  cloud list | cloud <provider> <prepare|validate|verify|deploy|status|health|credentials|rollback>\n  cloud render <generate|validate|credentials|configure|plan|deploy|status|rollback>\n  dashboard [--port <port>] | docker <plan|validate|up|down>\n  templates | config [key value] | config <export|import>\n\nCreate:\n  create <name> --template <template> [--provider <name>] [--output <path>] [--apply]\n\nSafety options:\n  --dry-run | --apply | --yes | --non-interactive | --verbose | --merge skip|merge|replace | --skip <module-or-path,...>\n  Credential values use masked prompts and are never accepted as command arguments.\n  Existing files are never overwritten; merge and replace requests remain skip-only.\n\nFoundation modules:\n  ${[...ADDABLE_MODULES].join(", ")}`;
+  return `${BRAND.name}\n${BRAND.caption}\n\nModifying commands preview by default. Use --apply for local writes; external operations also require explicit consent. Existing files are skipped.\n\nCommands:\n  doctor [--apply] | status | validate | version | help\n  state <validate|repair|snapshot|migrate|history> | vault <initialize|rotate|recover|audit>\n  init | create <name> | add <module> | remove <module> | update | rollback [operation]\n  install [tool] | reference [name] | capabilities | integrations\n  credentials <init|list|configure|rotate|validate|status|backup|remove> [name]\n  providers <list|init|configure|status|doctor|validate|update|remove|models|project|mcp|invoke|test|verify|login|logout|limits|dashboard> [provider]\n  mcp <list|add|validate|health|activate|deactivate|remove> [name]\n  plugins <list|install|update|trust|enable|disable|validate|health|remove> [source-or-id]\n  cloud list | cloud <provider> <prepare|validate|verify|deploy|status|health|credentials|rollback>\n  cloud render <generate|validate|credentials|configure|plan|deploy|status|rollback>\n  dashboard [--port <port>] | docker <plan|validate|up|down>\n  templates | config [key value] | config <export|import>\n\nCreate:\n  create <name> --template <template> [--provider <name>] [--output <path>] [--apply]\n\nSafety options:\n  --dry-run | --apply | --yes | --non-interactive | --verbose | --structured | --merge skip|merge|replace | --skip <module-or-path,...>\n  Credential values use masked prompts and are never accepted as command arguments.\n  Existing files are never overwritten; merge and replace requests remain skip-only.\n\nFoundation modules:\n  ${[...ADDABLE_MODULES].join(", ")}\n\nCompatibility:\n  ${BRAND.legacyExecutable} remains supported during the 1.x transition. Project state remains in ${BRAND.stateDirectory}.`;
 }
 
 async function withLog(root, type, promise) { const result = await promise; await logEvent(root, type, { completed: true }); return result; }
+async function stateCommand(context, args, options) { const [action = "validate"] = args; if (action === "validate") return stateStatus(context.root); if (action === "repair") return repairState(context.root, options); if (action === "snapshot") return snapshotState(context.root, options); if (action === "migrate") return migrateState(context.root, options); if (action === "history") return stateHistory(context.root); throw new Error("Usage: state <validate|repair|snapshot|migrate|history>"); }
+async function vaultCommand(root, args, options) { const [action = "audit", name] = args; if (action === "initialize") return initializeCredentialPlaceholders(root, options); if (action === "rotate") return credentialCommand(root, ["rotate", name], options); if (action === "recover") return { dryRun: true, supported: true, message: "Restore only a validated encrypted artifact from .credentials/archive; automatic secret selection is intentionally disabled." }; if (action === "audit") return { credentials: await Promise.all(listCredentialDefinitions().map(({ name: credential }) => validateCredential(root, credential))), secretValuesReturned: false }; throw new Error("Usage: vault <initialize|rotate|recover|audit> [credential]"); }
 async function doctorCommand(root, options) { const [environment, ecosystem] = await Promise.all([inspectEnvironment(root), inspectEcosystem(root)]); const registry = await recordEcosystemHealth(root, ecosystem, options); await logEvent(root, "doctor", { completed: true, healthy: ecosystem.healthy, summary: ecosystem.counts }); return { environment, ecosystem, registry }; }
 async function toolCommand(name, options) {
   if (!name) return { tools: listToolPlans(), dryRun: true, message: "Choose a tool to preview its official installation workflow." };
@@ -304,4 +312,3 @@ async function configureCredentialInteractively(root, name, options) {
 }
 function parseJsonOption(args, flag, fallback) { const value = valueAfter(args, flag); if (value === undefined) return fallback; try { return JSON.parse(value); } catch { throw new Error(`${flag} must contain valid JSON.`); } }
 function parseCsv(value) { return value?.split(",").map((entry) => entry.trim()).filter(Boolean) ?? []; }
-function valueAfter(args, flag) { const index = args.indexOf(flag); return index === -1 ? undefined : args[index + 1]; }

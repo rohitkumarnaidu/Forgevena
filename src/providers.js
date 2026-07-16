@@ -1,8 +1,9 @@
-import { access, mkdir, readFile, writeFile } from "node:fs/promises";
+import { access, mkdir, writeFile } from "node:fs/promises";
 import { PLATFORM_VERSION } from "./version.js";
 import path from "node:path";
 import { PROVIDER_DEFINITIONS, providerDefinition, providerRuntimeStatus } from "./provider-runtime.js";
 import { configureCredential, readCredential } from "./credentials.js";
+import { readStateDocument, updateStateDocument } from "./state-documents.js";
 
 const providerMetadata = {
   claude: { host: "Claude Code or Anthropic API", mcp: "Configure MCP through the selected host after reviewing its permissions." },
@@ -79,16 +80,15 @@ export async function providerStatus(root, name) {
 
 export async function removeProviderProfile(root, name, { dryRun = true } = {}) {
   provider(name);
-  const registryPath = path.join(root, ".ai-workspace", "workspace.json");
-  let registry;
-  try { registry = JSON.parse(await readFile(registryPath, "utf8")); } catch { return { provider: name, dryRun, removed: false, message: "Workspace registry is not initialized." }; }
+  const registry = await readStateDocument(root, ".ai-workspace/workspace.json", null);
+  if (!registry) return { provider: name, dryRun, removed: false, message: "Workspace registry is not initialized." };
   const registered = (registry.providerProfiles ?? []).includes(name);
   const plan = { provider: name, dryRun, registered, registryOnly: true, profileFilesPreserved: true };
   if (dryRun || !registered) return plan;
   registry.providerProfiles = registry.providerProfiles.filter((entry) => entry !== name);
   if (registry.providerCredentialStatus) delete registry.providerCredentialStatus[name];
   registry.updatedAt = new Date().toISOString();
-  await writeFile(registryPath, `${JSON.stringify(registry, null, 2)}\n`, "utf8");
+  await updateStateDocument(root, ".ai-workspace/workspace.json", () => registry, registry);
   return { ...plan, dryRun: false, removed: true };
 }
 
@@ -99,12 +99,5 @@ function definition(name) {
 function provider(name) { return definition(name); }
 async function exists(target) { try { await access(target); return true; } catch { return false; } }
 async function updateRegistry(root, name, credentialStatus = "reference-only") {
-  const registryPath = path.join(root, ".ai-workspace", "workspace.json");
-  let registry;
-  try { registry = JSON.parse(await readFile(registryPath, "utf8")); } catch { registry = { initialized: true, workspaceVersion: PLATFORM_VERSION, modules: [], integrations: {} }; }
-  registry.providerProfiles = [...new Set([...(registry.providerProfiles ?? []), name])].sort();
-  registry.providerCredentialStatus = { ...(registry.providerCredentialStatus ?? {}), [name]: credentialStatus };
-  registry.updatedAt = new Date().toISOString();
-  await mkdir(path.dirname(registryPath), { recursive: true });
-  await writeFile(registryPath, `${JSON.stringify(registry, null, 2)}\n`, "utf8");
+  await updateStateDocument(root, ".ai-workspace/workspace.json", (registry) => ({ ...registry, providerProfiles: [...new Set([...(registry.providerProfiles ?? []), name])].sort(), providerCredentialStatus: { ...(registry.providerCredentialStatus ?? {}), [name]: credentialStatus }, updatedAt: new Date().toISOString() }), { initialized: true, workspaceVersion: PLATFORM_VERSION, schemaVersion: 2, modules: [], integrations: {} });
 }

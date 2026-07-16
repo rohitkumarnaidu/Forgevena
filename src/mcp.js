@@ -1,8 +1,9 @@
-import { access, mkdir, readFile, writeFile } from "node:fs/promises";
+import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { execFile } from "node:child_process";
 import { PLATFORM_VERSION } from "./version.js";
 import { promisify } from "node:util";
+import { readStateDocument, writeStateDocument } from "./state-documents.js";
 
 const executeFile = promisify(execFile);
 const REGISTRY_PATH = path.join(".ai-workspace", "mcp", "servers.json");
@@ -115,8 +116,8 @@ function validateDefinition(value) {
 
 function redact(server) { return { ...server, headerEnvironment: server.headerEnvironment ?? {}, storesSecrets: false }; }
 async function getServer(root, name) { const server = (await readRegistry(root)).servers[name]; if (!server) throw new Error(`Unknown MCP server: ${name}.`); return server; }
-async function readRegistry(root) { try { const value = JSON.parse(await readFile(path.join(root, REGISTRY_PATH), "utf8")); return { schemaVersion: 1, servers: {}, ...value }; } catch { return { schemaVersion: 1, servers: {} }; } }
-async function writeRegistry(root, registry) { const target = path.join(root, REGISTRY_PATH); await mkdir(path.dirname(target), { recursive: true }); registry.updatedAt = new Date().toISOString(); await writeFile(target, `${JSON.stringify(registry, null, 2)}\n`, "utf8"); }
+async function readRegistry(root) { return { schemaVersion: 1, servers: {}, ...(await readStateDocument(root, REGISTRY_PATH, { schemaVersion: 1, servers: {} })) }; }
+async function writeRegistry(root, registry) { registry.updatedAt = new Date().toISOString(); await writeStateDocument(root, REGISTRY_PATH, registry, (value) => value?.schemaVersion === 1 && value.servers && typeof value.servers === "object" ? true : ["MCP registry requires schemaVersion 1 and servers."]); }
 async function writeGeneratedHostConfig(root, relative, host, server) {
   const target = path.join(root, relative);
   try { await access(target); return { created: false, skipped: true, path: relative }; } catch {}
