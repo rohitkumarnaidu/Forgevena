@@ -15,5 +15,5 @@ test("CLI help documents bootstrap options", async () => {
   assert.match(stdout, /cloud <provider> <prepare\|validate\|verify\|deploy\|status/);
   assert.match(stdout, /plugins <list\|install\|update\|trust/);
   assert.match(stdout, /upgrade \[rollback\]/);
-  assert.match(stdout, /0\.2\.0-rc\.1/);
+  assert.match(stdout, /1\.0\.0/);
 });

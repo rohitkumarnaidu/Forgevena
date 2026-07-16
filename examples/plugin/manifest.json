@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "id": "example-documentation-plugin",
+  "version": "1.0.0",
+  "type": "declarative",
+  "platform": ">=1.0.0",
+  "permissions": ["documentation"],
+  "contributions": {
+    "documents": ["example-guide"]
+  }
+}

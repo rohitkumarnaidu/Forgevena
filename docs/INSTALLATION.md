@@ -2,7 +2,7 @@
 
 ## npm
 
-Run `npm install --global ai-engineering-workspace@0.2.0-rc.1`, then verify with `ai-workspace version`.
+Run `npm install --global ai-engineering-workspace@1.0.0`, then verify with `ai-workspace version`.
 
 ## Offline and portable
 

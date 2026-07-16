@@ -8,7 +8,7 @@ import { PLATFORM_VERSION, versionInfo } from "../src/version.js";
 
 test("version information is sourced from package metadata", () => {
   assert.equal(versionInfo().version, PLATFORM_VERSION);
-  assert.equal(versionInfo().prerelease, "rc.1");
+  assert.equal(versionInfo().prerelease, null);
 });
 
 test("workspace upgrade previews, backs up, migrates, and rolls back", async () => {

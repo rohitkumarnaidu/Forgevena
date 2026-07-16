@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
-const REQUIRED_PACKAGE_FILES = ["bin/ai-workspace.js", "src/cli.js", "README.md", "CHANGELOG.md", "CONTRIBUTING.md", "VERSION", "completions/", "man/", "package.json"];
+const REQUIRED_PACKAGE_FILES = ["bin/ai-workspace.js", "src/cli.js", "README.md", "CHANGELOG.md", "CONTRIBUTING.md", "VERSION", "completions/", "examples/", "man/", "package.json"];
 const FORBIDDEN_PATTERNS = [
   /^\.env(?:\.|$)/,
   /^\.ai-workspace\/local-secrets\//,

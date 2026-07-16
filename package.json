@@ -1,6 +1,6 @@
 {
   "name": "ai-engineering-workspace",
-  "version": "0.2.0-rc.1",
+  "version": "1.0.0",
   "private": false,
   "description": "Safe, modular bootstrap tooling for AI-assisted software projects.",
   "type": "module",
@@ -11,6 +11,7 @@
     "bin/",
     "src/",
     "docs/",
+    "examples/",
     "completions/",
     "man/",
     "scripts/install.ps1",
@@ -35,6 +36,7 @@
     "start": "node ./bin/ai-workspace.js",
     "release:verify": "node ./scripts/verify-release.js",
     "release:assets": "node ./scripts/generate-distribution.js",
+    "benchmark": "node ./scripts/benchmark.js",
     "prepack": "npm test && npm run release:verify"
   },
   "engines": {

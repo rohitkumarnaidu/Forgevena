@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "defaultProvider": "openai",
+  "fallbackProvider": "ollama",
+  "model": "gpt-5-mini",
+  "retries": 2,
+  "timeoutMs": 30000
+}

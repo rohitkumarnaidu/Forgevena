@@ -2,7 +2,7 @@
 
 A local, safety-first developer platform for bootstrapping projects, configuring live AI providers, governing MCP/plugin integrations, and preparing Git-backed Render deployments.
 
-Current release: `0.2.0-rc.1`. Install with `npm install --global ai-engineering-workspace@0.2.0-rc.1` after publication, or use the verified offline archive.
+Current release: `1.0.0`. Install with `npm install --global ai-engineering-workspace@1.0.0` after publication, or use the verified offline archive.
 
 ## Safety Model
 
