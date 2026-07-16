@@ -2,7 +2,7 @@
 
 ## Scope
 
-The workspace is a local CLI that adds safe, additive project assets. It is not a package manager, agent orchestrator, cloud service, or automatic installer for third-party repositories.
+The workspace is a local CLI and loopback settings dashboard that add safe project assets and orchestrate explicitly approved external integrations. It is not itself a cloud service, autonomous agent orchestrator, or automatic installer for unreviewed third-party code.
 
 ## Components
 
@@ -13,6 +13,10 @@ The workspace is a local CLI that adds safe, additive project assets. It is not 
 - `src/tool-adapters.js`: explicit official installation plans for supported developer tools.
 - `src/references.js`: opt-in clone plans for reference repositories.
 - `src/templates.js`: small, versioned module templates.
+- `src/provider-runtime.js` and `src/provider-policy.js`: capability-aware provider calls, host detection, redacted usage controls, and budgets.
+- `src/dashboard.js`: loopback-only settings interface using the same services as the CLI.
+- `src/mcp.js` and `src/plugins.js`: governed custom MCP and declarative plugin registries.
+- `src/render.js`: additive Render Blueprint generation and consent-gated service operations.
 
 ## Safety model
 
@@ -22,6 +26,6 @@ The workspace is a local CLI that adds safe, additive project assets. It is not 
 
 Each initialized project owns `.ai-workspace/workspace.json`, which records the workspace version and modules. Memory, specs, and documentation remain scoped to that project rather than shared globally.
 
-## Future extension points
+## Extension points
 
 Tool adapters provide dry-run installation plans. Commands that are genuinely host-specific (such as gstack and agent plugins) return the official manual setup path rather than running an unverified sequence. All adapters must preserve the non-overwrite rule.

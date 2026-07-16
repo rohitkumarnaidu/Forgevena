@@ -1,5 +1,5 @@
 # AI Provider Architecture
 
-Provider configuration is project-scoped and non-secret. Provider adapters describe supported hosts (Codex, Claude Code, Cursor, Gemini, and future hosts), instruction locations, and capabilities.
+Provider configuration is project-scoped and capability-aware. Direct adapters support OpenAI, Anthropic, Gemini, and OpenRouter model APIs. Host adapters support only verified Codex, Cursor, or Windsurf capabilities detected on the current machine.
 
-Credentials are never stored in the registry, templates, logs, or committed configuration; use environment variables or an external secret manager.
+Credentials are never stored in the registry, templates, logs, or committed configuration. Development may create a new ignored `.env` through masked input; production uses environment variables or an external secret manager. Live calls require explicit data-egress consent and store usage counters only.

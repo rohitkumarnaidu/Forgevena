@@ -1,0 +1,11 @@
+FROM node:20.19.0-alpine
+WORKDIR /opt/ai-workspace
+COPY package.json package-lock.json ./
+COPY bin ./bin
+COPY src ./src
+COPY docs ./docs
+COPY README.md CHANGELOG.md CONTRIBUTING.md LICENSE AGENTS.md ./
+RUN npm install --omit=dev --ignore-scripts && npm link
+USER node
+ENTRYPOINT ["ai-workspace"]
+CMD ["help"]

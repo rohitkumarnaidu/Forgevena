@@ -1,7 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdtemp, rm } from "node:fs/promises";
+import { generateKeyPairSync } from "node:crypto";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
@@ -71,5 +72,35 @@ test("Docker validation recognizes production Compose assets", async () => {
     const validation = await validateDockerAssets(project, "fastapi");
     assert.equal(validation.valid, true);
     assert.equal(validation.composePath, "docker-compose.production.yml");
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("Phase 5 CLI commands preserve preview and additive defaults", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "phase5-cli-"));
+  try {
+    await initializeProject(root, { dryRun: false, createProject: true, projectName: "phase5", template: "fastapi" });
+    const provider = JSON.parse((await execute("node", [cli, "providers", "invoke", "openai", "--prompt", "hello"], { cwd: root })).stdout);
+    assert.equal(provider.dryRun, true);
+    assert.equal(provider.promptLogged, false);
+    const mcp = JSON.parse((await execute("node", [cli, "mcp", "add", "local", "--transport", "http", "--url", "http://127.0.0.1:9999/mcp", "--apply"], { cwd: root })).stdout);
+    assert.equal(mcp.created, true);
+    const plugins = JSON.parse((await execute("node", [cli, "plugins", "list"], { cwd: root })).stdout);
+    assert.deepEqual(plugins.plugins, []);
+    const render = JSON.parse((await execute("node", [cli, "cloud", "render", "generate", "--apply"], { cwd: root })).stdout);
+    assert.equal(render.blueprintGenerated, true);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("plugin publisher trust is additive and preview-first", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "plugin-trust-cli-"));
+  try {
+    const { publicKey } = generateKeyPairSync("ed25519");
+    await writeFile(path.join(root, "publisher.pem"), publicKey.export({ type: "spki", format: "pem" }));
+    const preview = await execute("node", [cli, "plugins", "trust", "example", "--public-key-file", "publisher.pem"], { cwd: root });
+    assert.equal(JSON.parse(preview.stdout).dryRun, true);
+    await execute("node", [cli, "plugins", "trust", "example", "--public-key-file", "publisher.pem", "--apply"], { cwd: root });
+    const trust = await readFile(path.join(root, ".ai-workspace", "plugins", "trusted-publishers.json"), "utf8");
+    assert.match(trust, /example/);
+    assert.doesNotMatch(trust, /PRIVATE KEY/);
   } finally { await rm(root, { recursive: true, force: true }); }
 });

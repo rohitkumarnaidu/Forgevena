@@ -1,4 +1,5 @@
 import { access, mkdir, readFile, stat, writeFile } from "node:fs/promises";
+import { PLATFORM_VERSION } from "./version.js";
 import path from "node:path";
 
 const integrations = {
@@ -28,7 +29,7 @@ export async function recordIntegration(root, name, { dryRun = true } = {}) {
   if (dryRun) return plan;
   const registryPath = path.join(root, ".ai-workspace", "workspace.json");
   let registry;
-  try { registry = JSON.parse(await readFile(registryPath, "utf8")); } catch { registry = { initialized: true, workspaceVersion: "0.1.0", modules: [], integrations: {} }; }
+  try { registry = JSON.parse(await readFile(registryPath, "utf8")); } catch { registry = { initialized: true, workspaceVersion: PLATFORM_VERSION, modules: [], integrations: {} }; }
   registry.integrations ??= {};
   registry.integrations[name] = { kind: integrations[name].kind, installationMethod: integrations[name].install ?? "official-manual-workflow", scope: integrations[name].scope, dataImpact: integrations[name].dataImpact, rollback: integrations[name].rollback, consentRequired: true, configurationStatus: "pending", health: "not-validated", initializedAt: new Date().toISOString(), lastValidation: null };
   await mkdir(path.dirname(registryPath), { recursive: true });

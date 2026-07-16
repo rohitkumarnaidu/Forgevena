@@ -6,4 +6,4 @@ Provider and MCP configuration stores only environment-variable or secret-manage
 
 ## Consequences
 
-Live provider and MCP connections remain a future phase with provider-specific authentication and data-use decisions.
+Live provider and MCP connections are implemented through provider-specific credential references, dry-run defaults, explicit consent, redacted logging, and project-scoped configuration. Secret values remain excluded from registries and source files.

@@ -1,0 +1,1 @@
+complete -c ai-workspace -f -a 'doctor status validate version help init create add remove update upgrade rollback install reference capabilities integrations credentials providers mcp plugins cloud dashboard docker templates config'

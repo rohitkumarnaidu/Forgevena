@@ -1,0 +1,3 @@
+# Code of Conduct
+
+We are committed to a respectful, inclusive, harassment-free community. Be constructive, assume good intent, respect privacy, and focus criticism on ideas and code. Maintainers may remove abusive content or restrict participation. Report conduct concerns privately to the project maintainers.

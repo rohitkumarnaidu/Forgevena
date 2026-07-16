@@ -27,17 +27,17 @@ test("provider profiles record references and never a secret", async () => {
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
-test("provider configuration creates an absent local environment file without returning the key", async () => {
+test("provider configuration creates an isolated local secret without returning the key", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "provider-configure-"));
   try {
     const result = await configureProviderCredential(root, "openai", "test-secret-value", { dryRun: false });
     assert.equal(result.configured, true);
     assert.doesNotMatch(JSON.stringify(result), /test-secret-value/);
-    assert.match(await readFile(path.join(root, ".env"), "utf8"), /^OPENAI_API_KEY=test-secret-value$/m);
-    await writeFile(path.join(root, ".env"), "OPENAI_API_KEY=preserve\n");
+    const credentialPath = path.join(root, ".ai-workspace", "local-secrets", "openai.env");
+    assert.match(await readFile(credentialPath, "utf8"), /^OPENAI_API_KEY=test-secret-value$/m);
     const protectedResult = await configureProviderCredential(root, "openai", "new-secret", { dryRun: false });
     assert.equal(protectedResult.manualRequired, true);
-    assert.equal(await readFile(path.join(root, ".env"), "utf8"), "OPENAI_API_KEY=preserve\n");
+    assert.match(await readFile(credentialPath, "utf8"), /^OPENAI_API_KEY=test-secret-value$/m);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 

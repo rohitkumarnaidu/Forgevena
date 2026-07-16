@@ -10,6 +10,7 @@ import { templateAssets } from "./template-catalog.js";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { createHash } from "node:crypto";
+import { PLATFORM_VERSION, REGISTRY_SCHEMA_VERSION } from "./version.js";
 
 const DEFAULT_MODULES = ["core", "doctor", "registry", "logging", "config", "templates", "providers", "project", "docs"];
 const NEW_PROJECT_MODULES = ["bootstrap", ...DEFAULT_MODULES, "design", "ai", "github", "testing", "docker", "monitoring"];
@@ -45,7 +46,8 @@ export async function addModules(root, modules, { dryRun = true, initialize = fa
     }
     if (createProject) await initializeGit(root);
     const registry = await getRegistry(root);
-    registry.schemaVersion ??= 2;
+    registry.schemaVersion ??= REGISTRY_SCHEMA_VERSION;
+    registry.workspaceVersion = PLATFORM_VERSION;
     registry.projectName ??= projectName ?? path.basename(root);
     registry.template ??= template ?? "enterprise";
     registry.providers = [...new Set([...(registry.providers ?? []), ...(provider ? [provider] : [])])];
@@ -148,7 +150,7 @@ async function beginTransaction(root) {
 
 async function getRegistry(root) {
   try { return normalizeRegistry(JSON.parse(await readFile(path.join(root, ROOT, REGISTRY), "utf8"))); }
-  catch { return normalizeRegistry({ initialized: true, workspaceVersion: "0.1.0", createdAt: new Date().toISOString() }); }
+  catch { return normalizeRegistry({ initialized: true, workspaceVersion: PLATFORM_VERSION, createdAt: new Date().toISOString() }); }
 }
 async function registryExists(root) { return fileExists(path.join(root, ROOT, REGISTRY)); }
 async function writeRegistry(root, registry) { await mkdir(path.join(root, ROOT), { recursive: true }); await writeFile(path.join(root, ROOT, REGISTRY), `${JSON.stringify(registry, null, 2)}\n`, "utf8"); }
@@ -181,7 +183,7 @@ function hashContents(contents) { return createHash("sha256").update(contents).d
 function normalizeRegistry(registry) {
   return {
     initialized: true,
-    schemaVersion: 2,
+    schemaVersion: REGISTRY_SCHEMA_VERSION,
     modules: [],
     integrations: {},
     toolVersions: {},

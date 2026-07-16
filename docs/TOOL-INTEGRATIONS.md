@@ -14,4 +14,4 @@ Use `install <tool>` or `reference <name>` to inspect prerequisites, network/dat
 
 ## Provider and MCP Boundary
 
-`providers init <name>` creates a profile containing only an environment-variable or host-managed credential reference. It never stores, reads, or transmits a key. Live provider calls and MCP/plugin activation require Phase 5 provider-specific authentication and data-use decisions.
+`providers init <name>` creates a non-secret profile. Phase 5 live calls require an explicit apply/consent step and transmit only the user-supplied request to the selected provider. MCP definitions store environment-variable references instead of header values. Declarative plugins are integrity-locked and disabled by default; executable remote plugin code is rejected.

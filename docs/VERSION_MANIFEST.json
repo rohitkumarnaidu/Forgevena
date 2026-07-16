@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "name": "ai-engineering-workspace",
+  "version": "0.2.0-rc.1",
+  "status": "release-candidate-1",
+  "node": ">=20.19.0",
+  "operatingSystems": ["win32", "linux", "darwin"],
+  "architectures": ["x64", "arm64"],
+  "runtimeDependencies": 0,
+  "architectureFrozen": true,
+  "phasesCompleted": [1, 2, 3, 4, 5, 6]
+}

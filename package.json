@@ -1,17 +1,44 @@
 {
   "name": "ai-engineering-workspace",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.2.0-rc.1",
+  "private": false,
   "description": "Safe, modular bootstrap tooling for AI-assisted software projects.",
   "type": "module",
   "bin": {
     "ai-workspace": "./bin/ai-workspace.js"
   },
+  "files": [
+    "bin/",
+    "src/",
+    "docs/",
+    "completions/",
+    "man/",
+    "scripts/install.ps1",
+    "scripts/install.sh",
+    "scripts/install-offline.ps1",
+    "README.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "CODE_OF_CONDUCT.md",
+    "SUPPORT.md",
+    "GOVERNANCE.md",
+    "VERSION",
+    "Dockerfile.cli",
+    "package.json",
+    "AGENTS.md",
+    "LICENSE"
+  ],
+  "os": ["darwin", "linux", "win32"],
+  "cpu": ["x64", "arm64"],
   "scripts": {
     "test": "node --test",
-    "start": "node ./bin/ai-workspace.js"
+    "start": "node ./bin/ai-workspace.js",
+    "release:verify": "node ./scripts/verify-release.js",
+    "release:assets": "node ./scripts/generate-distribution.js",
+    "prepack": "npm test && npm run release:verify"
   },
   "engines": {
     "node": ">=20.19.0"
-  }
+  },
+  "license": "MIT"
 }

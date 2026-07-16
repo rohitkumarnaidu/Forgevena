@@ -1,5 +1,5 @@
 # CLI Specification
 
-Commands are discoverable through `--help`; writes require `--apply`. `doctor`, `status`, `tools`, and `references` are read-only. `init`, `create`, `add`, `update`, `rollback`, `install`, and `reference` return structured JSON for both humans and automation.
+Commands are discoverable through `--help`; writes require `--apply`. Read-only plans and status commands never trigger external actions. Project, provider, MCP, plugin, Docker, and Render operations return structured JSON for humans and automation.
 
-Future commands: `remove`, `templates`, `plugins`, `docs`, `design`, and `analyze`.
+Phase 5 adds `dashboard`, provider invocation/policy/authentication, governed MCP lifecycle, declarative plugin lifecycle, and `cloud render` generation/deployment commands. Existing files remain skip-only across every command.

@@ -1,0 +1,75 @@
+name: Release verification
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [20, 22]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm install --ignore-scripts
+      - run: npm test
+      - run: npm run release:verify
+      - run: npm pack --dry-run
+
+  artifacts:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: npm pack
+      - run: npm run release:assets
+      - run: cp ai-engineering-workspace-*.tgz dist/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ai-workspace-release
+          path: dist/
+          if-no-files-found: error
+      - uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          prerelease: true
+          generate_release_notes: true
+          files: dist/*
+
+  publish-npm:
+    needs: artifacts
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment: npm-release
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm publish --tag next --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -26,6 +26,17 @@ test("logging writes the command-specific JSONL file", async () => {
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
+test("logging redacts nested credential material", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "ai-workspace-redacted-log-"));
+  try {
+    await logEvent(root, "workspace", { provider: "openai", apiKey: "secret-value", nested: { authorization: "Bearer secret-value" } });
+    const log = await readFile(path.join(root, ".ai-workspace", "logs", "workspace.log"), "utf8");
+    assert.doesNotMatch(log, /secret-value/);
+    assert.equal(JSON.parse(log).details.apiKey, "[REDACTED]");
+    assert.equal(JSON.parse(log).details.nested.authorization, "[REDACTED]");
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
 test("every supported module exposes the complete lifecycle contract", () => {
   for (const name of supportedModules()) {
     const module = moduleContract(name);
