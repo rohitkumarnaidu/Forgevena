@@ -11,7 +11,8 @@
 ## Acceptance Evidence
 
 Every completion claim requires passing automated tests, updated CLI help, updated user documentation, security and compatibility review, and a registry/schema note when persisted data changes.
-# Phase 6
+
+## Phase 6
 
 | Requirement | Implementation | Tests / Evidence |
 | --- | --- | --- |
@@ -20,7 +21,7 @@ Every completion claim requires passing automated tests, updated CLI help, updat
 | Signed remote plugin distribution | `src/plugins.js`, `plugins trust` CLI | `test/mcp-plugins.test.js`, `test/integration-cli.test.js` |
 | No private signing-key storage | Public-key-only trust registry | Plugin trust tests and documentation |
 
-# Enterprise AI Ecosystem
+## Enterprise AI Ecosystem
 
 | Requirement | Implementation | Evidence |
 | --- | --- | --- |

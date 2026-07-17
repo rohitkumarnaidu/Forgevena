@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { backupCredentials, configureCredential, credentialStatus, initializeCredentialPlaceholders, readCredential, removeCredential, rotateCredential, validateCredential } from "../src/credentials.js";
+import { auditCredentialVault, backupCredentials, configureCredential, credentialStatus, initializeCredentialPlaceholders, readCredential, recoverCredential, removeCredential, rotateCredential, validateCredential } from "../src/credentials.js";
 
 test("credential placeholders contain names but no values", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "credential-placeholders-"));
@@ -67,6 +67,28 @@ test("encrypted vault rejects ciphertext and metadata tampering", async () => {
     payload.protected = Buffer.from(JSON.stringify({ variable: "render", credentialVersion: 1 })).toString("base64");
     await writeFile(target, `${JSON.stringify(payload, null, 2)}\n`);
     await assert.rejects(() => readCredential(root, "openai"), /protected metadata|authenticate data/i);
+  } finally {
+    if (previous === undefined) delete process.env.AI_WORKSPACE_CREDENTIAL_KEY; else process.env.AI_WORKSPACE_CREDENTIAL_KEY = previous;
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("encrypted vault audits and recovers validated rotation history", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "credential-recovery-"));
+  const previous = process.env.AI_WORKSPACE_CREDENTIAL_KEY;
+  process.env.AI_WORKSPACE_CREDENTIAL_KEY = "test-only-master-key";
+  try {
+    await configureCredential(root, "openai", "first-value", { dryRun: false, storage: "encrypted" });
+    await rotateCredential(root, "openai", "second-value", { dryRun: false, storage: "encrypted" });
+    const audit = await auditCredentialVault(root);
+    assert.equal(audit.healthy, true);
+    assert.equal(audit.credentials[0].credentialVersion, 2);
+    await removeCredential(root, "openai", { dryRun: false });
+    const preview = await recoverCredential(root, "openai", { dryRun: true });
+    assert.equal(preview.integrityValidated, true);
+    assert.equal((await recoverCredential(root, "openai", { dryRun: false })).recovered, true);
+    assert.equal(await readCredential(root, "openai"), "first-value");
+    assert.equal((await recoverCredential(root, "openai", { dryRun: false })).skipped, true);
   } finally {
     if (previous === undefined) delete process.env.AI_WORKSPACE_CREDENTIAL_KEY; else process.env.AI_WORKSPACE_CREDENTIAL_KEY = previous;
     await rm(root, { recursive: true, force: true });

@@ -1,5 +1,5 @@
 import { createCipheriv, createDecipheriv, createHash, pbkdf2, randomBytes } from "node:crypto";
-import { access, copyFile, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
+import { access, copyFile, mkdir, readFile, readdir, rename, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { Algorithm, hashRaw } from "@node-rs/argon2";
@@ -152,6 +152,38 @@ export async function backupCredentials(root, { dryRun = true } = {}) {
     await copyFile(path.join(root, source), path.join(root, backupRoot, path.basename(source)));
   }
   return { dryRun: false, backedUp: managed.map(({ credential }) => credential), backupRoot, containsSecrets: true };
+}
+
+export async function auditCredentialVault(root) {
+  const credentials = [];
+  for (const name of Object.keys(CREDENTIAL_DEFINITIONS)) {
+    const target = path.join(root, ".credentials", `${name}.enc.json`);
+    if (!(await pathExists(target))) continue;
+    try {
+      const payload = JSON.parse(await readFile(target, "utf8"));
+      const metadata = payload.protected ? JSON.parse(Buffer.from(payload.protected, "base64").toString("utf8")) : { variable: payload.variable, credentialVersion: 1 };
+      await readEncryptedCredential(target, credentialVariable(name));
+      credentials.push({ credential: name, valid: true, schemaVersion: payload.schemaVersion, algorithm: payload.algorithm, kdf: payload.kdf?.name ?? "legacy-sha256", credentialVersion: metadata.credentialVersion ?? 1, secretReturned: false });
+    } catch (error) { credentials.push({ credential: name, valid: false, issue: error.message, secretReturned: false }); }
+  }
+  return { schemaVersion: VAULT_SCHEMA_VERSION, healthy: credentials.every((entry) => entry.valid), credentials, secretValuesReturned: false };
+}
+
+export async function recoverCredential(root, name, { dryRun = true } = {}) {
+  credentialVariable(name);
+  const active = path.join(root, ".credentials", `${name}.enc.json`);
+  if (await pathExists(active)) return { credential: name, dryRun, recovered: false, skipped: true, message: "An active encrypted credential exists and was not overwritten." };
+  const archiveDirectory = path.join(root, ".credentials", "archive");
+  let candidates = [];
+  try { candidates = (await readdir(archiveDirectory)).filter((entry) => entry.startsWith(`${name}-`) && entry.endsWith(".json")).sort().reverse(); } catch (error) { if (error?.code !== "ENOENT") throw error; }
+  if (!candidates.length) return { credential: name, dryRun, recovered: false, message: "No encrypted rotation history is available." };
+  const source = path.join(archiveDirectory, candidates[0]);
+  await readEncryptedCredential(source, credentialVariable(name));
+  const plan = { credential: name, dryRun, source: path.relative(root, source), destination: path.relative(root, active), integrityValidated: true, overwrite: false };
+  if (dryRun) return plan;
+  await mkdir(path.dirname(active), { recursive: true });
+  await copyFile(source, active, (await import("node:fs")).constants.COPYFILE_EXCL);
+  return { ...plan, dryRun: false, recovered: true };
 }
 
 function credentialVariable(name) {
