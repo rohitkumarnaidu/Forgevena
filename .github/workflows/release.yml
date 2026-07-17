@@ -70,6 +70,6 @@ jobs:
           registry-url: https://registry.npmjs.org
           cache: npm
       - run: npm ci --ignore-scripts
-      - run: npm publish --tag next --provenance
+      - run: npm publish --tag next --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
