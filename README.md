@@ -20,7 +20,7 @@
 [![Issues](https://img.shields.io/github/issues/rohitkumarnaidu/Forgevena)](https://github.com/rohitkumarnaidu/Forgevena/issues)
 [![Pull requests](https://img.shields.io/github/issues-pr/rohitkumarnaidu/Forgevena)](https://github.com/rohitkumarnaidu/Forgevena/pulls)
 
-Enterprise project bootstrap, governed AI providers, MCP and plugin controls, cloud preparation, validation, upgrades, and release engineering through one safety-first CLI.
+Enterprise project bootstrap, governed AI providers, MCP and plugin controls, secure local state, cloud preparation, validation, upgrades, diagnostics, and automated release engineering through one safety-first CLI.
 
 [Documentation](https://rohitkumarnaidu.github.io/Forgevena/) · [Quick Start](#quick-start) · [Architecture](#architecture) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md)
 
@@ -37,19 +37,21 @@ Modern engineering teams repeatedly solve the same setup, governance, integratio
 - **Governed integrations:** OpenSpec, SkillOpt, gstack, design.md, claude-mem, GitNexus, Understand Anything, MCP servers, and declarative plugins.
 - **Provider controls:** OpenAI, Anthropic, Gemini, OpenRouter, Ollama, Codex, Claude, Cursor, and Windsurf profiles with secret-reference-only tracked configuration.
 - **Cloud preparation:** Render, Railway, Vercel, AWS, Azure, and Google Cloud preflight plans, validation, dry runs, health checks, and rollback guidance.
-- **Release engineering:** checksums, package validation, documentation deployment, semantic versioning, migration guidance, and distribution metadata.
+- **Release engineering:** signed-tag automation for changelog notes, GitHub Releases, npm, GitHub Packages, GHCR, Docker Hub, checksums, SBOMs, provenance, and package-manager bundles.
 - **Cross-platform:** Windows 11, WSL2/Linux, and macOS on x64 and arm64 with Node.js 20.19 or newer.
 
 ## Quick Start
 
 ```bash
-npm install --global forgevena@1.1.0
+npm install --global forgevena@1.2.1
 forgevena doctor
 forgevena create DemoApi --template fastapi --dry-run --verbose
 forgevena create DemoApi --template fastapi --apply
 cd DemoApi
 forgevena validate
 ```
+
+Release downloads, checksums, SBOMs, provenance, and package-manager bundles are published on the [GitHub Releases page](https://github.com/rohitkumarnaidu/Forgevena/releases/latest). npm users can verify the stable version with `npm view forgevena version`.
 
 For an existing repository, always preview first:
 
