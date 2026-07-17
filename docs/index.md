@@ -1,10 +1,18 @@
 # Forgevena Documentation
 
-Version: 1.0.0
+Current stable version: **1.2.1**
 
 **Governed engineering from idea to production.**
 
 This portal is the canonical entry point for installing, operating, extending, and maintaining Forgevena. Existing historical, phase, release, and audit records remain available at the root of `docs/`.
+
+```powershell
+npm install --global forgevena@1.2.1
+forgevena version
+forgevena doctor
+```
+
+Use the [latest GitHub Release](https://github.com/rohitkumarnaidu/Forgevena/releases/latest) for verified archives, checksums, SBOMs, provenance, and Homebrew, Winget, or Chocolatey submission bundles.
 
 ## Start here
 
@@ -28,6 +36,7 @@ This portal is the canonical entry point for installing, operating, extending, a
 | State | [Registry and managed assets](registry/reference.md), [configuration](configuration/reference.md) |
 | Delivery | [Deployment](deployment/guide.md), [operations](operations/runbooks.md) |
 | Engineering | [Developer guide](developer/index.md), [testing](testing/guide.md), [maintainers](maintainer/index.md) |
+| Releases | [Release engineering](release/index.md), [package publishing](release/PACKAGE_PUBLISHING.md) |
 
 ## Architecture map
 

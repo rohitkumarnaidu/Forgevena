@@ -10,30 +10,30 @@
 ## Install
 
 ```powershell
-npm install --global forgevena@1.2.0
+npm install --global forgevena@1.2.1
 forgevena version
 forgevena doctor
 ```
 
-Until npm publication, install the verified archive with `npm install --global ./forgevena-1.2.0.tgz`.
+For offline installation, download the verified archive and `RELEASE_SHA256SUMS` from the [latest release](https://github.com/rohitkumarnaidu/Forgevena/releases/latest), verify the checksum, then run `npm install --global ./forgevena-1.2.1.tgz`.
 
 ## Create a first project
 
 Preview, inspect, then apply:
 
 ```powershell
-ai-workspace create DemoApi --template fastapi --dry-run --verbose
-ai-workspace create DemoApi --template fastapi --apply
+forgevena create DemoApi --template fastapi --dry-run --verbose
+forgevena create DemoApi --template fastapi --apply
 cd DemoApi
-ai-workspace validate
+forgevena validate
 ```
 
 ## Initialize an existing project
 
 ```powershell
 cd ExistingProject
-ai-workspace init --dry-run --verbose
-ai-workspace init --apply
+forgevena init --dry-run --verbose
+forgevena init --apply
 ```
 
 Initialization is additive. Existing source, manifests, configuration, and documentation are reported as skipped.

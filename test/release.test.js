@@ -32,6 +32,14 @@ test("signed tags automate changelog, release, and package publication", async (
 
   assert.match(workflow, /OUTPUT: dist\/RELEASE_NOTES\.md/);
   assert.match(workflow, /body_path: dist\/RELEASE_NOTES\.md/);
+  assert.match(workflow, /release_tag:/);
+  assert.match(workflow, /publish_packages:/);
+  assert.match(workflow, /ref: \$\{\{ env\.RELEASE_REF \}\}/);
+  assert.match(workflow, /forgevena-\$\{VERSION\}-homebrew\.tar\.gz/);
+  assert.match(workflow, /forgevena-\$\{VERSION\}-winget\.tar\.gz/);
+  assert.match(workflow, /forgevena-\$\{VERSION\}-chocolatey\.tar\.gz/);
+  assert.match(workflow, /forgevena-\$\{VERSION\}-sbom\.cdx\.json/);
+  assert.match(workflow, /RELEASE_SHA256SUMS/);
   assert.match(workflow, /npm publish --tag "\$\{CHANNEL\}" --provenance --access public/);
   assert.match(workflow, /npm publish --ignore-scripts --registry https:\/\/npm\.pkg\.github\.com/);
   assert.match(workflow, /ghcr\.io\/rohitkumarnaidu\/forgevena/);
@@ -39,6 +47,16 @@ test("signed tags automate changelog, release, and package publication", async (
   assert.match(workflow, /Docker Hub credentials are absent; publishing GHCR only/);
   assert.match(workflow, /make_latest: \$\{\{ steps\.channel\.outputs\.make_latest \}\}/);
   assert.doesNotMatch(workflow, /prerelease: true/);
+});
+
+test("public entry points reference the current stable release", async () => {
+  const readme = await readFile(new URL("../README.md", import.meta.url), "utf8");
+  const homepage = await readFile(new URL("../docs/index.md", import.meta.url), "utf8");
+  const gettingStarted = await readFile(new URL("../docs/getting-started/index.md", import.meta.url), "utf8");
+  for (const contents of [readme, homepage, gettingStarted]) {
+    assert.match(contents, /1\.2\.1/);
+    assert.doesNotMatch(contents, /npm install --global forgevena@1\.[01]\.0/);
+  }
 });
 
 test("secondary registries publish without mutating release validation", async () => {

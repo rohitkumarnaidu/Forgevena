@@ -5,6 +5,8 @@
 - Consolidated signed-tag releases into one automated pipeline that verifies the source, generates release notes, uploads immutable artifacts, creates or updates the GitHub Release, and publishes npm, GitHub Packages, GHCR, and Docker Hub distributions.
 - Retained the manual package workflow as a retry-only recovery path and added idempotent npm and GitHub Packages publication checks.
 - Corrected generated changelog links to the canonical `rohitkumarnaidu/Forgevena` repository.
+- Updated the README and documentation homepage to the current stable release and added downloadable Homebrew, Winget, Chocolatey, SBOM, provenance, and checksum assets to automated releases.
+- Added a safe workflow-dispatch repair path that rebuilds from an existing signed tag while skipping already-published immutable package versions.
 
 ## 1.2.1 - 2026-07-17 - Release Reliability and Vault Migration
 
