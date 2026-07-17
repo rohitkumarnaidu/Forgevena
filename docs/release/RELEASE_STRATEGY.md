@@ -22,9 +22,12 @@ Use annotated tags (`git tag -a`) when signing infrastructure is unavailable, bu
 
 1. Update `VERSION`, package metadata, changelog, migration notes, and supported versions.
 2. Run tests, documentation, security, package, Docker, upgrade, and rollback gates.
-3. Produce npm archive, SHA-256 checksums, and distribution manifests.
-4. Create the signed tag and GitHub release.
-5. Publish through protected workflows only.
-6. Verify each registry independently.
+3. Merge the release preparation through the protected `main` branch.
+4. Create and push the signed tag from the validated release commit.
+5. Allow `Automated Release` to generate changelog-based release notes, archives, checksums, supply-chain evidence, the GitHub Release, npm package, GitHub Package, and container images.
+6. Approve the protected `npm-release` environment when requested.
+7. Verify each registry independently.
+
+The workflow marks semantic prerelease tags as GitHub prereleases and publishes npm `next`. Stable tags become the latest GitHub Release, publish npm `latest`, and update stable container tags. The manual `Retry Package Publication` workflow is recovery-only.
 
 Failed package versions are deprecated, not overwritten. Failed container tags are replaced only with a new semantic version.

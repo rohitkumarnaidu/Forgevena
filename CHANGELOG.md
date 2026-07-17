@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Consolidated signed-tag releases into one automated pipeline that verifies the source, generates release notes, uploads immutable artifacts, creates or updates the GitHub Release, and publishes npm, GitHub Packages, GHCR, and Docker Hub distributions.
+- Retained the manual package workflow as a retry-only recovery path and added idempotent npm and GitHub Packages publication checks.
+- Corrected generated changelog links to the canonical `rohitkumarnaidu/Forgevena` repository.
+
 ## 1.2.1 - 2026-07-17 - Release Reliability and Vault Migration
 
 - Restored portable CI, documentation, package, release, and Markdown validation across Windows, Ubuntu, and macOS on Node.js 20 and 22.

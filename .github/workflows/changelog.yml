@@ -1,8 +1,8 @@
 name: Changelog preview
 
 on:
-  push:
-    tags: ["v*"]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -18,7 +18,7 @@ jobs:
       - uses: orhun/git-cliff-action@v4
         with:
           config: cliff.toml
-          args: --verbose --strip all
+          args: --verbose --unreleased --strip header
         env:
           OUTPUT: dist/CHANGELOG.generated.md
       - name: Verify generated release notes

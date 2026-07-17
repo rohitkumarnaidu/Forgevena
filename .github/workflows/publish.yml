@@ -1,18 +1,18 @@
-name: Publish Packages
+name: Retry Package Publication
 
 on:
   workflow_dispatch:
     inputs:
       publish_npm:
-        description: Publish to npm
+        description: Retry npm publication after a failed automated release job
         type: boolean
         default: false
       publish_github_packages:
-        description: Publish scoped package to GitHub Packages
+        description: Retry scoped GitHub Packages publication
         type: boolean
         default: false
       publish_containers:
-        description: Publish containers to GHCR and Docker Hub
+        description: Retry container publication to GHCR and Docker Hub
         type: boolean
         default: false
 
