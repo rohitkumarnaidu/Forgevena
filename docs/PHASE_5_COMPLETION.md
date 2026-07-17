@@ -18,7 +18,8 @@
 ## External Acceptance
 
 Live provider and Render smoke tests require the project owner's accounts, credentials, billing approval, and data-use approval. Automated tests use local mocks and never spend provider credits or create cloud resources.
-# Credential Onboarding Evidence
+
+## Credential Onboarding Evidence
 
 - Empty provider and Render placeholders are generated additively through `credentials init`.
 - Provider credentials are entered through masked CLI or loopback-dashboard controls.

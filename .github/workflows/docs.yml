@@ -36,7 +36,7 @@ jobs:
         run: npx --yes puppeteer browsers install chrome-headless-shell@148.0.7778.97
       - name: Validate Mermaid diagrams
         shell: bash
-        run: for diagram in dist/mermaid/*.mmd; do npx --yes -p @mermaid-js/mermaid-cli@11.16.0 mmdc -i "$diagram" -o "${diagram%.mmd}.svg"; done
+        run: for diagram in dist/mermaid/*.mmd; do npx --yes -p @mermaid-js/mermaid-cli@11.16.0 mmdc -p .github/puppeteer-ci.json -i "$diagram" -o "${diagram%.mmd}.svg"; done
       - uses: streetsidesoftware/cspell-action@v7
         with:
           files: "docs/**/*.md"

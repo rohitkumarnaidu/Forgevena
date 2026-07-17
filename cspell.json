@@ -8,6 +8,7 @@
     "AI", "API", "APIs", "ADR", "ADRs", "CLI", "Codex", "Docusaurus", "FastAPI",
     "GitNexus", "gstack", "HashiCorp", "Lychee", "Mermaid", "MkDocs", "MCP", "OpenRouter",
     "OpenSpec", "Ollama", "SkillOpt", "TypeScript", "Vercel", "Windsurf", "runbooks",
-    "toolchain", "frontmatter", "codebase", "localhost", "noninteractive", "preflight"
+    "toolchain", "frontmatter", "codebase", "localhost", "noninteractive", "preflight",
+    "ciphertext", "retryable", "Forgevena", "forgevena", "CODEOWNERS", "DOCKERHUB"
   ]
 }

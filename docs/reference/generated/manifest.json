@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "generator": "forgevena",
+  "files": {
+    "cli.md": "daafd2306e41359ab636c413e8fa4a27062bde99110b9728b64f2e4bcb345428",
+    "modules.md": "1aead4bd080d11eb64b5e78eeda391798e8ffa4aa5d7ad38acbb518b6508525d",
+    "providers.md": "3da1f4d83649fb5853698f35e7d58ccfe685c69cd8c77017a98367f917323223",
+    "templates.md": "c15a5dab0c45cd110c9e968fd9ffc746fbb75e270ec323fce5217278d8a6a47d"
+  }
+}

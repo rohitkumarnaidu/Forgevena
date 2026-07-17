@@ -6,7 +6,7 @@
 |---|---|
 | Name | `forgevena` after redirect and release checks are approved |
 | Description | Enterprise developer platform for governed project delivery, AI integrations, and release engineering. |
-| Website | `https://rohitkumarnaidu.github.io/Work-Space/` until a custom domain is approved |
+| Website | `https://rohitkumarnaidu.github.io/Forgevena/` until a custom domain is approved |
 | Topics | `developer-platform`, `cli`, `ai`, `devops`, `bootstrap`, `mcp`, `release-engineering`, `nodejs`, `open-source`, `platform-engineering` |
 | Default branch | `main` |
 | Social preview | `docs/assets/forgevena-social-preview.png` |
