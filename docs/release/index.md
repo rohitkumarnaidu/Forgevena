@@ -23,6 +23,6 @@ Generated evidence is additive under `dist/supply-chain/`. Existing evidence is 
 
 ## Distribution channels
 
-The npm package, GitHub release, Docker image, and standalone archive are technically prepared. Winget, Chocolatey, and Homebrew require public immutable release URLs and package-manager review. Docker Hub and npm publication require owner credentials.
+Signed tags automatically generate release notes and publish the GitHub Release, npm package, GitHub Package, GHCR image, Docker Hub image, standalone archive, checksums, and supply-chain evidence through protected GitHub Actions. Winget, Chocolatey, and Homebrew remain external review processes that consume the immutable release assets.
 
 See [Release Checklist](../RELEASE_CHECKLIST.md), [Release Guide](../RELEASE_GUIDE.md), [Final Readiness](../rc/FINAL_RELEASE_READINESS.md), and [1.0.0 Notes](../RELEASE_NOTES_1.0.0.md).

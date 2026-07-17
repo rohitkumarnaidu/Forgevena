@@ -4,6 +4,8 @@
 
 Patch release for cross-platform CI reliability, production GitHub Pages deployment, explicit schema-v1 vault migration controls, restored generated references, and validated workflow/documentation dependency upgrades. No public CLI or project-state compatibility break is introduced.
 
+Published through npm, GitHub Releases, GitHub Packages, GHCR, and Docker Hub. The follow-up release-engineering change consolidates future signed-tag publication into one automated workflow while preserving protected approvals and immutable-version checks.
+
 ## v0.1.0-alpha
 
 Initial CLI and safety-model validation. Experimental contracts, preview-first writes, and early project detection.

@@ -4,7 +4,7 @@ body = """
 {% if version %}## {{ version | trim_start_matches(pat="v") }}{% else %}## Unreleased{% endif %}
 {% for group, commits in commits | group_by(attribute="group") %}
 ### {{ group | striptags | trim }}
-{% for commit in commits %}- {{ commit.message | upper_first }} ([{{ commit.id | truncate(length=7, end="") }}](https://github.com/rohitkumarnaidu/Work-Space/commit/{{ commit.id }}))
+{% for commit in commits %}- {{ commit.message | upper_first }} ([{{ commit.id | truncate(length=7, end="") }}](https://github.com/rohitkumarnaidu/Forgevena/commit/{{ commit.id }}))
 {% endfor %}{% endfor %}
 """
 footer = "\nGenerated from conventional commits by git-cliff.\n"

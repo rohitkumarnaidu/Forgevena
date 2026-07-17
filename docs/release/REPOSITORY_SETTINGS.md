@@ -37,6 +37,6 @@ Enable private vulnerability reporting, Dependabot alerts and updates, secret sc
 
 ## Environments and secrets
 
-Create protected environments `npm-release` and `production-release`. Store `NPM_TOKEN`, `DOCKERHUB_USERNAME`, and `DOCKERHUB_TOKEN` only in GitHub Actions secrets. Require maintainer approval for publication environments.
+Create the protected `npm-release` environment and require maintainer approval. Store `NPM_TOKEN`, `DOCKERHUB_USERNAME`, and `DOCKERHUB_TOKEN` only in GitHub Actions secrets. The signed-tag `Automated Release` workflow uses these credentials; `Retry Package Publication` is reserved for failed registry jobs. Prefer npm trusted publishing when the repository and package support it, retaining the protected environment as the approval boundary.
 
 These settings require repository-owner access and are intentionally documented rather than changed automatically.
