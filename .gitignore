@@ -9,6 +9,7 @@ node_modules/
 __pycache__/
 backups/
 cache/
+.lycheecache
 configs/
 dist/
 logs/
@@ -18,3 +19,12 @@ registry/
 templates/
 updates/
 *.tgz
+
+# Canonical documentation directories intentionally share names with
+# generated workspace directories and must remain version controlled.
+!docs/templates/
+!docs/templates/**
+!docs/reference/
+!docs/reference/**
+!docs/registry/
+!docs/registry/**

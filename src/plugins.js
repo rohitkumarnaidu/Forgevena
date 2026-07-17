@@ -2,6 +2,7 @@ import { createHash, createPublicKey, verify } from "node:crypto";
 import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { readStateDocument, writeStateDocument } from "./state-documents.js";
+import { PLATFORM_VERSION } from "./version.js";
 
 const REGISTRY_PATH = path.join(".ai-workspace", "plugins", "registry.json");
 const TRUST_PATH = path.join(".ai-workspace", "plugins", "trusted-publishers.json");
@@ -20,6 +21,8 @@ export async function installPlugin(root, source, { dryRun = true, fetchImpl = g
   const signature = await verifyPluginSignature(root, manifest);
   if (remote && !signature.trusted) throw new Error(`Remote plugin manifests require a valid signature from a trusted publisher: ${signature.reason}.`);
   const registry = await readRegistry(root);
+  validatePlatformConstraint(manifest.platform);
+  validateDependencies(registry, manifest);
   const current = registry.plugins[manifest.id];
   if (current && !allowUpdate) return { plugin: manifest.id, dryRun, installed: false, skipped: true, message: "Plugin already exists and was not overwritten." };
   if (current && current.version === manifest.version) return { plugin: manifest.id, version: manifest.version, dryRun, updated: false, skipped: true, message: "The requested plugin version is already registered." };
@@ -27,12 +30,13 @@ export async function installPlugin(root, source, { dryRun = true, fetchImpl = g
   const serialized = `${JSON.stringify(manifest, null, 2)}\n`;
   const integrity = `sha256-${createHash("sha256").update(serialized).digest("base64")}`;
   const relative = path.join(".ai-workspace", "plugins", manifest.id, manifest.version, "manifest.json");
-  const plan = { plugin: manifest.id, version: manifest.version, previousVersion: current?.version ?? null, integrity, signature, dryRun, create: [relative, REGISTRY_PATH], enabled: current?.enabled ?? false, executableCode: false, update: Boolean(current) };
+  if (remote && manifest.type === "runtime") throw new Error("Remote runtime plugin packages are not enabled until signed package transport is implemented.");
+  const plan = { plugin: manifest.id, version: manifest.version, previousVersion: current?.version ?? null, integrity, signature, dryRun, create: [relative, REGISTRY_PATH], enabled: current?.enabled ?? false, executableCode: manifest.type === "runtime", update: Boolean(current) };
   if (dryRun) return plan;
   const target = path.join(root, relative);
   await mkdir(path.dirname(target), { recursive: true });
   await writeFile(target, serialized, "utf8");
-  registry.plugins[manifest.id] = { id: manifest.id, version: manifest.version, source, integrity, signature, enabled: current?.enabled ?? false, permissions: manifest.permissions, contributions: manifest.contributions, installedAt: current?.installedAt ?? new Date().toISOString(), updatedAt: current ? new Date().toISOString() : null, previousVersions: current ? [...new Set([...(current.previousVersions ?? []), current.version])] : [] };
+  registry.plugins[manifest.id] = { id: manifest.id, version: manifest.version, type: manifest.type, platform: manifest.platform, source, entry: manifest.entry ?? null, capabilities: manifest.capabilities ?? [], dependencies: manifest.dependencies ?? {}, integrity, signature, enabled: current?.enabled ?? false, permissions: manifest.permissions, contributions: manifest.contributions ?? {}, installedAt: current?.installedAt ?? new Date().toISOString(), updatedAt: current ? new Date().toISOString() : null, previousVersions: current ? [...new Set([...(current.previousVersions ?? []), current.version])] : [] };
   await writeRegistry(root, registry);
   return { ...plan, dryRun: false, installed: !current, updated: Boolean(current) };
 }
@@ -106,18 +110,26 @@ export async function removePlugin(root, id, { dryRun = true } = {}) {
   return { ...plan, dryRun: false, removed: true };
 }
 
+export async function pluginPermissions(root, id) { const plugin = (await readRegistry(root)).plugins[id]; if (!plugin) throw new Error(`Unknown plugin: ${id}.`); return { plugin: id, type: plugin.type ?? "declarative", enabled: plugin.enabled, permissions: plugin.permissions ?? [], capabilities: plugin.capabilities ?? [], credentialsExposed: false }; }
+export async function pluginDependencies(root, id) { const registry = await readRegistry(root); const plugin = registry.plugins[id]; if (!plugin) throw new Error(`Unknown plugin: ${id}.`); return { plugin: id, dependencies: Object.entries(plugin.dependencies ?? {}).map(([dependency, constraint]) => ({ plugin: dependency, constraint, installedVersion: registry.plugins[dependency]?.version ?? null, satisfied: Boolean(registry.plugins[dependency] && satisfiesVersion(registry.plugins[dependency].version, constraint)) })) }; }
+
 function validateManifest(value) {
-  if (value?.schemaVersion !== 1) throw new Error("Plugin schemaVersion must be 1.");
+  if (![1, 2].includes(value?.schemaVersion)) throw new Error("Plugin schemaVersion must be 1 or 2.");
   if (!/^[a-z0-9][a-z0-9._-]{0,63}$/i.test(value.id ?? "")) throw new Error("Plugin id must be 1-64 safe characters.");
   if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(value.version ?? "")) throw new Error("Plugin version must use semantic versioning.");
-  if (value.type !== "declarative") throw new Error("Phase 5 accepts declarative plugins only; executable plugin code is not allowed.");
-  const allowedPermissions = new Set(["provider-profile", "mcp-definition", "documentation", "template-metadata"]);
+  if (value.schemaVersion === 1 && value.type !== "declarative") throw new Error("Schema-version 1 accepts declarative plugins only; executable plugins require the reviewed schema-version 2 runtime contract.");
+  if (value.schemaVersion === 2 && value.type !== "runtime") throw new Error("Schema-version 2 plugins must use type runtime.");
+  const allowedPermissions = new Set(value.type === "runtime" ? ["workspace:read", "workspace:write-managed", "provider:invoke", "network:http", "audit:write"] : ["provider-profile", "mcp-definition", "documentation", "template-metadata"]);
   const permissions = Array.isArray(value.permissions) ? [...new Set(value.permissions.map(String))] : [];
   if (permissions.some((permission) => !allowedPermissions.has(permission))) throw new Error("Plugin requests an unsupported permission.");
-  const manifest = { schemaVersion: 1, id: value.id, version: value.version, type: "declarative", platform: value.platform ?? ">=0.2.0", permissions, contributions: value.contributions && typeof value.contributions === "object" ? value.contributions : {} };
+  const dependencies = value.dependencies && typeof value.dependencies === "object" && !Array.isArray(value.dependencies) ? Object.fromEntries(Object.entries(value.dependencies).map(([id, constraint]) => [String(id), String(constraint)])) : {};
+  const manifest = value.type === "runtime" ? { schemaVersion: 2, id: value.id, version: value.version, type: "runtime", platform: value.platform ?? ">=1.1.0", permissions, entry: value.entry, capabilities: Array.isArray(value.capabilities) ? value.capabilities.map(String) : [], dependencies, timeoutMs: value.timeoutMs, maxOutputBytes: value.maxOutputBytes } : { schemaVersion: 1, id: value.id, version: value.version, type: "declarative", platform: value.platform ?? ">=0.2.0", permissions, dependencies, contributions: value.contributions && typeof value.contributions === "object" ? value.contributions : {} };
+  if (Object.keys(dependencies).length === 0) delete manifest.dependencies;
   if (value.signature !== undefined) manifest.signature = value.signature;
   return manifest;
 }
+
+export async function runtimePluginDefinition(root, id) { const plugin = (await readRegistry(root)).plugins[id]; if (!plugin) throw new Error(`Unknown plugin: ${id}.`); if (plugin.type !== "runtime") throw new Error(`${id} is not a runtime plugin.`); if (!plugin.enabled) throw new Error(`${id} must be enabled before execution.`); if (/^https:/i.test(plugin.source)) throw new Error("Remote runtime packages are not enabled."); const manifest = JSON.parse(await readFile(path.join(root, ".ai-workspace", "plugins", id, plugin.version, "manifest.json"), "utf8")); return { directory: path.dirname(path.resolve(plugin.source)), manifest }; }
 
 async function loadManifest(source, fetchImpl) {
   if (/^https:\/\//i.test(source)) {
@@ -139,3 +151,6 @@ async function writeTrustStore(root, trust) { trust.updatedAt = new Date().toISO
 function canonicalManifest(manifest) { const { signature: _signature, ...unsigned } = manifest; return JSON.stringify(sortObject(unsigned)); }
 function sortObject(value) { if (Array.isArray(value)) return value.map(sortObject); if (value && typeof value === "object") return Object.fromEntries(Object.keys(value).sort().map((key) => [key, sortObject(value[key])])); return value; }
 function compareVersions(left, right) { const parse = (value) => value.split("-")[0].split(".").map(Number); const a = parse(left), b = parse(right); for (let index = 0; index < 3; index += 1) if (a[index] !== b[index]) return a[index] - b[index]; return 0; }
+function satisfiesVersion(version, constraint) { if (/^>=\d+\.\d+\.\d+$/.test(constraint)) return compareVersions(version, constraint.slice(2)) >= 0; if (/^\^\d+\.\d+\.\d+$/.test(constraint)) { const minimum = constraint.slice(1); return version.split(".")[0] === minimum.split(".")[0] && compareVersions(version, minimum) >= 0; } return version === constraint; }
+function validatePlatformConstraint(constraint) { if (!satisfiesVersion(PLATFORM_VERSION, constraint)) throw new Error(`Plugin requires Forgevena ${constraint}; current version is ${PLATFORM_VERSION}.`); }
+function validateDependencies(registry, manifest) { for (const [id, constraint] of Object.entries(manifest.dependencies ?? {})) { if (id === manifest.id) throw new Error("Plugin dependency graph contains a self-cycle."); const dependency = registry.plugins[id]; if (!dependency || !satisfiesVersion(dependency.version, constraint)) throw new Error(`Plugin dependency ${id}@${constraint} is not satisfied.`); if (Object.hasOwn(dependency.dependencies ?? {}, manifest.id)) throw new Error(`Plugin dependency cycle detected between ${manifest.id} and ${id}.`); } }

@@ -10,12 +10,12 @@
 ## Install
 
 ```powershell
-npm install --global forgevena@1.1.0
+npm install --global forgevena@1.2.0
 forgevena version
 forgevena doctor
 ```
 
-Until npm publication, install the verified archive with `npm install --global ./forgevena-1.1.0.tgz`.
+Until npm publication, install the verified archive with `npm install --global ./forgevena-1.2.0.tgz`.
 
 ## Create a first project
 

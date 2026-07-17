@@ -12,10 +12,11 @@ export async function logEvent(root, type, details, retentionDays = 30) {
   await rotate(directory, retentionDays);
 }
 
-function redact(value, key = "") {
-  if (SENSITIVE_KEY.test(key)) return "[REDACTED]";
+export function redact(value, key = "") {
+  if (SENSITIVE_KEY.test(key)) return typeof value === "boolean" ? value : "[REDACTED]";
   if (Array.isArray(value)) return value.map((entry) => redact(entry));
   if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([entryKey, entryValue]) => [entryKey, redact(entryValue, entryKey)]));
+  if (typeof value === "string") return value.replace(/\bBearer\s+[^\s]+/gi, "Bearer [REDACTED]").replace(/\b(?:sk|key)-[A-Za-z0-9_-]{12,}\b/g, "[REDACTED]").replace(/((?:api[-_ ]?key|token|password|secret)\s*[=:]\s*)[^\s,;]+/gi, "$1[REDACTED]");
   return value;
 }
 

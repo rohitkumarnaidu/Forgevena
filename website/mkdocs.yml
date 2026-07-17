@@ -1,9 +1,9 @@
 site_name: Forgevena
 site_description: Governed engineering from idea to production.
 site_description: Safety-first developer platform for enterprise project bootstrap and governed AI tooling.
-site_url: https://rohitkumarnaidu.github.io/Work-Space/
-repo_url: https://github.com/rohitkumarnaidu/Work-Space
-repo_name: rohitkumarnaidu/Work-Space
+site_url: https://rohitkumarnaidu.github.io/Forgevena/
+repo_url: https://github.com/rohitkumarnaidu/Forgevena
+repo_name: rohitkumarnaidu/Forgevena
 edit_uri: edit/main/docs/
 docs_dir: ../docs
 site_dir: ../dist/docs-site
@@ -98,7 +98,7 @@ extra:
     default: latest
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/rohitkumarnaidu/Work-Space
+      link: https://github.com/rohitkumarnaidu/Forgevena
   generator: false
 
 nav:
@@ -151,4 +151,4 @@ nav:
       - Roadmap: roadmap/index.md
       - Releases: releases/index.md
       - Migration: migration/index.md
-      - Support: https://github.com/rohitkumarnaidu/Work-Space/blob/main/SUPPORT.md
+      - Support: https://github.com/rohitkumarnaidu/Forgevena/blob/main/SUPPORT.md
