@@ -3,13 +3,21 @@
   "language": "en",
   "useGitignore": true,
   "files": ["docs/**/*.md"],
-  "ignorePaths": ["docs/audit/**", "docs/specification/**", "docs/rc/**"],
+  "ignorePaths": [
+    "docs/audit/**",
+    "docs/specification/**",
+    "docs/rc/**",
+    "docs/branding/BRAND_DISCOVERY.md",
+    "docs/branding/RENAME_PLAN.md"
+  ],
   "words": [
     "AI", "API", "APIs", "ADR", "ADRs", "CLI", "Codex", "Docusaurus", "FastAPI",
     "GitNexus", "gstack", "HashiCorp", "Lychee", "Mermaid", "MkDocs", "MCP", "OpenRouter",
     "OpenSpec", "Ollama", "SkillOpt", "TypeScript", "Vercel", "Windsurf", "runbooks",
     "toolchain", "frontmatter", "codebase", "localhost", "noninteractive", "preflight",
     "ciphertext", "retryable", "Forgevena", "forgevena", "CODEOWNERS", "DOCKERHUB",
-    "Astryx", "checksummed", "rohitkumarnaidu", "SLSA", "Winget"
+    "Astryx", "automatable", "checksummed", "deeplink", "diffable", "doctl",
+    "embeddinggemma", "flyctl", "flyio", "googlecloud", "hotfixes", "rohitkumarnaidu",
+    "SLSA", "unreviewed", "WCAG", "Winget"
   ]
 }

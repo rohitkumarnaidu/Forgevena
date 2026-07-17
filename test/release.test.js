@@ -42,6 +42,10 @@ test("signed tags automate changelog, release, and package publication", async (
   assert.match(workflow, /forgevena-\$\{VERSION\}-chocolatey\.tar\.gz/);
   assert.match(workflow, /forgevena-\$\{VERSION\}-sbom\.cdx\.json/);
   assert.match(workflow, /RELEASE_SHA256SUMS/);
+  assert.match(workflow, /Capture release verification evidence/);
+  assert.match(workflow, /release-verification\.json/);
+  assert.match(workflow, /RELEASE_VERIFICATION\.md/);
+  assert.match(workflow, /actions\/runs\/\$\{GITHUB_RUN_ID\}\/jobs/);
   assert.match(workflow, /npm publish --tag "\$\{CHANNEL\}" --provenance --access public/);
   assert.match(workflow, /npm publish --ignore-scripts --registry https:\/\/npm\.pkg\.github\.com/);
   assert.match(workflow, /ghcr\.io\/rohitkumarnaidu\/forgevena/);
@@ -49,6 +53,14 @@ test("signed tags automate changelog, release, and package publication", async (
   assert.match(workflow, /Docker Hub credentials are absent; publishing GHCR only/);
   assert.match(workflow, /make_latest: \$\{\{ steps\.channel\.outputs\.make_latest \}\}/);
   assert.doesNotMatch(workflow, /prerelease: true/);
+});
+
+test("documentation CI checks the complete canonical documentation set", async () => {
+  const workflow = await readFile(new URL("../.github/workflows/docs.yml", import.meta.url), "utf8");
+  const spelling = await readFile(new URL("../cspell.json", import.meta.url), "utf8");
+  assert.match(workflow, /incremental_files_only: false/);
+  assert.match(spelling, /docs\/branding\/BRAND_DISCOVERY\.md/);
+  assert.match(spelling, /embeddinggemma/);
 });
 
 test("public entry points reference the current stable release", async () => {
