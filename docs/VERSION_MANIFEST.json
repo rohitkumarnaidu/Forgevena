@@ -3,12 +3,12 @@
   "name": "forgevena",
   "displayName": "Forgevena",
   "caption": "Governed engineering from idea to production.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "status": "stable-ready",
   "node": ">=20.19.0",
   "operatingSystems": ["win32", "linux", "darwin"],
   "architectures": ["x64", "arm64"],
-  "runtimeDependencies": 0,
+  "runtimeDependencies": 1,
   "architectureFrozen": true,
   "phasesCompleted": [1, 2, 3, 4, 5, 6]
 }
