@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { spawn } from "node:child_process";
+import { realpathSync } from "node:fs";
 import path from "node:path";
 import readline from "node:readline";
 
@@ -14,8 +15,8 @@ export function validateRuntimeManifest(manifest, pluginDirectory) {
   if (manifest?.schemaVersion !== 2 || manifest.type !== "runtime") throw new PluginRuntimeError("PLUGIN_MANIFEST_INVALID", "Runtime plugins require schemaVersion 2 and type runtime.");
   if (!/^[a-z0-9][a-z0-9._-]{0,63}$/i.test(manifest.id ?? "")) throw new PluginRuntimeError("PLUGIN_ID_INVALID", "Plugin id must use 1-64 safe characters.");
   if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(manifest.version ?? "")) throw new PluginRuntimeError("PLUGIN_VERSION_INVALID", "Plugin version must use semantic versioning.");
-  const entry = path.resolve(pluginDirectory, manifest.entry ?? "");
-  const root = path.resolve(pluginDirectory);
+  const root = realpathSync.native(path.resolve(pluginDirectory));
+  const entry = path.resolve(root, manifest.entry ?? "");
   if (!manifest.entry || (entry !== root && !entry.startsWith(`${root}${path.sep}`))) throw new PluginRuntimeError("PLUGIN_ENTRY_INVALID", "Plugin entry must remain inside its installation directory.");
   const permissions = [...new Set((manifest.permissions ?? []).map(String))];
   const allowed = new Set(["workspace:read", "workspace:write-managed", "provider:invoke", "network:http", "audit:write"]);
@@ -81,6 +82,10 @@ export class PluginRuntimeHost {
   #fail(session, error) { if (session.stopped) return; session.stopped = true; for (const requestId of session.pending.keys()) this.#settle(session, requestId, error); if (!session.child.killed) session.child.kill(); this.sessions.delete(session.plugin.id); }
 }
 
+export function runtimePermissionSupported({ nodeVersion = process.versions.node, platform = process.platform } = {}) {
+  return Number.parseInt(nodeVersion, 10) >= 22 || platform === "linux";
+}
+
 export async function invokeRuntimePlugin(pluginDirectory, manifest, method, params = {}, { spawnImpl = spawn } = {}) {
   const plugin = validateRuntimeManifest(manifest, pluginDirectory);
   if (!plugin.capabilities.includes(method)) throw new PluginRuntimeError("PLUGIN_CAPABILITY_DENIED", `Plugin ${plugin.id} does not declare capability ${method}.`);
@@ -108,6 +113,15 @@ export async function invokeRuntimePlugin(pluginDirectory, manifest, method, par
   });
 }
 
-function spawnPlugin(spawnImpl, pluginDirectory, plugin) { return spawnImpl(process.execPath, ["--permission", `--allow-fs-read=${path.resolve(pluginDirectory)}`, plugin.entry], { cwd: path.resolve(pluginDirectory), windowsHide: true, stdio: ["pipe", "pipe", "pipe"], env: { FORGEVENA_PLUGIN_ID: plugin.id, FORGEVENA_PLUGIN_VERSION: plugin.version, NODE_NO_WARNINGS: "1" } }); }
+function spawnPlugin(spawnImpl, pluginDirectory, plugin) {
+  if (!runtimePermissionSupported()) throw new PluginRuntimeError("PLUGIN_RUNTIME_UNSUPPORTED", "Runtime plugins require Node.js 22 or newer on Windows and macOS; Node.js 20 is supported on Linux.");
+  const permissionFlag = Number.parseInt(process.versions.node, 10) < 22 ? "--experimental-permission" : "--permission";
+  return spawnImpl(process.execPath, [permissionFlag, `--allow-fs-read=${pluginDirectory}`, plugin.entry], {
+    cwd: pluginDirectory,
+    windowsHide: true,
+    stdio: ["pipe", "pipe", "pipe"],
+    env: { FORGEVENA_PLUGIN_ID: plugin.id, FORGEVENA_PLUGIN_VERSION: plugin.version, NODE_NO_WARNINGS: "1" }
+  });
+}
 
 function positiveLimit(value, fallback, maximum) { const number = Number(value ?? fallback); if (!Number.isInteger(number) || number <= 0 || number > maximum) throw new PluginRuntimeError("PLUGIN_LIMIT_INVALID", `Plugin limits must be positive integers no greater than ${maximum}.`); return number; }

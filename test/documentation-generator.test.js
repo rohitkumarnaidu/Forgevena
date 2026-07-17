@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -13,7 +13,10 @@ test("canonical documentation is additive and detects drift", async () => {
     assert.equal(generated.created.length, 5);
     assert.equal((await verifyCanonicalDocumentation(root)).valid, true);
     assert.equal((await generateCanonicalDocumentation(root, { dryRun: false })).skipped.length, 5);
-    await writeFile(path.join(root, "docs/reference/generated/cli.md"), "drift\n");
+    const cliPath = path.join(root, "docs/reference/generated/cli.md");
+    await writeFile(cliPath, (await readFile(cliPath, "utf8")).replace(/\n/g, "\r\n"));
+    assert.equal((await verifyCanonicalDocumentation(root)).valid, true);
+    await writeFile(cliPath, "drift\n");
     const drift = await verifyCanonicalDocumentation(root);
     assert.equal(drift.valid, false);
     assert.match(drift.issues[0], /differs/);

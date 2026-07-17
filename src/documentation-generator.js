@@ -37,7 +37,7 @@ export async function verifyCanonicalDocumentation(root) {
   const issues = [];
   for (const [name, contents] of Object.entries(expected)) {
     const target = path.join(root, OUTPUT_ROOT, name);
-    try { if (await readFile(target, "utf8") !== contents) issues.push(`${name} differs from source metadata.`); }
+    try { if (normalizeLineEndings(await readFile(target, "utf8")) !== normalizeLineEndings(contents)) issues.push(`${name} differs from source metadata.`); }
     catch { issues.push(`${name} is missing.`); }
   }
   try { const actual = JSON.parse(await readFile(path.join(root, OUTPUT_ROOT, "manifest.json"), "utf8")); const expectedManifest = documentationManifest(expected); if (JSON.stringify(actual) !== JSON.stringify(expectedManifest)) issues.push("manifest.json differs from generated checksums."); }
@@ -48,3 +48,4 @@ export async function verifyCanonicalDocumentation(root) {
 function documentationManifest(sources) { return { schemaVersion: 1, generator: "forgevena", files: Object.fromEntries(Object.entries(sources).sort(([left], [right]) => left.localeCompare(right)).map(([name, contents]) => [name, createHash("sha256").update(contents).digest("hex")])) }; }
 function table(title, headers, rows) { return `# ${title}\n\n> Generated from Forgevena source metadata. Do not edit manually.\n\n| ${headers.join(" | ")} |\n|${headers.map(() => "---").join("|")}|\n${rows.map((row) => `| ${row.join(" | ")} |`).join("\n")}\n`; }
 async function exists(target) { try { await access(target); return true; } catch { return false; } }
+function normalizeLineEndings(value) { return value.replace(/\r\n/g, "\n"); }
