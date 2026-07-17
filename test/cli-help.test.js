@@ -19,7 +19,7 @@ test("CLI help documents bootstrap options", async () => {
   assert.match(stdout, /copilot <plan\|run>/);
   assert.match(stdout, /upgrade \[rollback\]/);
   assert.match(stdout, /state <validate\|repair\|snapshot\|migrate\|history>/);
-  assert.match(stdout, /vault <initialize\|rotate\|recover\|audit>/);
+  assert.match(stdout, /vault <initialize\|rotate\|recover\|migrate\|audit>/);
   assert.match(stdout, /--structured/);
   assert.match(stdout, /templates/);
   assert.match(stdout, /Forgevena/);
