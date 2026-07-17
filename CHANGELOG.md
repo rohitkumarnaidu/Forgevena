@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.1 - 2026-07-17 - Release Reliability and Vault Migration
+
+- Restored portable CI, documentation, package, release, and Markdown validation across Windows, Ubuntu, and macOS on Node.js 20 and 22.
+- Enabled and validated GitHub Actions deployment for the production documentation site.
+- Made schema-v1 credential vault compatibility explicit and consent-gated; normal reads reject legacy vaults, migration preserves an encrypted backup, and migrated secrets are immediately re-encrypted with Argon2id or PBKDF2-SHA-256 fallback.
+- Restored canonical generated documentation and release references to the packaged source tree.
+- Upgraded CodeQL, Node, Python, Docker publishing, MkDocs Material, Mike, and revision-date workflow dependencies after full hosted validation.
+- Preserved the `forgevena` and `ai-workspace` CLI compatibility contract with no breaking project-state changes.
+
 ## 1.2.0 - 2026-07-17 - Enterprise Platform Foundations
 
 - Added a locked, atomic, checksummed state engine with journals, snapshots, recovery, and compatibility for existing `.ai-workspace` paths.
