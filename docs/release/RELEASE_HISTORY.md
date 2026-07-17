@@ -1,5 +1,9 @@
 # Release History Preparation
 
+## v1.2.1
+
+Patch release for cross-platform CI reliability, production GitHub Pages deployment, explicit schema-v1 vault migration controls, restored generated references, and validated workflow/documentation dependency upgrades. No public CLI or project-state compatibility break is introduced.
+
 ## v0.1.0-alpha
 
 Initial CLI and safety-model validation. Experimental contracts, preview-first writes, and early project detection.
