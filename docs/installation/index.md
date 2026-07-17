@@ -2,11 +2,11 @@
 
 ## npm
 
-After publication: `npm install --global forgevena@1.1.0`.
+After publication: `npm install --global forgevena@1.2.0`.
 
 ## Verified archive
 
-Install the release archive with `npm install --global ./forgevena-1.1.0.tgz`, then run `forgevena version` and `forgevena doctor`.
+Install the release archive with `npm install --global ./forgevena-1.2.0.tgz`, then run `forgevena version` and `forgevena doctor`.
 
 ## Source checkout
 

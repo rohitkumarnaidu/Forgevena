@@ -27,6 +27,14 @@
 | `update` | safety flags | Add newly managed missing assets. |
 | `rollback [operation]` | `--apply --yes` | Remove unchanged files owned by the selected operation. |
 | `templates` | none | List 14 template IDs. |
+| `org <action>` | `trust/import/validate/evaluate/audit/compliance` | Manage and enforce signed local organization policies. |
+| `diagnostics <action>` | `health/bundle/metrics/traces/profile` | Inspect local telemetry or create a secret-safe bundle. |
+| `supply-chain <action>` | `verify/scan/generate/artifacts` | Validate controls or generate SBOM, provenance, and checksums. |
+| `skills <action>` | `list/trust/verify/install/status/remove` | Manage signed, policy-approved prompts and engineering skills. |
+| `workflows <action>` | `validate/plan/run/resume/status` | Run deterministic resumable DAG workflows with consent checkpoints. |
+| `index <action>` | `build/status/query/recommend` | Build, query, and produce read-only recommendations from a local metadata-only project index. |
+| `semantic <action>` | `configure/status/plan/build/query` | Build and query an optional, consent-gated provider embedding index. |
+| `copilot <action>` | `plan/run`, objective and provider flags | Produce read-only engineering plans from approved project metadata. |
 | `capabilities` | none | Map capabilities to integrations. |
 | `integrations <action> [name]` | `list/status/doctor/install/init/update/remove/validate/health` | Plan, initialize, validate, or update registry lifecycle. |
 | `install [tool]` | consent flags | Official global tool installation plan/action. |

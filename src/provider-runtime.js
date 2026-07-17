@@ -2,6 +2,7 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { readProviderPolicy, recordProviderUsage } from "./provider-policy.js";
 import { readCredential } from "./credentials.js";
+import { randomUUID } from "node:crypto";
 
 const executeFile = promisify(execFile);
 
@@ -58,13 +59,14 @@ export const PROVIDER_DEFINITIONS = Object.freeze({
 });
 
 export class ProviderRequestError extends Error {
-  constructor(message, { provider, status = null, retryable = false, code = "provider_request_failed" } = {}) {
+  constructor(message, { provider, status = null, retryable = false, code = "provider_request_failed", retryAfterMs = null } = {}) {
     super(message);
     this.name = "ProviderRequestError";
     this.provider = provider;
     this.status = status;
     this.retryable = retryable;
     this.code = code;
+    this.retryAfterMs = retryAfterMs;
   }
 }
 
@@ -94,7 +96,7 @@ export async function providerRuntimeStatus(root, name, { execImpl = executeFile
   };
 }
 
-export async function invokeProvider(root, name, request, { fetchImpl = globalThis.fetch, execImpl = executeFile } = {}) {
+export async function invokeProvider(root, name, request, { fetchImpl = globalThis.fetch, execImpl = executeFile, sleepImpl = delay, randomImpl = Math.random } = {}) {
   const definition = providerDefinition(name);
   const policy = await readProviderPolicy(root, name);
   const normalized = validateRequest(name, request, policy);
@@ -106,16 +108,18 @@ export async function invokeProvider(root, name, request, { fetchImpl = globalTh
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), normalized.timeoutMs);
     try {
-      const response = await fetchImpl(buildUrl(name, normalized.model), { method: "POST", headers: buildHeaders(name, key), body: JSON.stringify(buildBody(name, normalized)), signal: controller.signal });
+      const response = await fetchImpl(buildUrl(name, normalized.model), { method: "POST", headers: buildHeaders(name, key, normalized.idempotencyKey), body: JSON.stringify(buildBody(name, normalized)), signal: controller.signal });
       const payload = await readPayload(response);
-      if (!response.ok) throw providerHttpError(name, response.status, payload);
+      if (!response.ok) throw providerHttpError(name, response.status, payload, response.headers);
       const result = normalizeResponse(name, payload, normalized.model);
       await recordProviderUsage(root, name, { inputCharacters: normalized.prompt.length, outputCharacters: result.text.length, usage: result.usage });
       return { ...result, attempts: attempt + 1 };
     } catch (error) {
       lastError = error?.name === "AbortError" ? new ProviderRequestError(`Provider request timed out after ${normalized.timeoutMs}ms.`, { provider: name, retryable: true, code: "timeout" }) : error instanceof ProviderRequestError ? error : new ProviderRequestError(error?.message ?? "Provider request failed.", { provider: name, retryable: true });
       if (!lastError.retryable || attempt === normalized.retries) throw lastError;
-      await delay(Math.min(250 * (2 ** attempt), 2000));
+      const exponential = Math.min(250 * (2 ** attempt), 2000);
+      const jittered = Math.round(exponential * (0.5 + randomImpl() * 0.5));
+      await sleepImpl(lastError.retryAfterMs ?? jittered);
     } finally { clearTimeout(timeout); }
   }
   throw lastError;
@@ -160,6 +164,7 @@ function validateRequest(name, request, policy) {
     maxOutputTokens: Math.min(Number(request.maxOutputTokens ?? policy.maxOutputTokens), policy.mode === "unrestricted" ? 131072 : policy.maxOutputTokens),
     timeoutMs: Math.min(Number(request.timeoutMs ?? policy.timeoutMs), policy.mode === "unrestricted" ? 600000 : policy.timeoutMs),
     retries: Math.min(Number(request.retries ?? policy.retries), 5),
+    idempotencyKey: request.idempotencyKey ?? randomUUID(),
   };
 }
 
@@ -182,12 +187,12 @@ function buildUrl(name, model) {
   return "https://openrouter.ai/api/v1/chat/completions";
 }
 
-function buildHeaders(name, key) {
+function buildHeaders(name, key, idempotencyKey) {
   const common = { "content-type": "application/json" };
   if (name === "ollama") return common;
   if (name === "claude") return { ...common, "x-api-key": key, "anthropic-version": "2023-06-01" };
   if (name === "gemini") return { ...common, "x-goog-api-key": key };
-  return { ...common, authorization: `Bearer ${key}` };
+  return { ...common, authorization: `Bearer ${key}`, ...(name === "openai" ? { "idempotency-key": idempotencyKey } : {}) };
 }
 
 function buildBody(name, request) {
@@ -226,7 +231,8 @@ async function readPayload(response) {
   try { return JSON.parse(text); } catch { return { message: text.slice(0, 1000) }; }
 }
 
-function providerHttpError(provider, status, payload) {
+function providerHttpError(provider, status, payload, headers) {
   const message = payload?.error?.message ?? payload?.message ?? `Provider returned HTTP ${status}.`;
-  return new ProviderRequestError(message, { provider, status, retryable: status === 408 || status === 429 || status >= 500, code: "provider_http_error" });
+  return new ProviderRequestError(message, { provider, status, retryable: status === 408 || status === 429 || status >= 500, code: "provider_http_error", retryAfterMs: parseRetryAfter(headers?.get?.("retry-after")) });
 }
+function parseRetryAfter(value) { if (!value) return null; if (/^\d+(?:\.\d+)?$/.test(value)) return Math.max(0, Math.round(Number(value) * 1000)); const date = Date.parse(value); return Number.isNaN(date) ? null : Math.max(0, date - Date.now()); }
