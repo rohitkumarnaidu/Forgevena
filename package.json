@@ -12,13 +12,13 @@
     "mcp",
     "release-engineering"
   ],
-  "homepage": "https://rohitkumarnaidu.github.io/Work-Space/",
+  "homepage": "https://rohitkumarnaidu.github.io/Forgevena/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rohitkumarnaidu/Work-Space.git"
+    "url": "git+https://github.com/rohitkumarnaidu/Forgevena.git"
   },
   "bugs": {
-    "url": "https://github.com/rohitkumarnaidu/Work-Space/issues"
+    "url": "https://github.com/rohitkumarnaidu/Forgevena/issues"
   },
   "funding": "https://github.com/sponsors/rohitkumarnaidu",
   "type": "module",

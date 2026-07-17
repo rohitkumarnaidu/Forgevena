@@ -6,23 +6,23 @@
 
 **Governed engineering from idea to production.**
 
-[![CI](https://github.com/rohitkumarnaidu/Work-Space/actions/workflows/ci.yml/badge.svg)](https://github.com/rohitkumarnaidu/Work-Space/actions/workflows/ci.yml)
-[![Documentation](https://github.com/rohitkumarnaidu/Work-Space/actions/workflows/docs.yml/badge.svg)](https://rohitkumarnaidu.github.io/Work-Space/)
-[![Security](https://github.com/rohitkumarnaidu/Work-Space/actions/workflows/security.yml/badge.svg)](https://github.com/rohitkumarnaidu/Work-Space/security)
-[![Release](https://img.shields.io/github/v/release/rohitkumarnaidu/Work-Space)](https://github.com/rohitkumarnaidu/Work-Space/releases)
+[![CI](https://github.com/rohitkumarnaidu/Forgevena/actions/workflows/ci.yml/badge.svg)](https://github.com/rohitkumarnaidu/Forgevena/actions/workflows/ci.yml)
+[![Documentation](https://github.com/rohitkumarnaidu/Forgevena/actions/workflows/docs.yml/badge.svg)](https://rohitkumarnaidu.github.io/Forgevena/)
+[![Security](https://github.com/rohitkumarnaidu/Forgevena/actions/workflows/security.yml/badge.svg)](https://github.com/rohitkumarnaidu/Forgevena/security)
+[![Release](https://img.shields.io/github/v/release/rohitkumarnaidu/Forgevena)](https://github.com/rohitkumarnaidu/Forgevena/releases)
 [![npm](https://img.shields.io/npm/v/forgevena)](https://www.npmjs.com/package/forgevena)
 [![npm downloads](https://img.shields.io/npm/dm/forgevena)](https://www.npmjs.com/package/forgevena)
-[![License](https://img.shields.io/github/license/rohitkumarnaidu/Work-Space)](LICENSE)
+[![License](https://img.shields.io/github/license/rohitkumarnaidu/Forgevena)](LICENSE)
 [![Node](https://img.shields.io/node/v/forgevena)](package.json)
 [![Coverage](https://img.shields.io/badge/coverage-enforced%20in%20CI-2ea44f)](.github/workflows/ci.yml)
-[![Stars](https://img.shields.io/github/stars/rohitkumarnaidu/Work-Space)](https://github.com/rohitkumarnaidu/Work-Space/stargazers)
-[![Forks](https://img.shields.io/github/forks/rohitkumarnaidu/Work-Space)](https://github.com/rohitkumarnaidu/Work-Space/forks)
-[![Issues](https://img.shields.io/github/issues/rohitkumarnaidu/Work-Space)](https://github.com/rohitkumarnaidu/Work-Space/issues)
-[![Pull requests](https://img.shields.io/github/issues-pr/rohitkumarnaidu/Work-Space)](https://github.com/rohitkumarnaidu/Work-Space/pulls)
+[![Stars](https://img.shields.io/github/stars/rohitkumarnaidu/Forgevena)](https://github.com/rohitkumarnaidu/Forgevena/stargazers)
+[![Forks](https://img.shields.io/github/forks/rohitkumarnaidu/Forgevena)](https://github.com/rohitkumarnaidu/Forgevena/forks)
+[![Issues](https://img.shields.io/github/issues/rohitkumarnaidu/Forgevena)](https://github.com/rohitkumarnaidu/Forgevena/issues)
+[![Pull requests](https://img.shields.io/github/issues-pr/rohitkumarnaidu/Forgevena)](https://github.com/rohitkumarnaidu/Forgevena/pulls)
 
 Enterprise project bootstrap, governed AI providers, MCP and plugin controls, cloud preparation, validation, upgrades, and release engineering through one safety-first CLI.
 
-[Documentation](https://rohitkumarnaidu.github.io/Work-Space/) · [Quick Start](#quick-start) · [Architecture](#architecture) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md)
+[Documentation](https://rohitkumarnaidu.github.io/Forgevena/) · [Quick Start](#quick-start) · [Architecture](#architecture) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md)
 
 </div>
 
@@ -143,8 +143,8 @@ The stable platform prioritizes compatibility, validation, security hardening, a
 ## Community
 
 - Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing changes.
-- Use [GitHub Discussions](https://github.com/rohitkumarnaidu/Work-Space/discussions) for design questions and ideas.
-- Use [GitHub Issues](https://github.com/rohitkumarnaidu/Work-Space/issues) for reproducible defects and accepted feature requests.
+- Use [GitHub Discussions](https://github.com/rohitkumarnaidu/Forgevena/discussions) for design questions and ideas.
+- Use [GitHub Issues](https://github.com/rohitkumarnaidu/Forgevena/issues) for reproducible defects and accepted feature requests.
 - Follow [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) in every project space.
 
 ## Security and Support

@@ -5,12 +5,12 @@ import path from "node:path";
 import test from "node:test";
 import { invokeRuntimePlugin, PluginRuntimeError, PluginRuntimeHost, validateRuntimeManifest } from "../src/plugin-runtime.js";
 
-const manifest = { schemaVersion: 2, type: "runtime", id: "example", version: "1.0.0", entry: "plugin.js", permissions: [], capabilities: ["ping"] };
+const manifest = { schemaVersion: 2, type: "runtime", id: "example", version: "1.0.0", entry: "plugin.mjs", permissions: [], capabilities: ["ping"] };
 
 test("runtime plugin executes through isolated JSON-RPC", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "forgevena-plugin-"));
   try {
-    await writeFile(path.join(root, "plugin.js"), `let input="";process.stdin.on("data",c=>input+=c);process.stdin.on("end",()=>{const r=JSON.parse(input);console.log(JSON.stringify({jsonrpc:"2.0",id:r.id,result:{pong:true,secret:process.env.OPENAI_API_KEY??null}}));});`);
+    await writeFile(path.join(root, "plugin.mjs"), `let input="";process.stdin.on("data",c=>input+=c);process.stdin.on("end",()=>{const r=JSON.parse(input);console.log(JSON.stringify({jsonrpc:"2.0",id:r.id,result:{pong:true,secret:process.env.OPENAI_API_KEY??null}}));});`);
     const result = await invokeRuntimePlugin(root, manifest, "ping");
     assert.equal(result.result.pong, true);
     assert.equal(result.result.secret, null);
@@ -27,7 +27,7 @@ test("runtime host starts, invokes, reloads, and stops persistent workers", asyn
   const root = await mkdtemp(path.join(os.tmpdir(), "forgevena-plugin-host-"));
   const host = new PluginRuntimeHost();
   try {
-    await writeFile(path.join(root, "plugin.js"), `import readline from "node:readline";const lines=readline.createInterface({input:process.stdin});lines.on("line",line=>{const r=JSON.parse(line);console.log(JSON.stringify({jsonrpc:"2.0",id:r.id,result:{pong:r.params.value,secret:process.env.OPENAI_API_KEY??null}}));});`);
+    await writeFile(path.join(root, "plugin.mjs"), `import readline from "node:readline";const lines=readline.createInterface({input:process.stdin});lines.on("line",line=>{const r=JSON.parse(line);console.log(JSON.stringify({jsonrpc:"2.0",id:r.id,result:{pong:r.params.value,secret:process.env.OPENAI_API_KEY??null}}));});`);
     assert.equal((await host.start(root, manifest)).running, true);
     const first = await host.invoke("example", "ping", { value: 1 });
     assert.deepEqual(first.result, { pong: 1, secret: null });
