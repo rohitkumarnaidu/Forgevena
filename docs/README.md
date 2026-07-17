@@ -33,7 +33,7 @@ flowchart LR
 ## Installation and quick start
 
 ```powershell
-npm install --global forgevena@1.2.0
+npm install --global forgevena@1.2.1
 forgevena doctor
 forgevena create Demo --template fastapi --dry-run --verbose
 forgevena create Demo --template fastapi --apply
@@ -41,19 +41,19 @@ cd Demo
 forgevena validate
 ```
 
-Use the verified local archive until registry publication. Supported platforms are Windows, Linux/WSL, and macOS on x64 and arm64 with Node.js 20.19+.
+The stable package is published on npm. Verified archives, checksums, SBOMs, provenance, and package-manager bundles are available from the [latest GitHub Release](https://github.com/rohitkumarnaidu/Forgevena/releases/latest). Supported platforms are Windows, Linux/WSL, and macOS on x64 and arm64 with Node.js 20.19+.
 
 ## CLI examples
 
 ```powershell
-ai-workspace init --dry-run --verbose
-ai-workspace integrations install openspec
-ai-workspace credentials configure openai --apply
-ai-workspace providers verify openai
-ai-workspace plugins list
-ai-workspace mcp list
-ai-workspace docker validate
-ai-workspace cloud render generate --dry-run
+forgevena init --dry-run --verbose
+forgevena integrations install openspec
+forgevena credentials configure openai --apply
+forgevena providers verify openai
+forgevena plugins list
+forgevena mcp list
+forgevena docker validate
+forgevena cloud render generate --dry-run
 ```
 
 ## Product views

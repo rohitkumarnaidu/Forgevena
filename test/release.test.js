@@ -33,6 +33,7 @@ test("signed tags automate changelog, release, and package publication", async (
   assert.match(workflow, /OUTPUT: dist\/RELEASE_NOTES\.md/);
   assert.match(workflow, /body_path: dist\/RELEASE_NOTES\.md/);
   assert.match(workflow, /tag_name: \$\{\{ env\.RELEASE_REF \}\}/);
+  assert.match(workflow, /git show "\$\{GITHUB_SHA\}:cliff\.toml" > \.release-cliff\.toml/);
   assert.match(workflow, /release_tag:/);
   assert.match(workflow, /publish_packages:/);
   assert.match(workflow, /ref: \$\{\{ env\.RELEASE_REF \}\}/);
@@ -54,7 +55,9 @@ test("public entry points reference the current stable release", async () => {
   const readme = await readFile(new URL("../README.md", import.meta.url), "utf8");
   const homepage = await readFile(new URL("../docs/index.md", import.meta.url), "utf8");
   const gettingStarted = await readFile(new URL("../docs/getting-started/index.md", import.meta.url), "utf8");
-  for (const contents of [readme, homepage, gettingStarted]) {
+  const installation = await readFile(new URL("../docs/installation/index.md", import.meta.url), "utf8");
+  const docsReadme = await readFile(new URL("../docs/README.md", import.meta.url), "utf8");
+  for (const contents of [readme, homepage, gettingStarted, installation, docsReadme]) {
     assert.match(contents, /1\.2\.1/);
     assert.doesNotMatch(contents, /npm install --global forgevena@1\.[01]\.0/);
   }
