@@ -41,6 +41,7 @@ jobs:
         with:
           files: "docs/**/*.md"
           config: cspell.json
+          incremental_files_only: false
       - run: npm test
       - run: pip install -r website/requirements.txt
       - run: mkdocs build --strict --config-file website/mkdocs.yml

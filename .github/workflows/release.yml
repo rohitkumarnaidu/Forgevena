@@ -21,6 +21,7 @@ on:
         default: false
 
 permissions:
+  actions: read
   contents: read
 
 env:
@@ -82,6 +83,28 @@ jobs:
       - run: npm run release:assets
       - run: npm run release:supply-chain
       - run: cp forgevena-*.tgz dist/
+      - name: Capture release verification evidence
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          GENERATOR="scripts/generate-release-verification.js"
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            git show "${GITHUB_SHA}:scripts/generate-release-verification.js" > .release-verification-generator.mjs
+            GENERATOR=".release-verification-generator.mjs"
+          fi
+          gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/jobs?per_page=100" > dist/release-jobs.json
+          RELEASE_COMMIT="$(git rev-parse "${RELEASE_REF}^{commit}")"
+          node "${GENERATOR}" \
+            --jobs dist/release-jobs.json \
+            --output dist \
+            --release-ref "${RELEASE_REF}" \
+            --commit "${RELEASE_COMMIT}" \
+            --repository "${GITHUB_REPOSITORY}" \
+            --run-id "${GITHUB_RUN_ID}" \
+            --run-attempt "${GITHUB_RUN_ATTEMPT}"
+          cat dist/RELEASE_VERIFICATION.md >> dist/RELEASE_NOTES.md
+          rm dist/release-jobs.json
       - name: Package downloadable release assets
         shell: bash
         run: |
@@ -140,6 +163,8 @@ jobs:
             dist/forgevena-*-chocolatey.tar.gz
             dist/forgevena-*-sbom.cdx.json
             dist/forgevena-*-provenance.intoto.jsonl
+            dist/release-verification.json
+            dist/RELEASE_VERIFICATION.md
             dist/SHA256SUMS
             dist/RELEASE_SHA256SUMS
             dist/RELEASE_NOTES.md

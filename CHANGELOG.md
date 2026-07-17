@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add auditable OS/Node release-verification assets and consistent full-document spelling validation.
+
 - Consolidated signed-tag releases into one automated pipeline that verifies the source, generates release notes, uploads immutable artifacts, creates or updates the GitHub Release, and publishes npm, GitHub Packages, GHCR, and Docker Hub distributions.
 - Retained the manual package workflow as a retry-only recovery path and added idempotent npm and GitHub Packages publication checks.
 - Corrected generated changelog links to the canonical `rohitkumarnaidu/Forgevena` repository.

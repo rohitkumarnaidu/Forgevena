@@ -1,8 +1,10 @@
 # Package Publishing
 
-Pushing a verified signed tag matching `v*` starts `.github/workflows/release.yml`. The workflow generates release notes; uploads the npm archive, checksums, SBOM, provenance, and package-manager bundles; creates or updates the GitHub Release; and publishes all configured package channels. Stable tags publish npm and container `latest`; prerelease tags publish npm `next` and never move container `latest`.
+Pushing a verified signed tag matching `v*` starts `.github/workflows/release.yml`. The workflow generates release notes; uploads the npm archive, checksums, SBOM, provenance, release-verification reports, and package-manager bundles; creates or updates the GitHub Release; and publishes all configured package channels. Stable tags publish npm and container `latest`; prerelease tags publish npm `next` and never move container `latest`.
 
 Maintainers can repair an existing immutable tag by manually running `Automated Release` with `release_tag` set to that tag and `publish` enabled. Leave `publish_packages` disabled when only release notes or downloads need repair. The workflow checks out the tag itself, not `main`, and skips package versions that already exist when registry retries are explicitly enabled.
+
+Release verification is generated only after all six Windows, Ubuntu, and macOS jobs for Node.js 20 and 22 pass. `RELEASE_VERIFICATION.md` is appended to the release description, while `release-verification.json` provides a stable machine-readable evidence contract. Both files link to the exact GitHub Actions run and jobs.
 
 ## npm
 
