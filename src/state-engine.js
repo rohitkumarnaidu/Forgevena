@@ -6,7 +6,7 @@ const STATE_ROOT = ".ai-workspace";
 const LOCK_ROOT = path.join(STATE_ROOT, "locks");
 const JOURNAL_ROOT = path.join(STATE_ROOT, "journal");
 const SNAPSHOT_ROOT = path.join(STATE_ROOT, "snapshots");
-const DEFAULT_LOCK_TIMEOUT_MS = 10_000;
+const DEFAULT_LOCK_TIMEOUT_MS = 30_000;
 const DEFAULT_STALE_LOCK_MS = 30_000;
 
 export class StateError extends Error {
@@ -200,7 +200,7 @@ export class FileStateEngine {
         await handle.close();
         return async () => rm(target, { force: true });
       } catch (error) {
-        if (error?.code !== "EEXIST") throw error;
+        if (!["EEXIST", "EPERM"].includes(error?.code)) throw error;
         const info = await stat(target).catch(() => null);
         if (info && this.clock() - info.mtimeMs > this.staleLockMs) { await rm(target, { force: true }); continue; }
         if (this.clock() - started >= this.lockTimeoutMs) throw new StateError("STATE_LOCK_TIMEOUT", `Timed out waiting for state lock ${relativePath}.`, { relativePath, lockTimeoutMs: this.lockTimeoutMs });

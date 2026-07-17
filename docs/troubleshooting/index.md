@@ -14,4 +14,4 @@
 | Rollback skips a file | File changed since creation | Preserve it and resolve manually. |
 | Docker validation fails | Missing/malformed template assets | Re-run template validation; do not overwrite custom files. |
 
-Use `--verbose` and preserve redacted output when opening an issue. See [FAQ](../FAQ.md) and [Support](https://github.com/rohitkumarnaidu/Work-Space/blob/main/SUPPORT.md).
+Use `--verbose` and preserve redacted output when opening an issue. See [FAQ](../FAQ.md) and [Support](https://github.com/rohitkumarnaidu/Forgevena/blob/main/SUPPORT.md).
