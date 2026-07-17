@@ -28,7 +28,10 @@ $env:AI_WORKSPACE_CREDENTIAL_KEY = "value-from-approved-secret-store"
 forgevena credentials configure openai --apply
 forgevena vault audit
 forgevena vault rotate openai --apply
+forgevena vault migrate openai --apply --yes
 ```
+
+Schema-v1 encrypted credentials are never decrypted during ordinary reads. `vault migrate` is the only compatibility path: it previews by default, requires explicit `--apply --yes` consent, preserves the original encrypted payload under `.credentials/legacy/`, and immediately writes an AES-256-GCM schema-v2 vault derived with Argon2id (PBKDF2-SHA-256 fallback).
 
 ## Compatibility
 
