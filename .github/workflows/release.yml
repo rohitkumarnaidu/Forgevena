@@ -62,9 +62,19 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: mkdir -p dist
+      - name: Select changelog configuration
+        id: changelog-config
+        shell: bash
+        run: |
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            git show "${GITHUB_SHA}:cliff.toml" > .release-cliff.toml
+            echo "path=.release-cliff.toml" >> "$GITHUB_OUTPUT"
+          else
+            echo "path=cliff.toml" >> "$GITHUB_OUTPUT"
+          fi
       - uses: orhun/git-cliff-action@v4
         with:
-          config: cliff.toml
+          config: ${{ steps.changelog-config.outputs.path }}
           args: --latest --strip header
         env:
           OUTPUT: dist/RELEASE_NOTES.md

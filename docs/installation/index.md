@@ -2,11 +2,11 @@
 
 ## npm
 
-After publication: `npm install --global forgevena@1.2.0`.
+Install the current stable release with `npm install --global forgevena@1.2.1`.
 
 ## Verified archive
 
-Install the release archive with `npm install --global ./forgevena-1.2.0.tgz`, then run `forgevena version` and `forgevena doctor`.
+Download `forgevena-1.2.1.tgz` and `RELEASE_SHA256SUMS` from the [latest release](https://github.com/rohitkumarnaidu/Forgevena/releases/latest), verify the checksum, install with `npm install --global ./forgevena-1.2.1.tgz`, then run `forgevena version` and `forgevena doctor`.
 
 ## Source checkout
 

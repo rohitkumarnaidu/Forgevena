@@ -7,6 +7,7 @@
 - Corrected generated changelog links to the canonical `rohitkumarnaidu/Forgevena` repository.
 - Updated the README and documentation homepage to the current stable release and added downloadable Homebrew, Winget, Chocolatey, SBOM, provenance, and checksum assets to automated releases.
 - Added a safe workflow-dispatch repair path that rebuilds from an existing signed tag while skipping already-published immutable package versions.
+- Updated the remaining active installation guides to 1.2.1 and made manual release repairs use the current canonical changelog configuration so historical repository links are corrected.
 
 ## 1.2.1 - 2026-07-17 - Release Reliability and Vault Migration
 
