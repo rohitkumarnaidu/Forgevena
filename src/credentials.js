@@ -162,11 +162,50 @@ export async function auditCredentialVault(root) {
     try {
       const payload = JSON.parse(await readFile(target, "utf8"));
       const metadata = payload.protected ? JSON.parse(Buffer.from(payload.protected, "base64").toString("utf8")) : { variable: payload.variable, credentialVersion: 1 };
+      if (payload.schemaVersion === 1) {
+        credentials.push({ credential: name, valid: false, schemaVersion: 1, algorithm: payload.algorithm, kdf: "legacy-sha256", credentialVersion: 1, migrationRequired: true, issue: `Run forgevena vault migrate ${name} --apply --yes.`, secretReturned: false });
+        continue;
+      }
       await readEncryptedCredential(target, credentialVariable(name));
-      credentials.push({ credential: name, valid: true, schemaVersion: payload.schemaVersion, algorithm: payload.algorithm, kdf: payload.kdf?.name ?? "legacy-sha256", credentialVersion: metadata.credentialVersion ?? 1, secretReturned: false });
+      credentials.push({ credential: name, valid: true, schemaVersion: payload.schemaVersion, algorithm: payload.algorithm, kdf: payload.kdf?.name, credentialVersion: metadata.credentialVersion ?? 1, migrationRequired: false, secretReturned: false });
     } catch (error) { credentials.push({ credential: name, valid: false, issue: error.message, secretReturned: false }); }
   }
   return { schemaVersion: VAULT_SCHEMA_VERSION, healthy: credentials.every((entry) => entry.valid), credentials, secretValuesReturned: false };
+}
+
+export async function migrateLegacyCredential(root, name, { dryRun = true, yes = false } = {}) {
+  const variable = credentialVariable(name);
+  const target = path.join(root, ".credentials", `${name}.enc.json`);
+  if (!(await pathExists(target))) return { credential: name, dryRun, migrated: false, skipped: true, message: "No encrypted credential exists." };
+  const payload = JSON.parse(await readFile(target, "utf8"));
+  if (payload.schemaVersion !== 1) return { credential: name, dryRun, migrated: false, skipped: true, schemaVersion: payload.schemaVersion, message: "Credential already uses the current vault schema." };
+  const backup = path.join(root, ".credentials", "legacy", `${name}-${Date.now()}.enc.json`);
+  const plan = {
+    credential: name,
+    dryRun,
+    fromSchemaVersion: 1,
+    toSchemaVersion: VAULT_SCHEMA_VERSION,
+    backup: path.relative(root, backup),
+    destination: path.relative(root, target),
+    requiresExplicitConsent: true,
+    legacyKdf: "sha256",
+    replacementKdf: "argon2id-with-pbkdf2-fallback",
+  };
+  if (dryRun) return plan;
+  if (!yes) throw new Error("Legacy vault migration requires --apply --yes because it decrypts and re-encrypts credential material.");
+  const secret = decryptLegacyCredential(payload, variable);
+  const replacement = await encryptCredential(variable, secret, { previousVersion: 1 });
+  const temporary = `${target}.${Date.now()}.migration`;
+  await mkdir(path.dirname(backup), { recursive: true });
+  await writeFile(temporary, replacement, { encoding: "utf8", mode: 0o600, flag: "wx" });
+  try {
+    await copyFile(target, backup, (await import("node:fs")).constants.COPYFILE_EXCL);
+    await rename(temporary, target);
+  } catch (error) {
+    await rm(temporary, { force: true });
+    throw error;
+  }
+  return { ...plan, dryRun: false, migrated: true, schemaVersion: VAULT_SCHEMA_VERSION, secretReturned: false };
 }
 
 export async function recoverCredential(root, name, { dryRun = true } = {}) {
@@ -218,7 +257,7 @@ async function readEncryptedCredential(target, variable) {
   try {
     const payload = JSON.parse(await readFile(target, "utf8"));
     if (payload.algorithm !== "aes-256-gcm") throw new Error("Encrypted credential metadata is invalid.");
-    if (payload.schemaVersion === 1) return decryptLegacyCredential(payload, variable);
+    if (payload.schemaVersion === 1) throw new Error("Legacy encrypted credential requires explicit migration with: forgevena vault migrate <credential> --apply --yes.");
     if (payload.schemaVersion !== VAULT_SCHEMA_VERSION) throw new Error(`Unsupported credential vault schema version: ${payload.schemaVersion}.`);
     const protectedMetadata = Buffer.from(payload.protected, "base64");
     const metadata = JSON.parse(protectedMetadata.toString("utf8"));
@@ -244,6 +283,7 @@ async function deriveEncryptionKey(passphrase, salt, requested) {
 }
 function decryptLegacyCredential(payload, variable) {
   if (payload.variable !== variable) throw new Error("Encrypted credential metadata is invalid.");
+  // lgtm[js/insufficient-password-hash] Compatibility-only decryption is consent-gated and immediately re-encrypted with Argon2id.
   const legacyKey = createHash("sha256").update(vaultPassphrase()).digest();
   const decipher = createDecipheriv("aes-256-gcm", legacyKey, Buffer.from(payload.iv, "base64"));
   decipher.setAuthTag(Buffer.from(payload.tag, "base64"));
