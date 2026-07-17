@@ -4,7 +4,7 @@ Forgevena E1 introduces three stable boundaries:
 
 1. The CLI parses global safety options and renders structured operation envelopes independently from command execution.
 2. Application context owns shared infrastructure dependencies such as the state engine.
-3. Every managed registry uses one atomic, locked, checksummed state engine while encrypted secrets remain in the credential vault.
+3. Every managed registry uses one atomic, locked, checksum-verified state engine while encrypted secrets remain in the credential vault.
 
 ## State Lifecycle
 
