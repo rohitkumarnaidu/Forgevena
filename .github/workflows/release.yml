@@ -119,6 +119,7 @@ jobs:
           fi
       - uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ env.RELEASE_REF }}
           body_path: dist/RELEASE_NOTES.md
           prerelease: ${{ steps.channel.outputs.prerelease }}
           make_latest: ${{ steps.channel.outputs.make_latest }}

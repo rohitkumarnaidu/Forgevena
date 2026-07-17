@@ -32,6 +32,7 @@ test("signed tags automate changelog, release, and package publication", async (
 
   assert.match(workflow, /OUTPUT: dist\/RELEASE_NOTES\.md/);
   assert.match(workflow, /body_path: dist\/RELEASE_NOTES\.md/);
+  assert.match(workflow, /tag_name: \$\{\{ env\.RELEASE_REF \}\}/);
   assert.match(workflow, /release_tag:/);
   assert.match(workflow, /publish_packages:/);
   assert.match(workflow, /ref: \$\{\{ env\.RELEASE_REF \}\}/);
