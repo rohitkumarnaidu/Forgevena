@@ -9,7 +9,7 @@
 | `--yes` | Confirm an external or destructive managed action. |
 | `--non-interactive` | Disable prompts; required approvals must be supplied explicitly. |
 | `--verbose` | Include detection and planning details. |
-| `--merge skip|merge|replace` | Requested collision policy; all collisions remain skip-only. |
+| `--merge skip\|merge\|replace` | Requested collision policy; all collisions remain skip-only. |
 | `--skip <items>` | Comma-separated modules or paths to omit. |
 
 ## Command catalog
@@ -40,15 +40,15 @@
 | `install [tool]` | consent flags | Official global tool installation plan/action. |
 | `reference [name]` | consent flags | Reference repository clone plan/action. |
 | `providers <action> [name]` | see provider actions below | Provider lifecycle, policy, auth, invocation, dashboard. |
-| `credentials <action> [name]` | `--storage local|encrypted` | Secret initialization, masked setup, rotation, validation, backup, removal. |
+| `credentials <action> [name]` | `--storage local\|encrypted` | Secret initialization, masked setup, rotation, validation, backup, removal. |
 | `mcp <action> [name]` | definition/host flags | Register, validate, activate, health-check, or remove. |
 | `plugins <action> [source-or-id]` | trust and safety flags | Install/update declarative signed plugins and control activation. |
 | `cloud list` | none | List supported cloud adapters. |
 | `cloud <provider> <action>` | consent flags | Prepare, validate, verify, deploy, status, health, credentials, rollback. |
 | `cloud render <action>` | Render configuration flags | Blueprint-specific lifecycle. |
-| `docker <plan|validate|up|down>` | consent flags | Validate or execute Compose actions. |
+| `docker <plan\|validate\|up\|down>` | consent flags | Validate or execute Compose actions. |
 | `dashboard` | `--port <port>` | Start authenticated loopback dashboard. |
-| `config [key value]` | `export|import`, safety flags | Read/set safe config or transfer it. |
+| `config [key value]` | `export\|import`, safety flags | Read/set safe config or transfer it. |
 | `upgrade [rollback]` | safety flags | Upgrade managed workspace state or restore snapshot. |
 
 Provider actions are `list`, `init`, `configure`, `status`, `doctor`, `validate`, `update`, `remove`, `models`, `project`, `mcp`, `invoke`, `test`, `verify`, `login`, `logout`, `limits`, and `dashboard`.
