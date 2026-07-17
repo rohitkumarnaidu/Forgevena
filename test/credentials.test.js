@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { auditCredentialVault, backupCredentials, configureCredential, credentialStatus, initializeCredentialPlaceholders, readCredential, recoverCredential, removeCredential, rotateCredential, validateCredential } from "../src/credentials.js";
+import { auditCredentialVault, backupCredentials, configureCredential, credentialStatus, initializeCredentialPlaceholders, migrateLegacyCredential, readCredential, recoverCredential, removeCredential, rotateCredential, validateCredential } from "../src/credentials.js";
 
 test("credential placeholders contain names but no values", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "credential-placeholders-"));
@@ -89,6 +89,32 @@ test("encrypted vault audits and recovers validated rotation history", async () 
     assert.equal((await recoverCredential(root, "openai", { dryRun: false })).recovered, true);
     assert.equal(await readCredential(root, "openai"), "first-value");
     assert.equal((await recoverCredential(root, "openai", { dryRun: false })).skipped, true);
+  } finally {
+    if (previous === undefined) delete process.env.AI_WORKSPACE_CREDENTIAL_KEY; else process.env.AI_WORKSPACE_CREDENTIAL_KEY = previous;
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("legacy encrypted credentials require explicit migration and become Argon2id vaults", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "credential-legacy-migration-"));
+  const previous = process.env.AI_WORKSPACE_CREDENTIAL_KEY;
+  process.env.AI_WORKSPACE_CREDENTIAL_KEY = "test-only-master-key";
+  try {
+    const target = path.join(root, ".credentials", "openai.enc.json");
+    await mkdir(path.dirname(target), { recursive: true });
+    await writeFile(target, `${JSON.stringify({ schemaVersion: 1, algorithm: "aes-256-gcm", variable: "OPENAI_API_KEY", iv: "AQEBAQEBAQEBAQEB", tag: "UAxJ0+38ls99Qmm7UTS6NA==", ciphertext: "RGKdbrGswjciK6iP" }, null, 2)}\n`);
+    await assert.rejects(() => readCredential(root, "openai"), /explicit migration/i);
+    const audit = await auditCredentialVault(root);
+    assert.equal(audit.healthy, false);
+    assert.equal(audit.credentials[0].migrationRequired, true);
+    assert.equal((await migrateLegacyCredential(root, "openai", { dryRun: true })).requiresExplicitConsent, true);
+    await assert.rejects(() => migrateLegacyCredential(root, "openai", { dryRun: false }), /--apply --yes/);
+    const migrated = await migrateLegacyCredential(root, "openai", { dryRun: false, yes: true });
+    assert.equal(migrated.migrated, true);
+    assert.equal(await readCredential(root, "openai"), "legacy-value");
+    const payload = JSON.parse(await readFile(target, "utf8"));
+    assert.equal(payload.schemaVersion, 2);
+    assert.equal(payload.kdf.name, "argon2id");
   } finally {
     if (previous === undefined) delete process.env.AI_WORKSPACE_CREDENTIAL_KEY; else process.env.AI_WORKSPACE_CREDENTIAL_KEY = previous;
     await rm(root, { recursive: true, force: true });
