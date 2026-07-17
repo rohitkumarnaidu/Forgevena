@@ -15,10 +15,13 @@ test("CLI help documents bootstrap options", async () => {
   assert.match(stdout, /cloud render/);
   assert.match(stdout, /cloud <provider> <prepare\|validate\|verify\|deploy\|status/);
   assert.match(stdout, /plugins <list\|install\|update\|trust/);
+  assert.match(stdout, /semantic <configure\|status\|plan\|build\|query>/);
+  assert.match(stdout, /copilot <plan\|run>/);
   assert.match(stdout, /upgrade \[rollback\]/);
   assert.match(stdout, /state <validate\|repair\|snapshot\|migrate\|history>/);
   assert.match(stdout, /vault <initialize\|rotate\|recover\|audit>/);
   assert.match(stdout, /--structured/);
+  assert.match(stdout, /templates/);
   assert.match(stdout, /Forgevena/);
   assert.match(stdout, /Governed engineering from idea to production\./);
   assert.match(stdout, new RegExp(PLATFORM_VERSION.replaceAll(".", "\\.")));

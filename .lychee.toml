@@ -5,5 +5,15 @@ timeout = 20
 retry_wait_time = 2
 max_retries = 2
 accept = [200, 204, 206, 429]
-exclude_path = ["dist", "node_modules", ".venv-docs"]
-exclude = ["^mailto:", "http://localhost", "http://127.0.0.1"]
+exclude_path = ["dist", "node_modules", ".venv-docs", "cache", "website/overrides"]
+exclude = [
+  "^mailto:",
+  "http://localhost",
+  "http://127.0.0.1",
+  "https://www.npmjs.com/package/forgevena",
+  "https://uspto.report/TM/99203230",
+  "https://trademarks.justia.com/997/28/veylora-99728085.html",
+  "https://rohitkumarnaidu.github.io/Forgevena/",
+  "https://github.com/rohitkumarnaidu/Forgevena/(discussions|stargazers)",
+  "%7B%7B"
+]

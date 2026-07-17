@@ -88,3 +88,27 @@ test("provider invocation retries only retryable failures", async () => {
     assert.equal(calls, 3);
   } finally { if (previous === undefined) delete process.env.OPENAI_API_KEY; else process.env.OPENAI_API_KEY = previous; await rm(root, { recursive: true, force: true }); }
 });
+
+test("provider retries honor retry-after and preserve idempotency", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "provider-retry-after-"));
+  const previous = process.env.OPENAI_API_KEY;
+  process.env.OPENAI_API_KEY = "test-key";
+  const delays = [];
+  const keys = [];
+  let calls = 0;
+  try {
+    const result = await invokeProvider(root, "openai", { prompt: "retry", retries: 1 }, {
+      randomImpl: () => 0,
+      sleepImpl: async (milliseconds) => delays.push(milliseconds),
+      fetchImpl: async (_url, options) => {
+        calls += 1;
+        keys.push(options.headers["idempotency-key"]);
+        return calls === 1 ? new Response(JSON.stringify({ error: { message: "limited" } }), { status: 429, headers: { "retry-after": "0.01" } }) : new Response(JSON.stringify({ output_text: "ok" }), { status: 200 });
+      },
+    });
+    assert.equal(result.text, "ok");
+    assert.deepEqual(delays, [10]);
+    assert.equal(keys[0], keys[1]);
+    assert.match(keys[0], /^[0-9a-f-]{36}$/);
+  } finally { if (previous === undefined) delete process.env.OPENAI_API_KEY; else process.env.OPENAI_API_KEY = previous; await rm(root, { recursive: true, force: true }); }
+});
