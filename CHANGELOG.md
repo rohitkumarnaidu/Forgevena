@@ -1,12 +1,33 @@
 # Changelog
 
-## Unreleased - Enterprise Foundation E1
+## 1.2.0 - 2026-07-17 - Enterprise Platform Foundations
 
 - Added a locked, atomic, checksummed state engine with journals, snapshots, recovery, and compatibility for existing `.ai-workspace` paths.
 - Migrated workspace, provider, plugin, MCP, cloud, policy, configuration, health, Render, and upgrade state to the shared engine.
 - Upgraded encrypted credentials to salted Argon2id with PBKDF2 fallback, authenticated metadata, atomic rotation, and bounded encrypted history.
 - Added structured CLI operation envelopes, stable error metadata, application context, and state/vault command groups.
 - Added concurrency, corruption, transaction, vault-version, and tamper tests.
+- Added a reusable command router with stable duplicate and unknown-command errors.
+- Added vault integrity audit and fail-closed recovery from validated encrypted rotation history.
+- Added a versioned provider adapter contract with capability enforcement and compatibility metadata.
+- Added `Retry-After`, bounded jitter, and stable idempotency behavior for retryable provider requests.
+- Added schema-v2 runtime plugins using isolated Node processes, JSON-RPC, permission declarations, output limits, and timeouts.
+- Added a persistent runtime host with start, multi-invocation, status, reload, and deterministic stop lifecycle support.
+- Added plugin platform-version constraints, dependency validation, cycle prevention, and permission/dependency inspection.
+- Preserved canonical signatures for existing schema-v1 declarative plugins.
+- Added versioned local template packages with inheritance, integrity checks, source containment, safe targets, and CLI verification.
+- Added preview-first, additive export of built-in templates into independently verifiable local template packages.
+- Added trusted Ed25519 template publishers, consent-gated HTTPS catalogs, immutable caching, and offline checksum/signature verification.
+- Added signed local organization policy bundles with roles, approvals, fail-closed evaluation, deny-overrides semantics, compliance summaries, and bounded audit records.
+- Added local aggregate metrics, bounded trace spans, crash records, health/profile commands, recursive value redaction, and additive secret-safe diagnostic bundles.
+- Added deterministic CycloneDX SBOMs, in-toto/SLSA provenance, source checksums, repository secret scanning, threat modeling, and fail-closed release supply-chain verification.
+- Added deterministic CLI, provider, module, and template reference generation with checksum manifests and fail-closed release drift detection.
+- Added a signed prompt and engineering-skill registry with provenance, variables, compatibility constraints, immutable evidence, and fail-closed organization-policy approval.
+- Added deterministic DAG workflows with dependency validation, bounded retries, resumable state, consent checkpoints, redacted outputs, hashes, and bounded audit records.
+- Added a local metadata-only project index for source symbols, documentation headings/links, manifests, dependencies, imports, hashes, and deterministic queries.
+- Added optional consent-gated semantic indexing through OpenAI, Gemini, or Ollama using approved metadata fields and embedding-only persistence.
+- Added deterministic read-only project recommendations derived from metadata-only indexes, with explicit mutation-consent markers.
+- Added a provider-backed read-only engineering copilot with metadata-only context, preview-first consent, and optional organization-policy enforcement.
 
 ## 1.1.0 - Forgevena Brand Transition
 

@@ -9,6 +9,17 @@
 - Docker CLI build and smoke test.
 - Windows, Linux, and macOS hosted CI.
 - Version manifest, checksums, release notes, compatibility, upgrade, rollback, and known-issues reports.
+- CycloneDX 1.5 SBOM, in-toto/SLSA provenance statement, source checksums, lockfile validation, and secret-scan evidence.
+
+```powershell
+forgevena supply-chain verify
+forgevena supply-chain scan
+forgevena supply-chain generate --dry-run
+forgevena supply-chain generate --apply
+forgevena supply-chain artifacts
+```
+
+Generated evidence is additive under `dist/supply-chain/`. Existing evidence is never overwritten; create a clean release workspace for each immutable release.
 
 ## Distribution channels
 

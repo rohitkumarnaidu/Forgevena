@@ -1,5 +1,14 @@
 # Developer Guide
 
+Canonical CLI, provider, module, and template references are generated from source metadata under `docs/reference/generated/`.
+
+```powershell
+npm run docs:verify
+npm run docs:generate
+```
+
+Generation is additive and never overwrites existing references. If verification reports drift, review the metadata change, remove only the stale generated files in a clean documentation update, and regenerate them.
+
 ## Code structure
 
 - `bin/`: executable entry point.
