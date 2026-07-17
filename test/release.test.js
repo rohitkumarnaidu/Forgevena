@@ -33,3 +33,12 @@ test("tag publication declares public access when generating npm provenance", as
   assert.match(workflow, /npm publish --tag next --provenance --access public/);
   assert.doesNotMatch(workflow, /npm publish --tag next --provenance\s*(?:\r?\n|$)/);
 });
+
+test("secondary registries publish without mutating release validation", async () => {
+  const workflow = await readFile(new URL("../.github/workflows/publish.yml", import.meta.url), "utf8");
+
+  assert.match(workflow, /npm pkg set name=@rohitkumarnaidu\/forgevena/);
+  assert.match(workflow, /npm publish --ignore-scripts --registry https:\/\/npm\.pkg\.github\.com/);
+  assert.match(workflow, /node -e "console\.log\('version=' \+ require\('\.\/package\.json'\)\.version\)" >> "\$GITHUB_OUTPUT"/);
+  assert.doesNotMatch(workflow, /node -p \\"require\('\.\/package\.json'\)\.version\"/);
+});
