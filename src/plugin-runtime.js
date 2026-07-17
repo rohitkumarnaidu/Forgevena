@@ -82,6 +82,10 @@ export class PluginRuntimeHost {
   #fail(session, error) { if (session.stopped) return; session.stopped = true; for (const requestId of session.pending.keys()) this.#settle(session, requestId, error); if (!session.child.killed) session.child.kill(); this.sessions.delete(session.plugin.id); }
 }
 
+export function runtimePermissionSupported({ nodeVersion = process.versions.node, platform = process.platform } = {}) {
+  return Number.parseInt(nodeVersion, 10) >= 22 || platform === "linux";
+}
+
 export async function invokeRuntimePlugin(pluginDirectory, manifest, method, params = {}, { spawnImpl = spawn } = {}) {
   const plugin = validateRuntimeManifest(manifest, pluginDirectory);
   if (!plugin.capabilities.includes(method)) throw new PluginRuntimeError("PLUGIN_CAPABILITY_DENIED", `Plugin ${plugin.id} does not declare capability ${method}.`);
@@ -110,6 +114,7 @@ export async function invokeRuntimePlugin(pluginDirectory, manifest, method, par
 }
 
 function spawnPlugin(spawnImpl, pluginDirectory, plugin) {
+  if (!runtimePermissionSupported()) throw new PluginRuntimeError("PLUGIN_RUNTIME_UNSUPPORTED", "Runtime plugins require Node.js 22 or newer on Windows and macOS; Node.js 20 is supported on Linux.");
   const permissionFlag = Number.parseInt(process.versions.node, 10) < 22 ? "--experimental-permission" : "--permission";
   return spawnImpl(process.execPath, [permissionFlag, `--allow-fs-read=${pluginDirectory}`, plugin.entry], {
     cwd: pluginDirectory,

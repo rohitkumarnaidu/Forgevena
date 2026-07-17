@@ -4,6 +4,8 @@ Runtime plugins use manifest schema version 2 and execute in a separate Node.js 
 
 The host validates platform constraints, semantic versions, dependencies, permissions, capabilities, entry containment, timeouts, and output limits before execution. Runtime processes receive a minimal environment without provider credentials or workspace secrets and run with Node's permission system enabled.
 
+Runtime plugins require Node.js 22 or newer on Windows and macOS. Node.js 20 runtime plugins are supported on Linux, where the experimental permission model is available. All other Forgevena capabilities retain the package-level Node.js 20.19 minimum.
+
 Long-lived platform processes can use `PluginRuntimeHost` to start a worker once, invoke multiple declared capabilities, inspect status, reload after an approved update, and stop it deterministically. Existing one-shot plugins remain supported through `invokeRuntimePlugin` for backward compatibility.
 
 Runtime execution is preview-first:
