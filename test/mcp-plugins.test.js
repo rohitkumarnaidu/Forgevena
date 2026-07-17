@@ -5,7 +5,7 @@ import { generateKeyPairSync, sign } from "node:crypto";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { executeMcpHealth, listMcpServers, mcpHealthPlan, registerMcpServer, setMcpActivation, validateMcpServer } from "../src/mcp.js";
-import { installPlugin, listPlugins, pluginHealth, setPluginEnabled, trustPluginPublisher, updatePlugin, validatePlugin } from "../src/plugins.js";
+import { installPlugin, listPlugins, pluginDependencies, pluginHealth, pluginPermissions, setPluginEnabled, trustPluginPublisher, updatePlugin, validatePlugin } from "../src/plugins.js";
 
 test("custom MCP servers are registered disabled and activated additively", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "mcp-registry-"));
@@ -110,5 +110,21 @@ test("plugin updates preserve prior versions and expose health", async () => {
     assert.equal(updated.updated, true);
     assert.equal((await listPlugins(root))[0].previousVersions[0], "1.0.0");
     assert.equal((await pluginHealth(root, "updatable")).healthy, true);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("runtime plugin dependencies and permissions are enforced", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "plugin-dependencies-"));
+  try {
+    const dependency = path.join(root, "dependency.json");
+    const runtime = path.join(root, "runtime.json");
+    await writeFile(dependency, JSON.stringify({ schemaVersion: 1, id: "dependency", version: "1.2.0", type: "declarative", permissions: [], contributions: {} }));
+    await installPlugin(root, dependency, { dryRun: false });
+    await writeFile(runtime, JSON.stringify({ schemaVersion: 2, id: "runtime", version: "1.0.0", type: "runtime", entry: "plugin.js", permissions: ["workspace:read"], capabilities: ["ping"], dependencies: { dependency: "^1.0.0" } }));
+    await installPlugin(root, runtime, { dryRun: false });
+    assert.deepEqual((await pluginPermissions(root, "runtime")).permissions, ["workspace:read"]);
+    assert.equal((await pluginDependencies(root, "runtime")).dependencies[0].satisfied, true);
+    await writeFile(path.join(root, "missing.json"), JSON.stringify({ schemaVersion: 2, id: "missing", version: "1.0.0", type: "runtime", entry: "plugin.js", permissions: [], capabilities: [], dependencies: { absent: ">=1.0.0" } }));
+    await assert.rejects(() => installPlugin(root, path.join(root, "missing.json"), { dryRun: false }), /not satisfied/);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
