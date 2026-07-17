@@ -15,3 +15,14 @@ test("release checksums are deterministic SHA-256 values", async () => {
   assert.match(releaseChecksum(contents), /^[a-f0-9]{64}$/);
   assert.equal(releaseChecksum(contents), releaseChecksum(contents));
 });
+
+test("publication metadata derives the current version and canonical repository", async () => {
+  const workflow = await readFile(new URL("../.github/workflows/publish.yml", import.meta.url), "utf8");
+  const generator = await readFile(new URL("../scripts/generate-distribution.js", import.meta.url), "utf8");
+
+  assert.match(workflow, /require\('\.\/package\.json'\)\.version/);
+  assert.match(workflow, /type=raw,value=\$\{\{ steps\.package\.outputs\.version \}\}/);
+  assert.doesNotMatch(workflow, /type=raw,value=1\.1\.0/);
+  assert.match(generator, /https:\/\/github\.com\/rohitkumarnaidu\/Forgevena/);
+  assert.doesNotMatch(generator, /rohitkumarnaidu\/Work-Space/);
+});
