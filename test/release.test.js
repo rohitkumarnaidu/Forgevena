@@ -26,3 +26,10 @@ test("publication metadata derives the current version and canonical repository"
   assert.match(generator, /https:\/\/github\.com\/rohitkumarnaidu\/Forgevena/);
   assert.doesNotMatch(generator, /rohitkumarnaidu\/Work-Space/);
 });
+
+test("tag publication declares public access when generating npm provenance", async () => {
+  const workflow = await readFile(new URL("../.github/workflows/release.yml", import.meta.url), "utf8");
+
+  assert.match(workflow, /npm publish --tag next --provenance --access public/);
+  assert.doesNotMatch(workflow, /npm publish --tag next --provenance\s*(?:\r?\n|$)/);
+});
