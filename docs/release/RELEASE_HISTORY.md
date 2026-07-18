@@ -1,5 +1,9 @@
 # Release History Preparation
 
+## v1.2.2
+
+Patch release for deterministic standalone Windows, Linux, and macOS executables; auditable OS/Node verification evidence; corrected Homebrew, Winget, and Chocolatey bundles; restricted-environment test execution; and synchronized release documentation. No public CLI or project-state compatibility break is introduced.
+
 ## v1.2.1
 
 Patch release for cross-platform CI reliability, production GitHub Pages deployment, explicit schema-v1 vault migration controls, restored generated references, and validated workflow/documentation dependency upgrades. No public CLI or project-state compatibility break is introduced.

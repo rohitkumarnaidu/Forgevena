@@ -37,6 +37,6 @@ Enable private vulnerability reporting, Dependabot alerts and updates, secret sc
 
 ## Environments and secrets
 
-Create the protected `npm-release` environment and require maintainer approval. Store `NPM_TOKEN`, `DOCKERHUB_USERNAME`, and `DOCKERHUB_TOKEN` only in GitHub Actions secrets. The signed-tag `Automated Release` workflow uses these credentials; `Retry Package Publication` is reserved for failed registry jobs. Prefer npm trusted publishing when the repository and package support it, retaining the protected environment as the approval boundary.
+Create the protected `npm-release` environment and require maintainer approval. Configure npm Trusted Publishing for user `rohitkumarnaidu`, repository `Forgevena`, workflow `release.yml`, environment `npm-release`, and the `npm publish` action. The signed-tag `Automated Release` workflow uses GitHub Actions OIDC and does not require `NPM_TOKEN`; npm retries must use the same workflow identity. Store only `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` for optional Docker Hub publication. Retain the protected environment as the approval boundary.
 
 These settings require repository-owner access and are intentionally documented rather than changed automatically.

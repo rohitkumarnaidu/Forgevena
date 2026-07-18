@@ -12,8 +12,8 @@ Forgevena follows semantic versioning. Patch releases contain backward-compatibl
 ## Tagging
 
 ```bash
-git tag -s v1.2.1 -m "Forgevena v1.2.1"
-git push origin v1.2.1
+git tag -s v1.2.2 -m "Forgevena v1.2.2"
+git push origin v1.2.2
 ```
 
 Use annotated tags (`git tag -a`) when signing infrastructure is unavailable, but record the exception. Never move or replace a published tag.

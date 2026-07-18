@@ -1,4 +1,5 @@
 import { createCipheriv, createDecipheriv, createHash, pbkdf2, randomBytes } from "node:crypto";
+import { constants } from "node:fs";
 import { access, copyFile, mkdir, readFile, readdir, rename, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
@@ -199,7 +200,7 @@ export async function migrateLegacyCredential(root, name, { dryRun = true, yes =
   await mkdir(path.dirname(backup), { recursive: true });
   await writeFile(temporary, replacement, { encoding: "utf8", mode: 0o600, flag: "wx" });
   try {
-    await copyFile(target, backup, (await import("node:fs")).constants.COPYFILE_EXCL);
+    await copyFile(target, backup, constants.COPYFILE_EXCL);
     await rename(temporary, target);
   } catch (error) {
     await rm(temporary, { force: true });
@@ -221,7 +222,7 @@ export async function recoverCredential(root, name, { dryRun = true } = {}) {
   const plan = { credential: name, dryRun, source: path.relative(root, source), destination: path.relative(root, active), integrityValidated: true, overwrite: false };
   if (dryRun) return plan;
   await mkdir(path.dirname(active), { recursive: true });
-  await copyFile(source, active, (await import("node:fs")).constants.COPYFILE_EXCL);
+  await copyFile(source, active, constants.COPYFILE_EXCL);
   return { ...plan, dryRun: false, recovered: true };
 }
 
@@ -298,7 +299,7 @@ async function credentialVersion(target) {
 }
 async function pruneHistory(directory, name, limit) {
   try {
-    const entries = (await (await import("node:fs/promises")).readdir(directory, { withFileTypes: true })).filter((entry) => entry.isFile() && entry.name.startsWith(`${name}-`)).map((entry) => entry.name).sort().reverse();
+    const entries = (await readdir(directory, { withFileTypes: true })).filter((entry) => entry.isFile() && entry.name.startsWith(`${name}-`)).map((entry) => entry.name).sort().reverse();
     await Promise.all(entries.slice(limit).map((entry) => rm(path.join(directory, entry), { force: true })));
   } catch (error) { if (error?.code !== "ENOENT") throw error; }
 }

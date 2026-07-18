@@ -1,6 +1,6 @@
 {
   "name": "forgevena",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "private": false,
   "description": "Governed engineering from idea to production.",
   "keywords": [
@@ -58,8 +58,8 @@
     "arm64"
   ],
   "scripts": {
-    "test": "node --test",
-    "test:coverage": "node --test --experimental-test-coverage",
+    "test": "node ./scripts/run-tests.js",
+    "test:coverage": "node ./scripts/run-tests.js --coverage",
     "start": "node ./bin/forgevena.js",
     "release:verify": "node ./scripts/verify-release.js",
     "release:supply-chain": "node ./scripts/generate-supply-chain.js --apply",
@@ -67,6 +67,7 @@
     "docs:verify": "node ./scripts/generate-docs.js --verify",
     "release:assets": "node ./scripts/generate-distribution.js",
     "benchmark": "node ./scripts/benchmark.js",
+    "build:standalone": "node ./scripts/build-standalone.js",
     "prepack": "npm test && npm run release:verify"
   },
   "engines": {
@@ -75,5 +76,20 @@
   "license": "MIT",
   "dependencies": {
     "@node-rs/argon2": "^2.0.2"
+  },
+  "devDependencies": {
+    "@yao-pkg/pkg": "6.21.0"
+  },
+  "pkg": {
+    "assets": [
+      "package.json",
+      "node_modules/@node-rs/argon2/**/*"
+    ],
+    "compress": "GZip",
+    "fallbackToSource": true,
+    "publicPackages": [
+      "@node-rs/argon2"
+    ],
+    "signature": false
   }
 }

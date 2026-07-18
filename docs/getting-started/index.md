@@ -10,12 +10,12 @@
 ## Install
 
 ```powershell
-npm install --global forgevena@1.2.1
+npm install --global forgevena@1.2.2
 forgevena version
 forgevena doctor
 ```
 
-For offline installation, download the verified archive and `RELEASE_SHA256SUMS` from the [latest release](https://github.com/rohitkumarnaidu/Forgevena/releases/latest), verify the checksum, then run `npm install --global ./forgevena-1.2.1.tgz`.
+For offline installation, download the verified archive and `RELEASE_SHA256SUMS` from the [latest release](https://github.com/rohitkumarnaidu/Forgevena/releases/latest), verify the checksum, then run `npm install --global ./forgevena-1.2.2.tgz`.
 
 ## Create a first project
 

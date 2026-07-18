@@ -45,8 +45,18 @@ test("signed tags automate changelog, release, and package publication", async (
   assert.match(workflow, /Capture release verification evidence/);
   assert.match(workflow, /release-verification\.json/);
   assert.match(workflow, /RELEASE_VERIFICATION\.md/);
+  assert.match(workflow, /standalone:/);
+  assert.match(workflow, /node22-win-x64/);
+  assert.match(workflow, /node22-linux-x64/);
+  assert.match(workflow, /node22-macos-x64/);
+  assert.match(workflow, /Smoke-test standalone executable/);
+  assert.match(workflow, /forgevena-win-x64\.exe/);
+  assert.match(workflow, /distribution-manifest\.json/);
   assert.match(workflow, /actions\/runs\/\$\{GITHUB_RUN_ID\}\/jobs/);
+  assert.match(workflow, /npm install --global npm@11\.5\.1/);
+  assert.match(workflow, /node-version: 22\.14\.0/);
   assert.match(workflow, /npm publish --tag "\$\{CHANNEL\}" --provenance --access public/);
+  assert.doesNotMatch(workflow, /secrets\.NPM_TOKEN/);
   assert.match(workflow, /npm publish --ignore-scripts --registry https:\/\/npm\.pkg\.github\.com/);
   assert.match(workflow, /ghcr\.io\/rohitkumarnaidu\/forgevena/);
   assert.match(workflow, /if: steps\.registries\.outputs\.dockerhub == 'true'/);
@@ -64,13 +74,14 @@ test("documentation CI checks the complete canonical documentation set", async (
 });
 
 test("public entry points reference the current stable release", async () => {
+  const packageJson = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
   const readme = await readFile(new URL("../README.md", import.meta.url), "utf8");
   const homepage = await readFile(new URL("../docs/index.md", import.meta.url), "utf8");
   const gettingStarted = await readFile(new URL("../docs/getting-started/index.md", import.meta.url), "utf8");
   const installation = await readFile(new URL("../docs/installation/index.md", import.meta.url), "utf8");
   const docsReadme = await readFile(new URL("../docs/README.md", import.meta.url), "utf8");
   for (const contents of [readme, homepage, gettingStarted, installation, docsReadme]) {
-    assert.match(contents, /1\.2\.1/);
+    assert.match(contents, new RegExp(packageJson.version.replaceAll(".", "\\.")));
     assert.doesNotMatch(contents, /npm install --global forgevena@1\.[01]\.0/);
   }
 });
@@ -78,14 +89,18 @@ test("public entry points reference the current stable release", async () => {
 test("secondary registries publish without mutating release validation", async () => {
   const workflow = await readFile(new URL("../.github/workflows/publish.yml", import.meta.url), "utf8");
 
+  assert.doesNotMatch(workflow, /publish_npm/);
+  assert.doesNotMatch(workflow, /registry\.npmjs\.org/);
   assert.match(workflow, /npm pkg set name=@rohitkumarnaidu\/forgevena/);
   assert.match(workflow, /npm publish --ignore-scripts --registry https:\/\/npm\.pkg\.github\.com/);
   assert.match(workflow, /node -e "console\.log\('version=' \+ require\('\.\/package\.json'\)\.version\)" >> "\$GITHUB_OUTPUT"/);
   assert.doesNotMatch(workflow, /node -p \\"require\('\.\/package\.json'\)\.version\"/);
 });
 
-test("manual package publication is explicitly retry-only", async () => {
+test("manual secondary publication is explicitly retry-only", async () => {
   const workflow = await readFile(new URL("../.github/workflows/publish.yml", import.meta.url), "utf8");
   assert.match(workflow, /name: Retry Package Publication/);
-  assert.match(workflow, /Retry npm publication after a failed automated release job/);
+  assert.match(workflow, /Retry scoped GitHub Packages publication/);
+  assert.match(workflow, /Retry container publication to GHCR and Docker Hub/);
+  assert.doesNotMatch(workflow, /npm-release/);
 });

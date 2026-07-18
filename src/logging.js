@@ -1,4 +1,4 @@
-import { mkdir, readdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, readdir, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const EVENT_FILES = { doctor: "doctor.log", install: "install.log", update: "update.log", rollback: "rollback.log", error: "errors.log", workspace: "workspace.log" };
@@ -25,7 +25,7 @@ async function rotate(directory, retentionDays) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     if (!entry.isFile()) continue;
     const target = path.join(directory, entry.name);
-    const stats = await (await import("node:fs/promises")).stat(target);
+    const stats = await stat(target);
     if (stats.mtimeMs < cutoff) await rm(target, { force: true });
   }
 }

@@ -3,10 +3,6 @@ name: Retry Package Publication
 on:
   workflow_dispatch:
     inputs:
-      publish_npm:
-        description: Retry npm publication after a failed automated release job
-        type: boolean
-        default: false
       publish_github_packages:
         description: Retry scoped GitHub Packages publication
         type: boolean
@@ -33,22 +29,6 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm test
       - run: npm run release:verify
-
-  npm:
-    if: inputs.publish_npm
-    needs: verify
-    runs-on: ubuntu-latest
-    environment: npm-release
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          registry-url: https://registry.npmjs.org
-      - run: npm ci --ignore-scripts
-      - run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   github-packages:
     if: inputs.publish_github_packages

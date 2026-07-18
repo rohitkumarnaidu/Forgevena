@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-The platform has strong additive safety, explicit consent boundaries, broad automated coverage, no runtime package dependencies, and clear project-scoped registries. The architecture is suitable for the current single-process CLI scope. The largest maintainability risks are concentrated CLI/dashboard files, repeated JSON persistence patterns, weak corruption visibility, and inconsistent separation between read-only diagnostics and persisted operational evidence.
+The platform has strong additive safety, explicit consent boundaries, broad automated coverage, a narrowly scoped MIT-licensed runtime dependency for Argon2id credential derivation, and clear project-scoped registries. The architecture is suitable for the current single-process CLI scope. The largest maintainability risks are concentrated CLI/dashboard files, repeated JSON persistence patterns, weak corruption visibility, and inconsistent separation between read-only diagnostics and persisted operational evidence.
 
 ## Findings
 
