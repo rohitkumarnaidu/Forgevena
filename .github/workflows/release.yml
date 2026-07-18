@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: Existing signed tag to verify or repair, for example v1.2.2
+        description: Existing signed tag to verify or repair, for example v1.2.3
         required: false
         type: string
       publish:
@@ -60,7 +60,7 @@ jobs:
           - runner: ubuntu-latest
             target: node22-linux-x64
             file: forgevena-linux-x64
-          - runner: macos-latest
+          - runner: macos-15-intel
             target: node22-macos-x64
             file: forgevena-macos-x64
     runs-on: ${{ matrix.runner }}

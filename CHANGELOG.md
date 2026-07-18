@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 1.2.3 - 2026-07-18 - Native Runtime Packaging Fix
+
+- Package host-specific Argon2 native bindings into standalone executables so macOS, Linux, and Windows binaries start consistently.
+- Add host-native standalone build and smoke-test jobs to pull-request package validation, preventing platform packaging defects from reaching signed tags.
+- Preserve the failed immutable `v1.2.2` tag as release evidence; no npm package or GitHub Release was published from that tag.
+
 ## 1.2.2 - 2026-07-18 - Distribution and Release Hardening
 
 - Add auditable OS/Node release-verification assets and consistent full-document spelling validation.

@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { access, mkdir } from "node:fs/promises";
+import { access, copyFile, mkdir, rm } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 
@@ -20,20 +20,25 @@ await mkdir(path.dirname(output), { recursive: true });
 const executable = path.resolve("node_modules", "@yao-pkg", "pkg", "lib-es5", "bin.js");
 await access(executable);
 
-await run(process.execPath, [
-  executable,
-  "./bin/forgevena.js",
-  "--config",
-  "./package.json",
-  "--targets",
-  target,
-  "--output",
-  output,
-  "--compress",
-  "GZip",
-  "--no-signature",
-  "--fallback-to-source",
-]);
+const stagedBinding = await stageNativeBinding(target);
+try {
+  await run(process.execPath, [
+    executable,
+    "./bin/forgevena.js",
+    "--config",
+    "./package.json",
+    "--targets",
+    target,
+    "--output",
+    output,
+    "--compress",
+    "GZip",
+    "--no-signature",
+    "--fallback-to-source",
+  ]);
+} finally {
+  if (stagedBinding.created) await rm(stagedBinding.destination, { force: true });
+}
 
 console.log(JSON.stringify({ target, output }, null, 2));
 
@@ -53,6 +58,25 @@ function defaultOutput(selectedTarget) {
   const [, platform, architecture] = selectedTarget.split("-");
   const extension = platform === "win" ? ".exe" : "";
   return path.join("dist", "standalone", `forgevena-${platform}-${architecture}${extension}`);
+}
+
+async function stageNativeBinding(selectedTarget) {
+  const binding = {
+    "node22-win-x64": ["argon2-win32-x64-msvc", "argon2.win32-x64-msvc.node"],
+    "node22-linux-x64": ["argon2-linux-x64-gnu", "argon2.linux-x64-gnu.node"],
+    "node22-macos-x64": ["argon2-darwin-x64", "argon2.darwin-x64.node"],
+  }[selectedTarget];
+  const [packageName, fileName] = binding;
+  const source = path.resolve("node_modules", "@node-rs", packageName, fileName);
+  const destination = path.resolve("node_modules", "@node-rs", "argon2", fileName);
+  await access(source);
+  try {
+    await access(destination);
+    return { created: false, destination };
+  } catch {
+    await copyFile(source, destination);
+    return { created: true, destination };
+  }
 }
 
 function run(command, args) {

@@ -129,6 +129,7 @@ nav:
       - Runbooks: operations/runbooks.md
       - Testing: testing/guide.md
       - Release Engineering: release/index.md
+      - Release Notes 1.2.3: RELEASE_NOTES_1.2.3.md
       - Release Notes 1.2.2: RELEASE_NOTES_1.2.2.md
   - Learn:
       - Examples: examples/index.md

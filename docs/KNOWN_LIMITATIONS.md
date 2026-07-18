@@ -6,4 +6,4 @@
 - AWS deployment requires an explicitly selected service architecture.
 - Shell completion and formal coverage thresholds are not included in this release candidate.
 - External cloud resources are never deleted automatically.
-- Standalone `v1.2.2` executables target x64. arm64 installations use npm until native arm64 release builders are certified.
+- Standalone `v1.2.3` executables target x64. arm64 installations use npm until native arm64 release builders are certified.
