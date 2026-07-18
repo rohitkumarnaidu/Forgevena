@@ -11,6 +11,36 @@ permissions:
   contents: read
 
 jobs:
+  standalone:
+    strategy:
+      matrix:
+        include:
+          - runner: windows-latest
+            target: node22-win-x64
+            file: forgevena-win-x64.exe
+          - runner: ubuntu-latest
+            target: node22-linux-x64
+            file: forgevena-linux-x64
+          - runner: macos-15-intel
+            target: node22-macos-x64
+            file: forgevena-macos-x64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run build:standalone -- --target ${{ matrix.target }} --output dist/standalone/${{ matrix.file }}
+      - name: Smoke-test standalone executable
+        shell: bash
+        run: |
+          if [[ "${{ matrix.file }}" != *.exe ]]; then chmod +x "dist/standalone/${{ matrix.file }}"; fi
+          "dist/standalone/${{ matrix.file }}" version | grep '"version"'
+          "dist/standalone/${{ matrix.file }}" doctor --structured > standalone-doctor.json
+          grep '"status"' standalone-doctor.json
+
   npm-and-container:
     runs-on: ubuntu-latest
     steps:

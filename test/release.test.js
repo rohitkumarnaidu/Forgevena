@@ -49,6 +49,7 @@ test("signed tags automate changelog, release, and package publication", async (
   assert.match(workflow, /node22-win-x64/);
   assert.match(workflow, /node22-linux-x64/);
   assert.match(workflow, /node22-macos-x64/);
+  assert.match(workflow, /macos-15-intel/);
   assert.match(workflow, /Smoke-test standalone executable/);
   assert.match(workflow, /forgevena-win-x64\.exe/);
   assert.match(workflow, /distribution-manifest\.json/);
@@ -63,6 +64,23 @@ test("signed tags automate changelog, release, and package publication", async (
   assert.match(workflow, /Docker Hub credentials are absent; publishing GHCR only/);
   assert.match(workflow, /make_latest: \$\{\{ steps\.channel\.outputs\.make_latest \}\}/);
   assert.doesNotMatch(workflow, /prerelease: true/);
+});
+
+test("package validation smoke-tests host-native executables before tagging", async () => {
+  const workflow = await readFile(new URL("../.github/workflows/package-validation.yml", import.meta.url), "utf8");
+  const builder = await readFile(new URL("../scripts/build-standalone.js", import.meta.url), "utf8");
+  const packageJson = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
+
+  assert.match(workflow, /node22-win-x64/);
+  assert.match(workflow, /node22-linux-x64/);
+  assert.match(workflow, /node22-macos-x64/);
+  assert.match(workflow, /macos-15-intel/);
+  assert.match(workflow, /Smoke-test standalone executable/);
+  assert.match(builder, /argon2-win32-x64-msvc/);
+  assert.match(builder, /argon2-linux-x64-gnu/);
+  assert.match(builder, /argon2-darwin-x64/);
+  assert.match(builder, /copyFile\(source, destination\)/);
+  assert.ok(packageJson.pkg.assets.includes("node_modules/@node-rs/argon2/**/*"));
 });
 
 test("documentation CI checks the complete canonical documentation set", async () => {

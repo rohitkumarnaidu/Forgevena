@@ -2,15 +2,15 @@
 
 ## npm
 
-Install the current stable release with `npm install --global forgevena@1.2.2`.
+Install the current stable release with `npm install --global forgevena@1.2.3`.
 
 ## Verified archive
 
-Download `forgevena-1.2.2.tgz` and `RELEASE_SHA256SUMS` from the [latest release](https://github.com/rohitkumarnaidu/Forgevena/releases/latest), verify the checksum, install with `npm install --global ./forgevena-1.2.2.tgz`, then run `forgevena version` and `forgevena doctor`.
+Download `forgevena-1.2.3.tgz` and `RELEASE_SHA256SUMS` from the [latest release](https://github.com/rohitkumarnaidu/Forgevena/releases/latest), verify the checksum, install with `npm install --global ./forgevena-1.2.3.tgz`, then run `forgevena version` and `forgevena doctor`.
 
 ## Standalone executables
 
-The `v1.2.2` release publishes `forgevena-win-x64.exe`, `forgevena-linux-x64`, and `forgevena-macos-x64`. Download the matching executable and `RELEASE_SHA256SUMS`, verify SHA-256 before execution, and grant execute permission on Linux or macOS. npm remains the supported arm64 installation path for this release.
+The `v1.2.3` release publishes `forgevena-win-x64.exe`, `forgevena-linux-x64`, and `forgevena-macos-x64`. Download the matching executable and `RELEASE_SHA256SUMS`, verify SHA-256 before execution, and grant execute permission on Linux or macOS. npm remains the supported arm64 installation path for this release.
 
 ## Source checkout
 

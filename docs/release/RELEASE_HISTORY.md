@@ -1,5 +1,9 @@
 # Release History Preparation
 
+## v1.2.3
+
+Patch release for packaging host-specific Argon2 native bindings into standalone executables and enforcing Windows, Linux, and macOS standalone smoke tests during pull-request package validation. The failed immutable `v1.2.2` tag remains unchanged and published no npm package or GitHub Release.
+
 ## v1.2.2
 
 Patch release for deterministic standalone Windows, Linux, and macOS executables; auditable OS/Node verification evidence; corrected Homebrew, Winget, and Chocolatey bundles; restricted-environment test execution; and synchronized release documentation. No public CLI or project-state compatibility break is introduced.
