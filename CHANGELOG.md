@@ -2,14 +2,21 @@
 
 ## Unreleased
 
+## 1.2.2 - 2026-07-18 - Distribution and Release Hardening
+
 - Add auditable OS/Node release-verification assets and consistent full-document spelling validation.
 
 - Consolidated signed-tag releases into one automated pipeline that verifies the source, generates release notes, uploads immutable artifacts, creates or updates the GitHub Release, and publishes npm, GitHub Packages, GHCR, and Docker Hub distributions.
-- Retained the manual package workflow as a retry-only recovery path and added idempotent npm and GitHub Packages publication checks.
+- Retained the manual package workflow for GitHub Packages and container recovery, while routing npm publication and retries exclusively through the OIDC-authorized automated release workflow.
 - Corrected generated changelog links to the canonical `rohitkumarnaidu/Forgevena` repository.
 - Updated the README and documentation homepage to the current stable release and added downloadable Homebrew, Winget, Chocolatey, SBOM, provenance, and checksum assets to automated releases.
 - Added a safe workflow-dispatch repair path that rebuilds from an existing signed tag while skipping already-published immutable package versions.
-- Updated the remaining active installation guides to 1.2.1 and made manual release repairs use the current canonical changelog configuration so historical repository links are corrected.
+- Updated the remaining active installation guides to 1.2.2 and made manual release repairs use the current canonical changelog configuration so historical repository links are corrected.
+- Added deterministic standalone Windows, Linux, and macOS executables built and smoke-tested from the signed release source.
+- Corrected Winget to use a Windows executable instead of an npm archive, moved Homebrew to immutable native binaries, and added checksum-verified Chocolatey install and uninstall behavior.
+- Added a distribution manifest containing artifact sizes, SHA-256 hashes, immutable release URLs, and builder provenance.
+- Added a test runner fallback for environments where the operating-system temporary directory is not writable.
+- Replaced long-lived npm publication credentials with npm Trusted Publishing through GitHub Actions OIDC and completed Chocolatey documentation, issue-tracker, and release metadata.
 
 ## 1.2.1 - 2026-07-17 - Release Reliability and Vault Migration
 

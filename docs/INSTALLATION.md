@@ -2,7 +2,7 @@
 
 ## npm
 
-Run `npm install --global forgevena@1.2.1`, then verify with `forgevena version`. The legacy `ai-workspace` executable remains supported throughout 1.x.
+Run `npm install --global forgevena@1.2.2`, then verify with `forgevena version`. The legacy `ai-workspace` executable remains supported throughout 1.x.
 
 ## Offline and portable
 

@@ -26,6 +26,6 @@ Each automated GitHub Release also includes `RELEASE_VERIFICATION.md` and `relea
 
 ## Distribution channels
 
-Signed tags automatically generate release notes and publish the GitHub Release, npm package, GitHub Package, GHCR image, Docker Hub image, standalone archive, checksums, and supply-chain evidence through protected GitHub Actions. Winget, Chocolatey, and Homebrew remain external review processes that consume the immutable release assets.
+Signed tags automatically generate release notes and publish the GitHub Release, npm package, GitHub Package, GHCR image, Docker Hub image, smoke-tested standalone executables, distribution manifest, checksums, and supply-chain evidence through protected GitHub Actions. Winget, Chocolatey, and Homebrew remain external review processes that consume the immutable release assets.
 
 See [Release Checklist](../RELEASE_CHECKLIST.md), [Release Guide](../RELEASE_GUIDE.md), [Final Readiness](../rc/FINAL_RELEASE_READINESS.md), and [1.0.0 Notes](../RELEASE_NOTES_1.0.0.md).

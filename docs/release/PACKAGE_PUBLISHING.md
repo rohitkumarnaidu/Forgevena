@@ -1,6 +1,6 @@
 # Package Publishing
 
-Pushing a verified signed tag matching `v*` starts `.github/workflows/release.yml`. The workflow generates release notes; uploads the npm archive, checksums, SBOM, provenance, release-verification reports, and package-manager bundles; creates or updates the GitHub Release; and publishes all configured package channels. Stable tags publish npm and container `latest`; prerelease tags publish npm `next` and never move container `latest`.
+Pushing a verified signed tag matching `v*` starts `.github/workflows/release.yml`. The workflow generates release notes; builds and smoke-tests native Windows, Linux, and macOS executables; uploads the npm archive, checksums, SBOM, provenance, release-verification reports, distribution manifest, and package-manager bundles; creates or updates the GitHub Release; and publishes all configured package channels. Stable tags publish npm and container `latest`; prerelease tags publish npm `next` and never move container `latest`.
 
 Maintainers can repair an existing immutable tag by manually running `Automated Release` with `release_tag` set to that tag and `publish` enabled. Leave `publish_packages` disabled when only release notes or downloads need repair. The workflow checks out the tag itself, not `main`, and skips package versions that already exist when registry retries are explicitly enabled.
 
@@ -8,7 +8,7 @@ Release verification is generated only after all six Windows, Ubuntu, and macOS 
 
 ## npm
 
-The automated release job uses the protected `npm-release` environment, `NPM_TOKEN`, provenance, and public access. Existing immutable versions are detected and skipped safely. Verify with `npm view forgevena version` and `npm view forgevena dist-tags`.
+The automated release job uses the protected `npm-release` environment and npm Trusted Publishing through GitHub Actions OIDC. `release.yml` is the only authorized npm publisher, uses Node.js 22.14.0 with npm 11.5.1, requests `id-token: write`, and does not read a long-lived npm publication token. Existing immutable versions are detected and skipped safely. Verify with `npm view forgevena version` and `npm view forgevena dist-tags`.
 
 ## GitHub Packages
 
@@ -20,11 +20,11 @@ The automated release job publishes multi-architecture images to GHCR and Docker
 
 ## Retry workflow
 
-Use `Retry Package Publication` only when a release publication job failed after the tag was accepted. Select only the failed registries. It does not create releases or changelog content and must not be used to publish a different source revision under an existing version.
+Use `Retry Package Publication` only for GitHub Packages or container failures. To retry npm publication, run `Automated Release` with the immutable `release_tag`, `publish` enabled, and `publish_packages` enabled; this preserves the single trusted workflow identity required by npm. Neither workflow may publish a different source revision under an existing version.
 
 ## Homebrew, Winget, and Chocolatey
 
-`npm run release:assets` creates checksummed submission manifests under `dist/`. Submission to external package-manager repositories requires account ownership, review, and their normal pull-request processes.
+`npm run release:assets` consumes the npm archive and three native x64 executables under `dist/standalone/`, then creates checksummed submission manifests under `dist/`. Homebrew consumes immutable macOS/Linux binaries, Winget consumes the Windows executable, and Chocolatey embeds the same checksum-verified Windows executable with install and uninstall scripts. Submission to external package-manager repositories requires account ownership, review, and their normal pull-request processes.
 
 ## Rollback
 

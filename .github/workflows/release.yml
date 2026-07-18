@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: Existing signed tag to verify or repair, for example v1.2.1
+        description: Existing signed tag to verify or repair, for example v1.2.2
         required: false
         type: string
       publish:
@@ -49,8 +49,46 @@ jobs:
       - run: npm run release:verify
       - run: npm pack --dry-run
 
-  artifacts:
+  standalone:
     needs: verify
+    strategy:
+      matrix:
+        include:
+          - runner: windows-latest
+            target: node22-win-x64
+            file: forgevena-win-x64.exe
+          - runner: ubuntu-latest
+            target: node22-linux-x64
+            file: forgevena-linux-x64
+          - runner: macos-latest
+            target: node22-macos-x64
+            file: forgevena-macos-x64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ env.RELEASE_REF }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run build:standalone -- --target ${{ matrix.target }} --output dist/standalone/${{ matrix.file }}
+      - name: Smoke-test standalone executable
+        shell: bash
+        run: |
+          if [[ "${{ matrix.file }}" != *.exe ]]; then chmod +x "dist/standalone/${{ matrix.file }}"; fi
+          "dist/standalone/${{ matrix.file }}" version | grep '"version"'
+          "dist/standalone/${{ matrix.file }}" doctor --structured > standalone-doctor.json
+          grep '"status"' standalone-doctor.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: forgevena-standalone-${{ matrix.target }}
+          path: dist/standalone/${{ matrix.file }}
+          if-no-files-found: error
+
+  artifacts:
+    needs: [verify, standalone]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -63,6 +101,11 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: mkdir -p dist
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: forgevena-standalone-*
+          path: dist/standalone
+          merge-multiple: true
       - name: Select changelog configuration
         id: changelog-config
         shell: bash
@@ -109,6 +152,9 @@ jobs:
         shell: bash
         run: |
           VERSION="${RELEASE_REF#v}"
+          cp dist/standalone/forgevena-win-x64.exe dist/
+          cp dist/standalone/forgevena-linux-x64 dist/
+          cp dist/standalone/forgevena-macos-x64 dist/
           tar -czf "dist/forgevena-${VERSION}-homebrew.tar.gz" -C dist/homebrew .
           tar -czf "dist/forgevena-${VERSION}-winget.tar.gz" -C dist/winget .
           tar -czf "dist/forgevena-${VERSION}-chocolatey.tar.gz" -C dist/chocolatey .
@@ -163,6 +209,10 @@ jobs:
             dist/forgevena-*-chocolatey.tar.gz
             dist/forgevena-*-sbom.cdx.json
             dist/forgevena-*-provenance.intoto.jsonl
+            dist/forgevena-win-x64.exe
+            dist/forgevena-linux-x64
+            dist/forgevena-macos-x64
+            dist/distribution-manifest.json
             dist/release-verification.json
             dist/RELEASE_VERIFICATION.md
             dist/SHA256SUMS
@@ -183,14 +233,15 @@ jobs:
           ref: ${{ env.RELEASE_REF }}
       - uses: actions/setup-node@v7
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: 22.14.0
           registry-url: https://registry.npmjs.org
-          cache: npm
+          package-manager-cache: false
+      - name: Install OIDC-compatible npm
+        run: npm install --global npm@11.5.1
+      - run: npm --version
       - run: npm ci --ignore-scripts
       - name: Publish npm package when absent
         shell: bash
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           VERSION="${RELEASE_REF#v}"
           if npm view "forgevena@${VERSION}" version >/dev/null 2>&1; then

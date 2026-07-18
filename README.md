@@ -38,12 +38,12 @@ Modern engineering teams repeatedly solve the same setup, governance, integratio
 - **Provider controls:** OpenAI, Anthropic, Gemini, OpenRouter, Ollama, Codex, Claude, Cursor, and Windsurf profiles with secret-reference-only tracked configuration.
 - **Cloud preparation:** Render, Railway, Vercel, AWS, Azure, and Google Cloud preflight plans, validation, dry runs, health checks, and rollback guidance.
 - **Release engineering:** signed-tag automation for changelog notes, GitHub Releases, npm, GitHub Packages, GHCR, Docker Hub, checksums, SBOMs, provenance, and package-manager bundles.
-- **Cross-platform:** Windows 11, WSL2/Linux, and macOS on x64 and arm64 with Node.js 20.19 or newer.
+- **Cross-platform:** Windows 11, WSL2/Linux, and macOS on x64 and arm64 through npm with Node.js 20.19 or newer; standalone `v1.2.2` executables target x64.
 
 ## Quick Start
 
 ```bash
-npm install --global forgevena@1.2.1
+npm install --global forgevena@1.2.2
 forgevena doctor
 forgevena create DemoApi --template fastapi --dry-run --verbose
 forgevena create DemoApi --template fastapi --apply
@@ -51,7 +51,7 @@ cd DemoApi
 forgevena validate
 ```
 
-Release downloads, checksums, SBOMs, provenance, and package-manager bundles are published on the [GitHub Releases page](https://github.com/rohitkumarnaidu/Forgevena/releases/latest). npm users can verify the stable version with `npm view forgevena version`.
+Release downloads include smoke-tested Windows, Linux, and macOS x64 executables, checksums, SBOMs, provenance, verification evidence, and package-manager bundles on the [GitHub Releases page](https://github.com/rohitkumarnaidu/Forgevena/releases/latest). Verify native files against `RELEASE_SHA256SUMS`; npm users can verify the stable version with `npm view forgevena version`.
 
 For an existing repository, always preview first:
 
