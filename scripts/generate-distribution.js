@@ -134,7 +134,7 @@ function nuspec(version) {
     <docsUrl>https://rohitkumarnaidu.github.io/Forgevena/</docsUrl>
     <bugTrackerUrl>${repositoryUrl}/issues</bugTrackerUrl>
     <releaseNotes>${repositoryUrl}/releases/tag/v${version}</releaseNotes>
-    <license type="expression">MIT</license>
+    <licenseUrl>${repositoryUrl}/blob/v${version}/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>forgevena developer-platform cli ai devops</tags>
   </metadata>
