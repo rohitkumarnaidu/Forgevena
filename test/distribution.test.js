@@ -31,6 +31,8 @@ test("native distribution manifests use immutable standalone release assets", as
     assert.match(uninstall, /Remove-Item/);
     assert.match(nuspec, /<docsUrl>https:\/\/rohitkumarnaidu\.github\.io\/Forgevena\/<\/docsUrl>/);
     assert.match(nuspec, /<bugTrackerUrl>https:\/\/github\.com\/rohitkumarnaidu\/Forgevena\/issues<\/bugTrackerUrl>/);
+    assert.match(nuspec, /<licenseUrl>https:\/\/github\.com\/rohitkumarnaidu\/Forgevena\/blob\/v9\.9\.9\/LICENSE<\/licenseUrl>/);
+    assert.doesNotMatch(nuspec, /<license(?:\s|>)/);
     assert.doesNotMatch(nuspec, /nodejs-lts/);
     assert.match(manifest, /"builder"/);
 
