@@ -16,7 +16,9 @@ test("native distribution manifests use immutable standalone release assets", as
     await writeFile(path.join(root, "LICENSE"), "MIT License\n");
 
     await generateDistribution(root, { name: "forgevena", version: "9.9.9" });
-    const winget = await readFile(path.join(root, "dist", "winget", "RohitKumarNaidu.Forgevena.yaml"), "utf8");
+    const wingetVersion = await readFile(path.join(root, "dist", "winget", "RohitKumarNaidu.Forgevena.yaml"), "utf8");
+    const wingetInstaller = await readFile(path.join(root, "dist", "winget", "RohitKumarNaidu.Forgevena.installer.yaml"), "utf8");
+    const wingetLocale = await readFile(path.join(root, "dist", "winget", "RohitKumarNaidu.Forgevena.locale.en-US.yaml"), "utf8");
     const homebrew = await readFile(path.join(root, "dist", "homebrew", "forgevena.rb"), "utf8");
     const install = await readFile(path.join(root, "dist", "chocolatey", "tools", "chocolateyinstall.ps1"), "utf8");
     const uninstall = await readFile(path.join(root, "dist", "chocolatey", "tools", "chocolateyuninstall.ps1"), "utf8");
@@ -24,8 +26,13 @@ test("native distribution manifests use immutable standalone release assets", as
     const nuspec = await readFile(path.join(root, "dist", "chocolatey", "forgevena.nuspec"), "utf8");
     const manifest = await readFile(path.join(root, "dist", "distribution-manifest.json"), "utf8");
 
-    assert.match(winget, /forgevena-win-x64\.exe/);
-    assert.doesNotMatch(winget, /\.tgz/);
+    assert.match(wingetVersion, /ManifestType: version/);
+    assert.match(wingetVersion, /ManifestVersion: 1\.12\.0/);
+    assert.match(wingetInstaller, /forgevena-win-x64\.exe/);
+    assert.match(wingetInstaller, /ManifestType: installer/);
+    assert.doesNotMatch(wingetInstaller, /\.tgz/);
+    assert.match(wingetLocale, /ManifestType: defaultLocale/);
+    assert.match(wingetLocale, /LicenseUrl: .*\/blob\/v9\.9\.9\/LICENSE/);
     assert.match(homebrew, /forgevena-macos-x64/);
     assert.match(homebrew, /forgevena-linux-x64/);
     assert.match(install, /Get-FileHash/);

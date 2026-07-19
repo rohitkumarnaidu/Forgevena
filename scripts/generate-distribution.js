@@ -46,7 +46,9 @@ export async function generateDistribution(root = process.cwd(), packageJson = d
     builder: { name: "@yao-pkg/pkg", version: "6.21.0", runtime: "node22" },
   }, null, 2)}\n`);
   await writeFile(path.join(output, "homebrew", "forgevena.rb"), homebrew(version, releaseBase, artifacts));
-  await writeFile(path.join(output, "winget", "RohitKumarNaidu.Forgevena.yaml"), winget(version, releaseBase, artifacts.windows));
+  await writeFile(path.join(output, "winget", "RohitKumarNaidu.Forgevena.yaml"), wingetVersion(version));
+  await writeFile(path.join(output, "winget", "RohitKumarNaidu.Forgevena.installer.yaml"), wingetInstaller(version, releaseBase, artifacts.windows));
+  await writeFile(path.join(output, "winget", "RohitKumarNaidu.Forgevena.locale.en-US.yaml"), wingetDefaultLocale(version));
   await copyFile(artifacts.windows.path, path.join(output, "chocolatey", "tools", "forgevena.exe"));
   await copyFile(path.join(root, "LICENSE"), path.join(output, "chocolatey", "tools", "LICENSE.txt"));
   await writeFile(path.join(output, "chocolatey", "forgevena.nuspec"), nuspec(version));
@@ -94,18 +96,20 @@ end
 `;
 }
 
-function winget(version, releaseBase, windows) {
-  return `PackageIdentifier: RohitKumarNaidu.Forgevena
+function wingetVersion(version) {
+  return `# yaml-language-server: $schema=https://aka.ms/winget-manifest.version.1.12.0.schema.json
+PackageIdentifier: RohitKumarNaidu.Forgevena
 PackageVersion: ${version}
-PackageLocale: en-US
-Publisher: Rohit Kumar Naidu
-PublisherUrl: ${repositoryUrl}
-PackageName: Forgevena
-PackageUrl: ${repositoryUrl}
-License: MIT
-LicenseUrl: ${repositoryUrl}/blob/v${version}/LICENSE
-ShortDescription: Governed engineering from idea to production
-ReleaseNotesUrl: ${repositoryUrl}/releases/tag/v${version}
+DefaultLocale: en-US
+ManifestType: version
+ManifestVersion: 1.12.0
+`;
+}
+
+function wingetInstaller(version, releaseBase, windows) {
+  return `# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.12.0.schema.json
+PackageIdentifier: RohitKumarNaidu.Forgevena
+PackageVersion: ${version}
 InstallerType: portable
 Commands:
   - forgevena
@@ -113,9 +117,27 @@ Installers:
   - Architecture: x64
     InstallerUrl: ${releaseBase}/${windows.name}
     InstallerSha256: ${windows.sha256.toUpperCase()}
-    InstallerType: portable
-ManifestType: singleton
-ManifestVersion: 1.9.0
+ManifestType: installer
+ManifestVersion: 1.12.0
+`;
+}
+
+function wingetDefaultLocale(version) {
+  return `# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.12.0.schema.json
+PackageIdentifier: RohitKumarNaidu.Forgevena
+PackageVersion: ${version}
+PackageLocale: en-US
+Publisher: Rohit Kumar Naidu
+PublisherUrl: ${repositoryUrl}
+PublisherSupportUrl: ${repositoryUrl}/issues
+PackageName: Forgevena
+PackageUrl: ${repositoryUrl}
+License: MIT
+LicenseUrl: ${repositoryUrl}/blob/v${version}/LICENSE
+ShortDescription: Governed engineering from idea to production
+ReleaseNotesUrl: ${repositoryUrl}/releases/tag/v${version}
+ManifestType: defaultLocale
+ManifestVersion: 1.12.0
 `;
 }
 
