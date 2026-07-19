@@ -48,6 +48,7 @@ export async function generateDistribution(root = process.cwd(), packageJson = d
   await writeFile(path.join(output, "homebrew", "forgevena.rb"), homebrew(version, releaseBase, artifacts));
   await writeFile(path.join(output, "winget", "RohitKumarNaidu.Forgevena.yaml"), winget(version, releaseBase, artifacts.windows));
   await copyFile(artifacts.windows.path, path.join(output, "chocolatey", "tools", "forgevena.exe"));
+  await copyFile(path.join(root, "LICENSE"), path.join(output, "chocolatey", "tools", "LICENSE.txt"));
   await writeFile(path.join(output, "chocolatey", "forgevena.nuspec"), nuspec(version));
   await writeFile(path.join(output, "chocolatey", "tools", "chocolateyinstall.ps1"), chocolateyInstall(artifacts.windows.sha256));
   await writeFile(path.join(output, "chocolatey", "tools", "chocolateyuninstall.ps1"), chocolateyUninstall());
@@ -133,6 +134,7 @@ function nuspec(version) {
     <packageSourceUrl>${repositoryUrl}</packageSourceUrl>
     <docsUrl>https://rohitkumarnaidu.github.io/Forgevena/</docsUrl>
     <bugTrackerUrl>${repositoryUrl}/issues</bugTrackerUrl>
+    <iconUrl>https://rohitkumarnaidu.github.io/Forgevena/assets/favicon.svg</iconUrl>
     <releaseNotes>${repositoryUrl}/releases/tag/v${version}</releaseNotes>
     <licenseUrl>${repositoryUrl}/blob/v${version}/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
