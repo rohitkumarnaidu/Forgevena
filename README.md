@@ -144,6 +144,10 @@ The architecture is intentionally modular and frozen for the 1.x line. New core 
 - [Operations and runbooks](docs/operations/runbooks.md)
 - [Release guide](docs/release/index.md)
 
+## Built with Codex and GPT-5.6
+
+Forgevena was developed through an AI-assisted engineering workflow using Codex and GPT-5.6 for architecture planning, implementation, testing, documentation, CI/CD repair, security review, and release engineering. Changes were reviewed and validated with automated tests and GitHub Actions before release.
+
 ## Project Preview
 
 ![Forgevena CLI preview placeholder](docs/assets/cli-preview.svg)
