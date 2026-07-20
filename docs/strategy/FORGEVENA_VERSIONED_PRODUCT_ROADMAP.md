@@ -1,0 +1,590 @@
+# Forgevena Versioned Product and Innovation Roadmap
+
+> **Document purpose:** Define the planned version sequence after `v1.2.3`, connect existing foundations to enterprise outcomes, capture candidate and exploratory ideas, and establish the evidence required before any capability is declared complete.
+>
+> **Planning baseline:** 2026-07-20
+> **Current stable release:** `v1.2.3`
+> **Roadmap horizon:** `v1.2.x` maintenance through `v2.x` optional remote platform
+> **Companion document:** [Forgevena Platform Blueprint](FORGEVENA_PLATFORM_BLUEPRINT.md)
+
+## 1. Roadmap Contract
+
+This roadmap is a product strategy, not permission to implement every idea. Work enters a release only when it has requirements, an owner, acceptance evidence, security and compatibility impact, documentation impact, and a rollback plan.
+
+Roadmap items use three commitment levels:
+
+| Level | Meaning |
+| --- | --- |
+| **Committed** | Required for the named release and governed by its acceptance gates. |
+| **Candidate** | Valuable and aligned, but scheduled only after design and capacity review. |
+| **Exploratory** | Research or product-discovery idea; no compatibility or delivery promise. |
+
+## 2. Strategic Outcomes
+
+The roadmap advances five outcomes in dependency order:
+
+1. **Trustworthy foundation:** state, vault, errors, performance, migration, and recovery are measurable.
+2. **Governed ecosystem:** providers, MCP, plugins, templates, and catalogs share versioned contracts and policy controls.
+3. **Local enterprise operation:** organizations can enforce policy, audit actions, diagnose failures, and verify supply chain without a server.
+4. **Safe engineering intelligence:** skills, workflows, indexes, and copilots reuse the same consent, policy, state, and audit foundations.
+5. **Optional remote coordination:** a self-managed control plane synchronizes trusted metadata while local operation remains complete.
+
+## 3. Versioning and Compatibility Policy
+
+- Patch releases fix correctness, security, packaging, documentation, and distribution defects.
+- Minor releases add backward-compatible capabilities and mature experimental contracts.
+- Major releases may change contracts only with migration tooling, compatibility reports, and rollback.
+- Published tags are immutable and never moved or reused.
+- `forgevena`, `ai-workspace`, and `.ai-workspace/` remain compatible throughout 1.x.
+- Deprecations require warnings across at least two minor releases.
+- New network effects remain disabled until explicitly configured and approved.
+- Experimental features remain behind capability or policy flags and are excluded from enterprise support claims.
+
+## 4. Dependency Sequence
+
+```mermaid
+flowchart LR
+  M["1.2.x Maintenance"] --> R["1.3 Reliability"]
+  R --> P["1.4 Providers"]
+  P --> X["1.5 Plugins and MCP"]
+  X --> T["1.6 Templates and Distribution"]
+  T --> G["1.7 Governance"]
+  G --> O["1.8 Observability and Supply Chain"]
+  O --> W["1.9 Skills and Workflows"]
+  W --> I["1.10 Intelligence and Local GA"]
+  I --> C["2.0 Optional Control Plane"]
+```
+
+The sequence prevents higher-level AI and remote features from bypassing lower-level reliability, policy, privacy, and audit requirements.
+
+## 5. `v1.2.x` — Stable Maintenance and Distribution Completion
+
+### v1.2.x Outcome
+
+Keep the public release installable, documented, and consistent while external package repositories finish moderation.
+
+### v1.2.x Current Position
+
+- npm `latest`, GitHub Release, GitHub Packages, GHCR, documentation, native x64 assets, checksums, SBOM, and provenance are published for `v1.2.3`.
+- Winget validation is complete and moderator review remains.
+- Chocolatey validation and package testing passed; scanning and moderation remain.
+- The maintained [Homebrew tap](https://github.com/rohitkumarnaidu/homebrew-forgevena) is published and its hosted formula validation passes for Linux and Intel macOS.
+
+### v1.2.x Committed Work
+
+- Fix release or distribution defects only through new patch versions when source or metadata changes.
+- Keep package-manager generators aligned with external repository rules.
+- Verify npm, GitHub Packages, GHCR, documentation, and native assets after every patch.
+- Update the published Homebrew formula with each validated native release and retain hosted formula validation.
+- Record Winget and Chocolatey approval evidence when external moderation completes.
+- Keep public installation documentation synchronized with actual channel availability.
+
+### v1.2.x Acceptance
+
+- Every supported channel reports the same version.
+- Installation, `version`, `doctor`, and uninstall smoke tests pass.
+- No published tag is rewritten.
+- Release notes, changelog, documentation, checksums, and package metadata agree.
+
+## 6. `v1.3.0` — Reliability, State, and Vault Certification
+
+### v1.3 Outcome
+
+Convert the broad foundation into a demonstrably reliable local platform.
+
+### v1.3 Committed Work Streams
+
+#### CLI Boundaries
+
+- Complete separation of routing, argument validation, consent, rendering, execution, and error translation.
+- Inject state, registry, provider, plugin, bootstrap, logging, and policy services through application context.
+- Preserve human and structured output compatibility.
+
+#### State Engine
+
+- Route every persistent mutation through one state contract.
+- Strengthen exclusive locking and stale-lock recovery.
+- Complete transaction journals, bounded retention, crash recovery, repair, snapshots, migration, and rollback.
+- Handle disk-full, permission, interrupted-write, checksum, and concurrency failures visibly.
+- Add schema migration dry runs and representative legacy workspace fixtures.
+
+#### Vault
+
+- Certify AES-256-GCM and Argon2id behavior across supported hosts.
+- Complete transactional rotation, recovery, deletion, backup integrity, and encrypted bounded history.
+- Validate PBKDF2 fallback and legacy migration without weakening new vaults.
+- Add recovery-key operational guidance without storing recovery secrets in the workspace.
+
+#### Error and Performance Contracts
+
+- Standardize stable error codes and exit codes.
+- Attach operation IDs to every command, state transaction, and audit event.
+- Recursively redact secrets in errors, logs, diagnostics, and child-process output.
+- Establish approved performance baselines and regression gates.
+
+### v1.3 Candidate Features
+
+- Read-only `state diff` between snapshots.
+- `state explain` for corruption, migration, and lock diagnostics.
+- Portable encrypted vault export using an explicit offline recovery ceremony.
+- Workspace integrity dashboard with repair recommendations.
+
+### v1.3 Acceptance Gates
+
+- Overall coverage: at least 90% lines, 85% branches, and 90% functions.
+- State and vault: at least 95% lines and 90% branches.
+- Mutation score: at least 80% for state, vault, consent, policy, and rollback.
+- Thirty-two concurrent writers complete without silent data loss.
+- At least 1,000 schema/corruption fuzz cases pass.
+- Warm CLI startup remains below 250 ms and ordinary state reads below 50 ms on reference CI hardware.
+- Upgrade and rollback pass against representative 1.1 and 1.2 workspaces.
+
+## 7. `v1.4.0` — Production Provider Platform
+
+### v1.4 Outcome
+
+Turn provider connectivity into a versioned, privacy-aware, testable enterprise contract.
+
+### v1.4 Committed Work Streams
+
+- Finalize the `ProviderAdapter` contract for metadata, capabilities, authentication, health, discovery, invocation, streaming, structured output, tools, usage, and errors.
+- Certify OpenAI, Anthropic, Gemini, OpenRouter, Ollama, and supported agent hosts through one contract suite.
+- Implement deadlines, cancellation, `Retry-After`, jittered backoff, idempotency, safe fallback chains, budgets, and rate-limit policies.
+- Generate dated model/provider compatibility manifests from recorded fixtures and opt-in account-backed checks.
+- Add privacy classification to request and response fields.
+- Keep live tests credential-gated and prevent all secrets and content from entering diagnostics.
+
+### v1.4 Candidate Features
+
+- Provider selection simulator using capability, policy, latency, cost, and privacy constraints.
+- Offline cost forecasting from user-supplied pricing snapshots.
+- Model deprecation alerts and migration plans.
+- Regional endpoint and data-residency policy validation.
+- Bring-your-own OpenAI-compatible provider manifests.
+- Response caching controlled by explicit privacy and retention policy.
+
+### v1.4 Acceptance Gates
+
+- Every supported provider passes the same offline contract suite.
+- Live compatibility evidence names verification date and tested model versions.
+- Unsafe non-idempotent requests are never retried automatically.
+- Fallback obeys data-egress, budget, region, and provider-approval policy.
+- Logs and diagnostics contain no prompts, responses, tokens, keys, or authorization headers.
+
+## 8. `v1.5.0` — Isolated Plugin and MCP Ecosystem
+
+### v1.5 Outcome
+
+Enable extension without allowing extensions to bypass host security.
+
+### v1.5 Committed Work Streams
+
+- Finalize versioned plugin and MCP schemas.
+- Run executable plugins in isolated worker processes using bounded JSON-RPC over standard input/output.
+- Enforce signed manifests, integrity, platform constraints, declared dependencies, permissions, timeouts, output limits, cancellation, and termination.
+- Expose filesystem, network, provider, process, and state access only through host-mediated capabilities.
+- Never pass raw credentials to a plugin.
+- Complete install, verify, trust, enable, start, stop, run, reload, health, update, rollback, and remove life cycles.
+- Add an SDK, examples, test harness, local signing flow, and compatibility validator.
+- Add MCP transport, authentication-reference, trust, capability, and health policy.
+
+### v1.5 Candidate Features
+
+- WebAssembly plugin runtime for stronger portability and capability isolation.
+- Language-neutral SDKs for TypeScript, Python, Go, and Rust.
+- Local plugin-development sandbox with traffic and filesystem simulation.
+- Permission-diff review before plugin upgrades.
+- Reproducible plugin builds and transparency log integration.
+- MCP capability proxy that strips or transforms disallowed fields.
+
+### v1.5 Acceptance Gates
+
+- Malformed RPC, hangs, crashes, excessive output, permission denial, dependency cycles, and signature failures cannot crash or corrupt the host.
+- Unsigned plugins remain disabled unless an explicit policy exception exists.
+- Plugin audit events contain metadata only.
+- Update and rollback preserve the last known-good version.
+
+## 9. `v1.6.0` — Template Packages and Native Distribution
+
+### v1.6 Outcome
+
+Make project foundations independently versioned, testable, signed, and distributable.
+
+### v1.6 Committed Work Streams
+
+- Move built-in templates to versioned packages with schemas, compatibility, hashes, lock files, tests, inheritance, capabilities, and signatures.
+- Support local signed catalogs first and consent-gated HTTPS catalogs with offline cache verification.
+- Add catalog, inspect, verify, test, export, publish, deprecate, and migration workflows.
+- Golden-test all fourteen templates across Windows, Ubuntu, and macOS.
+- Detect template drift and generate non-destructive remediation plans.
+- Preserve additive initialization and managed-asset rollback.
+- Automate Homebrew tap updates where credentials permit.
+- Generate submission-ready Winget and Chocolatey changes from immutable assets.
+- Certify native x64 and arm64 release builders where technically supportable.
+
+### v1.6 Candidate Features
+
+- Template composition profiles such as `fastapi + postgres + redis + observability`.
+- Organization overlays without copying the base template.
+- Template bill of materials showing every generated file and its owner.
+- Dependency freshness scoring before project creation.
+- Reproducible development-container and environment-manager profiles.
+- Template upgrade assistant that proposes, but never silently applies, changes.
+
+### v1.6 Acceptance Gates
+
+- Every template generates and validates on every supported operating system.
+- Generated locks, CI, Docker, tests, security, and documentation pass.
+- Catalog signatures and offline verification fail closed.
+- Existing files are never overwritten.
+- Package-manager manifests install, verify, and uninstall correctly.
+
+## 10. `v1.7.0` — Local Organization Governance
+
+### v1.7 Outcome
+
+Provide enterprise policy without requiring a hosted account.
+
+### v1.7 Committed Work Streams
+
+- Finalize signed organization bundles for organizations, projects, workspaces, principals, roles, permissions, providers, plugins, templates, skills, and capabilities.
+- Enforce deny-overrides evaluation consistently.
+- Apply policy at every external-effect boundary.
+- Add policy simulation, explanation, import, export, validation, audit, compliance, signing, and overlays.
+- Define deterministic precedence for global, organization, project, environment, and temporary approval rules.
+- Record immutable metadata-only decisions with operation IDs.
+- Require approval for unsigned or unapproved artifacts.
+
+### v1.7 Candidate Features
+
+- Built-in compliance packs for secure software development, AI governance, and supply-chain controls.
+- Policy unit-testing framework and golden decision fixtures.
+- Time-bounded and scope-bounded exception tokens.
+- Four-eyes approval workflow for high-risk operations.
+- Policy impact analysis before bundle updates.
+- Export to common policy formats where semantics can be preserved.
+
+### v1.7 Acceptance Gates
+
+- Alternate CLI routes cannot bypass a denial.
+- Policy bundles are portable, signed, schema-versioned, explainable, and auditable.
+- Policy evaluation works fully offline.
+- Exceptions are explicit, expiring, attributable, and included in audit evidence.
+
+## 11. `v1.8.0` — Observability, Supply Chain, and Documentation
+
+### v1.8 Outcome
+
+Make platform operation and release evidence independently verifiable.
+
+### v1.8 Committed Work Streams
+
+- Complete structured JSON logs, local metrics, traces, health summaries, crash reports, and performance profiles.
+- Generate diagnostic bundles with retention controls and strict content exclusion.
+- Add immutable audit export and verification.
+- Generate CycloneDX and SPDX SBOMs, checksums, signatures, provenance, dependency attestations, threat models, and release security checklists.
+- Block releases on critical/high security findings, secret leakage, invalid provenance, license failures, or unacceptable performance regression.
+- Generate CLI, schema, provider, plugin, template, policy, skill, and workflow references from source metadata.
+- Consolidate canonical documentation and archive historical phase evidence.
+- Separate and test dashboard frontend assets with accessibility and CSP validation.
+
+### v1.8 Candidate Features
+
+- Local OpenTelemetry export with explicit opt-in endpoints.
+- Reproducible diagnostic bundle viewer.
+- Release evidence portal that verifies signatures and hashes in-browser.
+- Software-component lifecycle inventory and end-of-support alerts.
+- Carbon and resource estimates for CI and provider workloads.
+- Offline documentation bundle for air-gapped environments.
+
+### v1.8 Acceptance Gates
+
+- Diagnostic bundles contain no prompts, responses, credentials, tokens, passphrases, or encrypted credential metadata.
+- Release verification reproduces artifact hashes.
+- Generated documentation has zero drift.
+- Links, spelling, accessibility, CSP, and strict site builds pass.
+- Performance regression above 20% blocks release unless explicitly accepted through governance.
+
+## 12. `v1.9.0` — Signed Skills and Deterministic Workflows
+
+### v1.9 Outcome
+
+Make reusable AI-assisted engineering processes governed, reproducible, and resumable.
+
+### v1.9 Committed Work Streams
+
+- Finalize signed prompt and skill registries with provenance, variables, compatibility, licensing, policy approval, and deprecation.
+- Complete deterministic DAG workflows with dependencies, resumable state, bounded retries, cancellation, consent, and idempotent execution.
+- Route providers and plugins only through existing governed interfaces.
+- Add official workflows for specification, planning, security review, documentation, release preparation, incident analysis, and migration.
+- Add visualization, explanation, dry-run, replay, failure-resume, and metadata-only audit output.
+- Publish signed catalogs without auto-installation.
+
+### v1.9 Candidate Features
+
+- Workflow debugger with step replay using recorded non-secret fixtures.
+- Human approval nodes and reviewer assignment rules.
+- Portable workflow conformance tests.
+- Skill quality score based on tests, provenance, compatibility, and observed outcomes.
+- Organization-specific workflow overlays.
+- Deterministic evaluation harness for prompt and skill revisions.
+
+### v1.9 Acceptance Gates
+
+- Workflow ordering is deterministic.
+- Resume does not repeat completed external effects.
+- Mutating nodes require preview, policy approval, managed ownership, and consent.
+- Invalid or unsigned skills and workflows fail closed.
+- Audit output contains decisions and hashes, not sensitive content.
+
+## 13. `v1.10.0` — Engineering Intelligence and Local Enterprise GA
+
+### v1.10 Outcome
+
+Complete the local-first platform and certify E1-E4 as an enterprise-ready product foundation.
+
+### v1.10 Committed Work Streams
+
+- Add incremental project indexing, ignore policies, retention, deletion, and integrity validation.
+- Keep raw source out of metadata indexes by default.
+- Support optional semantic indexing through approved providers.
+- Promote read-only copilots for architecture, dependencies, security, tests, documentation drift, upgrades, and releases.
+- Link every recommendation to explainable local evidence.
+- Require previews and explicit consent before any generated mutation.
+- Add workspace health scoring and prioritized remediation.
+- Complete architecture, reliability, security, privacy, performance, scalability, and documentation audits.
+- Publish remote-control-plane architecture and API specifications without implementing the service.
+
+### v1.10 Candidate Features
+
+- Change-impact graph for pull requests and upgrades.
+- Test-selection recommendations based on dependency relationships.
+- Architecture conformance rules mapped to ADRs.
+- Dependency replacement and end-of-life migration planner.
+- Incident timeline reconstruction from approved local metadata.
+- Repository onboarding map for new contributors.
+- Explainable technical-debt portfolio and investment scenarios.
+
+### v1.10 Acceptance Gates
+
+- Full E1-E4 traceability is complete.
+- Two release candidates pass migration, rollback, clean-install, upgrade, and offline rehearsals.
+- All software-controlled enterprise gates pass.
+- No unresolved critical/high security findings remain.
+- Current provider compatibility evidence is published.
+- Local operation remains complete without an account, telemetry, or network access.
+
+## 14. `v2.0.0` — Optional Self-Hosted Organization Control Plane
+
+### v2.0 Outcome
+
+Coordinate organizations and fleets without making the server mandatory for local users.
+
+### v2.0 Committed Scope, Subject to `v1.10.0` Approval
+
+- Signed registry synchronization.
+- Organization dashboards and fleet inventory.
+- Team policy distribution.
+- Audit retention and compliance reporting.
+- Approved catalogs for templates, plugins, providers, skills, and workflows.
+- SSO/OIDC, RBAC, tenant isolation, encrypted synchronization, conflict resolution, key rotation, backup, and disaster recovery.
+- Offline client operation during control-plane outages.
+- Opt-in telemetry and analytics only.
+- Preview-first migration from 1.x with rollback.
+
+### v2.0 Candidate Features
+
+- Federated control planes for regulated or disconnected business units.
+- Customer-managed encryption keys and external key-management integration.
+- Policy and catalog promotion across development, staging, and production environments.
+- Fleet drift detection and approved remediation campaigns.
+- Enterprise approval inbox for high-risk actions.
+- Regional data boundaries and tenant-specific retention.
+
+### v2.0 Acceptance Gates
+
+- Independent security review and complete threat model.
+- Tenant-isolation and authorization tests pass.
+- Synchronization conflicts are deterministic, auditable, and recoverable.
+- Local clients remain functional throughout outages.
+- No remote feature can silently upload source, prompts, responses, or credentials.
+
+## 15. Post-`v2.0` Product Opportunities
+
+These ideas are exploratory and require discovery, ADRs, threat modeling, and business validation.
+
+### 15.1 Trusted Ecosystem Marketplace
+
+- Signed community templates, plugins, skills, workflows, and policy packs.
+- Publisher identity, reputation, provenance, compatibility, and vulnerability status.
+- Private organization catalogs and promotion workflows.
+- Transparency logs and revocation.
+
+### 15.2 Developer Portal and IDE Experience
+
+- VS Code, Cursor, Codex, and JetBrains integrations powered by the same CLI contracts.
+- Visual preview of managed changes and rollback ownership.
+- Policy explanation and provider-health panels.
+- Project creation wizard that exports a reproducible CLI command.
+
+### 15.3 Ephemeral and Reproducible Environments
+
+- Local or remote disposable workspaces.
+- Reproducible dev containers and environment attestations.
+- Policy-controlled secrets injection with automatic expiry.
+- Cost and cleanup plans before creation.
+
+### 15.4 Release Autopilot
+
+- Read-only readiness scoring by default.
+- Automated evidence collection, changelog classification, compatibility checks, and package rehearsal.
+- Human-controlled promotion between release candidate and stable.
+- Cross-channel post-release verification and rollback guidance.
+
+### 15.5 Operations and Incident Intelligence
+
+- Metadata-only incident timeline construction.
+- Operational-guide recommendation and controlled execution.
+- Change correlation across releases, providers, plugins, templates, and policies.
+- Learning loops that require reviewed evidence rather than autonomous policy changes.
+
+### 15.6 Compliance and Assurance Packs
+
+- Mappings for secure development, supply chain, AI governance, privacy, and operational resilience.
+- Evidence export without claiming automatic certification.
+- Organization-specific control overlays and reviewer workflows.
+
+### 15.7 Privacy-Preserving Collaboration
+
+- Selective synchronization of hashes, metadata, policies, and evidence.
+- Local content processing with explicit field-level sharing.
+- Redaction proofs and data-egress previews.
+- Air-gapped catalog and policy distribution.
+
+## 16. Cross-Cutting Requirements for Every Version
+
+Every release must preserve:
+
+- Additive project behavior.
+- Preview-first mutation and explicit consent.
+- Backward-compatible structured output in 1.x.
+- Secret-reference-only tracked configuration.
+- Offline operation for local capabilities.
+- Managed ownership and precise rollback.
+- Signed and immutable release evidence.
+- Documentation, examples, schemas, tests, and CLI help updated with implementation.
+- No unexplained TODOs, FIXMEs, stubs, dead configuration, or skipped tests.
+
+## 17. Mandatory Release Protocol
+
+1. Create a release issue with requirements, acceptance criteria, audit traceability, security impact, documentation impact, and rollback.
+2. Implement through focused branches and reviewed pull requests.
+3. Update code, tests, schemas, examples, CLI help, documentation, changelog, and migration guidance together.
+4. Run unit, integration, CLI end-to-end, security, documentation, package, and compatibility checks.
+5. Run subsystem-specific fuzz, mutation, concurrency, crash, performance, or golden tests.
+6. Create an immutable `vX.Y.Z-rc.1` from the approved commit.
+7. Publish release candidates to prerelease channels and test clean install, upgrade, rollback, offline behavior, and uninstall.
+8. Generate SBOM, provenance, checksums, audit reports, known limitations, and compatibility evidence.
+9. Fix defects through later RCs; never replace a tag.
+10. Create a signed stable tag only after every gate passes.
+11. Publish GitHub Release, npm, GitHub Packages, containers, documentation, changelog, and assets automatically.
+12. Generate or update external package submissions.
+13. Verify every published channel independently.
+14. Close the release only when version, documentation, packages, tags, assets, and evidence agree.
+
+## 18. Universal Test and Bug Matrix
+
+Every release verifies:
+
+- Fresh install and upgrade from the previous two stable versions.
+- Dry-run produces no managed changes.
+- Existing files and protected directories remain unchanged.
+- Rollback removes only unchanged, manifest-owned assets.
+- Corrupt state fails visibly without silent reset.
+- Logs and diagnostics recursively redact secrets.
+- Human and structured CLI output remain compatible.
+- Windows, Ubuntu, and macOS run supported Node.js versions.
+- Offline operations remain functional.
+- External effects stop at credential, approval, billing, and account boundaries.
+- Documentation examples execute successfully.
+- Release artifacts install and report the expected version.
+- Uninstall removes only owned artifacts.
+- Security, dependency, license, provenance, and package checks pass.
+
+## 19. Product Metrics
+
+### Reliability
+
+- Command success and deterministic failure rate.
+- State corruption and recovery success.
+- Rollback precision.
+- Crash-free plugin and workflow execution.
+
+### Developer Experience
+
+- Time to first validated project.
+- Time to initialize an existing repository.
+- Percentage of recommendations accepted, rejected, or deferred.
+- Documentation task-success rate.
+
+### Security and Privacy
+
+- Secret leakage incidents.
+- Policy bypass findings.
+- Unsigned artifact rejection rate.
+- Percentage of external effects with preview, policy, and consent evidence.
+
+### Ecosystem
+
+- Provider contract pass rate and compatibility freshness.
+- Template generation success across operating systems.
+- Plugin/MCP health and rollback success.
+- Package installation success across channels.
+
+### Operations
+
+- Mean time to diagnose failures.
+- Release lead time and rollback rehearsal success.
+- Performance regression relative to approved baselines.
+- Documentation drift and broken-link count.
+
+## 20. Prioritization Framework
+
+An idea enters implementation only when it scores well across:
+
+1. User problem severity and frequency.
+2. Alignment with local-first governed engineering.
+3. Security and privacy impact.
+4. Reuse of existing platform contracts.
+5. Cross-platform feasibility.
+6. Testability and measurable acceptance.
+7. Operational and maintenance cost.
+8. Backward compatibility.
+9. Documentation and support burden.
+10. Evidence that the feature reduces more complexity than it introduces.
+
+Ideas that require a new core abstraction must first prove that existing contracts cannot solve a demonstrated problem.
+
+## 21. Recommended Immediate Backlog
+
+The next implementation cycle should remain focused on `v1.3.0` prerequisites:
+
+1. Create the `v1.3.0` release issue and traceability matrix.
+2. Measure current CLI, state, vault, coverage, mutation, fuzz, and performance baselines.
+3. Inventory every direct persistent write and route gaps through the state engine.
+4. Add failure-injection fixtures for locks, disk-full, permissions, interruption, and corruption.
+5. Complete vault recovery and migration rehearsals.
+6. Consolidate error and structured-output contracts.
+7. Publish benchmark and migration evidence before adding provider or plugin scope.
+
+## 22. Decision Summary
+
+Forgevena should not race toward a hosted platform or an unbounded AI-agent marketplace. Its strongest differentiator is the safety contract already established in `v1.2.3`. The roadmap compounds that advantage:
+
+- `v1.3` proves reliability.
+- `v1.4-v1.6` mature the ecosystem.
+- `v1.7-v1.8` prove governance and operations.
+- `v1.9-v1.10` deliver governed engineering intelligence.
+- `v2.0` adds optional organizational coordination only after the local platform earns enterprise confidence.
+
+This sequence connects product ambition to architectural dependency, measurable evidence, and user trust.

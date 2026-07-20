@@ -14,6 +14,8 @@ forgevena doctor
 
 Use the [latest GitHub Release](https://github.com/rohitkumarnaidu/Forgevena/releases/latest) for verified archives, checksums, SBOMs, provenance, and Homebrew, Winget, or Chocolatey submission bundles.
 
+For Linux or Intel macOS, install the published Homebrew formula with `brew install rohitkumarnaidu/forgevena/forgevena`. See the [installation guide](installation/index.md) for supported architectures and package-channel status.
+
 ## Start here
 
 - [Getting started](getting-started/index.md)
