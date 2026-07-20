@@ -53,6 +53,18 @@ forgevena validate
 
 Release downloads include smoke-tested Windows, Linux, and macOS x64 executables, checksums, SBOMs, provenance, verification evidence, and package-manager bundles on the [GitHub Releases page](https://github.com/rohitkumarnaidu/Forgevena/releases/latest). Verify native files against `RELEASE_SHA256SUMS`; npm users can verify the stable version with `npm view forgevena version`.
 
+## Install from Homebrew
+
+The maintained [Forgevena Homebrew tap](https://github.com/rohitkumarnaidu/homebrew-forgevena) installs the verified native executable on Linux and Intel macOS:
+
+```bash
+brew install rohitkumarnaidu/forgevena/forgevena
+forgevena version
+forgevena doctor
+```
+
+The current tap supports x64 release assets. Use npm on arm64 until native arm64 assets are published. Winget and Chocolatey public submissions are independently moderated; see the [installation guide](docs/installation/index.md) for their current status.
+
 For an existing repository, always preview first:
 
 ```bash

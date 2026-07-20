@@ -17,6 +17,16 @@ forgevena doctor
 
 For offline installation, download the verified archive and `RELEASE_SHA256SUMS` from the [latest release](https://github.com/rohitkumarnaidu/Forgevena/releases/latest), verify the checksum, then run `npm install --global ./forgevena-1.2.3.tgz`.
 
+On Linux or Intel macOS, you can instead use the maintained Homebrew tap:
+
+```bash
+brew install rohitkumarnaidu/forgevena/forgevena
+forgevena version
+forgevena doctor
+```
+
+The current native release assets are x64-only; use npm on arm64.
+
 ## Create a first project
 
 Preview, inspect, then apply:
