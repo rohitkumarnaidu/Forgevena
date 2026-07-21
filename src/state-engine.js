@@ -8,6 +8,8 @@ const JOURNAL_ROOT = path.join(STATE_ROOT, "journal");
 const SNAPSHOT_ROOT = path.join(STATE_ROOT, "snapshots");
 const DEFAULT_LOCK_TIMEOUT_MS = 30_000;
 const DEFAULT_STALE_LOCK_MS = 30_000;
+const JOURNAL_SCHEMA_VERSION = 1;
+const JOURNAL_STATUSES = new Set(["prepared", "committed", "rolled-back"]);
 
 export class StateError extends Error {
   constructor(code, message, details = {}) {
@@ -60,7 +62,7 @@ export class FileStateEngine {
   async transaction(changes, { operationId = randomUUID() } = {}) {
     const ordered = [...changes].sort((left, right) => left.relativePath.localeCompare(right.relativePath));
     const releases = [];
-    const journal = { schemaVersion: 1, operationId, status: "prepared", startedAt: new Date(this.clock()).toISOString(), changes: [] };
+    const journal = { schemaVersion: JOURNAL_SCHEMA_VERSION, operationId, status: "prepared", startedAt: new Date(this.clock()).toISOString(), changes: [] };
     try {
       for (const change of ordered) releases.push(await this.#acquireLock(change.relativePath));
       for (const change of ordered) {
@@ -117,7 +119,7 @@ export class FileStateEngine {
     const directory = path.join(this.root, JOURNAL_ROOT);
     try {
       const files = (await readdir(directory)).filter((entry) => entry.endsWith(".json")).sort();
-      return Promise.all(files.map(async (file) => JSON.parse(await readFile(path.join(directory, file), "utf8"))));
+      return Promise.all(files.map((file) => this.#readJournal(path.join(directory, file))));
     } catch (error) {
       if (error?.code === "ENOENT") return [];
       throw error;
@@ -210,19 +212,28 @@ export class FileStateEngine {
   }
 
   async #writeJournal(journal) {
+    this.#validateJournal(journal);
     const target = path.join(this.root, JOURNAL_ROOT, `${journal.operationId}.json`);
     await mkdir(path.dirname(target), { recursive: true });
     await this.#atomicWrite(target, `${JSON.stringify(journal, null, 2)}\n`);
   }
 
   async #restoreJournal(journal) {
-    for (const change of [...(journal.changes ?? [])].reverse()) {
+    this.#validateJournal(journal);
+    const changes = [...journal.changes].reverse();
+    for (const change of changes) {
+      if (change.backup && !(await exists(this.#backupPath(change.relativePath, journal.operationId)))) {
+        throw new StateError("STATE_JOURNAL_BACKUP_MISSING", `Recovery backup is missing for ${change.relativePath}.`, { operationId: journal.operationId, relativePath: change.relativePath });
+      }
+    }
+    for (const change of changes) {
       const target = this.#target(change.relativePath);
-      if (change.backup && await exists(path.join(this.root, change.backup))) {
-        await copyFile(path.join(this.root, change.backup), target);
+      if (change.backup) {
+        const backup = this.#backupPath(change.relativePath, journal.operationId);
+        await copyFile(backup, target);
         const restored = await readFile(target, "utf8");
         await this.#atomicWrite(`${target}.sha256`, `${checksum(restored)}\n`);
-        await rm(path.join(this.root, change.backup), { force: true });
+        await rm(backup, { force: true });
       } else {
         await rm(target, { force: true });
         await rm(`${target}.sha256`, { force: true });
@@ -231,6 +242,44 @@ export class FileStateEngine {
     journal.status = "rolled-back";
     journal.recoveredAt = new Date(this.clock()).toISOString();
     await this.#writeJournal(journal);
+  }
+
+  async #readJournal(target) {
+    let journal;
+    try {
+      journal = JSON.parse(await readFile(target, "utf8"));
+    } catch (error) {
+      if (error instanceof SyntaxError) throw new StateError("STATE_JOURNAL_CORRUPT", `State journal ${path.basename(target)} is not valid JSON.`, { journal: path.basename(target), cause: error.message });
+      throw error;
+    }
+    this.#validateJournal(journal, path.basename(target));
+    return journal;
+  }
+
+  #validateJournal(journal, source = "transaction") {
+    if (!journal || typeof journal !== "object" || Array.isArray(journal) || journal.schemaVersion !== JOURNAL_SCHEMA_VERSION || typeof journal.operationId !== "string" || !journal.operationId || !JOURNAL_STATUSES.has(journal.status) || typeof journal.startedAt !== "string" || !Array.isArray(journal.changes)) {
+      throw new StateError("STATE_JOURNAL_CORRUPT", `State journal ${source} has an invalid structure.`, { source });
+    }
+    for (const change of journal.changes) {
+      if (!change || typeof change !== "object" || typeof change.relativePath !== "string" || (change.backup !== null && typeof change.backup !== "string")) {
+        throw new StateError("STATE_JOURNAL_CORRUPT", `State journal ${source} has an invalid change entry.`, { source });
+      }
+      try {
+        this.#target(change.relativePath);
+      } catch {
+        throw new StateError("STATE_JOURNAL_CORRUPT", `State journal ${source} references an unsafe state path.`, { source, relativePath: change.relativePath });
+      }
+      if (change.backup !== null) {
+        const expected = path.relative(this.root, this.#backupPath(change.relativePath, journal.operationId));
+        if (path.isAbsolute(change.backup) || path.normalize(change.backup) !== expected) {
+          throw new StateError("STATE_JOURNAL_CORRUPT", `State journal ${source} references an unexpected backup path.`, { source, relativePath: change.relativePath });
+        }
+      }
+    }
+  }
+
+  #backupPath(relativePath, operationId) {
+    return `${this.#target(relativePath)}.${operationId}.backup`;
   }
 }
 

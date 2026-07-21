@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { FileStateEngine, StateError } from "../src/state-engine.js";
+import { stateStatus } from "../src/state-service.js";
 
 async function workspace() { return mkdtemp(path.join(os.tmpdir(), "forgevena-state-")); }
 
@@ -93,6 +94,56 @@ test("state engine reports schema validation errors", async () => {
   try {
     const state = new FileStateEngine(root);
     await assert.rejects(() => state.write(".ai-workspace/invalid.json", {}, { validate: () => "missing schema" }), (error) => error.code === "STATE_SCHEMA_INVALID" && error.details.issues.includes("missing schema"));
+  } finally { await cleanup(root); }
+});
+
+test("state engine rejects malformed transaction journals", async () => {
+  const root = await workspace();
+  try {
+    const state = new FileStateEngine(root);
+    const directory = path.join(root, ".ai-workspace", "journal");
+    await mkdir(directory, { recursive: true });
+    await writeFile(path.join(directory, "broken.json"), "{not-json}\n");
+    await assert.rejects(() => state.history(), (error) => error.code === "STATE_JOURNAL_CORRUPT");
+  } finally { await cleanup(root); }
+});
+
+test("state status reports corrupt journals without declaring the workspace healthy", async () => {
+  const root = await workspace();
+  try {
+    const directory = path.join(root, ".ai-workspace", "journal");
+    await mkdir(directory, { recursive: true });
+    await writeFile(path.join(directory, "broken.json"), "{not-json}\n");
+    const status = await stateStatus(root);
+    assert.equal(status.healthy, false);
+    assert.equal(status.journals.valid, false);
+    assert.equal(status.journals.error.code, "STATE_JOURNAL_CORRUPT");
+  } finally { await cleanup(root); }
+});
+
+test("state engine recovery fails closed when a prepared journal backup is missing", async () => {
+  const root = await workspace();
+  try {
+    const state = new FileStateEngine(root);
+    const relativePath = ".ai-workspace/workspace.json";
+    const operationId = "interrupted-operation";
+    await state.write(relativePath, { state: "unchanged" });
+    const directory = path.join(root, ".ai-workspace", "journal");
+    await mkdir(directory, { recursive: true });
+    await writeFile(path.join(directory, `${operationId}.json`), `${JSON.stringify({ schemaVersion: 1, operationId, status: "prepared", startedAt: new Date().toISOString(), changes: [{ relativePath, backup: path.join(".ai-workspace", `workspace.json.${operationId}.backup`) }] }, null, 2)}\n`);
+    await assert.rejects(() => state.recover(), (error) => error.code === "STATE_JOURNAL_BACKUP_MISSING");
+    assert.deepEqual(await state.read(relativePath), { state: "unchanged" });
+  } finally { await cleanup(root); }
+});
+
+test("state engine rejects journals with unexpected backup paths", async () => {
+  const root = await workspace();
+  try {
+    const state = new FileStateEngine(root);
+    const directory = path.join(root, ".ai-workspace", "journal");
+    await mkdir(directory, { recursive: true });
+    await writeFile(path.join(directory, "unsafe.json"), `${JSON.stringify({ schemaVersion: 1, operationId: "unsafe-operation", status: "prepared", startedAt: new Date().toISOString(), changes: [{ relativePath: ".ai-workspace/workspace.json", backup: "..\\outside.backup" }] }, null, 2)}\n`);
+    await assert.rejects(() => state.history(), (error) => error.code === "STATE_JOURNAL_CORRUPT");
   } finally { await cleanup(root); }
 });
 
