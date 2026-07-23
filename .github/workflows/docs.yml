@@ -37,7 +37,7 @@ jobs:
       - name: Validate Mermaid diagrams
         shell: bash
         run: for diagram in dist/mermaid/*.mmd; do npx --yes -p @mermaid-js/mermaid-cli@11.16.0 mmdc -p .github/puppeteer-ci.json -i "$diagram" -o "${diagram%.mmd}.svg"; done
-      - uses: streetsidesoftware/cspell-action@v7
+      - uses: streetsidesoftware/cspell-action@v8
         with:
           files: "docs/**/*.md"
           config: cspell.json
