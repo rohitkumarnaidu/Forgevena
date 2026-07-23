@@ -34,7 +34,7 @@ jobs:
       - run: pip install -r website/requirements.txt
       - run: mkdocs build --strict --config-file website/mkdocs.yml
       - run: test -s dist/docs-site/search/search_index.json && test -s dist/docs-site/404.html && test -s dist/docs-site/versions.json
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/docs-site
