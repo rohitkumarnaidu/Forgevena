@@ -81,7 +81,7 @@ jobs:
           "dist/standalone/${{ matrix.file }}" version | grep '"version"'
           "dist/standalone/${{ matrix.file }}" doctor --structured > standalone-doctor.json
           grep '"status"' standalone-doctor.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: forgevena-standalone-${{ matrix.target }}
           path: dist/standalone/${{ matrix.file }}
@@ -168,7 +168,7 @@ jobs:
           ) > dist/RELEASE_SHA256SUMS
       - name: Verify release notes
         run: test -s dist/RELEASE_NOTES.md
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: forgevena-release
           path: dist/

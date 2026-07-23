@@ -23,7 +23,7 @@ jobs:
           OUTPUT: dist/CHANGELOG.generated.md
       - name: Verify generated release notes
         run: test -s dist/CHANGELOG.generated.md
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: changelog-preview
           path: dist/CHANGELOG.generated.md
