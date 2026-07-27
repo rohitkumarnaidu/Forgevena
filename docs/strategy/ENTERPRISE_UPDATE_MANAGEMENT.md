@@ -52,7 +52,7 @@ The Update Management System must answer five questions before any change:
 | Providers | Adapter definitions, compatibility manifests, model metadata | Update independently only after contract and privacy-policy validation. |
 | Plugins | Runtime package, manifest, SDK dependency | Require trusted publisher, declared permissions, integrity, and rollback evidence. |
 | MCP | Server definition, transport profile, authentication reference | Never activate automatically; revalidate trust and capabilities after update. |
-| Templates | Template packages, lockfiles, catalogs | Update catalogs separately from project files; project remediation remains preview-only. |
+| Templates | Template packages, lock files, catalogs | Update catalogs separately from project files; project remediation remains preview-only. |
 | Skills and workflows | Signed engineering assets and catalogs | Require provenance, compatibility, licensing, and policy approval. |
 | Documentation | Product docs, generated references, examples | Version with the owning component and validate links and schema compatibility. |
 | External integrations | OpenSpec, SkillOpt, GitNexus, agent-host integrations | Use official upstream mechanisms or produce manual guidance; never invent an installer. |
@@ -172,7 +172,7 @@ The result is one of: compatible, compatible with migration, blocked by policy, 
 Users and organizations can configure:
 
 - Check frequency: startup, daily, weekly, monthly, or manual.
-- Download behavior: manual, automatic on unmetered networks, or maintenance window.
+- Download behavior: manual, automatic on networks without usage charges, or maintenance window.
 - Installation behavior: manual, security-only auto-apply, staged approval, or prohibited.
 - Channels: stable, security-only, next, release candidate, or pinned version.
 - Components: core, providers, plugins, templates, skills, docs, or selected catalogs.

@@ -58,7 +58,7 @@ async function runMutant(mutant, index) {
   const sourceRoot = path.join(caseRoot, "src");
   await cp(path.resolve("src"), sourceRoot, { recursive: true });
   await cp(path.resolve("modules"), path.join(caseRoot, "modules"), { recursive: true });
-  await cp(path.resolve("templates"), path.join(caseRoot, "templates"), { recursive: true });
+  await copyOptionalDirectory("templates", caseRoot);
   await cp(path.resolve("package.json"), path.join(caseRoot, "package.json"));
   const target = path.join(sourceRoot, mutant.file);
   const original = await readFile(target, "utf8");
@@ -74,6 +74,14 @@ async function runMutant(mutant, index) {
   } catch (error) {
     if (["ERR_MODULE_NOT_FOUND", "MODULE_NOT_FOUND"].includes(error.code)) return { id: mutant.id, domain: mutant.domain, status: "invalid", reason: error.message };
     return { id: mutant.id, domain: mutant.domain, status: "killed", evidence: error.code ?? error.name ?? "ASSERTION_FAILED", message: error.message };
+  }
+}
+
+async function copyOptionalDirectory(relative, destinationRoot) {
+  try {
+    await cp(path.resolve(relative), path.join(destinationRoot, relative), { recursive: true });
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error;
   }
 }
 

@@ -59,7 +59,7 @@ The sequence prevents higher-level AI and remote features from bypassing lower-l
 
 ### 4.1 Cross-Version Update Management Program
 
-Update management is a cross-cutting product program rather than a standalone installer feature. It begins with trusted metadata, state recovery, installation-source detection, and CLI contracts in `v1.3`; expands through provider, plugin, MCP, template, skill, and workflow lifecycles; becomes a complete dashboard and notification experience in `v1.8`; and gains optional fleet rollout controls in `v2.0`.
+Update management is a cross-cutting product program rather than a standalone installer feature. It begins with trusted metadata, state recovery, installation-source detection, and CLI contracts in `v1.3`; expands through provider, plugin, MCP, template, skill, and workflow lifecycle management; becomes a complete dashboard and notification experience in `v1.8`; and gains optional fleet rollout controls in `v2.0`.
 
 The program preserves package-manager ownership, verifies signed artifacts and provenance, resolves compatibility and policy before mutation, supports offline bundles, retains last known-good state, and never modifies user project code. See the [Enterprise Update Management Strategy](ENTERPRISE_UPDATE_MANAGEMENT.md) for the complete lifecycle and acceptance contract.
 
