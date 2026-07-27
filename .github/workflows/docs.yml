@@ -47,7 +47,7 @@ jobs:
       - run: mkdocs build --strict --config-file website/mkdocs.yml
       - name: Verify search index and 404 page
         run: test -s dist/docs-site/search/search_index.json && test -s dist/docs-site/404.html && test -s dist/docs-site/versions.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: documentation-preview
           path: dist/docs-site
