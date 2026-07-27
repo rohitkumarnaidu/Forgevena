@@ -34,8 +34,8 @@ The software-controlled `v1.3.0` E1 implementation gates are complete locally. V
 | Mutation score | 100% overall and per measured safety domain (19/19) |
 | Corruption cases | 1,000 passed |
 | Concurrent writers | 32 passed |
-| Ordinary state read | 1.48 ms (maximum 50 ms) |
-| Warm CLI startup | 205.65 ms (maximum 250 ms) |
+| Ordinary state read | 0.84 ms (maximum 50 ms) |
+| Warm CLI startup | 127.66 ms (maximum 250 ms) |
 | Canonical documentation | Verified with zero drift |
 
 ## Remaining Release Operations
