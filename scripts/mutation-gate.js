@@ -19,7 +19,7 @@ const mutants = [
   mutation("vault-algorithm-check", "vault", "credentials.js", "payload.algorithm !== \"aes-256-gcm\"", "payload.algorithm === \"aes-256-gcm\"", verifyVaultRoundTrip),
   mutation("vault-schema-check", "vault", "credentials.js", "if (payload.schemaVersion !== VAULT_SCHEMA_VERSION) throw new Error(`Unsupported credential vault schema version: ${payload.schemaVersion}.`);", "if (payload.schemaVersion === VAULT_SCHEMA_VERSION) throw new Error(`Unsupported credential vault schema version: ${payload.schemaVersion}.`);", verifyVaultRoundTrip),
   mutation("vault-protected-variable", "vault", "credentials.js", "metadata.variable !== variable", "metadata.variable === variable", verifyVaultRoundTrip),
-  mutation("vault-authentication-tag", "vault", "credentials.js", "decipher.setAAD(protectedMetadata);\r\n    decipher.setAuthTag(Buffer.from(payload.tag, \"base64\"));", "decipher.setAAD(protectedMetadata);\r\n    decipher.setAuthTag(Buffer.from(payload.iv, \"base64\"));", verifyVaultRoundTrip),
+  mutation("vault-authentication-tag", "vault", "credentials.js", "decipher.setAAD(protectedMetadata);\n    decipher.setAuthTag(Buffer.from(payload.tag, \"base64\"));", "decipher.setAAD(protectedMetadata);\n    decipher.setAuthTag(Buffer.from(payload.iv, \"base64\"));", verifyVaultRoundTrip),
   mutation("consent-preview-boundary", "consent", "consent.js", "if (dryRun || !apply)", "if (dryRun && !apply)", verifyConsentPreview),
   mutation("consent-explicit-approval", "consent", "consent.js", "approved: true, reason: \"explicit-yes\"", "approved: false, reason: \"explicit-yes\"", verifyConsentApproval),
   mutation("consent-approval-reason", "consent", "consent.js", "reason: \"explicit-yes\"", "reason: \"preview\"", verifyConsentApproval),
@@ -61,7 +61,7 @@ async function runMutant(mutant, index) {
   await copyOptionalDirectory("templates", caseRoot);
   await cp(path.resolve("package.json"), path.join(caseRoot, "package.json"));
   const target = path.join(sourceRoot, mutant.file);
-  const original = await readFile(target, "utf8");
+  const original = (await readFile(target, "utf8")).replace(/\r\n/g, "\n");
   const occurrences = original.split(mutant.search).length - 1;
   if (occurrences !== 1) return { id: mutant.id, domain: mutant.domain, status: "invalid", reason: `Expected one mutation point, found ${occurrences}.` };
   await writeFile(target, original.replace(mutant.search, mutant.replacement), "utf8");
