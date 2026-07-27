@@ -1,6 +1,7 @@
 # Release Notes
 
-- [1.2.3](../RELEASE_NOTES_1.2.3.md) — current stable release with verified native assets and package-manager distribution bundles.
+- [1.3.0](../RELEASE_NOTES_1.3.0.md) — current stable reliability, state, and vault certification release.
+- [1.2.3](../RELEASE_NOTES_1.2.3.md) — native runtime packaging and distribution fix.
 - [1.2.2](../RELEASE_NOTES_1.2.2.md) — release and distribution hardening.
 
 - [1.0.0](../RELEASE_NOTES_1.0.0.md) — stable platform release.

@@ -1,5 +1,9 @@
 # Release History Preparation
 
+## v1.3.0
+
+Minor release certifying the reliability and security foundation: decomposed CLI routing, transactional and recoverable state, encrypted vault lifecycle, deterministic corruption and concurrency evidence, enforced coverage and mutation gates, performance budgets, managed documentation ownership, and migration compatibility for published 1.1 and 1.2 workspaces.
+
 ## v1.2.3
 
 Patch release for packaging host-specific Argon2 native bindings into standalone executables and enforcing Windows, Linux, and macOS standalone smoke tests during pull-request package validation. The failed immutable `v1.2.2` tag remains unchanged and published no npm package or GitHub Release.

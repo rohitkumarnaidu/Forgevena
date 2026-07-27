@@ -7,7 +7,7 @@
 | `doctor` | Inspect environment and ecosystem health. |
 | `status` | Inspect project registry state. |
 | `validate` | Validate managed bootstrap assets. |
-| `state` | Validate, repair, snapshot, migrate, or inspect state history. |
+| `state` | Validate journal integrity, repair, snapshot, migrate, or inspect state history. |
 | `vault` | Initialize, rotate, recover, or audit encrypted credentials. |
 | `init` | Initialize an existing project additively. |
 | `create` | Create a new project from a supported template. |

@@ -21,3 +21,5 @@ flowchart LR
 ```
 
 Registry migration is owned by the upgrade command. Back up before upgrades and do not hand-edit schema versions. Validate with `ai-workspace status` and `ai-workspace validate`.
+
+`forgevena state validate` also reports transaction-journal health. A malformed journal, an unexpected backup path, or a missing required recovery backup leaves the workspace unhealthy and blocks recovery rather than guessing or deleting state. Inspect the error, restore from a verified snapshot when necessary, and rerun validation before applying `forgevena state repair --apply`.

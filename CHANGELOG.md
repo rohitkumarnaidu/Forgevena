@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+## 1.3.0 - 2026-07-27 - Reliability, State, and Vault Certification
+
+- Decompose the CLI into routed command handlers, application context, option parsing, rendering, consent, execution, and stable error translation while preserving the `forgevena` and `ai-workspace` interfaces.
+- Harden the shared state engine with validated atomic writes, exclusive locks, stale-lock recovery, transaction journals, bounded retention, checksums, corruption detection, snapshots, repair, migration, rollback, and crash recovery.
+- Add deterministic failure-injection coverage for disk-full, permission, interrupted-write, malformed-journal, and temporary-file cleanup behavior.
+- Certify exactly 32 concurrent writers and 1,000 deterministic journal-corruption cases without silent data loss.
+- Complete the encrypted credential-vault lifecycle with AES-256-GCM, Argon2id, PBKDF2 fallback, tamper detection, transactional rotation, validated recovery, legacy migration, and bounded encrypted history.
+- Enforce recursive secret redaction, operation identifiers, stable structured envelopes, preview-first consent, and fail-closed policy and rollback boundaries.
+- Enforce 90% line, 85% branch, and 90% function coverage, with higher state/vault thresholds and deterministic mutation checks for state, vault, consent, policy, and rollback logic.
+- Add warm CLI startup and state-read performance budgets, managed documentation ownership checks, and migration/rollback fixtures for published 1.1 and 1.2 workspaces.
+- Expand hosted CI across Windows, Ubuntu, and macOS with coverage, mutation, performance, package, documentation, and security evidence.
+- Remove the unused FFmpeg installer dependency from the runtime package.
+
 ## 1.2.3 - 2026-07-18 - Native Runtime Packaging Fix
 
 - Package host-specific Argon2 native bindings into standalone executables so macOS, Linux, and Windows binaries start consistently.

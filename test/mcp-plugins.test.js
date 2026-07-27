@@ -4,7 +4,7 @@ import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { generateKeyPairSync, sign } from "node:crypto";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { executeMcpHealth, listMcpServers, mcpHealthPlan, registerMcpServer, setMcpActivation, validateMcpServer } from "../src/mcp.js";
+import { executeMcpHealth, listMcpServers, mcpHealthPlan, registerMcpServer, removeMcpServer, setMcpActivation, validateMcpServer } from "../src/mcp.js";
 import { installPlugin, listPlugins, pluginDependencies, pluginHealth, pluginPermissions, setPluginEnabled, trustPluginPublisher, updatePlugin, validatePlugin } from "../src/plugins.js";
 
 test("custom MCP servers are registered disabled and activated additively", async () => {
@@ -50,6 +50,58 @@ test("remote MCP health retries transient failures", async () => {
     const result = await executeMcpHealth(plan, { fetchImpl: async () => { calls += 1; return new Response("{}", { status: calls < 3 ? 503 : 200 }); } });
     assert.equal(result.healthy, true);
     assert.equal(result.attempts, 3);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("MCP lifecycle covers local health, activation, removal, and validation errors", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "mcp-lifecycle-"));
+  try {
+    const invalid = [
+      [{ name: "../bad", transport: "stdio", command: "server" }, /name/],
+      [{ name: "bad-transport", transport: "socket" }, /transport/],
+      [{ name: "missing-command", transport: "stdio" }, /require a command/],
+      [{ name: "remote-http", transport: "http", url: "http://example.test/mcp" }, /require HTTPS/],
+      [{ name: "inline-user", transport: "http", url: "https://user:pass@example.test/mcp" }, /inline credentials/],
+      [{ name: "bad-header", transport: "http", url: "https://example.test/mcp", headerEnvironment: { "Bad Header": "lower" } }, /valid uppercase/],
+    ];
+    for (const [definition, expected] of invalid) await assert.rejects(() => registerMcpServer(root, definition), expected);
+
+    assert.equal((await registerMcpServer(root, { name: "local", transport: "stdio", command: "node", args: ["server.js"], environment: ["LOCAL_ENV"] })).dryRun, true);
+    await registerMcpServer(root, { name: "local", transport: "stdio", command: "node", args: ["server.js"], environment: ["LOCAL_ENV"] }, { dryRun: false });
+    const localPlan = await mcpHealthPlan(root, "local");
+    assert.equal((await executeMcpHealth(localPlan, { execImpl: async () => ({}) })).healthy, true);
+    assert.equal((await executeMcpHealth(localPlan, { execImpl: async () => { throw new Error("missing"); } })).healthy, false);
+    assert.equal((await setMcpActivation(root, "local", true, "codex")).dryRun, true);
+    assert.equal((await setMcpActivation(root, "local", true, "codex", { dryRun: false })).generated.created, true);
+    assert.equal((await setMcpActivation(root, "local", true, "codex", { dryRun: false })).generated.skipped, true);
+    assert.equal((await setMcpActivation(root, "local", false, null, { dryRun: false })).generated, null);
+    assert.equal((await removeMcpServer(root, "local")).registryOnly, true);
+    assert.equal((await removeMcpServer(root, "local", { dryRun: false })).removed, true);
+    assert.equal((await removeMcpServer(root, "local", { dryRun: false })).removed, false);
+    await assert.rejects(() => setMcpActivation(root, "missing", true), /Unknown MCP server/);
+    await assert.rejects(() => mcpHealthPlan(root, "missing"), /Unknown MCP server/);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("remote MCP health reports client errors, missing environment, and exhausted retries", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "mcp-health-errors-"));
+  try {
+    await registerMcpServer(root, { name: "remote-errors", transport: "https", url: "https://mcp.example.test/mcp", headerEnvironment: { Authorization: "MISSING_MCP_AUTH" } }, { dryRun: false });
+    const plan = await mcpHealthPlan(root, "remote-errors");
+    await assert.rejects(() => executeMcpHealth(plan, { retries: 0 }), /Missing MISSING_MCP_AUTH/);
+    const previous = process.env.MISSING_MCP_AUTH;
+    process.env.MISSING_MCP_AUTH = "Bearer test";
+    try {
+      const client = await executeMcpHealth(plan, { retries: 0, fetchImpl: async () => new Response("{}", { status: 401 }) });
+      assert.equal(client.healthy, false);
+      assert.equal(client.status, 401);
+      const exhausted = await executeMcpHealth(plan, { retries: 1, fetchImpl: async () => { throw new Error("offline"); } });
+      assert.equal(exhausted.healthy, false);
+      assert.equal(exhausted.attempts, 2);
+      assert.equal(exhausted.error, "offline");
+    } finally {
+      if (previous === undefined) delete process.env.MISSING_MCP_AUTH; else process.env.MISSING_MCP_AUTH = previous;
+    }
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 

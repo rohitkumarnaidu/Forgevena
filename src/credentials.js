@@ -264,7 +264,9 @@ async function readEncryptedCredential(target, variable) {
     const metadata = JSON.parse(protectedMetadata.toString("utf8"));
     if (metadata.variable !== variable || !Number.isInteger(metadata.credentialVersion)) throw new Error("Encrypted credential protected metadata is invalid.");
     const { key } = await deriveEncryptionKey(vaultPassphrase(), Buffer.from(payload.salt, "base64"), payload.kdf);
-    const decipher = createDecipheriv("aes-256-gcm", key, Buffer.from(payload.iv, "base64"));
+    const decipher = createDecipheriv("aes-256-gcm", key, Buffer.from(payload.iv, "base64"), {
+      authTagLength: 16
+    });
     decipher.setAAD(protectedMetadata);
     decipher.setAuthTag(Buffer.from(payload.tag, "base64"));
     return Buffer.concat([decipher.update(Buffer.from(payload.ciphertext, "base64")), decipher.final()]).toString("utf8");
@@ -286,7 +288,9 @@ function decryptLegacyCredential(payload, variable) {
   if (payload.variable !== variable) throw new Error("Encrypted credential metadata is invalid.");
   // lgtm[js/insufficient-password-hash] Compatibility-only decryption is consent-gated and immediately re-encrypted with Argon2id.
   const legacyKey = createHash("sha256").update(vaultPassphrase()).digest();
-  const decipher = createDecipheriv("aes-256-gcm", legacyKey, Buffer.from(payload.iv, "base64"));
+  const decipher = createDecipheriv("aes-256-gcm", legacyKey, Buffer.from(payload.iv, "base64"), {
+    authTagLength: 16
+  });
   decipher.setAuthTag(Buffer.from(payload.tag, "base64"));
   return Buffer.concat([decipher.update(Buffer.from(payload.ciphertext, "base64")), decipher.final()]).toString("utf8");
 }

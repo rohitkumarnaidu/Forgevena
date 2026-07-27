@@ -1,6 +1,6 @@
 {
   "name": "forgevena",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "private": false,
   "description": "Governed engineering from idea to production.",
   "keywords": [
@@ -60,6 +60,7 @@
   "scripts": {
     "test": "node ./scripts/run-tests.js",
     "test:coverage": "node ./scripts/run-tests.js --coverage",
+    "test:mutation": "node ./scripts/mutation-gate.js",
     "start": "node ./bin/forgevena.js",
     "release:verify": "node ./scripts/verify-release.js",
     "release:supply-chain": "node ./scripts/generate-supply-chain.js --apply",
