@@ -1,13 +1,13 @@
 # Forgevena Documentation
 
-Current stable version: **1.2.3**
+Current stable version: **1.3.0**
 
 **Governed engineering from idea to production.**
 
 This portal is the canonical entry point for installing, operating, extending, and maintaining Forgevena. Existing historical, phase, release, and audit records remain available at the root of `docs/`.
 
 ```powershell
-npm install --global forgevena@1.2.3
+npm install --global forgevena@1.3.0
 forgevena version
 forgevena doctor
 ```

@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: Existing signed tag to verify or repair, for example v1.2.3
+        description: Existing signed tag to verify or repair, for example v1.3.0
         required: false
         type: string
       publish:

@@ -10,12 +10,12 @@
 ## Install
 
 ```powershell
-npm install --global forgevena@1.2.3
+npm install --global forgevena@1.3.0
 forgevena version
 forgevena doctor
 ```
 
-For offline installation, download the verified archive and `RELEASE_SHA256SUMS` from the [latest release](https://github.com/rohitkumarnaidu/Forgevena/releases/latest), verify the checksum, then run `npm install --global ./forgevena-1.2.3.tgz`.
+For offline installation, download the verified archive and `RELEASE_SHA256SUMS` from the [latest release](https://github.com/rohitkumarnaidu/Forgevena/releases/latest), verify the checksum, then run `npm install --global ./forgevena-1.3.0.tgz`.
 
 On Linux or Intel macOS, you can instead use the maintained Homebrew tap:
 

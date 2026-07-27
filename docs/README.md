@@ -33,7 +33,7 @@ flowchart LR
 ## Installation and quick start
 
 ```powershell
-npm install --global forgevena@1.2.3
+npm install --global forgevena@1.3.0
 forgevena doctor
 forgevena create Demo --template fastapi --dry-run --verbose
 forgevena create Demo --template fastapi --apply

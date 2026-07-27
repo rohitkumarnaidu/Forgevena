@@ -1,7 +1,15 @@
 # Roadmap
 
-Release 1.0.0 provides the stable local-first platform, additive bootstrap, integrations, providers, MCP/plugins, cloud preparation, dashboard, security controls, packaging, and cross-platform release evidence.
+Forgevena has a stable local-first foundation covering additive bootstrap, integrations, providers, MCP/plugins, cloud preparation, dashboard, security controls, packaging, and cross-platform release evidence.
 
-Future work is governed by demonstrated need and approved ADRs. Candidate areas include additional declarative adapters, richer documentation-site generation, enterprise secret-manager adapters, and expanded hosted validation. No roadmap item overrides compatibility, consent, or additive-only safety.
+The canonical roadmap advances reliability, ecosystem contracts, governance, operations, deterministic workflows, and engineering intelligence in architectural dependency order. Update management is a cross-version program that applies one trusted discovery, compatibility, consent, verification, health, history, and recovery lifecycle to the complete ecosystem.
 
-See [Roadmap](../ROADMAP.md), [Future roadmap](../v1/FUTURE_ROADMAP.md), and [Known limitations](../KNOWN_LIMITATIONS.md).
+Future work is governed by demonstrated need and approved ADRs. No roadmap item overrides compatibility, consent, package-manager ownership, offline operation, precise rollback, or additive-only project safety.
+
+See:
+
+- [Public roadmap](../ROADMAP.md)
+- [Versioned product and innovation roadmap](../strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md)
+- [Enterprise update management strategy](../strategy/ENTERPRISE_UPDATE_MANAGEMENT.md)
+- [Platform blueprint](../strategy/FORGEVENA_PLATFORM_BLUEPRINT.md)
+- [Known limitations](../KNOWN_LIMITATIONS.md)

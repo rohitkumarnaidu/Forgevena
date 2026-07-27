@@ -1,10 +1,10 @@
 # Forgevena Versioned Product and Innovation Roadmap
 
-> **Document purpose:** Define the planned version sequence after `v1.2.3`, connect existing foundations to enterprise outcomes, capture candidate and exploratory ideas, and establish the evidence required before any capability is declared complete.
+> **Document purpose:** Define the planned version sequence after `v1.3.0`, connect the certified reliability foundation to enterprise outcomes, capture candidate and exploratory ideas, and establish the evidence required before any capability is declared complete.
 >
-> **Planning baseline:** 2026-07-20
-> **Current stable release:** `v1.2.3`
-> **Roadmap horizon:** `v1.2.x` maintenance through `v2.x` optional remote platform
+> **Planning baseline:** 2026-07-27
+> **Current stable release:** `v1.3.0`
+> **Roadmap horizon:** `v1.3.x` maintenance through `v2.x` optional remote platform
 > **Companion document:** [Forgevena Platform Blueprint](FORGEVENA_PLATFORM_BLUEPRINT.md)
 
 ## 1. Roadmap Contract
@@ -56,6 +56,12 @@ flowchart LR
 ```
 
 The sequence prevents higher-level AI and remote features from bypassing lower-level reliability, policy, privacy, and audit requirements.
+
+### 4.1 Cross-Version Update Management Program
+
+Update management is a cross-cutting product program rather than a standalone installer feature. It begins with trusted metadata, state recovery, installation-source detection, and CLI contracts in `v1.3`; expands through provider, plugin, MCP, template, skill, and workflow lifecycles; becomes a complete dashboard and notification experience in `v1.8`; and gains optional fleet rollout controls in `v2.0`.
+
+The program preserves package-manager ownership, verifies signed artifacts and provenance, resolves compatibility and policy before mutation, supports offline bundles, retains last known-good state, and never modifies user project code. See the [Enterprise Update Management Strategy](ENTERPRISE_UPDATE_MANAGEMENT.md) for the complete lifecycle and acceptance contract.
 
 ## 5. `v1.2.x` — Stable Maintenance and Distribution Completion
 
@@ -121,6 +127,7 @@ Convert the broad foundation into a demonstrably reliable local platform.
 - Attach operation IDs to every command, state transaction, and audit event.
 - Recursively redact secrets in errors, logs, diagnostics, and child-process output.
 - Establish approved performance baselines and regression gates.
+- Establish trusted core-update metadata, installation-source inventory, update operation history, and recovery-ready snapshots without enabling automatic installation.
 
 ### v1.3 Candidate Features
 
@@ -162,6 +169,7 @@ Turn provider connectivity into a versioned, privacy-aware, testable enterprise 
 - Regional endpoint and data-residency policy validation.
 - Bring-your-own OpenAI-compatible provider manifests.
 - Response caching controlled by explicit privacy and retention policy.
+- Provider and model deprecation alerts rendered through the shared update-notification contract.
 
 ### v1.4 Acceptance Gates
 
@@ -196,6 +204,7 @@ Enable extension without allowing extensions to bypass host security.
 - Permission-diff review before plugin upgrades.
 - Reproducible plugin builds and transparency log integration.
 - MCP capability proxy that strips or transforms disallowed fields.
+- Permission-diff review and last known-good runtime selection before plugin or MCP upgrades.
 
 ### v1.5 Acceptance Gates
 
@@ -230,6 +239,7 @@ Make project foundations independently versioned, testable, signed, and distribu
 - Dependency freshness scoring before project creation.
 - Reproducible development-container and environment-manager profiles.
 - Template upgrade assistant that proposes, but never silently applies, changes.
+- Installation-channel-aware core upgrades for npm, Homebrew, Winget, Chocolatey, native binaries, and containers.
 
 ### v1.6 Acceptance Gates
 
@@ -263,6 +273,7 @@ Provide enterprise policy without requiring a hosted account.
 - Four-eyes approval workflow for high-risk operations.
 - Policy impact analysis before bundle updates.
 - Export to common policy formats where semantics can be preserved.
+- Signed update policies for approved channels, deferral limits, maintenance windows, security deadlines, and offline mirrors.
 
 ### v1.7 Acceptance Gates
 
@@ -287,6 +298,8 @@ Make platform operation and release evidence independently verifiable.
 - Generate CLI, schema, provider, plugin, template, policy, skill, and workflow references from source metadata.
 - Consolidate canonical documentation and archive historical phase evidence.
 - Separate and test dashboard frontend assets with accessibility and CSP validation.
+- Deliver the local Update Center and notification center for core and ecosystem inventory, release notes, compatibility, policy blocks, download state, history, health, and rollback evidence.
+- Support configurable checks, explicit download/apply boundaries, stable/security/prerelease channels, proxy and bandwidth controls, and privacy-safe update diagnostics.
 
 ### v1.8 Candidate Features
 
@@ -461,6 +474,13 @@ These ideas are exploratory and require discovery, ADRs, threat modeling, and bu
 - Redaction proofs and data-egress previews.
 - Air-gapped catalog and policy distribution.
 
+### 15.8 Governed Ecosystem Update Center
+
+- Dependency-aware batch planning across core, providers, plugins, MCP, templates, skills, workflows, and documentation.
+- Canary and staged rollout with health-based pause.
+- Signed offline mirrors, update attestations, and reproducible update simulation.
+- Security advisory mapping and support-lifecycle alerts for installed components.
+
 ## 16. Cross-Cutting Requirements for Every Version
 
 Every release must preserve:
@@ -567,24 +587,27 @@ Ideas that require a new core abstraction must first prove that existing contrac
 
 ## 21. Recommended Immediate Backlog
 
-The next implementation cycle should remain focused on `v1.3.0` prerequisites:
+The next implementation cycle should remain focused on `v1.4.0` provider maturity:
 
-1. Create the `v1.3.0` release issue and traceability matrix.
-2. Measure current CLI, state, vault, coverage, mutation, fuzz, and performance baselines.
-3. Inventory every direct persistent write and route gaps through the state engine.
-4. Add failure-injection fixtures for locks, disk-full, permissions, interruption, and corruption.
-5. Complete vault recovery and migration rehearsals.
-6. Consolidate error and structured-output contracts.
-7. Publish benchmark and migration evidence before adding provider or plugin scope.
+1. Freeze and schema the versioned provider adapter contract.
+2. Add recorded offline fixtures for every supported provider and agent host.
+3. Complete privacy classification for provider requests, responses, usage, and errors.
+4. Certify deadlines, cancellation, `Retry-After`, jittered backoff, idempotency, and safe fallback behavior.
+5. Generate dated compatibility evidence from deterministic fixtures and opt-in account-backed smoke tests.
+6. Add policy simulation, budget forecasting, and usage normalization without external calls.
+7. Publish provider limitations and verification dates instead of broad compatibility claims.
+8. Reuse the v1.3 state, vault, consent, redaction, performance, and recovery contracts without adding a parallel subsystem.
 
 ## 22. Decision Summary
 
-Forgevena should not race toward a hosted platform or an unbounded AI-agent marketplace. Its strongest differentiator is the safety contract already established in `v1.2.3`. The roadmap compounds that advantage:
+Forgevena should not race toward a hosted platform or an unbounded AI-agent marketplace. Its strongest differentiator is the safety contract certified in `v1.3.0`. The roadmap compounds that advantage:
 
 - `v1.3` proves reliability.
 - `v1.4-v1.6` mature the ecosystem.
 - `v1.7-v1.8` prove governance and operations.
 - `v1.9-v1.10` deliver governed engineering intelligence.
 - `v2.0` adds optional organizational coordination only after the local platform earns enterprise confidence.
+
+Across those releases, the Update Management Program provides one trusted lifecycle for discovering, planning, verifying, applying, validating, and recovering core and ecosystem updates.
 
 This sequence connects product ambition to architectural dependency, measurable evidence, and user trust.

@@ -19,6 +19,11 @@ registry/
 templates/
 updates/
 *.tgz
+*.zip
+*.mp3
+*.mp4
+*.mov
+*.mkv
 
 # Canonical documentation directories intentionally share names with
 # generated workspace directories and must remain version controlled.

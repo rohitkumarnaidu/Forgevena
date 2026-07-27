@@ -126,9 +126,11 @@ nav:
   - Operations:
       - Security: security/guide.md
       - Deployment: deployment/guide.md
+      - Update Management: strategy/ENTERPRISE_UPDATE_MANAGEMENT.md
       - Runbooks: operations/runbooks.md
       - Testing: testing/guide.md
       - Release Engineering: release/index.md
+      - Release Notes 1.3.0: RELEASE_NOTES_1.3.0.md
       - Release Notes 1.2.3: RELEASE_NOTES_1.2.3.md
       - Release Notes 1.2.2: RELEASE_NOTES_1.2.2.md
   - Learn:
@@ -151,6 +153,8 @@ nav:
       - Repository Map: REPOSITORY_MAP.md
   - Project:
       - Roadmap: roadmap/index.md
+      - Versioned Product Roadmap: strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md
+      - Platform Blueprint: strategy/FORGEVENA_PLATFORM_BLUEPRINT.md
       - Releases: releases/index.md
       - Migration: migration/index.md
       - Support: https://github.com/rohitkumarnaidu/Forgevena/blob/main/SUPPORT.md

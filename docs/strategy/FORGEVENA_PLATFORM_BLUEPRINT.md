@@ -1,9 +1,9 @@
 # Forgevena Platform Blueprint
 
-> **Document purpose:** Define what Forgevena aims to become, how the product evolved, what `v1.2.3` implements today, where it is distributed, and which boundaries remain intentionally outside the current stable scope.
+> **Document purpose:** Define what Forgevena aims to become, how the product evolved, what `v1.3.0` implements today, where it is distributed, and which boundaries remain intentionally outside the current stable scope.
 >
-> **Evidence date:** 2026-07-20
-> **Current stable release:** `v1.2.3`
+> **Evidence date:** 2026-07-27
+> **Current stable release:** `v1.3.0`
 > **Product caption:** Governed engineering from idea to production.
 > **Status:** Public, local-first developer-platform foundation with production release channels and selected capabilities still progressing toward enterprise certification.
 
@@ -94,7 +94,7 @@ The following constraints define the 1.x product contract:
 - Build a local project index, inspect relationships, and request read-only engineering recommendations.
 - Produce signed release tags, native executables, package-manager bundles, checksums, an SBOM, provenance, and verification reports.
 
-## 6. Current Platform Scope in `v1.2.3`
+## 6. Current Platform Scope in `v1.3.0`
 
 ### 6.1 CLI and Compatibility Surface
 
@@ -155,7 +155,7 @@ The local state system provides:
 - Managed-assets manifests recording ownership and content hashes.
 - Rollback that skips modified or unmanaged files.
 
-The current foundation is functional, while the `v1.3.0` program will raise concurrency, fuzzing, crash recovery, migration, and coverage evidence to enterprise acceptance thresholds.
+The `v1.3.0` foundation certifies concurrency, fuzzing, crash recovery, migration, rollback, elevated state coverage, and fail-closed corruption behavior against enterprise acceptance thresholds.
 
 ### 6.4 Credential Vault and Secret Handling
 
@@ -286,14 +286,22 @@ The release system supports:
 - Homebrew, Winget, and Chocolatey bundle generation.
 - Package smoke tests and immutable-version checks.
 
+### 6.13 Update Management Direction
+
+The current platform exposes component lifecycle and workspace upgrade commands, but the complete ecosystem Update Center is future scope. The planned design unifies update discovery, compatibility resolution, policy, consent, download verification, migration, health validation, history, and rollback across core, providers, plugins, MCP, templates, skills, workflows, documentation, and approved integrations.
+
+The system will preserve the owning installation channel—npm, Homebrew, Winget, Chocolatey, native executable, container, source checkout, or signed offline bundle—rather than silently replacing it. Automatic installation remains disabled by default. Update checks must not block startup, and project code is never modified by platform updates.
+
+Implementation is phased from trusted metadata and recovery foundations in `v1.3` through a local dashboard and notification center in `v1.8`, local enterprise certification in `v1.10`, and optional fleet rollout in `v2.0`. See the [Enterprise Update Management Strategy](ENTERPRISE_UPDATE_MANAGEMENT.md).
+
 ## 7. Current Distribution Status
 
 The following snapshot was verified on 2026-07-20.
 
 | Channel | Current status | Evidence or limitation |
 | --- | --- | --- |
-| npm | Published and stable | `forgevena@1.2.3`; `latest` points to `1.2.3`. |
-| GitHub Release | Published and stable | `v1.2.3` includes native executables, npm archive, checksums, SBOM, provenance, reports, and package-manager bundles. |
+| npm | Published and stable | `forgevena@1.3.0`; `latest` points to `1.3.0`. |
+| GitHub Release | Published and stable | `v1.3.0` includes native executables, npm archive, checksums, SBOM, provenance, reports, and package-manager bundles. |
 | GitHub Packages | Published | Public `forgevena` npm package exists with release history. |
 | GHCR | Published | Public `forgevena` container package exists. |
 | Docker Hub | Workflow-supported | Publication is credential-gated; a public repository was not independently verified in this evidence pass. |
@@ -351,13 +359,13 @@ Users remain responsible for provider data policies, cloud IAM, billing, regiona
 
 ## 10. Quality and Evidence
 
-The latest verified local regression run completed **148 tests with zero failures**. Hosted workflows cover multiple operating systems, supported Node.js versions, documentation, security, package generation, native executable smoke tests, and dependency review.
+The latest verified local regression run completed **235 tests with zero failures**. Hosted workflows cover multiple operating systems, supported Node.js versions, documentation, security, package generation, native executable smoke tests, and dependency review.
 
-Current evidence is strong for the public foundation but does not yet satisfy every future enterprise threshold. In particular, the roadmap still requires higher coverage gates, mutation testing, large corruption/fuzz campaigns, 32-writer concurrency evidence, performance baselines, formal provider certification, and complete policy-boundary enforcement.
+The reliability foundation now satisfies its coverage, mutation, 1,000-case corruption, 32-writer concurrency, migration, rollback, and performance gates. Formal provider certification, complete ecosystem policy enforcement, broader native architecture coverage, and the future optional organization platform remain later-version work.
 
 ## 11. Current Non-Goals and Limitations
 
-Forgevena `v1.2.3` does not claim to provide:
+Forgevena `v1.3.0` does not claim to provide:
 
 - A hosted multi-tenant control plane.
 - Automatic deletion of cloud resources.
@@ -397,6 +405,7 @@ Forgevena should be evaluated through measurable outcomes:
 - Documentation drift and broken-link count.
 - Mean time to diagnose state, provider, plugin, or release failures.
 - Percentage of external effects governed by policy and consent.
+- Update discovery freshness, compatibility-block accuracy, successful recovery rate, and percentage of installations updated through their owning channel.
 
 ## 14. Canonical References
 
@@ -409,6 +418,7 @@ Forgevena should be evaluated through measurable outcomes:
 - [Release history](../release/RELEASE_HISTORY.md)
 - [ADR index](../ADR_INDEX.md)
 - [Future version and innovation roadmap](FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md)
+- [Enterprise update management strategy](ENTERPRISE_UPDATE_MANAGEMENT.md)
 
 ## 15. Final Product Definition
 
