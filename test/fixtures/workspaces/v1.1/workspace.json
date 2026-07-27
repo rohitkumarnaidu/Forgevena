@@ -1,0 +1,14 @@
+{
+  "initialized": true,
+  "schemaVersion": 1,
+  "workspaceVersion": "1.1.0",
+  "modules": [
+    "core",
+    "registry",
+    "logging"
+  ],
+  "project": {
+    "name": "legacy-v1-1",
+    "template": "enterprise"
+  }
+}

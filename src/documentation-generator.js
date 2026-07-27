@@ -23,13 +23,28 @@ export async function generateCanonicalDocumentation(root, { dryRun = true } = {
   const sources = documentationSources();
   const manifest = documentationManifest(sources);
   const files = { ...sources, "manifest.json": `${JSON.stringify(manifest, null, 2)}\n` };
-  const create = [], skipped = [];
-  for (const [name, contents] of Object.entries(files)) ((await exists(path.join(root, OUTPUT_ROOT, name))) ? skipped : create).push({ name, contents });
-  const plan = { dryRun, output: OUTPUT_ROOT, create: create.map(({ name }) => name), skipped: skipped.map(({ name }) => name), overwrite: false, manifest };
+  const previousManifest = await readGeneratedManifest(root);
+  const create = [], update = [], skipped = [], conflicts = [];
+  for (const [name, contents] of Object.entries(sources)) {
+    const target = path.join(root, OUTPUT_ROOT, name);
+    if (!(await exists(target))) { create.push({ name, contents }); continue; }
+    const current = normalizeLineEndings(await readFile(target, "utf8"));
+    if (current === normalizeLineEndings(contents)) { skipped.push({ name, contents }); continue; }
+    if (previousManifest?.files?.[name] === contentHash(current)) update.push({ name, contents });
+    else conflicts.push({ name, reason: "Existing generated documentation was modified outside the generator." });
+  }
+  const manifestFile = { name: "manifest.json", contents: files["manifest.json"] };
+  const manifestTarget = path.join(root, OUTPUT_ROOT, manifestFile.name);
+  if (!(await exists(manifestTarget))) create.push(manifestFile);
+  else if (normalizeLineEndings(await readFile(manifestTarget, "utf8")) === normalizeLineEndings(manifestFile.contents)) skipped.push(manifestFile);
+  else if (previousManifest && conflicts.length === 0) update.push(manifestFile);
+  else conflicts.push({ name: manifestFile.name, reason: "Generated manifest is invalid or managed documentation has conflicts." });
+  const plan = { dryRun, output: OUTPUT_ROOT, create: create.map(({ name }) => name), update: update.map(({ name }) => name), skipped: skipped.map(({ name }) => name), conflicts, overwrite: false, managedUpdates: true, manifest };
   if (dryRun) return plan;
   await mkdir(path.join(root, OUTPUT_ROOT), { recursive: true });
   for (const file of create) await writeFile(path.join(root, OUTPUT_ROOT, file.name), file.contents, { encoding: "utf8", flag: "wx" });
-  return { ...plan, dryRun: false, created: create.map(({ name }) => name) };
+  for (const file of update) await writeFile(path.join(root, OUTPUT_ROOT, file.name), file.contents, "utf8");
+  return { ...plan, dryRun: false, created: create.map(({ name }) => name), updated: update.map(({ name }) => name) };
 }
 
 export async function verifyCanonicalDocumentation(root) {
@@ -45,7 +60,14 @@ export async function verifyCanonicalDocumentation(root) {
   return { valid: issues.length === 0, issues, output: OUTPUT_ROOT, files: Object.keys(expected) };
 }
 
-function documentationManifest(sources) { return { schemaVersion: 1, generator: "forgevena", files: Object.fromEntries(Object.entries(sources).sort(([left], [right]) => left.localeCompare(right)).map(([name, contents]) => [name, createHash("sha256").update(contents).digest("hex")])) }; }
+function documentationManifest(sources) { return { schemaVersion: 1, generator: "forgevena", files: Object.fromEntries(Object.entries(sources).sort(([left], [right]) => left.localeCompare(right)).map(([name, contents]) => [name, contentHash(contents)])) }; }
 function table(title, headers, rows) { return `# ${title}\n\n> Generated from Forgevena source metadata. Do not edit manually.\n\n| ${headers.join(" | ")} |\n|${headers.map(() => "---").join("|")}|\n${rows.map((row) => `| ${row.join(" | ")} |`).join("\n")}\n`; }
 async function exists(target) { try { await access(target); return true; } catch { return false; } }
 function normalizeLineEndings(value) { return value.replace(/\r\n/g, "\n"); }
+function contentHash(value) { return createHash("sha256").update(normalizeLineEndings(value)).digest("hex"); }
+async function readGeneratedManifest(root) {
+  try {
+    const value = JSON.parse(await readFile(path.join(root, OUTPUT_ROOT, "manifest.json"), "utf8"));
+    return value?.schemaVersion === 1 && value.generator === "forgevena" && value.files && typeof value.files === "object" ? value : null;
+  } catch { return null; }
+}

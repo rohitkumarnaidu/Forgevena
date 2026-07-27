@@ -8,7 +8,14 @@ const configured = process.env.FORGEVENA_TEST_TMPDIR;
 const fallback = path.resolve(configured || path.join("cache", "test-tmp"));
 const temporaryRoot = await writableTemporaryRoot(fallback);
 const args = ["--test", "--test-force-exit"];
-if (process.argv.includes("--coverage")) args.push("--experimental-test-coverage");
+if (process.argv.includes("--coverage")) {
+  args.push(
+    "--experimental-test-coverage",
+    "--test-coverage-lines=90",
+    "--test-coverage-branches=85",
+    "--test-coverage-functions=90",
+  );
+}
 args.push(...process.argv.slice(2).filter((argument) => argument !== "--coverage"));
 
 const child = spawn(process.execPath, args, {

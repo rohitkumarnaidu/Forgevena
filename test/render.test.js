@@ -1,12 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 import { initializeProject } from "../src/project.js";
-import { configureRender, executeRenderDeployment, generateRenderBlueprint, renderDeploymentPlan, validateRenderBlueprint } from "../src/render.js";
+import { configureRender, executeRenderDeployment, executeRenderStatus, generateRenderBlueprint, renderDeploymentPlan, renderRollbackPlan, validateRenderBlueprint } from "../src/render.js";
 
 const execute = promisify(execFile);
 
@@ -61,4 +61,55 @@ test("Render deployment retries transient API failures", async () => {
     assert.equal(calls, 3);
     assert.equal(result.deployments[0].deployId, "dep_ok");
   } finally { if (previous === undefined) delete process.env.RENDER_API_KEY; else process.env.RENDER_API_KEY = previous; await rm(root, { recursive: true, force: true }); }
+});
+
+test("Render Blueprint templates and validation failures are deterministic", async () => {
+  for (const template of ["react", "full-stack-ai", "microservices", "nextjs", "flutter"]) {
+    const root = await mkdtemp(path.join(tmpdir(), `render-${template}-`));
+    try {
+      await mkdir(path.join(root, ".ai-workspace"), { recursive: true });
+      await writeFile(path.join(root, ".ai-workspace", "workspace.json"), JSON.stringify({ schemaVersion: 2, workspaceVersion: "1.2.3", template, projectName: "Demo Project" }));
+      assert.equal((await generateRenderBlueprint(root)).dryRun, true);
+      await generateRenderBlueprint(root, { dryRun: false });
+      assert.match(await readFile(path.join(root, "render.yaml"), "utf8"), /^services:/);
+    } finally { await rm(root, { recursive: true, force: true }); }
+  }
+
+  const root = await mkdtemp(path.join(tmpdir(), "render-invalid-"));
+  try {
+    assert.equal((await validateRenderBlueprint(root)).valid, false);
+    await mkdir(path.join(root, ".ai-workspace"), { recursive: true });
+    await writeFile(path.join(root, ".ai-workspace", "workspace.json"), JSON.stringify({ schemaVersion: 2, workspaceVersion: "1.2.3", template: "blank", projectName: "---" }));
+    await assert.rejects(() => generateRenderBlueprint(root, { dryRun: false }), /does not define/);
+    await writeFile(path.join(root, "render.yaml"), "services:\n  - type: web\n    runtime: docker\n    envVars:\n      - key: API_KEY\n        value: exposed\n");
+    const validation = await validateRenderBlueprint(root);
+    assert.equal(validation.valid, false);
+    assert.ok(validation.issues.length >= 3);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("Render configuration, status, failures, and rollback stay explicit", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "render-lifecycle-"));
+  const previous = process.env.RENDER_API_KEY;
+  try {
+    const preview = await configureRender(root, { serviceIds: [" srv_a ", "srv_a", "", "srv_b"] });
+    assert.deepEqual(preview.serviceIds, ["srv_a", "srv_b"]);
+    await configureRender(root, { serviceIds: ["srv_a"], dryRun: false });
+    assert.equal((await renderRollbackPlan(root)).automaticDeletion, false);
+    assert.equal((await executeRenderDeployment(root, { executable: false })).executed, false);
+    assert.equal((await executeRenderStatus(root, { executable: false })).executed, false);
+    delete process.env.RENDER_API_KEY;
+    await assert.rejects(() => executeRenderDeployment(root, { executable: true, serviceIds: ["srv_a"] }), /Missing RENDER_API_KEY/);
+    await assert.rejects(() => executeRenderStatus(root, { executable: true, serviceIds: ["srv_a"] }), /Missing RENDER_API_KEY/);
+    process.env.RENDER_API_KEY = "render-secret";
+    await assert.rejects(() => executeRenderDeployment(root, { executable: true, serviceIds: ["srv_a"] }, { fetchImpl: async () => new Response(JSON.stringify({ message: "denied" }), { status: 400 }) }), /denied/);
+    await assert.rejects(() => executeRenderStatus(root, { executable: true, serviceIds: ["srv_a"] }, { fetchImpl: async () => new Response(JSON.stringify({ message: "denied" }), { status: 400 }) }), /denied/);
+    const arrayStatus = await executeRenderStatus(root, { executable: true, serviceIds: ["srv_a"] }, { fetchImpl: async () => new Response(JSON.stringify([{ id: "dep", status: "live" }]), { status: 200 }) });
+    assert.equal(arrayStatus.services[0].latestDeploy.status, "live");
+    const emptyStatus = await executeRenderStatus(root, { executable: true, serviceIds: ["srv_a"] }, { fetchImpl: async () => new Response(JSON.stringify([]), { status: 200 }) });
+    assert.equal(emptyStatus.services[0].latestDeploy, null);
+  } finally {
+    if (previous === undefined) delete process.env.RENDER_API_KEY; else process.env.RENDER_API_KEY = previous;
+    await rm(root, { recursive: true, force: true });
+  }
 });

@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { invokeProvider, providerAuthPlan, ProviderRequestError } from "../src/provider-runtime.js";
+import { discoverOllamaModels, executeProviderAuth, invokeProvider, providerAuthPlan, providerDefinition, providerRuntimeStatus, ProviderRequestError } from "../src/provider-runtime.js";
 import { readProviderPolicy, setProviderPolicy } from "../src/provider-policy.js";
 
 test("OpenAI runtime normalizes responses without returning credentials", async () => {
@@ -111,4 +111,57 @@ test("provider retries honor retry-after and preserve idempotency", async () => 
     assert.equal(keys[0], keys[1]);
     assert.match(keys[0], /^[0-9a-f-]{36}$/);
   } finally { if (previous === undefined) delete process.env.OPENAI_API_KEY; else process.env.OPENAI_API_KEY = previous; await rm(root, { recursive: true, force: true }); }
+});
+
+test("provider status and authentication cover API, local, and host providers", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "provider-status-"));
+  const previous = process.env.OPENAI_API_KEY;
+  try {
+    delete process.env.OPENAI_API_KEY;
+    assert.equal((await providerRuntimeStatus(root, "openai")).credentialAvailable, false);
+    process.env.OPENAI_API_KEY = "test-key";
+    assert.equal((await providerRuntimeStatus(root, "openai")).credentialAvailable, true);
+    const local = await providerRuntimeStatus(root, "ollama", { fetchImpl: async () => new Response(JSON.stringify({ models: [{ name: "local", size: 1 }] }), { status: 200 }) });
+    assert.deepEqual(local.models, ["local"]);
+    assert.equal((await providerRuntimeStatus(root, "ollama", { fetchImpl: async () => { throw new Error("offline"); } })).healthy, false);
+    assert.equal((await providerRuntimeStatus(root, "codex", { execImpl: async () => ({ stdout: "1", stderr: "" }) })).executableAvailable, true);
+    assert.equal((await providerRuntimeStatus(root, "codex", { execImpl: async () => { throw new Error("missing"); } })).executableAvailable, false);
+    assert.throws(() => providerDefinition("missing"), /Choose one of/);
+    assert.throws(() => providerAuthPlan("openai"), /API-key authentication/);
+    assert.equal((await executeProviderAuth(providerAuthPlan("windsurf"))).supported, false);
+    const auth = await executeProviderAuth(providerAuthPlan("codex", "logout"), { execImpl: async () => ({ stdout: " done \n", stderr: " warning \n" }) });
+    assert.equal(auth.stdout, "done");
+    assert.equal(auth.stderr, "warning");
+  } finally {
+    if (previous === undefined) delete process.env.OPENAI_API_KEY; else process.env.OPENAI_API_KEY = previous;
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("provider invocation fails closed for invalid requests, credentials, hosts, and HTTP errors", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "provider-errors-"));
+  const previous = process.env.OPENAI_API_KEY;
+  try {
+    delete process.env.OPENAI_API_KEY;
+    await assert.rejects(() => invokeProvider(root, "openai", { prompt: "hello" }), (error) => error.code === "credential_missing");
+    await assert.rejects(() => invokeProvider(root, "ollama", { prompt: " " }), (error) => error.code === "invalid_request");
+    await setProviderPolicy(root, "ollama", { maxInputCharacters: 3 }, { dryRun: false });
+    await assert.rejects(() => invokeProvider(root, "ollama", { prompt: "long" }), (error) => error.code === "policy_limit");
+    await assert.rejects(() => invokeProvider(root, "codex", { prompt: "hello" }, { execImpl: async () => { throw new Error("missing"); } }), (error) => error.code === "host_unavailable");
+    process.env.OPENAI_API_KEY = "test-key";
+    let calls = 0;
+    await assert.rejects(() => invokeProvider(root, "openai", { prompt: "hello", retries: 2 }, { fetchImpl: async () => { calls += 1; return new Response(JSON.stringify({ error: { message: "bad request" } }), { status: 400 }); } }), (error) => error.status === 400 && error.retryable === false);
+    assert.equal(calls, 1);
+    await assert.rejects(() => invokeProvider(root, "openai", { prompt: "hello", retries: 0 }, { fetchImpl: async () => { throw new Error("network down"); } }), (error) => error.retryable === true && /network down/.test(error.message));
+  } finally {
+    if (previous === undefined) delete process.env.OPENAI_API_KEY; else process.env.OPENAI_API_KEY = previous;
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("Ollama discovery normalizes optional metadata and rejects unhealthy responses", async () => {
+  const models = await discoverOllamaModels({ fetchImpl: async () => new Response(JSON.stringify({ models: [{ name: "a" }, { name: "b", size: 2, modified_at: "today" }] }), { status: 200 }) });
+  assert.deepEqual(models, [{ name: "a", size: null, modifiedAt: null }, { name: "b", size: 2, modifiedAt: "today" }]);
+  assert.deepEqual(await discoverOllamaModels({ fetchImpl: async () => new Response(JSON.stringify({}), { status: 200 }) }), []);
+  await assert.rejects(() => discoverOllamaModels({ fetchImpl: async () => new Response("{}", { status: 503 }) }), (error) => error.code === "local_model_unavailable");
 });

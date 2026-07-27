@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { copyFile, mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { rollbackUpgrade, upgradeWorkspace } from "../src/upgrade.js";
@@ -29,3 +29,34 @@ test("workspace upgrade previews, backs up, migrates, and rolls back", async () 
     assert.equal(restored.schemaVersion, 1);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+for (const fixture of ["v1.1", "v1.2"]) {
+  test(`workspace upgrade and rollback preserve the ${fixture} published-state fixture`, async () => {
+    const root = await mkdtemp(path.join(tmpdir(), `workspace-upgrade-${fixture}-`));
+    try {
+      const workspaceRoot = path.join(root, ".ai-workspace");
+      await mkdir(workspaceRoot, { recursive: true });
+      const source = path.resolve("test", "fixtures", "workspaces", fixture, "workspace.json");
+      const target = path.join(workspaceRoot, "workspace.json");
+      await copyFile(source, target);
+      const original = JSON.parse(await readFile(target, "utf8"));
+
+      const preview = await upgradeWorkspace(root);
+      assert.equal(preview.from.version, original.workspaceVersion);
+      assert.equal(preview.applied, false);
+
+      const applied = await upgradeWorkspace(root, { dryRun: false });
+      assert.equal(applied.applied, true);
+      const migrated = JSON.parse(await readFile(target, "utf8"));
+      assert.equal(migrated.workspaceVersion, PLATFORM_VERSION);
+      assert.equal(migrated.schemaVersion, 2);
+      assert.deepEqual(migrated.project, original.project);
+      assert.deepEqual(migrated.modules, original.modules);
+
+      const rollbackPreview = await rollbackUpgrade(root);
+      assert.equal(rollbackPreview.applied, false);
+      assert.equal((await rollbackUpgrade(root, { dryRun: false, yes: true })).applied, true);
+      assert.deepEqual(JSON.parse(await readFile(target, "utf8")), original);
+    } finally { await rm(root, { recursive: true, force: true }); }
+  });
+}

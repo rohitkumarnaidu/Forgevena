@@ -33,3 +33,36 @@ test("engineering assets reject missing principals and invalid provenance", asyn
   try { await assert.rejects(() => installEngineeringAsset(root, path.join(root, "missing.json")), (error) => error.code === "SKILL_PRINCIPAL_REQUIRED"); }
   finally { await rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 50 }); }
 });
+
+test("engineering asset validation covers trust, schema, variables, and empty registry branches", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "forgevena-skills-validation-"));
+  try {
+    const base = { schemaVersion: 1, kind: "prompt", id: "review", version: "1.0.0", content: "Review", provenance: { author: "Forgevena", source: "local", license: "MIT" } };
+    const invalid = [
+      [{ ...base, schemaVersion: 2 }, "SKILL_SCHEMA_INVALID"],
+      [{ ...base, kind: "tool" }, "SKILL_KIND_INVALID"],
+      [{ ...base, id: "../bad" }, "SKILL_ID_INVALID"],
+      [{ ...base, version: "one" }, "SKILL_VERSION_INVALID"],
+      [{ ...base, content: " " }, "SKILL_CONTENT_INVALID"],
+      [{ ...base, variables: [{ name: "../bad" }] }, "SKILL_VARIABLE_INVALID"],
+      [{ ...base, variables: [{ name: "target" }, { name: "target" }] }, "SKILL_VARIABLE_DUPLICATE"],
+    ];
+    for (const [value, code] of invalid) assert.throws(() => validateEngineeringAsset(value), (error) => error.code === code);
+    const normalized = validateEngineeringAsset({ ...base, variables: [{ name: "target", required: false }], capabilities: ["review", "review"] });
+    assert.equal(normalized.variables[0].required, false);
+    assert.deepEqual(normalized.capabilities, ["review"]);
+    assert.equal(normalized.compatibility.forgevena, ">=1.1.0");
+
+    await assert.rejects(() => trustEngineeringAssetPublisher(root, "../bad", "invalid"), (error) => error.code === "SKILL_PUBLISHER_INVALID");
+    await assert.rejects(() => trustEngineeringAssetPublisher(root, "valid", "invalid"), (error) => error.code === "SKILL_PUBLISHER_KEY_INVALID");
+    const { publicKey } = generateKeyPairSync("ed25519");
+    const pem = publicKey.export({ type: "spki", format: "pem" });
+    assert.equal((await trustEngineeringAssetPublisher(root, "valid", pem)).dryRun, true);
+    assert.equal((await trustEngineeringAssetPublisher(root, "valid", pem, { dryRun: false })).trusted, true);
+    assert.equal((await trustEngineeringAssetPublisher(root, "valid", pem, { dryRun: false })).skipped, true);
+    assert.equal((await verifyEngineeringAsset(root, path.join(root, "missing.json"))).valid, false);
+    assert.deepEqual(await listEngineeringAssets(root), []);
+    assert.equal((await engineeringAssetStatus(root, "skill", "missing")).registered, false);
+    assert.equal((await removeEngineeringAsset(root, "skill", "missing")).removed, false);
+  } finally { await rm(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 50 }); }
+});

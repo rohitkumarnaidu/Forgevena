@@ -1,0 +1,19 @@
+{
+  "initialized": true,
+  "schemaVersion": 2,
+  "workspaceVersion": "1.2.0",
+  "modules": [
+    "core",
+    "registry",
+    "logging",
+    "providers"
+  ],
+  "integrations": {},
+  "toolVersions": {},
+  "providers": [],
+  "providerProfiles": [],
+  "project": {
+    "name": "legacy-v1-2",
+    "template": "full-stack-ai"
+  }
+}
