@@ -138,7 +138,7 @@ Modern ecosystems demonstrate the need for bundled but independently governed co
 
 - [Claude plugins](https://github.com/anthropics/claude-plugins-official) combine manifests, MCP, commands, agents, and skills.
 - [Cursor plugins](https://cursor.com/blog/marketplace) combine skills, subagents, MCP, hooks, and rules.
-- [Antigravity](https://www.antigravity.google/docs/overview), [OpenCode](https://opencode.ai/docs/tools), and [Hermes](https://hermes-agent.noasresearch.com/docs/developer-guide/plugins) expose different combinations of tools, skills, agents, memory, hooks, providers, and host APIs.
+- [Antigravity](https://www.antigravity.google/docs/overview), [OpenCode](https://opencode.ai/docs/tools), and [Hermes](https://hermes-agent.nousresearch.com/docs/developer-guide/plugins) expose different combinations of tools, skills, agents, memory, hooks, providers, and host APIs.
 
 These are research inputs, not support claims. A host becomes supported only after dated fixtures, translation evidence, smoke tests, and published limitations exist.
 
