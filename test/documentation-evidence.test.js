@@ -29,3 +29,17 @@ test("documentation evidence detects modified and corrupt reports", async () => 
     assert.match((await validateDocumentationEvidenceBundle(output)).issues.join("\n"), /invalid/);
   } finally { await rm(output, { recursive: true, force: true }); }
 });
+
+test("documentation evidence remains valid after a CRLF checkout", async () => {
+  const output = await mkdtemp(path.join(os.tmpdir(), "forgevena-doc-evidence-eol-"));
+  try {
+    const report = analyzeDocumentationImpact(["docs/faq/index.md"], { changeId: "docs-eol", generatedAt: "2026-07-28T00:00:00.000Z", checkpoint: "merge" });
+    await writeDocumentationEvidenceBundle(process.cwd(), output, report);
+    for (const name of REQUIRED_DOCUMENTATION_EVIDENCE_REPORTS) {
+      const target = path.join(output, name);
+      const contents = await readFile(target, "utf8");
+      await writeFile(target, contents.replace(/(?<!\r)\n/g, "\r\n"), "utf8");
+    }
+    assert.deepEqual(await validateDocumentationEvidenceBundle(output), { valid: true, issues: [], reportsChecked: REQUIRED_DOCUMENTATION_EVIDENCE_REPORTS.length });
+  } finally { await rm(output, { recursive: true, force: true }); }
+});

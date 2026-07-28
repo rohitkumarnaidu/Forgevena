@@ -35,7 +35,9 @@ export async function validateVisualEvidence(root, now = new Date()) {
     if (!isSafeRepositoryPath(asset.path) || !asset.path.startsWith("docs/assets/")) { issues.push(`Visual evidence path is unsafe: ${label}.`); continue; }
     const target = path.join(root, asset.path);
     try {
-      const contents = await readFile(target);
+      const contents = path.extname(target).toLowerCase() === ".svg"
+        ? normalizeText(await readFile(target, "utf8"))
+        : await readFile(target);
       if (digest(contents) !== asset.sha256) issues.push(`Visual evidence ${label} has a stale content hash.`);
     } catch { issues.push(`Visual evidence asset is missing: ${label}.`); }
     const reviewBy = new Date(asset.reviewBy);

@@ -28,14 +28,17 @@ export async function writeDocumentationEvidenceBundle(root, outputDirectory, re
   const coverage = await readText(path.join(root, "docs", "reference", "generated", "documentation-coverage-matrix.md"));
   const files = evidenceFiles(report, health, coverage);
   await mkdir(outputDirectory, { recursive: true });
-  for (const [name, contents] of Object.entries(files)) await writeFile(path.join(outputDirectory, name), contents, "utf8");
+  for (const [name, contents] of Object.entries(files)) await writeFile(path.join(outputDirectory, name), normalizeText(contents), "utf8");
   const manifest = {
     schemaVersion: DOCUMENTATION_EVIDENCE_SCHEMA_VERSION,
     changeId: report.changeId,
     checkpoint: report.checkpoint,
     generatedAt: report.generatedAt,
     decision: report.decision,
-    reports: Object.fromEntries(Object.entries(files).map(([name, contents]) => [name, { sha256: digest(contents), bytes: Buffer.byteLength(contents) }])),
+    reports: Object.fromEntries(Object.entries(files).map(([name, contents]) => {
+      const canonical = normalizeText(contents);
+      return [name, { sha256: digest(canonical), bytes: Buffer.byteLength(canonical) }];
+    })),
   };
   await writeFile(path.join(outputDirectory, "evidence-manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
   return { outputDirectory, manifest };
@@ -53,7 +56,7 @@ export async function validateDocumentationEvidenceBundle(outputDirectory) {
     const metadata = manifest.reports?.[name];
     if (!metadata) { issues.push(`${name} is missing from the evidence manifest.`); continue; }
     try {
-      const contents = await readFile(path.join(outputDirectory, name), "utf8");
+      const contents = normalizeText(await readFile(path.join(outputDirectory, name), "utf8"));
       if (digest(contents) !== metadata.sha256) issues.push(`${name} checksum does not match.`);
       if (Buffer.byteLength(contents) !== metadata.bytes) issues.push(`${name} byte count does not match.`);
     } catch { issues.push(`${name} is missing.`); }
@@ -89,5 +92,6 @@ function evidenceFiles(report, health, coverage) {
 function reportMarkdown(title, body) { return `# ${title}\n\n${body}\n`; }
 function list(values, empty) { return values.length ? values.map((value) => `- \`${value}\``).join("\n") : empty; }
 function digest(value) { return crypto.createHash("sha256").update(value).digest("hex"); }
+function normalizeText(value) { return value.replace(/\r\n/g, "\n"); }
 async function readText(file) { return readFile(file, "utf8"); }
 async function readJson(file) { return JSON.parse(await readText(file)); }

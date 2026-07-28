@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import crypto from "node:crypto";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -29,6 +30,31 @@ test("visual evidence rejects stale hashes, missing alt text, changed sources, a
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
+test("visual evidence hashes SVG text independently of checkout line endings", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "forgevena-visual-eol-"));
+  try {
+    await mkdir(path.join(root, "docs/assets"), { recursive: true });
+    const canonicalSvg = "<svg>\n  <title>Portable</title>\n</svg>\n";
+    const canonicalSource = "# Source\n";
+    await writeFile(path.join(root, "source.md"), canonicalSource.replaceAll("\n", "\r\n"));
+    await writeFile(path.join(root, "docs/assets/portable.svg"), canonicalSvg.replaceAll("\n", "\r\n"));
+    await writeFile(path.join(root, "docs/assets/visual-evidence.json"), JSON.stringify({
+      schemaVersion: 1,
+      assets: [{
+        path: "docs/assets/portable.svg",
+        type: "diagram",
+        altText: "Portable SVG evidence",
+        productVersion: "1.0.0",
+        reviewedAt: "2026-07-28",
+        reviewBy: "2027-01-28",
+        sha256: sha256(canonicalSvg),
+        sourceDependencies: [{ path: "source.md", sha256: sha256(canonicalSource) }],
+      }],
+    }));
+    assert.deepEqual(await validateVisualEvidence(root, new Date("2026-07-28T00:00:00Z")), { valid: true, issues: [], assetsChecked: 1 });
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
 test("executable evidence rejects prohibited commands and missing evidence", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "forgevena-examples-"));
   try {
@@ -48,3 +74,5 @@ test("safe example execution enforces timeout", async () => {
     await assert.rejects(runSafeExample(root, { args: ["./bin/forgevena.js", "help"], timeoutMs: 100 }), /timed out/);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+function sha256(value) { return crypto.createHash("sha256").update(value).digest("hex"); }
