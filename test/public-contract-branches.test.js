@@ -3,7 +3,7 @@ import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
-import { listCapabilities, resolveCapability } from "../src/capabilities.js";
+import { CAPABILITY_MATURITY, listCapabilities, resolveCapability } from "../src/capabilities.js";
 import { moduleContract, supportedModules } from "../src/modules.js";
 import { configureProjectProviders, readProjectProviderConfig } from "../src/provider-project.js";
 import { providerPolicyExists, readProviderPolicy, recordProviderUsage, setProviderPolicy } from "../src/provider-policy.js";
@@ -12,7 +12,14 @@ async function workspace() { return mkdtemp(path.join(os.tmpdir(), "forgevena-co
 
 test("capability resolution covers defaults, alternatives, and validation", () => {
   assert.ok(listCapabilities().length >= 7);
+  assert.deepEqual(CAPABILITY_MATURITY, ["experimental", "preview", "stable", "enterprise-certified", "deprecated"]);
+  for (const capability of listCapabilities()) {
+    assert.ok(CAPABILITY_MATURITY.includes(capability.maturity));
+    assert.equal(capability.support, "community");
+    assert.match(capability.evidence, /^docs\//);
+  }
   assert.equal(resolveCapability("design-system").integration, "design-md");
+  assert.equal(resolveCapability("design-system").maturity, "preview");
   assert.deepEqual(resolveCapability("design-system", "astryx").alternatives, ["design-md"]);
   assert.throws(() => resolveCapability("missing"), /Unknown capability/);
   assert.throws(() => resolveCapability("design-system", "openspec"), /does not implement/);

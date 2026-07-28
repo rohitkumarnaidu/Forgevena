@@ -4,7 +4,7 @@
 
 | Command | Purpose |
 |---|---|
-| `doctor` | Inspect environment and ecosystem health. |
+| `doctor` | Inspect health read-only; `--apply` records health and audit evidence. |
 | `status` | Inspect project registry state. |
 | `validate` | Validate managed bootstrap assets. |
 | `state` | Validate journal integrity, repair, snapshot, migrate, or inspect state history. |

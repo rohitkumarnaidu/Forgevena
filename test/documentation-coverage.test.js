@@ -16,6 +16,11 @@ const documents = [
   "docs/reference/environment-variables.md", "docs/reference/exit-codes.md",
   "docs/adrs/index.md", "docs/glossary/index.md", "docs/schemas/index.md", "docs/release/index.md",
   "docs/REPOSITORY_MAP.md", "docs/OPEN_SOURCE_V1_READINESS.md", "docs/DOCUMENTATION_COVERAGE.md",
+  "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md", "docs/governance/DOCUMENTATION_AUTHORITY_MAP.md",
+  "docs/strategy/RESEARCH_AND_STANDARDS_RADAR.md", "docs/reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md",
+  "docs/reference/schemas/document-catalog.schema.json", "docs/reference/generated/documentation-catalog.json",
+  "docs/reference/generated/documentation-health.md", "docs/reference/generated/documentation-coverage-matrix.md",
+  "docs/reference/generated/ai-documentation-index.md", "docs/reference/generated/historical-document-index.md",
 ];
 
 test("canonical documentation hierarchy exists", async () => {

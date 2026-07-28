@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rohitkumarnaidu.github.io/Forgevena/schemas/documentation-impact.schema.json",
+  "title": "Forgevena Documentation Impact Report",
+  "type": "object",
+  "required": ["schemaVersion", "changeId", "title", "owner", "generatedAt", "checkpoint", "changeProfile", "changedFiles", "affectedComponents", "implementationFiles", "documentationFiles", "testFiles", "requirements", "blockers", "decision"],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "changeId": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "owner": { "type": "string", "minLength": 1 },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "checkpoint": { "enum": ["push", "merge", "release"] },
+    "comparison": {
+      "type": "object",
+      "required": ["base", "head"],
+      "properties": { "base": { "type": ["string", "null"] }, "head": { "type": ["string", "null"] } },
+      "additionalProperties": false
+    },
+    "changeProfile": { "enum": ["implementation", "documentation", "repository-metadata"] },
+    "changedFiles": { "$ref": "#/$defs/paths" },
+    "affectedComponents": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "implementationFiles": { "$ref": "#/$defs/paths" },
+    "documentationFiles": { "$ref": "#/$defs/paths" },
+    "testFiles": { "$ref": "#/$defs/paths" },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "component", "criticality", "reason", "candidateDocuments", "matchedDocuments", "status", "mandatory"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "component": { "type": "string", "minLength": 1 },
+          "criticality": { "enum": ["critical", "important", "standard"] },
+          "reason": { "type": "string", "minLength": 1 },
+          "candidateDocuments": { "$ref": "#/$defs/paths" },
+          "matchedDocuments": { "$ref": "#/$defs/paths" },
+          "status": { "enum": ["pass", "fail", "not-applicable"] },
+          "mandatory": { "type": "boolean" },
+          "rationale": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "blockers": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "decision": { "enum": ["ready", "hold"] }
+  },
+  "$defs": { "paths": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true } },
+  "additionalProperties": false
+}

@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "path": "docs/assets/cli-preview.svg",
+      "type": "diagram",
+      "altText": "Forgevena CLI preview showing safety-first commands and structured output.",
+      "productVersion": "1.3.0",
+      "reviewedAt": "2026-07-28",
+      "reviewBy": "2027-01-28",
+      "sha256": "0752bca72d98dda40cb1bed801d439dc581ed268f8f402dd5102779cd43f2fc2",
+      "sourceDependencies": [{ "path": "README.md", "sha256": "0eac45c38274a26dce2e5d2d14c5d5a55848537e36d97ff4a93cd80eb455b4ad" }]
+    },
+    {
+      "path": "docs/assets/favicon.svg",
+      "type": "icon",
+      "altText": "Forgevena hexagonal documentation favicon.",
+      "productVersion": "1.3.0",
+      "reviewedAt": "2026-07-28",
+      "reviewBy": "2027-01-28",
+      "sha256": "ba7dc2ca2b69a4b630386ad57ef3c6939c32afadb1c0a403d20cde7b1e09f831",
+      "sourceDependencies": [{ "path": "docs/assets/README.md", "sha256": "66d8fb7ec239d6bf15a7a488f49ed2bcbfa17c094774fc330daf06dbd223c580" }]
+    },
+    {
+      "path": "docs/assets/forgevena-banner.svg",
+      "type": "brand",
+      "altText": "Forgevena banner with the caption Governed engineering from idea to production.",
+      "productVersion": "1.3.0",
+      "reviewedAt": "2026-07-28",
+      "reviewBy": "2027-01-28",
+      "sha256": "b75ade85cad8a8ddf91a929e0c9a2aa992be655ccc4221a7236fb7f705fa8723",
+      "sourceDependencies": [{ "path": "README.md", "sha256": "0eac45c38274a26dce2e5d2d14c5d5a55848537e36d97ff4a93cd80eb455b4ad" }]
+    },
+    {
+      "path": "docs/assets/forgevena-social-preview.png",
+      "type": "brand",
+      "altText": "Forgevena social preview with product name, governed engineering caption, and platform workflow.",
+      "productVersion": "1.3.0",
+      "reviewedAt": "2026-07-28",
+      "reviewBy": "2027-01-28",
+      "sha256": "8ba2412da0f35d23e6b61a88125af09d89b07a71e0eab64a94f3a3ffd8cc22d0",
+      "sourceDependencies": [{ "path": "docs/assets/forgevena-social-preview.svg", "sha256": "2eaa15af61228e5e57421177f1b7dca934b0ac9463f4cba7782621e71fe7f0d7" }]
+    },
+    {
+      "path": "docs/assets/forgevena-social-preview.svg",
+      "type": "brand",
+      "altText": "Editable Forgevena social-preview source with product identity and workflow caption.",
+      "productVersion": "1.3.0",
+      "reviewedAt": "2026-07-28",
+      "reviewBy": "2027-01-28",
+      "sha256": "2eaa15af61228e5e57421177f1b7dca934b0ac9463f4cba7782621e71fe7f0d7",
+      "sourceDependencies": [{ "path": "README.md", "sha256": "0eac45c38274a26dce2e5d2d14c5d5a55848537e36d97ff4a93cd80eb455b4ad" }]
+    },
+    {
+      "path": "docs/assets/logo.svg",
+      "type": "brand",
+      "altText": "Forgevena hexagonal logo mark.",
+      "productVersion": "1.3.0",
+      "reviewedAt": "2026-07-28",
+      "reviewBy": "2027-01-28",
+      "sha256": "28d91aa3b4987721d206c5e0c9ad718f02501584dfebf1dc99a3e29b36db355f",
+      "sourceDependencies": [{ "path": "docs/assets/README.md", "sha256": "66d8fb7ec239d6bf15a7a488f49ed2bcbfa17c094774fc330daf06dbd223c580" }]
+    }
+  ]
+}

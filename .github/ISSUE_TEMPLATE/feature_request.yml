@@ -13,3 +13,32 @@ body:
       label: Desired outcome
     validations:
       required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and affected users
+      description: Link user feedback, incidents, audits, compatibility findings, or operational data.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives and non-goals
+    validations:
+      required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Evidence Funnel stage
+      options:
+        - Signal
+        - Discovery
+    validations:
+      required: true
+  - type: textarea
+    id: documentation-impact
+    attributes:
+      label: Documentation and evidence impact
+      description: Identify affected guides, references, schemas, diagrams, examples, migrations, operations, accessibility, release evidence, and explicit non-goals.
+    validations:
+      required: true

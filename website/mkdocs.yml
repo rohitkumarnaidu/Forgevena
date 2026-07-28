@@ -1,5 +1,4 @@
 site_name: Forgevena
-site_description: Governed engineering from idea to production.
 site_description: Safety-first developer platform for enterprise project bootstrap and governed AI tooling.
 site_url: https://rohitkumarnaidu.github.io/Forgevena/
 repo_url: https://github.com/rohitkumarnaidu/Forgevena
@@ -8,8 +7,8 @@ edit_uri: edit/main/docs/
 docs_dir: ../docs
 site_dir: ../dist/docs-site
 exclude_docs: |
-  README.md
-  examples/README.md
+  /README.md
+  /examples/README.md
 copyright: Copyright &copy; 2026 Rohit Kumar Naidu · MIT License
 strict: true
 
@@ -144,10 +143,29 @@ nav:
       - Developer Guide: developer/index.md
       - Contributor Guide: contributor/index.md
       - Maintainer Guide: maintainer/index.md
+      - Engineering Governance: ENGINEERING_GOVERNANCE.md
+      - Documentation Governance: governance/DOCUMENTATION_GOVERNANCE_STANDARD.md
+      - Documentation Synchronization: governance/DOCUMENTATION_SYNCHRONIZATION_POLICY.md
+      - Documentation Authority: governance/DOCUMENTATION_AUTHORITY_MAP.md
+      - Governance Templates:
+          - Change Readiness Scorecard: governance/CHANGE_READINESS_SCORECARD.md
+          - Documentation Impact Report: governance/DOCUMENTATION_IMPACT_REPORT_TEMPLATE.md
+          - Feature Proposal: governance/FEATURE_PROPOSAL_TEMPLATE.md
+          - Architecture Decision: governance/ADR_TEMPLATE.md
+          - Threat Model: governance/THREAT_MODEL_TEMPLATE.md
+          - Release Scorecard: governance/RELEASE_SCORECARD_TEMPLATE.md
+          - Compatibility Report: governance/COMPATIBILITY_REPORT_TEMPLATE.md
+          - Deprecation Notice: governance/DEPRECATION_NOTICE_TEMPLATE.md
+          - Post-Release Review: governance/POST_RELEASE_REVIEW_TEMPLATE.md
       - ADRs: adrs/index.md
   - Reference:
       - API: API_REFERENCE.md
       - Schemas: schemas/index.md
+      - Change Evidence: evidence/changes/README.md
+      - Documentation Catalog: reference/generated/documentation-health.md
+      - Documentation Coverage Matrix: reference/generated/documentation-coverage-matrix.md
+      - AI Documentation Index: reference/generated/ai-documentation-index.md
+      - Historical Documentation Index: reference/generated/historical-document-index.md
       - Environment Variables: reference/environment-variables.md
       - Exit Codes: reference/exit-codes.md
       - Repository Map: REPOSITORY_MAP.md
@@ -155,6 +173,23 @@ nav:
       - Roadmap: roadmap/index.md
       - Versioned Product Roadmap: strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md
       - Platform Blueprint: strategy/FORGEVENA_PLATFORM_BLUEPRINT.md
+      - Platform Constitution: strategy/PLATFORM_CONSTITUTION.md
+      - Innovation Portfolio: strategy/INNOVATION_OPPORTUNITY_PORTFOLIO.md
+      - ForgeHub Ecosystem Vision: strategy/FORGEHUB_ECOSYSTEM_VISION.md
+      - ForgeRegistry Protocol: architecture/FORGE_REGISTRY_PROTOCOL_AND_ARCHITECTURE.md
+      - Capability and Package Model: architecture/ECOSYSTEM_CAPABILITY_AND_PACKAGE_MODEL.md
+      - Enterprise Capability System: architecture/ENTERPRISE_CAPABILITY_SYSTEM.md
+      - Host Adapter and Portability: architecture/HOST_ADAPTER_AND_PORTABILITY_STRATEGY.md
+      - External Import and Conversion: architecture/EXTERNAL_ECOSYSTEM_IMPORT_AND_CONVERSION_STRATEGY.md
+      - Orchestration and Agent Runtime: architecture/ORCHESTRATION_AND_AGENT_RUNTIME_STRATEGY.md
+      - Ecosystem Trust and Safety: security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md
+      - ForgeHub Product Experience: strategy/FORGEHUB_PRODUCT_EXPERIENCE.md
+      - Publisher and Ecosystem SDK: developer/PUBLISHER_AND_ECOSYSTEM_SDK_STRATEGY.md
+      - AI Engineering OS Evolution: strategy/AI_ENGINEERING_OS_EVOLUTION.md
+      - Ecosystem Sustainability: strategy/ECOSYSTEM_PRODUCT_AND_SUSTAINABILITY_STRATEGY.md
+      - Ecosystem ADR Candidates: strategy/ECOSYSTEM_ADR_CANDIDATES.md
+      - Research and Standards Radar: strategy/RESEARCH_AND_STANDARDS_RADAR.md
+      - Documentation Audit: reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md
       - Releases: releases/index.md
       - Migration: migration/index.md
       - Support: https://github.com/rohitkumarnaidu/Forgevena/blob/main/SUPPORT.md

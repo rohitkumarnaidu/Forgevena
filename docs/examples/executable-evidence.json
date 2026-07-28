@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "examples": [
+    {
+      "id": "cli-version",
+      "description": "Report the canonical product and schema version without workspace mutation.",
+      "executable": "node",
+      "args": ["./bin/forgevena.js", "version"],
+      "platforms": ["win32", "linux", "darwin"],
+      "timeoutMs": 5000,
+      "expectedExitCode": 0,
+      "expectedOutputSha256": "9f154c4a351ac52cbb413fd15fd20daa3c73c53b4f9be9fe8c60f69c9332ad8f",
+      "outputContains": ["\"version\": \"1.3.0\""],
+      "verifiedAt": "2026-07-28",
+      "reviewBy": "2027-01-28"
+    },
+    {
+      "id": "cli-help",
+      "description": "Render local CLI guidance without network or filesystem effects.",
+      "executable": "node",
+      "args": ["./bin/forgevena.js", "help"],
+      "platforms": ["win32", "linux", "darwin"],
+      "timeoutMs": 5000,
+      "expectedExitCode": 0,
+      "expectedOutputSha256": "757a6316297051ccee8401b92953997bffa7a093214f8bab3eec0cd13d40d785",
+      "outputContains": ["Modifying commands preview by default.", "Existing files are never overwritten"],
+      "verifiedAt": "2026-07-28",
+      "reviewBy": "2027-01-28"
+    },
+    {
+      "id": "template-catalog",
+      "description": "List built-in templates from local metadata without installing or fetching content.",
+      "executable": "node",
+      "args": ["./bin/forgevena.js", "templates"],
+      "platforms": ["win32", "linux", "darwin"],
+      "timeoutMs": 5000,
+      "expectedExitCode": 0,
+      "expectedOutputSha256": "8556220e6e4134225747eee65575c371ae909f93584d39b8d1fd8f49acc6f7bb",
+      "outputContains": ["\"templates\"", "\"enterprise\""],
+      "verifiedAt": "2026-07-28",
+      "reviewBy": "2027-01-28"
+    }
+  ]
+}

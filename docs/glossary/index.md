@@ -3,6 +3,24 @@
 - **Additive-only:** creating absent assets without overwriting existing paths.
 - **Apply:** explicit permission for a local modifying operation.
 - **Capability:** a product-neutral outcome implemented by one or more integrations.
+- **Capability definition:** immutable semantic behavior with independent identity, permissions, compatibility, maturity, and evidence.
+- **Capability package:** signed distribution containing one or more independently governed capability definitions.
+- **Capability release:** immutable package version with hashes, provenance, compatibility, and evidence.
+- **Capability Studio:** ForgeHub's schema-driven authoring experience for capability profiles; not a separate product layer.
+- **Canonical document:** The single approved source of truth for a policy, architecture boundary, contract, or roadmap decision.
+- **Documentation catalog:** Machine-readable inventory of document authority, ownership, lifecycle, freshness, audience, versions, and relevance.
+- **Historical record:** Preserved phase, audit, RC, release, or retired evidence that does not represent current product authority.
+- **Standards crosswalk:** Evidence mapping to an external framework; not a certification or compliance claim.
+- **AgentSpace:** ForgeHub's agents-and-teams discovery and lifecycle area; not a registry, runtime, or independent product authority.
+- **Activation:** governed enablement of an installed and configured capability after dependency, permission, and policy resolution.
+- **Source adapter:** versioned detector and acquisition adapter for an external registry, repository, catalog, archive, or language package source.
+- **Converter:** bounded semantic transformer that creates canonical capability definitions and reports loss, permission differences, and unsupported behavior.
+- **Deployment mode:** local, private, offline, air-gapped, or optional cloud operating context; independent from installation scope.
+- **Installation scope:** global, organization, workspace, project, shared, or read-only ownership and precedence boundary.
+- **Host adapter:** versioned translator between canonical Forgevena capabilities and a host-native format.
+- **Loss report:** machine-readable record of native, exact, translated, degraded, manual-adaptation, or unsupported semantics during conversion or host projection.
+- **Bounded loop:** orchestration loop with explicit iteration, duration, token, cost, cancellation, termination, and failure limits.
+- **Agent team:** governed collection of typed agent roles with declared topology, authority, memory boundaries, budgets, and human control.
 - **Consent gate:** approval boundary for external commands, data egress, deployment, or managed deletion.
 - **Integration:** lifecycle metadata and adapters for an upstream tool.
 - **Managed asset:** file created by the platform and recorded with a content hash.

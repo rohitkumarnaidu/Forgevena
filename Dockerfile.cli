@@ -1,11 +1,13 @@
-FROM node:20.19.0-alpine
-WORKDIR /opt/ai-workspace
+FROM node:22.14.0-alpine
+WORKDIR /opt/forgevena
 COPY package.json package-lock.json ./
 COPY bin ./bin
 COPY src ./src
 COPY docs ./docs
 COPY README.md CHANGELOG.md CONTRIBUTING.md LICENSE AGENTS.md ./
 RUN npm install --omit=dev --ignore-scripts && npm link
+RUN mkdir -p /workspace && chown node:node /workspace
 USER node
-ENTRYPOINT ["ai-workspace"]
+WORKDIR /workspace
+ENTRYPOINT ["forgevena"]
 CMD ["help"]

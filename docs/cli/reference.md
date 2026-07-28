@@ -16,7 +16,7 @@
 
 | Command | Arguments and common flags | Result |
 |---|---|---|
-| `doctor` | `--verbose` | Environment and project diagnostics. |
+| `doctor` | `--verbose`, `--apply` | Read-only environment and project diagnostics by default; `--apply` records health and audit logs. |
 | `status` | none | Registry and project status. |
 | `validate` | none | Bootstrap and managed-state validation. |
 | `version` | none | Platform and schema versions. |

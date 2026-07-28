@@ -69,7 +69,7 @@ export async function templateCommand(root, args, options = {}) {
 export async function doctorCommand(root, options) {
   const [environment, ecosystem] = await Promise.all([inspectEnvironment(root), inspectEcosystem(root)]);
   const registry = await recordEcosystemHealth(root, ecosystem, options);
-  await logEvent(root, "doctor", { completed: true, healthy: ecosystem.healthy, summary: ecosystem.counts });
+  if (!options?.dryRun) await logEvent(root, "doctor", { completed: true, healthy: ecosystem.healthy, summary: ecosystem.counts });
   return { environment, ecosystem, registry };
 }
 

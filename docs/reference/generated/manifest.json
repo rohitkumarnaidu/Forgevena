@@ -2,7 +2,17 @@
   "schemaVersion": 1,
   "generator": "forgevena",
   "files": {
-    "cli.md": "170bc878dc05d302997555c86ff62bba0ec246dd75d580bc1bdfad6ded31fb3e",
+    "ai-documentation-index.json": "b2c7954a4b0a24a01e13290d08f41fec659a288a29acaff9a096fcf98f2e7761",
+    "ai-documentation-index.md": "f833d30cfe5900aa5c841caf50716c117a9885592a65cf23a57299ba403f8558",
+    "capabilities.md": "e1f98d79c936e253bed4cde24d5b0c3ad0ef07b344ef6cf0b5198c7964df9304",
+    "cli.md": "22ebda8eb985d03c52ae3073add6a3ce87678a6806077e9e4734a88ff2e130d4",
+    "documentation-catalog.json": "4a2d0437c76b0955621bb2b1743902ddcfd9d3c065bb153260263d3ed2f9f49e",
+    "documentation-coverage-matrix.md": "9a443e666157b7748ebef7b36038979b5766305e55639676d2e0ef2520464f00",
+    "documentation-debt.md": "b74b3a905674e03812b0923b424b3c0399e4891b154d6d4318d146a441b308da",
+    "documentation-drift.md": "772ceeb1fead3217a5283bb947403e5aa6bf62be88acecff2d49de9eac263e36",
+    "documentation-health.json": "924e9b1e9779cc48da0104ad5de83ed7569d02069acdbfda1d708cc47c645403",
+    "documentation-health.md": "76347ee5878802e3373f79d2f53ac9b909ec06348ea4b260ad5800c967440115",
+    "historical-document-index.md": "e7861bce9bd4d3762d2d05e7dbbfc0c97ae270f4c69b211b9999b5f3a5d90085",
     "modules.md": "1aead4bd080d11eb64b5e78eeda391798e8ffa4aa5d7ad38acbb518b6508525d",
     "providers.md": "3da1f4d83649fb5853698f35e7d58ccfe685c69cd8c77017a98367f917323223",
     "templates.md": "c15a5dab0c45cd110c9e968fd9ffc746fbb75e270ec323fce5217278d8a6a47d"

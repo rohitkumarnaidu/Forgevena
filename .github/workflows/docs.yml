@@ -2,10 +2,8 @@ name: Documentation CI
 
 on:
   pull_request:
-    paths: ["docs/**", "website/**", "scripts/validate-docs.js", ".github/workflows/docs*.yml", ".github/workflows/pages.yml"]
   push:
     branches: [main]
-    paths: ["docs/**", "website/**", "scripts/validate-docs.js"]
   workflow_dispatch:
 
 permissions:
@@ -30,6 +28,34 @@ jobs:
           cache: pip
           cache-dependency-path: website/requirements.txt
       - run: npm ci --ignore-scripts
+      - name: Validate implementation-to-documentation impact
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE="${{ github.event.before }}"
+          fi
+          if [[ -z "$BASE" || "$BASE" == "0000000000000000000000000000000000000000" ]]; then
+            BASE="$(git rev-list --max-parents=0 HEAD)"
+          fi
+          CHANGE_ID="push-${GITHUB_SHA::12}"
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then CHANGE_ID="pr-${{ github.event.pull_request.number }}"; fi
+          node scripts/documentation-impact.js \
+            --base "$BASE" \
+            --head "$GITHUB_SHA" \
+            --checkpoint merge \
+            --change-id "$CHANGE_ID" \
+            --owner "${{ github.actor }}" \
+            --output-dir dist/documentation-evidence \
+            --check
+      - name: Upload documentation synchronization evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: documentation-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: dist/documentation-evidence
+          if-no-files-found: error
       - run: node scripts/validate-docs.js
       - run: node scripts/extract-mermaid.js
       - name: Install Mermaid browser runtime

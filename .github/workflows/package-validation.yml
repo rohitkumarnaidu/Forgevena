@@ -60,3 +60,11 @@ jobs:
           node smoke/node_modules/forgevena/bin/forgevena.js version
       - run: docker build -f Dockerfile.cli -t forgevena:ci .
       - run: docker run --rm forgevena:ci version
+      - run: docker run --rm forgevena:ci doctor --structured
+      - run: docker run --rm forgevena:ci help
+      - name: Verify mounted workspace remains unchanged during dry run
+        shell: bash
+        run: |
+          mkdir -p docker-workspace
+          docker run --rm -v "$PWD/docker-workspace:/workspace" forgevena:ci doctor --structured
+          test -z "$(find docker-workspace -mindepth 1 -print -quit)"

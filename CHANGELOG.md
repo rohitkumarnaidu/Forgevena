@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- Make `doctor` strictly read-only by default and persist health or logs only after explicit `--apply` consent.
+- Run the non-root CLI container from a writable `/workspace` on Node.js 22 LTS while preserving Node.js 20 package compatibility.
+- Generate checksummed documentation synchronization evidence for pull requests and releases, including impact, coverage, quality, migration, version-history, and repository-health reports.
+- Add schema-backed visual and executable-example evidence controls, synchronized root release guidance, and generated-output exclusions.
+
 ## 1.3.0 - 2026-07-27 - Reliability, State, and Vault Certification
 
 - Decompose the CLI into routed command handlers, application context, option parsing, rendering, consent, execution, and stable error translation while preserving the `forgevena` and `ai-workspace` interfaces.
