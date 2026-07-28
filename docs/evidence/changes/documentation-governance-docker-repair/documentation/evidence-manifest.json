@@ -2,15 +2,15 @@
   "schemaVersion": 1,
   "changeId": "documentation-governance-docker-repair",
   "checkpoint": "merge",
-  "generatedAt": "2026-07-28T17:35:29.684Z",
+  "generatedAt": "2026-07-28T17:49:26.076Z",
   "decision": "ready",
   "reports": {
     "documentation-impact.json": {
-      "sha256": "951d16dfd6d5ade2d254a3edfb645c2b9646d79546c0b7f068daf5266458adff",
-      "bytes": 27294
+      "sha256": "6f2bc21c8982a8c2742a43f68286b8ecb5474e1ac11b8d6d9ba1d6581287481f",
+      "bytes": 27378
     },
     "documentation-impact.md": {
-      "sha256": "1b0839c0cc33bf131e16971b473d021b51d0d76762558b24bce3e9feb579655b",
+      "sha256": "7c09f8b294ad0747b45138d483581270d35cb4fb9fb1bce75dcf04e373884017",
       "bytes": 13157
     },
     "updated-documents.md": {

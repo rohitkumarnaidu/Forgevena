@@ -43,8 +43,8 @@ export async function validateVisualEvidence(root, now = new Date()) {
     for (const dependency of asset.sourceDependencies ?? []) {
       if (!isSafeRepositoryPath(dependency?.path) || !dependency?.sha256) { issues.push(`Visual evidence ${label} has an invalid source dependency.`); continue; }
       try {
-        const contents = await readFile(path.join(root, dependency.path));
-        if (digest(contents) !== dependency.sha256) issues.push(`Visual evidence ${label} source dependency ${dependency.path} changed without review.`);
+        const contents = await readFile(path.join(root, dependency.path), "utf8");
+        if (digest(normalizeText(contents)) !== dependency.sha256) issues.push(`Visual evidence ${label} source dependency ${dependency.path} changed without review.`);
       } catch { issues.push(`Visual evidence ${label} source dependency is missing: ${dependency.path}.`); }
     }
   }
@@ -107,6 +107,7 @@ export function runSafeExample(root, example) {
 }
 
 function normalizeOutput(value) { return `${value.replace(/\r\n/g, "\n").trimEnd()}\n`; }
+function normalizeText(value) { return value.replace(/\r\n/g, "\n"); }
 function digest(value) { return crypto.createHash("sha256").update(value).digest("hex"); }
 function isSafeRepositoryPath(value) { return typeof value === "string" && !path.isAbsolute(value) && !value.split(/[\\/]/).includes(".."); }
 async function readJson(file, issues, label) { try { return JSON.parse(await readFile(file, "utf8")); } catch { issues.push(`${label} is missing or invalid JSON.`); return null; } }

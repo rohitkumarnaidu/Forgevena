@@ -3,7 +3,7 @@
   "changeId": "documentation-governance-docker-repair",
   "title": "Documentation governance and Docker repair",
   "owner": "rohitkumarnaidu",
-  "generatedAt": "2026-07-28T17:35:29.684Z",
+  "generatedAt": "2026-07-28T17:49:26.076Z",
   "checkpoint": "merge",
   "comparison": {
     "base": null,
@@ -13,6 +13,7 @@
     ".github/ISSUE_TEMPLATE/feature_request.yml",
     ".github/PULL_REQUEST_TEMPLATE.md",
     ".github/RELEASE_TEMPLATE.md",
+    ".github/workflows/broken-links.yml",
     ".github/workflows/docs.yml",
     ".github/workflows/package-validation.yml",
     ".github/workflows/release.yml",
@@ -139,6 +140,7 @@
     "release-version-and-distribution"
   ],
   "implementationFiles": [
+    ".github/workflows/broken-links.yml",
     ".github/workflows/docs.yml",
     ".github/workflows/package-validation.yml",
     ".github/workflows/release.yml",
