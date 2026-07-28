@@ -3,7 +3,7 @@
   "changeId": "documentation-governance-docker-repair",
   "title": "Documentation governance and Docker repair",
   "owner": "rohitkumarnaidu",
-  "generatedAt": "2026-07-28T17:49:26.076Z",
+  "generatedAt": "2026-07-28T17:58:45.489Z",
   "checkpoint": "merge",
   "comparison": {
     "base": null,
@@ -89,6 +89,7 @@
     "docs/reference/schemas/documentation-impact.schema.json",
     "docs/reference/schemas/executable-example-evidence.schema.json",
     "docs/reference/schemas/visual-evidence.schema.json",
+    "docs/release/V1_3_IMPLEMENTATION_STATUS.md",
     "docs/release/index.md",
     "docs/reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md",
     "docs/schemas/index.md",
@@ -103,7 +104,9 @@
     "docs/strategy/INNOVATION_OPPORTUNITY_PORTFOLIO.md",
     "docs/strategy/PLATFORM_CONSTITUTION.md",
     "docs/strategy/RESEARCH_AND_STANDARDS_RADAR.md",
+    "docs/testing/guide.md",
     "package.json",
+    "scripts/benchmark.js",
     "scripts/documentation-impact.js",
     "scripts/validate-docs.js",
     "scripts/validate-documentation-assets.js",
@@ -117,6 +120,7 @@
     "src/documentation-generator.js",
     "src/documentation-impact.js",
     "src/governance-validation.js",
+    "src/performance-metrics.js",
     "test/change-readiness.test.js",
     "test/doctor-read-only.test.js",
     "test/documentation-assets.test.js",
@@ -126,6 +130,7 @@
     "test/documentation-generator.test.js",
     "test/documentation-impact.test.js",
     "test/governance-validation.test.js",
+    "test/performance-metrics.test.js",
     "test/public-contract-branches.test.js",
     "website/mkdocs.yml"
   ],
@@ -146,6 +151,7 @@
     ".github/workflows/release.yml",
     "Dockerfile.cli",
     "package.json",
+    "scripts/benchmark.js",
     "scripts/documentation-impact.js",
     "scripts/validate-docs.js",
     "scripts/validate-documentation-assets.js",
@@ -158,7 +164,8 @@
     "src/documentation-evidence.js",
     "src/documentation-generator.js",
     "src/documentation-impact.js",
-    "src/governance-validation.js"
+    "src/governance-validation.js",
+    "src/performance-metrics.js"
   ],
   "documentationFiles": [
     "AGENTS.md",
@@ -230,6 +237,7 @@
     "docs/reference/schemas/documentation-impact.schema.json",
     "docs/reference/schemas/executable-example-evidence.schema.json",
     "docs/reference/schemas/visual-evidence.schema.json",
+    "docs/release/V1_3_IMPLEMENTATION_STATUS.md",
     "docs/release/index.md",
     "docs/reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md",
     "docs/schemas/index.md",
@@ -244,6 +252,7 @@
     "docs/strategy/INNOVATION_OPPORTUNITY_PORTFOLIO.md",
     "docs/strategy/PLATFORM_CONSTITUTION.md",
     "docs/strategy/RESEARCH_AND_STANDARDS_RADAR.md",
+    "docs/testing/guide.md",
     "website/mkdocs.yml"
   ],
   "testFiles": [
@@ -256,6 +265,7 @@
     "test/documentation-generator.test.js",
     "test/documentation-impact.test.js",
     "test/governance-validation.test.js",
+    "test/performance-metrics.test.js",
     "test/public-contract-branches.test.js"
   ],
   "requirements": [
@@ -340,6 +350,7 @@
         "docs/release/"
       ],
       "matchedDocuments": [
+        "docs/release/V1_3_IMPLEMENTATION_STATUS.md",
         "docs/release/index.md"
       ],
       "status": "pass",
@@ -473,6 +484,7 @@
         "docs/reference/schemas/documentation-impact.schema.json",
         "docs/reference/schemas/executable-example-evidence.schema.json",
         "docs/reference/schemas/visual-evidence.schema.json",
+        "docs/release/V1_3_IMPLEMENTATION_STATUS.md",
         "docs/release/index.md",
         "docs/reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md",
         "docs/schemas/index.md",
@@ -487,6 +499,7 @@
         "docs/strategy/INNOVATION_OPPORTUNITY_PORTFOLIO.md",
         "docs/strategy/PLATFORM_CONSTITUTION.md",
         "docs/strategy/RESEARCH_AND_STANDARDS_RADAR.md",
+        "docs/testing/guide.md",
         "website/mkdocs.yml"
       ],
       "status": "pass",
@@ -510,6 +523,7 @@
         "test/documentation-generator.test.js",
         "test/documentation-impact.test.js",
         "test/governance-validation.test.js",
+        "test/performance-metrics.test.js",
         "test/public-contract-branches.test.js"
       ],
       "status": "pass",
@@ -612,7 +626,9 @@
         "docs/release/"
       ],
       "matchedDocuments": [
-        "docs/release/index.md"
+        "docs/release/V1_3_IMPLEMENTATION_STATUS.md",
+        "docs/release/index.md",
+        "docs/testing/guide.md"
       ],
       "status": "pass",
       "mandatory": true

@@ -9,6 +9,8 @@ npm run benchmark
 npm audit --omit=dev
 ```
 
+The CLI startup gate performs one warm-up and evaluates the median of five measured launches. This preserves the 250 ms budget while preventing a single transient hosted-runner delay from creating a false regression.
+
 ## Writing tests
 
 - Use temporary directories; never mutate a developer repository.

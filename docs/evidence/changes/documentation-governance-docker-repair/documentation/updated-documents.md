@@ -69,6 +69,7 @@
 - `docs/reference/schemas/documentation-impact.schema.json`
 - `docs/reference/schemas/executable-example-evidence.schema.json`
 - `docs/reference/schemas/visual-evidence.schema.json`
+- `docs/release/V1_3_IMPLEMENTATION_STATUS.md`
 - `docs/release/index.md`
 - `docs/reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md`
 - `docs/schemas/index.md`
@@ -83,4 +84,5 @@
 - `docs/strategy/INNOVATION_OPPORTUNITY_PORTFOLIO.md`
 - `docs/strategy/PLATFORM_CONSTITUTION.md`
 - `docs/strategy/RESEARCH_AND_STANDARDS_RADAR.md`
+- `docs/testing/guide.md`
 - `website/mkdocs.yml`
