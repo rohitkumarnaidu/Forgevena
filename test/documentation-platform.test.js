@@ -11,3 +11,13 @@ test("MkDocs platform includes required production features", async () => {
 test("documentation workflows cover quality and publication", async () => {
   await Promise.all(["docs.yml", "docs-deploy.yml", "markdown-lint.yml", "broken-links.yml", "changelog.yml", "release.yml", "pages.yml"].map((name) => access(`.github/workflows/${name}`)));
 });
+
+test("GitHub Pages installs locked Node dependencies before validation", async () => {
+  const workflow = await readFile(".github/workflows/pages.yml", "utf8");
+  const install = workflow.indexOf("npm ci --ignore-scripts");
+  const validation = workflow.indexOf("node scripts/validate-docs.js");
+  assert.notEqual(install, -1);
+  assert.equal(install < validation, true);
+  assert.match(workflow, /\.github\/workflows\/pages\.yml/);
+  assert.match(workflow, /package-lock\.json/);
+});
