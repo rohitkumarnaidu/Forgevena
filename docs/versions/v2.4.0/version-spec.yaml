@@ -1,0 +1,84 @@
+{
+  "version": "v2.4.0",
+  "title": "Publisher Platform and Ecosystem SDK",
+  "outcome": "Enable governed package building, validation, signing, staged publication, deprecation, withdrawal, and publisher recovery.",
+  "owner": "Publisher Platform Maintainers",
+  "roadmapAuthority": "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#v240--publisher-platform-and-ecosystem-sdk",
+  "riskTier": "tier-3",
+  "dependsOn": [
+    "v2.3.0"
+  ],
+  "blocks": [
+    "v2.5.0"
+  ],
+  "architectureDelta": "Add schema-driven Capability Studio profiles, publisher APIs, adapter/converter SDKs, staged publication, identity, ownership, recovery, and moderation workflows.",
+  "interfaceImpacts": [
+    "Version publisher, SDK, validation, signing, promotion, deprecation, withdrawal, ownership transfer, dispute, and recovery contracts.",
+    "Add publish validate, sign, test, preview, submit, deprecate, withdraw, and builder profile commands."
+  ],
+  "nonGoals": [
+    "No duplicated builder implementation per capability type.",
+    "No payment, tax, payout, or unrestricted executable publication."
+  ],
+  "metrics": [
+    "SDK fixtures are deterministic and cross-platform.",
+    "Every publication is signed and staged.",
+    "Publisher ownership and recovery operations are auditable."
+  ],
+  "acceptance": [
+    "Malicious packages remain quarantined and isolated.",
+    "Capability Studio profiles generate valid packages and evidence.",
+    "Deprecation, withdrawal, ownership transfer, recovery, and dispute flows pass."
+  ],
+  "assumptions": [
+    "Publisher identity may use multiple approved verification methods.",
+    "Commerce metadata is license-ready but transactions remain deferred."
+  ],
+  "openQuestions": [
+    "Which identity proof is required for official publishers?",
+    "How are abandoned critical packages escrowed or transferred?"
+  ],
+  "features": [
+    {
+      "id": "capability-studio-sdk",
+      "title": "Capability Studio and SDK",
+      "status": "committed",
+      "summary": "Provide one schema-driven builder with profiles for agents, workflows, knowledge, tools, interfaces, templates, packages, and evaluations.",
+      "value": "Publishers receive consistent security, testing, documentation, compatibility, and signing workflows.",
+      "architecture": "Profiles share canonical schemas, validators, sandbox tests, permission previews, and SDK fixtures.",
+      "dependencies": [
+        "v2.3 lifecycle UX",
+        "v2.1 package contracts"
+      ],
+      "acceptance": [
+        "Every profile emits valid packages.",
+        "SDK fixtures are deterministic.",
+        "Builders cannot bypass trust or permission gates."
+      ],
+      "risks": [
+        "Builder abstraction may hide type-specific needs.",
+        "SDK compatibility burden."
+      ]
+    },
+    {
+      "id": "governed-publisher-lifecycle",
+      "title": "Governed Publisher Lifecycle",
+      "status": "committed",
+      "summary": "Support identity, staged publishing, ownership, recovery, disputes, vulnerabilities, deprecation, withdrawal, and revocation.",
+      "value": "The ecosystem can sustain trustworthy packages and publisher transitions.",
+      "architecture": "Publisher actions create signed transparency records and require policy, moderation, and recovery controls.",
+      "dependencies": [
+        "capability-studio-sdk"
+      ],
+      "acceptance": [
+        "Signed publication and promotion pass.",
+        "Ownership recovery resists account takeover.",
+        "Vulnerability and revocation workflows are tested."
+      ],
+      "risks": [
+        "Identity fraud.",
+        "Legal and moderation disputes."
+      ]
+    }
+  ]
+}

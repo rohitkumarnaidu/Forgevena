@@ -170,6 +170,28 @@ nav:
       - Exit Codes: reference/exit-codes.md
       - Repository Map: REPOSITORY_MAP.md
   - Project:
+      - Foundation Authority: foundation/README.md
+      - Version Specifications:
+          - Overview: versions/README.md
+          - Dependency Map: versions/dependency-map.md
+          - Coverage Matrix: versions/coverage-matrix.md
+          - v1.4.0: versions/v1.4.0/README.md
+          - v1.5.0: versions/v1.5.0/README.md
+          - v1.6.0: versions/v1.6.0/README.md
+          - v1.7.0: versions/v1.7.0/README.md
+          - v1.8.0: versions/v1.8.0/README.md
+          - v1.9.0: versions/v1.9.0/README.md
+          - v1.10.0: versions/v1.10.0/README.md
+          - v2.0.0: versions/v2.0.0/README.md
+          - v2.1.0: versions/v2.1.0/README.md
+          - v2.2.0: versions/v2.2.0/README.md
+          - v2.3.0: versions/v2.3.0/README.md
+          - v2.4.0: versions/v2.4.0/README.md
+          - v2.5.0: versions/v2.5.0/README.md
+          - v2.6.0: versions/v2.6.0/README.md
+          - v2.7.0: versions/v2.7.0/README.md
+          - v3.0.0: versions/v3.0.0/README.md
+      - Historical Evidence: historical/README.md
       - Roadmap: roadmap/index.md
       - Versioned Product Roadmap: strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md
       - Platform Blueprint: strategy/FORGEVENA_PLATFORM_BLUEPRINT.md

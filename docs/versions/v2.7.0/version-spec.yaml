@@ -1,0 +1,85 @@
+{
+  "version": "v2.7.0",
+  "title": "Ecosystem Trust and Compatibility Network",
+  "outcome": "Provide reproducible compatibility, evaluation, transparency, advisory, certification, and revocation evidence across the ecosystem.",
+  "owner": "Trust and Compatibility Maintainers",
+  "roadmapAuthority": "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#v270--ecosystem-trust-and-compatibility-network",
+  "riskTier": "tier-3",
+  "dependsOn": [
+    "v2.6.0"
+  ],
+  "blocks": [
+    "v3.0.0"
+  ],
+  "architectureDelta": "Add Compatibility Laboratory, AI Evaluation Center, transparency records, advisories, dated certification evidence, appeals, and revocation propagation.",
+  "interfaceImpacts": [
+    "Version fixture, evaluation, certification, transparency, advisory, appeal, expiry, and revocation schemas.",
+    "Add trust publisher, package, signature, provenance, compatibility, evaluation, advisory, and revocation commands."
+  ],
+  "nonGoals": [
+    "No composite score may be presented as a security guarantee.",
+    "No certification remains valid after evidence expiry or revocation."
+  ],
+  "metrics": [
+    "Compatibility and evaluation fixtures are reproducible.",
+    "Evidence and certification expiry are enforced.",
+    "Revocations propagate within published SLOs."
+  ],
+  "acceptance": [
+    "Operating system, provider, framework, host, plugin, MCP, and package matrices have dated evidence.",
+    "Appeal, correction, expiry, advisory, and revocation workflows pass.",
+    "Certification limitations are explicit and independently reviewable."
+  ],
+  "assumptions": [
+    "Certification is evidence-backed and scoped, not absolute.",
+    "Public transparency and private registry confidentiality can coexist."
+  ],
+  "openQuestions": [
+    "Who governs certification criteria and appeals?",
+    "How is private evidence disclosed to auditors without public leakage?"
+  ],
+  "features": [
+    {
+      "id": "compatibility-evaluation-labs",
+      "title": "Compatibility and Evaluation Laboratories",
+      "status": "committed",
+      "summary": "Continuously test providers, hosts, operating systems, packages, prompts, skills, workflows, agents, safety, cost, latency, and reliability.",
+      "value": "Support claims become reproducible and dated rather than promotional.",
+      "architecture": "Labs execute deterministic fixtures plus gated live tests and publish signed, expiring evidence records.",
+      "dependencies": [
+        "v2.6 host bridges",
+        "v1.9 workflows"
+      ],
+      "acceptance": [
+        "Fixtures reproduce.",
+        "Live tests are credential-gated.",
+        "Evidence expiry blocks stale claims."
+      ],
+      "risks": [
+        "Test coverage creates false confidence.",
+        "Live provider changes cause rapid evidence churn."
+      ]
+    },
+    {
+      "id": "transparency-advisory-revocation",
+      "title": "Transparency, Advisories, and Revocation",
+      "status": "committed",
+      "summary": "Record publisher identity, signatures, provenance, vulnerabilities, moderation, appeals, certification, expiry, and revocation.",
+      "value": "Users and organizations can make informed trust decisions and respond to incidents.",
+      "architecture": "Signed append-oriented transparency records feed policy and registry quarantine while preserving scoped confidentiality.",
+      "dependencies": [
+        "compatibility-evaluation-labs",
+        "v2.2 revocation"
+      ],
+      "acceptance": [
+        "Revocation propagates predictably.",
+        "Appeals and corrections are auditable.",
+        "Trust and maturity remain distinct."
+      ],
+      "risks": [
+        "Transparency data may enable harassment.",
+        "False advisories can disrupt ecosystems."
+      ]
+    }
+  ]
+}

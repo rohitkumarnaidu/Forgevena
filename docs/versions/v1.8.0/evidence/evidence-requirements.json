@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "version": "v1.8.0",
+  "state": "required-not-collected",
+  "mandatory": [
+    "requirements",
+    "rfc",
+    "adr",
+    "threat-model",
+    "privacy-review",
+    "readiness-scorecard",
+    "tests",
+    "security",
+    "accessibility",
+    "performance",
+    "migration",
+    "rollback",
+    "documentation-impact",
+    "compatibility",
+    "sbom",
+    "provenance",
+    "release-verification",
+    "post-release-review"
+  ],
+  "gates": {
+    "critical": 100,
+    "important": 95,
+    "standard": 90
+  },
+  "acceptance": [
+    "Retention, redaction, crash, performance, and audit behavior pass.",
+    "SBOM, provenance, checksums, licenses, and signatures block invalid releases.",
+    "Strict documentation, links, spelling, accessibility, and generated-reference checks pass."
+  ]
+}

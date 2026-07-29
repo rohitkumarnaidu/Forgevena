@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rohitkumarnaidu.github.io/Forgevena/schemas/foundation-map.schema.json",
+  "title": "Forgevena Foundation Authority Map",
+  "type": "object",
+  "required": ["schemaVersion", "subjects"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "subjects": { "type": "array", "minItems": 1, "items": { "type": "object", "required": ["id", "title", "authority", "documentId", "owner", "lifecycle", "reviewBy"] } }
+  },
+  "additionalProperties": false
+}

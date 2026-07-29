@@ -1,0 +1,84 @@
+{
+  "version": "v1.10.0",
+  "title": "Engineering Intelligence and Local Enterprise GA",
+  "outcome": "Complete local-first engineering intelligence, safe read-only copilots, and E1-E4 enterprise certification evidence.",
+  "owner": "Engineering Intelligence Maintainers",
+  "roadmapAuthority": "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#13-v1100--engineering-intelligence-and-local-enterprise-ga",
+  "riskTier": "tier-3",
+  "dependsOn": [
+    "v1.9.0"
+  ],
+  "blocks": [
+    "v2.0.0"
+  ],
+  "architectureDelta": "Harden metadata-only project indexing and governed copilots while keeping semantic indexing optional and provider-controlled.",
+  "interfaceImpacts": [
+    "Version index, semantic metadata, finding, recommendation, health score, remediation plan, and copilot plan schemas.",
+    "Promote index and copilot commands with read-only defaults and explicit mutation previews."
+  ],
+  "nonGoals": [
+    "No raw source content in metadata indexes by default.",
+    "No copilot mutation without managed preview, policy approval, and consent."
+  ],
+  "metrics": [
+    "Incremental indexing remains bounded and integrity-verified.",
+    "Recommendations link to local evidence and explain uncertainty.",
+    "Full E1-E4 traceability and enterprise gates pass."
+  ],
+  "acceptance": [
+    "Index build, update, ignore, retention, deletion, corruption, and recovery pass.",
+    "Copilots remain read-only by default and mutation plans are governed.",
+    "Two release candidates pass migration and rollback rehearsals with no critical/high findings."
+  ],
+  "assumptions": [
+    "Symbol and relationship metadata supports useful planning without storing raw content.",
+    "Live provider evidence is available before GA support claims."
+  ],
+  "openQuestions": [
+    "Which evidence supports an explainable workspace health score?",
+    "How should semantic embeddings be deleted and verified?"
+  ],
+  "features": [
+    {
+      "id": "local-project-intelligence",
+      "title": "Local Project Intelligence",
+      "status": "committed",
+      "summary": "Index symbols, manifests, documentation, dependencies, and relationships with optional governed semantic metadata.",
+      "value": "Users gain fast local architecture and dependency insight without mandatory data egress.",
+      "architecture": "Incremental indexes retain approved metadata, integrity hashes, ignore policy, ownership, and deletion state.",
+      "dependencies": [
+        "v1.9 workflows",
+        "v1.8 observability and evidence"
+      ],
+      "acceptance": [
+        "Raw source is excluded by default.",
+        "Incremental updates and deletion pass.",
+        "Corrupt indexes fail visibly and rebuild safely."
+      ],
+      "risks": [
+        "Metadata privacy leakage.",
+        "Stale relationships can mislead users."
+      ]
+    },
+    {
+      "id": "governed-engineering-copilots",
+      "title": "Governed Engineering Copilots",
+      "status": "committed",
+      "summary": "Provide architecture, dependency, security, test-gap, documentation, upgrade, and release recommendations.",
+      "value": "Teams receive explainable planning assistance grounded in local evidence.",
+      "architecture": "Copilots query governed indexes and providers, emit read-only plans, and route approved mutations through existing managed operations.",
+      "dependencies": [
+        "local-project-intelligence"
+      ],
+      "acceptance": [
+        "Findings link to evidence.",
+        "Read-only is the default.",
+        "Mutation requires preview and explicit consent."
+      ],
+      "risks": [
+        "False confidence in recommendations.",
+        "Model drift changes output quality."
+      ]
+    }
+  ]
+}

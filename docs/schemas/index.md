@@ -12,6 +12,8 @@ Canonical JSON Schemas are stored in [`docs/reference/schemas`](../reference/sch
 - documentation impact analysis and synchronization evidence.
 - visual freshness, accessibility, and source-dependency evidence.
 - allowlisted executable-example evidence.
+- version specifications, feature traceability, and evidence requirements.
+- foundation authority maps and resolved version bundles.
 
 The [change-readiness scorecard schema](../reference/schemas/change-readiness-scorecard.schema.json) defines the retained machine-readable evidence used by push, merge, and release gates. The canonical scoring rules and applicability profiles are documented in the [Enterprise Change Readiness Scorecard](../governance/CHANGE_READINESS_SCORECARD.md).
 
@@ -28,3 +30,5 @@ Schema v2 enforces profile-specific domain targets and separate module-criticali
 Capability governance adds dedicated profiles for capability packages, host adapters, agent teams, orchestration, rules and guardrails, knowledge and memory, Capability Studio and publishers, and marketplace or registry distribution. These profiles are readiness contracts only; they do not authorize runtime schemas.
 
 Schemas document public persisted contracts. Runtime validation remains authoritative, and schema changes require migration, compatibility review, and release notes.
+
+The version-documentation schemas are [version spec](../reference/schemas/version-spec.schema.json), [version feature](../reference/schemas/version-feature.schema.json), [evidence requirements](../reference/schemas/version-evidence-requirements.schema.json), [foundation map](../reference/schemas/foundation-map.schema.json), and [resolved bundle](../reference/schemas/resolved-version-bundle.schema.json). They govern planning metadata and do not fabricate future implementation or certification evidence.

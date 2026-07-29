@@ -1,0 +1,85 @@
+{
+  "version": "v2.1.0",
+  "title": "ForgeRegistry Protocol Foundation",
+  "outcome": "Establish open package, manifest, namespace, lockfile, trust, cache, and deterministic resolver contracts for all capabilities.",
+  "owner": "ForgeRegistry Maintainers",
+  "roadmapAuthority": "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#v210--forgeregistry-protocol-foundation",
+  "riskTier": "tier-3",
+  "dependsOn": [
+    "v2.0.0"
+  ],
+  "blocks": [
+    "v2.2.0"
+  ],
+  "architectureDelta": "Add a local content-addressed registry and resolver beneath existing provider, plugin, MCP, template, skill, workflow, and agent adapters.",
+  "interfaceImpacts": [
+    "Version capability manifest, package, release, namespace, dependency, lockfile, signature, and local registry contracts.",
+    "Add registry and package inspect, resolve, lock, verify, import, export, repair, and rollback commands."
+  ],
+  "nonGoals": [
+    "No public marketplace or mandatory remote registry.",
+    "No arbitrary unsandboxed package lifecycle code."
+  ],
+  "metrics": [
+    "Resolution and lockfiles are deterministic.",
+    "Offline import/export and verification are complete.",
+    "Dependency confusion and corruption fail closed."
+  ],
+  "acceptance": [
+    "Local registry, content cache, resolver, signatures, rollback, and corruption recovery pass.",
+    "Existing capability contracts remain compatible through adapters.",
+    "Namespaced extension types do not require resolver changes."
+  ],
+  "assumptions": [
+    "The canonical package is vendor-neutral.",
+    "OCI may transport artifacts but does not define package semantics."
+  ],
+  "openQuestions": [
+    "Which trust roots are built in versus organization-managed?",
+    "How are namespace ownership disputes resolved?"
+  ],
+  "features": [
+    {
+      "id": "canonical-capability-package",
+      "title": "Canonical Capability Package",
+      "status": "committed",
+      "summary": "Define immutable packages containing independently identified capabilities, releases, permissions, compatibility, provenance, and evidence.",
+      "value": "All ecosystem objects share one portable trust and lifecycle model.",
+      "architecture": "Packages are content-addressed and signed; installations, configurations, activations, runs, and evidence remain separate state objects.",
+      "dependencies": [
+        "v1.5 adapters",
+        "v1.6 packages",
+        "v1.9 workflows"
+      ],
+      "acceptance": [
+        "Schemas and contract tests pass.",
+        "Capability identities remain independent inside bundles.",
+        "Tampering fails closed."
+      ],
+      "risks": [
+        "Overly broad schema.",
+        "Migration complexity from existing formats."
+      ]
+    },
+    {
+      "id": "deterministic-local-registry",
+      "title": "Deterministic Local Registry",
+      "status": "committed",
+      "summary": "Resolve, lock, cache, verify, import, export, and roll back capability packages fully offline.",
+      "value": "Users gain reproducible package management without depending on a hosted service.",
+      "architecture": "A content-addressed store and deterministic solver persist immutable releases and managed installation ownership.",
+      "dependencies": [
+        "canonical-capability-package"
+      ],
+      "acceptance": [
+        "Resolution is deterministic.",
+        "Corruption and dependency confusion are rejected.",
+        "Rollback restores last-known-good managed state."
+      ],
+      "risks": [
+        "Resolver complexity.",
+        "Cache growth and garbage collection safety."
+      ]
+    }
+  ]
+}

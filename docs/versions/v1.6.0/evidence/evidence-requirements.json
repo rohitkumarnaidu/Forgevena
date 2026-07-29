@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "version": "v1.6.0",
+  "state": "required-not-collected",
+  "mandatory": [
+    "requirements",
+    "rfc",
+    "adr",
+    "threat-model",
+    "privacy-review",
+    "readiness-scorecard",
+    "tests",
+    "security",
+    "accessibility",
+    "performance",
+    "migration",
+    "rollback",
+    "documentation-impact",
+    "compatibility",
+    "sbom",
+    "provenance",
+    "release-verification",
+    "post-release-review"
+  ],
+  "gates": {
+    "critical": 100,
+    "important": 95,
+    "standard": 90
+  },
+  "acceptance": [
+    "All approved templates pass golden tests on supported operating systems.",
+    "Catalog signatures fail closed and cached verification is deterministic.",
+    "Rollback removes only unchanged manifest-owned assets."
+  ]
+}

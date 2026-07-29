@@ -1,0 +1,84 @@
+{
+  "version": "v1.9.0",
+  "title": "Signed Skills and Deterministic Workflows",
+  "outcome": "Deliver signed engineering assets and resumable, bounded, deterministic workflow execution.",
+  "owner": "Workflow and Engineering Assets Maintainers",
+  "roadmapAuthority": "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#12-v190--signed-skills-and-deterministic-workflows",
+  "riskTier": "tier-3",
+  "dependsOn": [
+    "v1.8.0"
+  ],
+  "blocks": [
+    "v1.10.0"
+  ],
+  "architectureDelta": "Add signed skill, prompt, and rule registries plus a DAG/state-machine engine that reuses policy, providers, plugins, state, audit, and consent.",
+  "interfaceImpacts": [
+    "Version skill, prompt, rule-set, workflow, node, checkpoint, run, replay, and evaluation schemas.",
+    "Add dry-run, explain, visualize, run, cancel, resume, and replay commands."
+  ],
+  "nonGoals": [
+    "No unbounded autonomous loops or unrestricted recursive delegation.",
+    "No workflow may bypass existing provider, plugin, policy, consent, or rollback services."
+  ],
+  "metrics": [
+    "Workflow order and replay are deterministic.",
+    "Interrupted runs resume without repeating completed external effects.",
+    "Skill and workflow signatures fail closed."
+  ],
+  "acceptance": [
+    "Chains, DAGs, state machines, bounded loops, retries, cancellation, compensation, and checkpoints pass.",
+    "Mutating nodes require preview, policy, ownership, and consent.",
+    "Budgets and termination conditions stop runaway work."
+  ],
+  "assumptions": [
+    "Determinism is defined over declared inputs, versions, and recorded external results.",
+    "Dynamic swarms remain experimental beyond this release."
+  ],
+  "openQuestions": [
+    "Which workflow state is portable across hosts?",
+    "How are provider nondeterminism and model drift represented?"
+  ],
+  "features": [
+    {
+      "id": "signed-engineering-assets",
+      "title": "Signed Skills, Prompts, and Rules",
+      "status": "committed",
+      "summary": "Register versioned skills, prompts, packs, and rules with provenance, variables, compatibility, licensing, policy, and signatures.",
+      "value": "Engineering behavior becomes discoverable, reviewable, portable, and governable.",
+      "architecture": "Assets are immutable definitions resolved through signed catalogs and evaluated before activation.",
+      "dependencies": [
+        "v1.8 provenance and evidence",
+        "v1.7 policy"
+      ],
+      "acceptance": [
+        "Tampering and revocation fail closed.",
+        "Variables are schema-validated.",
+        "Rules cannot broaden higher-level authority."
+      ],
+      "risks": [
+        "Prompt injection in imported assets.",
+        "Licensing or provenance ambiguity."
+      ]
+    },
+    {
+      "id": "deterministic-workflow-engine",
+      "title": "Deterministic Workflow Engine",
+      "status": "committed",
+      "summary": "Execute explicit chains, DAGs, state machines, bounded loops, and human checkpoints with resumable state.",
+      "value": "Teams automate repeatable engineering work without surrendering human promotion authority.",
+      "architecture": "Versioned nodes classify effects, persist checkpoints transactionally, and call governed provider or plugin interfaces.",
+      "dependencies": [
+        "signed-engineering-assets"
+      ],
+      "acceptance": [
+        "Resume does not duplicate effects.",
+        "Cycles and excessive retries are rejected.",
+        "Cancellation and compensation are auditable."
+      ],
+      "risks": [
+        "Deadlock or livelock.",
+        "Cost or token runaway."
+      ]
+    }
+  ]
+}

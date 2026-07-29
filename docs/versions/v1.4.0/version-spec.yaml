@@ -1,0 +1,83 @@
+{
+  "version": "v1.4.0",
+  "title": "Production Provider Platform",
+  "outcome": "Promote provider integrations into one secure, observable, provider-neutral contract with dated compatibility evidence.",
+  "owner": "Provider Platform Maintainers",
+  "roadmapAuthority": "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#7-v140--production-provider-platform",
+  "riskTier": "tier-3",
+  "dependsOn": [
+    "v1.3.0"
+  ],
+  "blocks": [
+    "v1.5.0"
+  ],
+  "architectureDelta": "Finalize ProviderAdapter as the only governed boundary for discovery, authentication references, invocation, streaming, tools, health, usage, retries, and cancellation.",
+  "interfaceImpacts": [
+    "Version provider adapter, compatibility manifest, and normalized error schemas.",
+    "Extend provider CLI and dashboard through shared domain services without changing existing command names."
+  ],
+  "nonGoals": [
+    "No unsupported provider or model compatibility claim.",
+    "No raw credential storage, mandatory cloud account, or automatic billing action."
+  ],
+  "metrics": [
+    "Every supported provider passes the same offline contract suite.",
+    "Compatibility evidence records model versions and verification dates.",
+    "Unsafe non-idempotent requests are never retried automatically."
+  ],
+  "acceptance": [
+    "OpenAI, Anthropic, Gemini, OpenRouter, and Ollama adapters pass deterministic fixtures and credential-gated smoke tests.",
+    "Retries honor Retry-After, deadlines, cancellation, budgets, and idempotency.",
+    "Prompts, responses, credentials, and authorization headers are absent from logs and diagnostics."
+  ],
+  "assumptions": [
+    "Provider APIs remain external trust boundaries.",
+    "Live validation requires user-owned credentials and explicit consent."
+  ],
+  "openQuestions": [
+    "Which model capabilities qualify for stable support?",
+    "How long does compatibility evidence remain current?"
+  ],
+  "features": [
+    {
+      "id": "provider-adapter-contract",
+      "title": "Provider Adapter Contract",
+      "status": "committed",
+      "summary": "Standardize metadata, authentication references, discovery, invocation, streaming, structured output, tools, health, usage, and errors.",
+      "value": "One governed provider contract reduces duplicated logic and inconsistent safety behavior.",
+      "architecture": "Adapters execute behind application context, policy, consent, vault references, redaction, and audit services.",
+      "dependencies": [
+        "v1.3 state, vault, error, and application-context contracts"
+      ],
+      "acceptance": [
+        "All adapters pass one contract suite.",
+        "Unknown capabilities fail visibly.",
+        "Credentials never enter adapter output."
+      ],
+      "risks": [
+        "Provider API drift.",
+        "Capability normalization may hide semantic differences."
+      ]
+    },
+    {
+      "id": "provider-resilience-compatibility",
+      "title": "Provider Resilience and Compatibility",
+      "status": "committed",
+      "summary": "Add deadlines, cancellation, rate-limit interpretation, jittered retries, fallback chains, budgets, and dated compatibility manifests.",
+      "value": "Users receive predictable failure behavior and evidence-backed support claims.",
+      "architecture": "A shared invocation policy classifies idempotency and routes only safe retries or fallbacks.",
+      "dependencies": [
+        "provider-adapter-contract"
+      ],
+      "acceptance": [
+        "Retry-After and cancellation are tested.",
+        "Fallback never repeats unsafe effects.",
+        "Compatibility evidence expires predictably."
+      ],
+      "risks": [
+        "Fallback can change semantics or cost.",
+        "Stale evidence can mislead users."
+      ]
+    }
+  ]
+}

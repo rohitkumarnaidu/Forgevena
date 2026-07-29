@@ -1,0 +1,324 @@
+# Documentation Impact Report
+
+- **Change:** `version-documentation-system`
+- **Owner:** rohitkumarnaidu
+- **Checkpoint:** `merge`
+- **Profile:** `implementation`
+- **Decision:** **READY**
+- **Generated:** 2026-07-29T10:55:40.143Z
+
+## Affected Components
+
+- `api-and-contracts`
+- `build-testing-and-dependencies`
+- `cli`
+- `cloud-infrastructure-and-deployment`
+- `governance-and-policy`
+- `public-contract`
+- `release-version-and-distribution`
+
+## Requirements
+
+| Requirement | Criticality | Status | Updated evidence or rationale |
+|---|---|---|---|
+| `cli-generated-reference` | important | not-applicable | CLI command names, options, and generated reference content are unchanged; generated documentation verification passes. |
+| `cli-user-reference` | important | not-applicable | The Docker fix only validates invalid syntax before workspace state and does not change supported user behavior. |
+| `constitutional-alignment` | critical | not-applicable | The change preserves the frozen architecture, roadmap order, additive safety, privacy, and human-authority invariants. |
+| `contract-reference` | critical | pass | `docs/reference/generated/ai-documentation-index.json`, `docs/reference/generated/documentation-catalog.json`, `docs/reference/generated/documentation-coverage-matrix.md`, `docs/reference/generated/documentation-health.json`, `docs/reference/generated/documentation-health.md`, `docs/reference/generated/historical-document-index.md`, `docs/reference/generated/manifest.json`, `docs/schemas/index.md` |
+| `deployment-guidance` | important | not-applicable | Documentation CI gains a verification step; deployment behavior and operator procedures are unchanged. |
+| `documentation-governance` | critical | pass | `docs/governance/DOCUMENTATION_AUTHORITY_MAP.md`, `docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md` |
+| `engineering-governance` | critical | not-applicable | Existing governance authority remains unchanged; the documentation governance standard now references the version specification system. |
+| `implementation-documentation-coupling` | critical | pass | `docs/evidence/changes/version-documentation-system/documentation-impact.json`, `docs/evidence/changes/version-documentation-system/documentation-impact.md`, `docs/evidence/changes/version-documentation-system/documentation/documentation-coverage.md`, `docs/evidence/changes/version-documentation-system/documentation/documentation-impact.json`, `docs/evidence/changes/version-documentation-system/documentation/documentation-impact.md`, `docs/evidence/changes/version-documentation-system/documentation/documentation-quality.json`, `docs/evidence/changes/version-documentation-system/documentation/documentation-synchronization.md`, `docs/evidence/changes/version-documentation-system/documentation/evidence-manifest.json`, `docs/evidence/changes/version-documentation-system/documentation/migration-impact.md`, `docs/evidence/changes/version-documentation-system/documentation/missing-documentation.md`, `docs/evidence/changes/version-documentation-system/documentation/release-documentation-summary.md`, `docs/evidence/changes/version-documentation-system/documentation/repository-health.md`, `docs/evidence/changes/version-documentation-system/documentation/updated-documents.md`, `docs/evidence/changes/version-documentation-system/documentation/version-history-impact.md`, `docs/foundation/README.md`, `docs/foundation/adr/README.md`, `docs/foundation/architecture/README.md`, `docs/foundation/capability-model/README.md`, `docs/foundation/constitution/README.md`, `docs/foundation/contracts/README.md`, `docs/foundation/ecosystem/README.md`, `docs/foundation/foundation-map.yaml`, `docs/foundation/glossary/README.md`, `docs/foundation/governance/README.md`, `docs/foundation/product-experience/README.md`, `docs/foundation/reliability-and-operations/README.md`, `docs/foundation/security-and-trust/README.md`, `docs/foundation/standards/README.md`, `docs/foundation/vision/README.md`, `docs/governance/DOCUMENTATION_AUTHORITY_MAP.md`, `docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md`, `docs/historical/README.md`, `docs/historical/audits/README.md`, `docs/historical/phases/README.md`, `docs/historical/release-manifests.json`, `docs/historical/releases/README.md`, `docs/historical/retired-plans/README.md`, `docs/reference/generated/ai-documentation-index.json`, `docs/reference/generated/documentation-catalog.json`, `docs/reference/generated/documentation-coverage-matrix.md`, `docs/reference/generated/documentation-health.json`, `docs/reference/generated/documentation-health.md`, `docs/reference/generated/historical-document-index.md`, `docs/reference/generated/manifest.json`, `docs/reference/schemas/foundation-map.schema.json`, `docs/reference/schemas/resolved-version-bundle.schema.json`, `docs/reference/schemas/version-evidence-requirements.schema.json`, `docs/reference/schemas/version-feature.schema.json`, `docs/reference/schemas/version-spec.schema.json`, `docs/schemas/index.md`, `docs/versions/README.md`, `docs/versions/coverage-matrix.md`, `docs/versions/dependency-map.md`, `docs/versions/v1.10.0/README.md`, `docs/versions/v1.10.0/architecture/delta.md`, `docs/versions/v1.10.0/assurance/assurance-plan.md`, `docs/versions/v1.10.0/capabilities/governed-engineering-copilots.md`, `docs/versions/v1.10.0/capabilities/index.md`, `docs/versions/v1.10.0/capabilities/local-project-intelligence.md`, `docs/versions/v1.10.0/decisions/index.md`, `docs/versions/v1.10.0/delivery/delivery-plan.md`, `docs/versions/v1.10.0/evidence/README.md`, `docs/versions/v1.10.0/evidence/evidence-requirements.json`, `docs/versions/v1.10.0/interfaces/contracts.md`, `docs/versions/v1.10.0/operations/operability.md`, `docs/versions/v1.10.0/product/brief.md`, `docs/versions/v1.10.0/version-spec.yaml`, `docs/versions/v1.4.0/README.md`, `docs/versions/v1.4.0/architecture/delta.md`, `docs/versions/v1.4.0/assurance/assurance-plan.md`, `docs/versions/v1.4.0/capabilities/index.md`, `docs/versions/v1.4.0/capabilities/provider-adapter-contract.md`, `docs/versions/v1.4.0/capabilities/provider-resilience-compatibility.md`, `docs/versions/v1.4.0/decisions/index.md`, `docs/versions/v1.4.0/delivery/delivery-plan.md`, `docs/versions/v1.4.0/evidence/README.md`, `docs/versions/v1.4.0/evidence/evidence-requirements.json`, `docs/versions/v1.4.0/interfaces/contracts.md`, `docs/versions/v1.4.0/operations/operability.md`, `docs/versions/v1.4.0/product/brief.md`, `docs/versions/v1.4.0/version-spec.yaml`, `docs/versions/v1.5.0/README.md`, `docs/versions/v1.5.0/architecture/delta.md`, `docs/versions/v1.5.0/assurance/assurance-plan.md`, `docs/versions/v1.5.0/capabilities/index.md`, `docs/versions/v1.5.0/capabilities/isolated-plugin-runtime.md`, `docs/versions/v1.5.0/capabilities/mcp-source-host-adapters.md`, `docs/versions/v1.5.0/decisions/index.md`, `docs/versions/v1.5.0/delivery/delivery-plan.md`, `docs/versions/v1.5.0/evidence/README.md`, `docs/versions/v1.5.0/evidence/evidence-requirements.json`, `docs/versions/v1.5.0/interfaces/contracts.md`, `docs/versions/v1.5.0/operations/operability.md`, `docs/versions/v1.5.0/product/brief.md`, `docs/versions/v1.5.0/version-spec.yaml`, `docs/versions/v1.6.0/README.md`, `docs/versions/v1.6.0/architecture/delta.md`, `docs/versions/v1.6.0/assurance/assurance-plan.md`, `docs/versions/v1.6.0/capabilities/index.md`, `docs/versions/v1.6.0/capabilities/template-catalog-distribution.md`, `docs/versions/v1.6.0/capabilities/versioned-template-packages.md`, `docs/versions/v1.6.0/decisions/index.md`, `docs/versions/v1.6.0/delivery/delivery-plan.md`, `docs/versions/v1.6.0/evidence/README.md`, `docs/versions/v1.6.0/evidence/evidence-requirements.json`, `docs/versions/v1.6.0/interfaces/contracts.md`, `docs/versions/v1.6.0/operations/operability.md`, `docs/versions/v1.6.0/product/brief.md`, `docs/versions/v1.6.0/version-spec.yaml`, `docs/versions/v1.7.0/README.md`, `docs/versions/v1.7.0/architecture/delta.md`, `docs/versions/v1.7.0/assurance/assurance-plan.md`, `docs/versions/v1.7.0/capabilities/index.md`, `docs/versions/v1.7.0/capabilities/policy-simulation-compliance.md`, `docs/versions/v1.7.0/capabilities/signed-organization-policy.md`, `docs/versions/v1.7.0/decisions/index.md`, `docs/versions/v1.7.0/delivery/delivery-plan.md`, `docs/versions/v1.7.0/evidence/README.md`, `docs/versions/v1.7.0/evidence/evidence-requirements.json`, `docs/versions/v1.7.0/interfaces/contracts.md`, `docs/versions/v1.7.0/operations/operability.md`, `docs/versions/v1.7.0/product/brief.md`, `docs/versions/v1.7.0/version-spec.yaml`, `docs/versions/v1.8.0/README.md`, `docs/versions/v1.8.0/architecture/delta.md`, `docs/versions/v1.8.0/assurance/assurance-plan.md`, `docs/versions/v1.8.0/capabilities/index.md`, `docs/versions/v1.8.0/capabilities/safe-local-observability.md`, `docs/versions/v1.8.0/capabilities/supply-chain-documentation-evidence.md`, `docs/versions/v1.8.0/decisions/index.md`, `docs/versions/v1.8.0/delivery/delivery-plan.md`, `docs/versions/v1.8.0/evidence/README.md`, `docs/versions/v1.8.0/evidence/evidence-requirements.json`, `docs/versions/v1.8.0/interfaces/contracts.md`, `docs/versions/v1.8.0/operations/operability.md`, `docs/versions/v1.8.0/product/brief.md`, `docs/versions/v1.8.0/version-spec.yaml`, `docs/versions/v1.9.0/README.md`, `docs/versions/v1.9.0/architecture/delta.md`, `docs/versions/v1.9.0/assurance/assurance-plan.md`, `docs/versions/v1.9.0/capabilities/deterministic-workflow-engine.md`, `docs/versions/v1.9.0/capabilities/index.md`, `docs/versions/v1.9.0/capabilities/signed-engineering-assets.md`, `docs/versions/v1.9.0/decisions/index.md`, `docs/versions/v1.9.0/delivery/delivery-plan.md`, `docs/versions/v1.9.0/evidence/README.md`, `docs/versions/v1.9.0/evidence/evidence-requirements.json`, `docs/versions/v1.9.0/interfaces/contracts.md`, `docs/versions/v1.9.0/operations/operability.md`, `docs/versions/v1.9.0/product/brief.md`, `docs/versions/v1.9.0/version-spec.yaml`, `docs/versions/v2.0.0/README.md`, `docs/versions/v2.0.0/architecture/delta.md`, `docs/versions/v2.0.0/assurance/assurance-plan.md`, `docs/versions/v2.0.0/capabilities/encrypted-conflict-aware-sync.md`, `docs/versions/v2.0.0/capabilities/index.md`, `docs/versions/v2.0.0/capabilities/self-hosted-control-plane.md`, `docs/versions/v2.0.0/decisions/index.md`, `docs/versions/v2.0.0/delivery/delivery-plan.md`, `docs/versions/v2.0.0/evidence/README.md`, `docs/versions/v2.0.0/evidence/evidence-requirements.json`, `docs/versions/v2.0.0/interfaces/contracts.md`, `docs/versions/v2.0.0/operations/operability.md`, `docs/versions/v2.0.0/product/brief.md`, `docs/versions/v2.0.0/version-spec.yaml`, `docs/versions/v2.1.0/README.md`, `docs/versions/v2.1.0/architecture/delta.md`, `docs/versions/v2.1.0/assurance/assurance-plan.md`, `docs/versions/v2.1.0/capabilities/canonical-capability-package.md`, `docs/versions/v2.1.0/capabilities/deterministic-local-registry.md`, `docs/versions/v2.1.0/capabilities/index.md`, `docs/versions/v2.1.0/decisions/index.md`, `docs/versions/v2.1.0/delivery/delivery-plan.md`, `docs/versions/v2.1.0/evidence/README.md`, `docs/versions/v2.1.0/evidence/evidence-requirements.json`, `docs/versions/v2.1.0/interfaces/contracts.md`, `docs/versions/v2.1.0/operations/operability.md`, `docs/versions/v2.1.0/product/brief.md`, `docs/versions/v2.1.0/version-spec.yaml`, `docs/versions/v2.2.0/README.md`, `docs/versions/v2.2.0/architecture/delta.md`, `docs/versions/v2.2.0/assurance/assurance-plan.md`, `docs/versions/v2.2.0/capabilities/airgap-revocation-continuity.md`, `docs/versions/v2.2.0/capabilities/federated-registry-sources.md`, `docs/versions/v2.2.0/capabilities/index.md`, `docs/versions/v2.2.0/decisions/index.md`, `docs/versions/v2.2.0/delivery/delivery-plan.md`, `docs/versions/v2.2.0/evidence/README.md`, `docs/versions/v2.2.0/evidence/evidence-requirements.json`, `docs/versions/v2.2.0/interfaces/contracts.md`, `docs/versions/v2.2.0/operations/operability.md`, `docs/versions/v2.2.0/product/brief.md`, `docs/versions/v2.2.0/version-spec.yaml`, `docs/versions/v2.3.0/README.md`, `docs/versions/v2.3.0/architecture/delta.md`, `docs/versions/v2.3.0/assurance/assurance-plan.md`, `docs/versions/v2.3.0/capabilities/agentspace-collections-community.md`, `docs/versions/v2.3.0/capabilities/forgehub-lifecycle-experience.md`, `docs/versions/v2.3.0/capabilities/index.md`, `docs/versions/v2.3.0/decisions/index.md`, `docs/versions/v2.3.0/delivery/delivery-plan.md`, `docs/versions/v2.3.0/evidence/README.md`, `docs/versions/v2.3.0/evidence/evidence-requirements.json`, `docs/versions/v2.3.0/interfaces/contracts.md`, `docs/versions/v2.3.0/operations/operability.md`, `docs/versions/v2.3.0/product/brief.md`, `docs/versions/v2.3.0/version-spec.yaml`, `docs/versions/v2.4.0/README.md`, `docs/versions/v2.4.0/architecture/delta.md`, `docs/versions/v2.4.0/assurance/assurance-plan.md`, `docs/versions/v2.4.0/capabilities/capability-studio-sdk.md`, `docs/versions/v2.4.0/capabilities/governed-publisher-lifecycle.md`, `docs/versions/v2.4.0/capabilities/index.md`, `docs/versions/v2.4.0/decisions/index.md`, `docs/versions/v2.4.0/delivery/delivery-plan.md`, `docs/versions/v2.4.0/evidence/README.md`, `docs/versions/v2.4.0/evidence/evidence-requirements.json`, `docs/versions/v2.4.0/interfaces/contracts.md`, `docs/versions/v2.4.0/operations/operability.md`, `docs/versions/v2.4.0/product/brief.md`, `docs/versions/v2.4.0/version-spec.yaml`, `docs/versions/v2.5.0/README.md`, `docs/versions/v2.5.0/architecture/delta.md`, `docs/versions/v2.5.0/assurance/assurance-plan.md`, `docs/versions/v2.5.0/capabilities/controlled-capability-promotion.md`, `docs/versions/v2.5.0/capabilities/index.md`, `docs/versions/v2.5.0/capabilities/organization-catalog-approvals.md`, `docs/versions/v2.5.0/decisions/index.md`, `docs/versions/v2.5.0/delivery/delivery-plan.md`, `docs/versions/v2.5.0/evidence/README.md`, `docs/versions/v2.5.0/evidence/evidence-requirements.json`, `docs/versions/v2.5.0/interfaces/contracts.md`, `docs/versions/v2.5.0/operations/operability.md`, `docs/versions/v2.5.0/product/brief.md`, `docs/versions/v2.5.0/version-spec.yaml`, `docs/versions/v2.6.0/README.md`, `docs/versions/v2.6.0/architecture/delta.md`, `docs/versions/v2.6.0/assurance/assurance-plan.md`, `docs/versions/v2.6.0/capabilities/explainable-ecosystem-intelligence.md`, `docs/versions/v2.6.0/capabilities/index.md`, `docs/versions/v2.6.0/capabilities/shared-host-bridges.md`, `docs/versions/v2.6.0/decisions/index.md`, `docs/versions/v2.6.0/delivery/delivery-plan.md`, `docs/versions/v2.6.0/evidence/README.md`, `docs/versions/v2.6.0/evidence/evidence-requirements.json`, `docs/versions/v2.6.0/interfaces/contracts.md`, `docs/versions/v2.6.0/operations/operability.md`, `docs/versions/v2.6.0/product/brief.md`, `docs/versions/v2.6.0/version-spec.yaml`, `docs/versions/v2.7.0/README.md`, `docs/versions/v2.7.0/architecture/delta.md`, `docs/versions/v2.7.0/assurance/assurance-plan.md`, `docs/versions/v2.7.0/capabilities/compatibility-evaluation-labs.md`, `docs/versions/v2.7.0/capabilities/index.md`, `docs/versions/v2.7.0/capabilities/transparency-advisory-revocation.md`, `docs/versions/v2.7.0/decisions/index.md`, `docs/versions/v2.7.0/delivery/delivery-plan.md`, `docs/versions/v2.7.0/evidence/README.md`, `docs/versions/v2.7.0/evidence/evidence-requirements.json`, `docs/versions/v2.7.0/interfaces/contracts.md`, `docs/versions/v2.7.0/operations/operability.md`, `docs/versions/v2.7.0/product/brief.md`, `docs/versions/v2.7.0/version-spec.yaml`, `docs/versions/v3.0.0/README.md`, `docs/versions/v3.0.0/architecture/delta.md`, `docs/versions/v3.0.0/assurance/assurance-plan.md`, `docs/versions/v3.0.0/capabilities/evidence-digital-twin-autopilot.md`, `docs/versions/v3.0.0/capabilities/index.md`, `docs/versions/v3.0.0/capabilities/unified-ai-engineering-os.md`, `docs/versions/v3.0.0/decisions/index.md`, `docs/versions/v3.0.0/delivery/delivery-plan.md`, `docs/versions/v3.0.0/evidence/README.md`, `docs/versions/v3.0.0/evidence/evidence-requirements.json`, `docs/versions/v3.0.0/interfaces/contracts.md`, `docs/versions/v3.0.0/operations/operability.md`, `docs/versions/v3.0.0/product/brief.md`, `docs/versions/v3.0.0/version-spec.yaml`, `docs/versions/version-specifications.json`, `website/mkdocs.yml` |
+| `implementation-test-coupling` | important | pass | `test/version-documentation.test.js` |
+| `operations-and-rollback` | critical | not-applicable | No cloud, infrastructure, persistence, or managed mutation behavior changes; generated planning bundles are deterministic and release bundles fail closed. |
+| `public-generated-reference` | important | pass | `docs/reference/generated/ai-documentation-index.json`, `docs/reference/generated/documentation-catalog.json`, `docs/reference/generated/documentation-coverage-matrix.md`, `docs/reference/generated/documentation-health.json`, `docs/reference/generated/documentation-health.md`, `docs/reference/generated/historical-document-index.md`, `docs/reference/generated/manifest.json` |
+| `public-product-guidance` | important | not-applicable | Approved roadmap scope and dependency order are unchanged; this change adds implementation-ready version deltas beneath existing public guidance. |
+| `release-history` | critical | not-applicable | No version, tag, publication, or historical release record changes are performed. |
+| `release-operations` | critical | not-applicable | No release workflow semantics or publication procedure changes are introduced. |
+| `testing-build-guidance` | important | not-applicable | Existing test commands and quality thresholds are unchanged; version-document verification is integrated into existing gates. |
+
+## Changed Documentation
+
+- `docs/evidence/changes/version-documentation-system/documentation-impact.json`
+- `docs/evidence/changes/version-documentation-system/documentation-impact.md`
+- `docs/evidence/changes/version-documentation-system/documentation/documentation-coverage.md`
+- `docs/evidence/changes/version-documentation-system/documentation/documentation-impact.json`
+- `docs/evidence/changes/version-documentation-system/documentation/documentation-impact.md`
+- `docs/evidence/changes/version-documentation-system/documentation/documentation-quality.json`
+- `docs/evidence/changes/version-documentation-system/documentation/documentation-synchronization.md`
+- `docs/evidence/changes/version-documentation-system/documentation/evidence-manifest.json`
+- `docs/evidence/changes/version-documentation-system/documentation/migration-impact.md`
+- `docs/evidence/changes/version-documentation-system/documentation/missing-documentation.md`
+- `docs/evidence/changes/version-documentation-system/documentation/release-documentation-summary.md`
+- `docs/evidence/changes/version-documentation-system/documentation/repository-health.md`
+- `docs/evidence/changes/version-documentation-system/documentation/updated-documents.md`
+- `docs/evidence/changes/version-documentation-system/documentation/version-history-impact.md`
+- `docs/foundation/README.md`
+- `docs/foundation/adr/README.md`
+- `docs/foundation/architecture/README.md`
+- `docs/foundation/capability-model/README.md`
+- `docs/foundation/constitution/README.md`
+- `docs/foundation/contracts/README.md`
+- `docs/foundation/ecosystem/README.md`
+- `docs/foundation/foundation-map.yaml`
+- `docs/foundation/glossary/README.md`
+- `docs/foundation/governance/README.md`
+- `docs/foundation/product-experience/README.md`
+- `docs/foundation/reliability-and-operations/README.md`
+- `docs/foundation/security-and-trust/README.md`
+- `docs/foundation/standards/README.md`
+- `docs/foundation/vision/README.md`
+- `docs/governance/DOCUMENTATION_AUTHORITY_MAP.md`
+- `docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md`
+- `docs/historical/README.md`
+- `docs/historical/audits/README.md`
+- `docs/historical/phases/README.md`
+- `docs/historical/release-manifests.json`
+- `docs/historical/releases/README.md`
+- `docs/historical/retired-plans/README.md`
+- `docs/reference/generated/ai-documentation-index.json`
+- `docs/reference/generated/documentation-catalog.json`
+- `docs/reference/generated/documentation-coverage-matrix.md`
+- `docs/reference/generated/documentation-health.json`
+- `docs/reference/generated/documentation-health.md`
+- `docs/reference/generated/historical-document-index.md`
+- `docs/reference/generated/manifest.json`
+- `docs/reference/schemas/foundation-map.schema.json`
+- `docs/reference/schemas/resolved-version-bundle.schema.json`
+- `docs/reference/schemas/version-evidence-requirements.schema.json`
+- `docs/reference/schemas/version-feature.schema.json`
+- `docs/reference/schemas/version-spec.schema.json`
+- `docs/schemas/index.md`
+- `docs/versions/README.md`
+- `docs/versions/coverage-matrix.md`
+- `docs/versions/dependency-map.md`
+- `docs/versions/v1.10.0/README.md`
+- `docs/versions/v1.10.0/architecture/delta.md`
+- `docs/versions/v1.10.0/assurance/assurance-plan.md`
+- `docs/versions/v1.10.0/capabilities/governed-engineering-copilots.md`
+- `docs/versions/v1.10.0/capabilities/index.md`
+- `docs/versions/v1.10.0/capabilities/local-project-intelligence.md`
+- `docs/versions/v1.10.0/decisions/index.md`
+- `docs/versions/v1.10.0/delivery/delivery-plan.md`
+- `docs/versions/v1.10.0/evidence/README.md`
+- `docs/versions/v1.10.0/evidence/evidence-requirements.json`
+- `docs/versions/v1.10.0/interfaces/contracts.md`
+- `docs/versions/v1.10.0/operations/operability.md`
+- `docs/versions/v1.10.0/product/brief.md`
+- `docs/versions/v1.10.0/version-spec.yaml`
+- `docs/versions/v1.4.0/README.md`
+- `docs/versions/v1.4.0/architecture/delta.md`
+- `docs/versions/v1.4.0/assurance/assurance-plan.md`
+- `docs/versions/v1.4.0/capabilities/index.md`
+- `docs/versions/v1.4.0/capabilities/provider-adapter-contract.md`
+- `docs/versions/v1.4.0/capabilities/provider-resilience-compatibility.md`
+- `docs/versions/v1.4.0/decisions/index.md`
+- `docs/versions/v1.4.0/delivery/delivery-plan.md`
+- `docs/versions/v1.4.0/evidence/README.md`
+- `docs/versions/v1.4.0/evidence/evidence-requirements.json`
+- `docs/versions/v1.4.0/interfaces/contracts.md`
+- `docs/versions/v1.4.0/operations/operability.md`
+- `docs/versions/v1.4.0/product/brief.md`
+- `docs/versions/v1.4.0/version-spec.yaml`
+- `docs/versions/v1.5.0/README.md`
+- `docs/versions/v1.5.0/architecture/delta.md`
+- `docs/versions/v1.5.0/assurance/assurance-plan.md`
+- `docs/versions/v1.5.0/capabilities/index.md`
+- `docs/versions/v1.5.0/capabilities/isolated-plugin-runtime.md`
+- `docs/versions/v1.5.0/capabilities/mcp-source-host-adapters.md`
+- `docs/versions/v1.5.0/decisions/index.md`
+- `docs/versions/v1.5.0/delivery/delivery-plan.md`
+- `docs/versions/v1.5.0/evidence/README.md`
+- `docs/versions/v1.5.0/evidence/evidence-requirements.json`
+- `docs/versions/v1.5.0/interfaces/contracts.md`
+- `docs/versions/v1.5.0/operations/operability.md`
+- `docs/versions/v1.5.0/product/brief.md`
+- `docs/versions/v1.5.0/version-spec.yaml`
+- `docs/versions/v1.6.0/README.md`
+- `docs/versions/v1.6.0/architecture/delta.md`
+- `docs/versions/v1.6.0/assurance/assurance-plan.md`
+- `docs/versions/v1.6.0/capabilities/index.md`
+- `docs/versions/v1.6.0/capabilities/template-catalog-distribution.md`
+- `docs/versions/v1.6.0/capabilities/versioned-template-packages.md`
+- `docs/versions/v1.6.0/decisions/index.md`
+- `docs/versions/v1.6.0/delivery/delivery-plan.md`
+- `docs/versions/v1.6.0/evidence/README.md`
+- `docs/versions/v1.6.0/evidence/evidence-requirements.json`
+- `docs/versions/v1.6.0/interfaces/contracts.md`
+- `docs/versions/v1.6.0/operations/operability.md`
+- `docs/versions/v1.6.0/product/brief.md`
+- `docs/versions/v1.6.0/version-spec.yaml`
+- `docs/versions/v1.7.0/README.md`
+- `docs/versions/v1.7.0/architecture/delta.md`
+- `docs/versions/v1.7.0/assurance/assurance-plan.md`
+- `docs/versions/v1.7.0/capabilities/index.md`
+- `docs/versions/v1.7.0/capabilities/policy-simulation-compliance.md`
+- `docs/versions/v1.7.0/capabilities/signed-organization-policy.md`
+- `docs/versions/v1.7.0/decisions/index.md`
+- `docs/versions/v1.7.0/delivery/delivery-plan.md`
+- `docs/versions/v1.7.0/evidence/README.md`
+- `docs/versions/v1.7.0/evidence/evidence-requirements.json`
+- `docs/versions/v1.7.0/interfaces/contracts.md`
+- `docs/versions/v1.7.0/operations/operability.md`
+- `docs/versions/v1.7.0/product/brief.md`
+- `docs/versions/v1.7.0/version-spec.yaml`
+- `docs/versions/v1.8.0/README.md`
+- `docs/versions/v1.8.0/architecture/delta.md`
+- `docs/versions/v1.8.0/assurance/assurance-plan.md`
+- `docs/versions/v1.8.0/capabilities/index.md`
+- `docs/versions/v1.8.0/capabilities/safe-local-observability.md`
+- `docs/versions/v1.8.0/capabilities/supply-chain-documentation-evidence.md`
+- `docs/versions/v1.8.0/decisions/index.md`
+- `docs/versions/v1.8.0/delivery/delivery-plan.md`
+- `docs/versions/v1.8.0/evidence/README.md`
+- `docs/versions/v1.8.0/evidence/evidence-requirements.json`
+- `docs/versions/v1.8.0/interfaces/contracts.md`
+- `docs/versions/v1.8.0/operations/operability.md`
+- `docs/versions/v1.8.0/product/brief.md`
+- `docs/versions/v1.8.0/version-spec.yaml`
+- `docs/versions/v1.9.0/README.md`
+- `docs/versions/v1.9.0/architecture/delta.md`
+- `docs/versions/v1.9.0/assurance/assurance-plan.md`
+- `docs/versions/v1.9.0/capabilities/deterministic-workflow-engine.md`
+- `docs/versions/v1.9.0/capabilities/index.md`
+- `docs/versions/v1.9.0/capabilities/signed-engineering-assets.md`
+- `docs/versions/v1.9.0/decisions/index.md`
+- `docs/versions/v1.9.0/delivery/delivery-plan.md`
+- `docs/versions/v1.9.0/evidence/README.md`
+- `docs/versions/v1.9.0/evidence/evidence-requirements.json`
+- `docs/versions/v1.9.0/interfaces/contracts.md`
+- `docs/versions/v1.9.0/operations/operability.md`
+- `docs/versions/v1.9.0/product/brief.md`
+- `docs/versions/v1.9.0/version-spec.yaml`
+- `docs/versions/v2.0.0/README.md`
+- `docs/versions/v2.0.0/architecture/delta.md`
+- `docs/versions/v2.0.0/assurance/assurance-plan.md`
+- `docs/versions/v2.0.0/capabilities/encrypted-conflict-aware-sync.md`
+- `docs/versions/v2.0.0/capabilities/index.md`
+- `docs/versions/v2.0.0/capabilities/self-hosted-control-plane.md`
+- `docs/versions/v2.0.0/decisions/index.md`
+- `docs/versions/v2.0.0/delivery/delivery-plan.md`
+- `docs/versions/v2.0.0/evidence/README.md`
+- `docs/versions/v2.0.0/evidence/evidence-requirements.json`
+- `docs/versions/v2.0.0/interfaces/contracts.md`
+- `docs/versions/v2.0.0/operations/operability.md`
+- `docs/versions/v2.0.0/product/brief.md`
+- `docs/versions/v2.0.0/version-spec.yaml`
+- `docs/versions/v2.1.0/README.md`
+- `docs/versions/v2.1.0/architecture/delta.md`
+- `docs/versions/v2.1.0/assurance/assurance-plan.md`
+- `docs/versions/v2.1.0/capabilities/canonical-capability-package.md`
+- `docs/versions/v2.1.0/capabilities/deterministic-local-registry.md`
+- `docs/versions/v2.1.0/capabilities/index.md`
+- `docs/versions/v2.1.0/decisions/index.md`
+- `docs/versions/v2.1.0/delivery/delivery-plan.md`
+- `docs/versions/v2.1.0/evidence/README.md`
+- `docs/versions/v2.1.0/evidence/evidence-requirements.json`
+- `docs/versions/v2.1.0/interfaces/contracts.md`
+- `docs/versions/v2.1.0/operations/operability.md`
+- `docs/versions/v2.1.0/product/brief.md`
+- `docs/versions/v2.1.0/version-spec.yaml`
+- `docs/versions/v2.2.0/README.md`
+- `docs/versions/v2.2.0/architecture/delta.md`
+- `docs/versions/v2.2.0/assurance/assurance-plan.md`
+- `docs/versions/v2.2.0/capabilities/airgap-revocation-continuity.md`
+- `docs/versions/v2.2.0/capabilities/federated-registry-sources.md`
+- `docs/versions/v2.2.0/capabilities/index.md`
+- `docs/versions/v2.2.0/decisions/index.md`
+- `docs/versions/v2.2.0/delivery/delivery-plan.md`
+- `docs/versions/v2.2.0/evidence/README.md`
+- `docs/versions/v2.2.0/evidence/evidence-requirements.json`
+- `docs/versions/v2.2.0/interfaces/contracts.md`
+- `docs/versions/v2.2.0/operations/operability.md`
+- `docs/versions/v2.2.0/product/brief.md`
+- `docs/versions/v2.2.0/version-spec.yaml`
+- `docs/versions/v2.3.0/README.md`
+- `docs/versions/v2.3.0/architecture/delta.md`
+- `docs/versions/v2.3.0/assurance/assurance-plan.md`
+- `docs/versions/v2.3.0/capabilities/agentspace-collections-community.md`
+- `docs/versions/v2.3.0/capabilities/forgehub-lifecycle-experience.md`
+- `docs/versions/v2.3.0/capabilities/index.md`
+- `docs/versions/v2.3.0/decisions/index.md`
+- `docs/versions/v2.3.0/delivery/delivery-plan.md`
+- `docs/versions/v2.3.0/evidence/README.md`
+- `docs/versions/v2.3.0/evidence/evidence-requirements.json`
+- `docs/versions/v2.3.0/interfaces/contracts.md`
+- `docs/versions/v2.3.0/operations/operability.md`
+- `docs/versions/v2.3.0/product/brief.md`
+- `docs/versions/v2.3.0/version-spec.yaml`
+- `docs/versions/v2.4.0/README.md`
+- `docs/versions/v2.4.0/architecture/delta.md`
+- `docs/versions/v2.4.0/assurance/assurance-plan.md`
+- `docs/versions/v2.4.0/capabilities/capability-studio-sdk.md`
+- `docs/versions/v2.4.0/capabilities/governed-publisher-lifecycle.md`
+- `docs/versions/v2.4.0/capabilities/index.md`
+- `docs/versions/v2.4.0/decisions/index.md`
+- `docs/versions/v2.4.0/delivery/delivery-plan.md`
+- `docs/versions/v2.4.0/evidence/README.md`
+- `docs/versions/v2.4.0/evidence/evidence-requirements.json`
+- `docs/versions/v2.4.0/interfaces/contracts.md`
+- `docs/versions/v2.4.0/operations/operability.md`
+- `docs/versions/v2.4.0/product/brief.md`
+- `docs/versions/v2.4.0/version-spec.yaml`
+- `docs/versions/v2.5.0/README.md`
+- `docs/versions/v2.5.0/architecture/delta.md`
+- `docs/versions/v2.5.0/assurance/assurance-plan.md`
+- `docs/versions/v2.5.0/capabilities/controlled-capability-promotion.md`
+- `docs/versions/v2.5.0/capabilities/index.md`
+- `docs/versions/v2.5.0/capabilities/organization-catalog-approvals.md`
+- `docs/versions/v2.5.0/decisions/index.md`
+- `docs/versions/v2.5.0/delivery/delivery-plan.md`
+- `docs/versions/v2.5.0/evidence/README.md`
+- `docs/versions/v2.5.0/evidence/evidence-requirements.json`
+- `docs/versions/v2.5.0/interfaces/contracts.md`
+- `docs/versions/v2.5.0/operations/operability.md`
+- `docs/versions/v2.5.0/product/brief.md`
+- `docs/versions/v2.5.0/version-spec.yaml`
+- `docs/versions/v2.6.0/README.md`
+- `docs/versions/v2.6.0/architecture/delta.md`
+- `docs/versions/v2.6.0/assurance/assurance-plan.md`
+- `docs/versions/v2.6.0/capabilities/explainable-ecosystem-intelligence.md`
+- `docs/versions/v2.6.0/capabilities/index.md`
+- `docs/versions/v2.6.0/capabilities/shared-host-bridges.md`
+- `docs/versions/v2.6.0/decisions/index.md`
+- `docs/versions/v2.6.0/delivery/delivery-plan.md`
+- `docs/versions/v2.6.0/evidence/README.md`
+- `docs/versions/v2.6.0/evidence/evidence-requirements.json`
+- `docs/versions/v2.6.0/interfaces/contracts.md`
+- `docs/versions/v2.6.0/operations/operability.md`
+- `docs/versions/v2.6.0/product/brief.md`
+- `docs/versions/v2.6.0/version-spec.yaml`
+- `docs/versions/v2.7.0/README.md`
+- `docs/versions/v2.7.0/architecture/delta.md`
+- `docs/versions/v2.7.0/assurance/assurance-plan.md`
+- `docs/versions/v2.7.0/capabilities/compatibility-evaluation-labs.md`
+- `docs/versions/v2.7.0/capabilities/index.md`
+- `docs/versions/v2.7.0/capabilities/transparency-advisory-revocation.md`
+- `docs/versions/v2.7.0/decisions/index.md`
+- `docs/versions/v2.7.0/delivery/delivery-plan.md`
+- `docs/versions/v2.7.0/evidence/README.md`
+- `docs/versions/v2.7.0/evidence/evidence-requirements.json`
+- `docs/versions/v2.7.0/interfaces/contracts.md`
+- `docs/versions/v2.7.0/operations/operability.md`
+- `docs/versions/v2.7.0/product/brief.md`
+- `docs/versions/v2.7.0/version-spec.yaml`
+- `docs/versions/v3.0.0/README.md`
+- `docs/versions/v3.0.0/architecture/delta.md`
+- `docs/versions/v3.0.0/assurance/assurance-plan.md`
+- `docs/versions/v3.0.0/capabilities/evidence-digital-twin-autopilot.md`
+- `docs/versions/v3.0.0/capabilities/index.md`
+- `docs/versions/v3.0.0/capabilities/unified-ai-engineering-os.md`
+- `docs/versions/v3.0.0/decisions/index.md`
+- `docs/versions/v3.0.0/delivery/delivery-plan.md`
+- `docs/versions/v3.0.0/evidence/README.md`
+- `docs/versions/v3.0.0/evidence/evidence-requirements.json`
+- `docs/versions/v3.0.0/interfaces/contracts.md`
+- `docs/versions/v3.0.0/operations/operability.md`
+- `docs/versions/v3.0.0/product/brief.md`
+- `docs/versions/v3.0.0/version-spec.yaml`
+- `docs/versions/version-specifications.json`
+- `website/mkdocs.yml`
+
+## Blockers
+
+- None

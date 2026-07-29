@@ -3,6 +3,7 @@ import path from "node:path";
 import { validateGovernance } from "../src/governance-validation.js";
 import { verifyCanonicalDocumentation } from "../src/documentation-generator.js";
 import { validateDocumentationAssets } from "../src/documentation-assets.js";
+import { generateVersionDocumentation } from "../src/version-documentation.js";
 
 const root = process.cwd();
 const docsRoot = path.join(root, "docs");
@@ -53,7 +54,10 @@ issues.push(...governance.issues.map((issue) => `governance: ${issue}`));
 const assets = await validateDocumentationAssets(root);
 issues.push(...assets.issues.map((issue) => `documentation assets: ${issue}`));
 
-const report = { valid: issues.length === 0, markdownFiles: markdown.length, headings, mermaidBlocks, generated, governance, assets, issues };
+const versionDocumentation = await generateVersionDocumentation(root);
+issues.push(...versionDocumentation.issues.map((issue) => `version documentation: ${issue}`));
+
+const report = { valid: issues.length === 0, markdownFiles: markdown.length, headings, mermaidBlocks, generated, governance, assets, versionDocumentation, issues };
 console.log(JSON.stringify(report, null, 2));
 if (issues.length) process.exitCode = 1;
 

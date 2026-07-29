@@ -1,0 +1,83 @@
+{
+  "version": "v2.2.0",
+  "title": "ForgeRegistry Federation and Enterprise Registries",
+  "outcome": "Support trusted public, private, mirrored, federated, and air-gapped registries without making any registry mandatory.",
+  "owner": "ForgeRegistry Federation Maintainers",
+  "roadmapAuthority": "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#v220--forgeregistry-federation-and-enterprise-registries",
+  "riskTier": "tier-3",
+  "dependsOn": [
+    "v2.1.0"
+  ],
+  "blocks": [
+    "v2.3.0"
+  ],
+  "architectureDelta": "Extend local registry contracts with consent-gated HTTPS sources, mirrors, signed offline catalogs, federation, replication health, trust policy, and revocation.",
+  "interfaceImpacts": [
+    "Version remote source, mirror, federation, replication, revocation, transparency, and air-gap bundle schemas.",
+    "Add registry add, remove, sync, mirror, verify, doctor, quarantine, and continuity operations."
+  ],
+  "nonGoals": [
+    "No mandatory public registry or opaque global namespace authority.",
+    "No fail-open mirror or signature behavior."
+  ],
+  "metrics": [
+    "Mirror selection and conflict behavior are deterministic.",
+    "Revocation propagates within defined SLOs.",
+    "Air-gapped promotion remains independently verifiable."
+  ],
+  "acceptance": [
+    "Federation, mirror failover, recovery, revocation, conflicts, and offline bundles pass.",
+    "Organization policy controls approved, blocked, pinned, and read-only packages.",
+    "Registry outages do not break installed local capabilities."
+  ],
+  "assumptions": [
+    "Registries expose signed immutable metadata.",
+    "Regional and private deployments may impose residency constraints."
+  ],
+  "openQuestions": [
+    "How are cross-registry namespaces reconciled?",
+    "What transparency guarantees apply to private registries?"
+  ],
+  "features": [
+    {
+      "id": "federated-registry-sources",
+      "title": "Federated Registry Sources",
+      "status": "committed",
+      "summary": "Add public, private, mirrored, and organization registry sources with deterministic trust and precedence.",
+      "value": "Teams choose distribution topology without vendor lock-in.",
+      "architecture": "Source metadata is signed, cached, policy-evaluated, and resolved through explicit precedence and conflict rules.",
+      "dependencies": [
+        "v2.1 deterministic-local-registry"
+      ],
+      "acceptance": [
+        "Mirror behavior is deterministic.",
+        "Trust failures block resolution.",
+        "Installed packages remain usable offline."
+      ],
+      "risks": [
+        "Namespace collisions.",
+        "Stale or compromised mirrors."
+      ]
+    },
+    {
+      "id": "airgap-revocation-continuity",
+      "title": "Air-Gap, Revocation, and Continuity",
+      "status": "committed",
+      "summary": "Export signed offline bundles, propagate revocations, quarantine risk, and preserve last-known-good operation.",
+      "value": "Regulated and disconnected environments can promote packages safely.",
+      "architecture": "Bundles carry packages, policies, trust roots, revocations, lockfiles, and verification evidence across controlled zones.",
+      "dependencies": [
+        "federated-registry-sources"
+      ],
+      "acceptance": [
+        "Offline promotion verifies without network.",
+        "Revoked packages are quarantined predictably.",
+        "Continuity and recovery drills pass."
+      ],
+      "risks": [
+        "Delayed revocation in disconnected sites.",
+        "Emergency action may disrupt critical workloads."
+      ]
+    }
+  ]
+}

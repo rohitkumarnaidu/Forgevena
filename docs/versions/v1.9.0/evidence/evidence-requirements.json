@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "version": "v1.9.0",
+  "state": "required-not-collected",
+  "mandatory": [
+    "requirements",
+    "rfc",
+    "adr",
+    "threat-model",
+    "privacy-review",
+    "readiness-scorecard",
+    "tests",
+    "security",
+    "accessibility",
+    "performance",
+    "migration",
+    "rollback",
+    "documentation-impact",
+    "compatibility",
+    "sbom",
+    "provenance",
+    "release-verification",
+    "post-release-review"
+  ],
+  "gates": {
+    "critical": 100,
+    "important": 95,
+    "standard": 90
+  },
+  "acceptance": [
+    "Chains, DAGs, state machines, bounded loops, retries, cancellation, compensation, and checkpoints pass.",
+    "Mutating nodes require preview, policy, ownership, and consent.",
+    "Budgets and termination conditions stop runaway work."
+  ]
+}

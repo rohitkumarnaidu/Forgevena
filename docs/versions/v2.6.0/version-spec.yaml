@@ -1,0 +1,85 @@
+{
+  "version": "v2.6.0",
+  "title": "ForgeHub Intelligence and Experience",
+  "outcome": "Deliver local-first ecosystem intelligence, explainable recommendations, dependency insights, and shared IDE, CLI, dashboard, and cloud-host bridges.",
+  "owner": "ForgeHub Intelligence Maintainers",
+  "roadmapAuthority": "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#v260--forgehub-intelligence-and-experience",
+  "riskTier": "tier-3",
+  "dependsOn": [
+    "v2.5.0"
+  ],
+  "blocks": [
+    "v2.7.0"
+  ],
+  "architectureDelta": "Add recommendation evidence and host bridges over shared domain APIs without duplicating package, policy, or execution logic.",
+  "interfaceImpacts": [
+    "Version recommendation evidence, dependency graph, health insight, host bridge, dismissal, and analytics consent schemas.",
+    "Add ecosystem health, usage, history, recommendations, dependency, and host bridge surfaces."
+  ],
+  "nonGoals": [
+    "No source-content profiling, behavioral advertising, hidden sponsored ranking, or mandatory telemetry.",
+    "No host bridge may silently discard unsupported semantics."
+  ],
+  "metrics": [
+    "Recommendations are explainable, dismissible, evidence-dated, and policy-aware.",
+    "Host translations report native, exact, translated, degraded, manual-adaptation, or unsupported outcomes.",
+    "Interfaces meet accessibility and privacy targets."
+  ],
+  "acceptance": [
+    "Unused, duplicate, incompatible, risky, and update recommendations link to local evidence.",
+    "VS Code, JetBrains, Cursor, Codex, CLI, desktop, and cloud bridges use shared APIs and loss reports.",
+    "Analytics remain disabled unless explicit, revocable consent exists."
+  ],
+  "assumptions": [
+    "Metadata-only evidence supports useful ecosystem recommendations.",
+    "Host vendors expose sufficient extension contracts."
+  ],
+  "openQuestions": [
+    "How is recommendation quality measured without surveillance?",
+    "Which host capabilities can be certified exact?"
+  ],
+  "features": [
+    {
+      "id": "explainable-ecosystem-intelligence",
+      "title": "Explainable Ecosystem Intelligence",
+      "status": "committed",
+      "summary": "Recommend packages, updates, removals, deduplication, compatibility fixes, and health remediation using local evidence.",
+      "value": "Users improve workspaces without opaque ranking or data collection.",
+      "architecture": "A recommendation engine consumes approved metadata, policy, compatibility, dependency, and local usage evidence and emits rationale with freshness.",
+      "dependencies": [
+        "v2.5 organization inventories",
+        "v1.10 project intelligence"
+      ],
+      "acceptance": [
+        "Every recommendation has rationale and evidence freshness.",
+        "Dismissal is respected.",
+        "No source profiling or hidden sponsorship exists."
+      ],
+      "risks": [
+        "Biased or stale recommendations.",
+        "Health scoring may be overinterpreted."
+      ]
+    },
+    {
+      "id": "shared-host-bridges",
+      "title": "Shared Host and IDE Bridges",
+      "status": "committed",
+      "summary": "Expose governed capabilities through VS Code, JetBrains, Cursor, Codex, compatible CLIs, desktop agents, and cloud agents.",
+      "value": "Users receive consistent safety and lifecycle behavior in their preferred tools.",
+      "architecture": "Host adapters translate canonical capabilities and call shared Core and ForgeRegistry APIs with mandatory loss reports.",
+      "dependencies": [
+        "explainable-ecosystem-intelligence",
+        "v1.5 host adapters"
+      ],
+      "acceptance": [
+        "No bridge duplicates domain logic.",
+        "Unsupported semantics fail visibly.",
+        "Accessibility and security tests pass."
+      ],
+      "risks": [
+        "Host API churn.",
+        "Degraded translations confuse users."
+      ]
+    }
+  ]
+}

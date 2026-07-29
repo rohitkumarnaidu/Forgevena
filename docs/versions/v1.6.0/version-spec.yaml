@@ -1,0 +1,83 @@
+{
+  "version": "v1.6.0",
+  "title": "Template Packages and Native Distribution",
+  "outcome": "Move templates into signed, independently versioned packages and certify reproducible generation and native distribution.",
+  "owner": "Template and Distribution Maintainers",
+  "roadmapAuthority": "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#9-v160--template-packages-and-native-distribution",
+  "riskTier": "tier-2",
+  "dependsOn": [
+    "v1.5.0"
+  ],
+  "blocks": [
+    "v1.7.0"
+  ],
+  "architectureDelta": "Replace embedded template growth with manifest-driven packages resolved through signed local catalogs and verified offline caches.",
+  "interfaceImpacts": [
+    "Version template package, catalog, inheritance, lockfile, and signature schemas.",
+    "Add catalog, inspect, verify, test, export, publish, deprecate, and drift-plan commands."
+  ],
+  "nonGoals": [
+    "No automatic overwrite of existing project files.",
+    "No unsigned remote catalog activation or cloud-provider lock-in."
+  ],
+  "metrics": [
+    "Every built-in template generates on Windows, Ubuntu, and macOS.",
+    "Generated lockfiles, Docker, CI, security, tests, and documentation validate.",
+    "Catalog verification works fully offline."
+  ],
+  "acceptance": [
+    "All approved templates pass golden tests on supported operating systems.",
+    "Catalog signatures fail closed and cached verification is deterministic.",
+    "Rollback removes only unchanged manifest-owned assets."
+  ],
+  "assumptions": [
+    "Template assets remain additive and content-addressed.",
+    "Native package channels keep external moderation authority."
+  ],
+  "openQuestions": [
+    "Which inheritance patterns remain deterministic?",
+    "How are abandoned template publishers handled?"
+  ],
+  "features": [
+    {
+      "id": "versioned-template-packages",
+      "title": "Versioned Template Packages",
+      "status": "committed",
+      "summary": "Package templates with schemas, assets, hashes, lockfiles, tests, compatibility, inheritance, and signatures.",
+      "value": "Templates evolve independently without changing core code.",
+      "architecture": "A package loader verifies immutable content before the existing additive bootstrap engine renders managed assets.",
+      "dependencies": [
+        "v1.5 package trust and isolation foundations"
+      ],
+      "acceptance": [
+        "All built-in templates are packaged.",
+        "Tampered packages fail closed.",
+        "Existing files remain unchanged."
+      ],
+      "risks": [
+        "Template drift.",
+        "Dependency lockfiles become stale."
+      ]
+    },
+    {
+      "id": "template-catalog-distribution",
+      "title": "Catalog and Native Distribution",
+      "status": "committed",
+      "summary": "Support signed local and consent-gated HTTPS catalogs plus verified Homebrew, Winget, and Chocolatey outputs.",
+      "value": "Organizations can distribute approved templates and users can install Forgevena through native channels.",
+      "architecture": "Catalog resolution and native distribution generation share immutable release metadata and checksums.",
+      "dependencies": [
+        "versioned-template-packages"
+      ],
+      "acceptance": [
+        "Offline cache verification passes.",
+        "Native manifests install, verify, and uninstall.",
+        "Distribution metadata matches the release tag."
+      ],
+      "risks": [
+        "External channel policy changes.",
+        "Mirror or cache staleness."
+      ]
+    }
+  ]
+}

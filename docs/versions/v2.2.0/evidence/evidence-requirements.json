@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "version": "v2.2.0",
+  "state": "required-not-collected",
+  "mandatory": [
+    "requirements",
+    "rfc",
+    "adr",
+    "threat-model",
+    "privacy-review",
+    "readiness-scorecard",
+    "tests",
+    "security",
+    "accessibility",
+    "performance",
+    "migration",
+    "rollback",
+    "documentation-impact",
+    "compatibility",
+    "sbom",
+    "provenance",
+    "release-verification",
+    "post-release-review"
+  ],
+  "gates": {
+    "critical": 100,
+    "important": 95,
+    "standard": 90
+  },
+  "acceptance": [
+    "Federation, mirror failover, recovery, revocation, conflicts, and offline bundles pass.",
+    "Organization policy controls approved, blocked, pinned, and read-only packages.",
+    "Registry outages do not break installed local capabilities."
+  ]
+}

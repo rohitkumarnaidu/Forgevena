@@ -1,0 +1,84 @@
+{
+  "version": "v1.8.0",
+  "title": "Observability, Supply Chain, and Documentation",
+  "outcome": "Make runtime health, release integrity, documentation authority, and operational evidence reproducible and privacy-safe.",
+  "owner": "Operations, Security, and Documentation Maintainers",
+  "roadmapAuthority": "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#11-v180--observability-supply-chain-and-documentation",
+  "riskTier": "tier-2",
+  "dependsOn": [
+    "v1.7.0"
+  ],
+  "blocks": [
+    "v1.9.0"
+  ],
+  "architectureDelta": "Add metadata-only logs, metrics, traces, diagnostics, immutable audit exports, supply-chain evidence, and generated canonical references.",
+  "interfaceImpacts": [
+    "Version diagnostics, retention, audit export, SBOM, provenance, performance baseline, and documentation manifest schemas.",
+    "Add health, bundle, metrics, profile, evidence verification, and update-center surfaces."
+  ],
+  "nonGoals": [
+    "No default telemetry or collection of prompts, responses, keys, tokens, or source content.",
+    "No unsupported certification claim from generated evidence."
+  ],
+  "metrics": [
+    "Diagnostic bundles pass secret and content exclusion tests.",
+    "Release hashes reproduce from signed evidence.",
+    "Documentation generation has zero authority drift."
+  ],
+  "acceptance": [
+    "Retention, redaction, crash, performance, and audit behavior pass.",
+    "SBOM, provenance, checksums, licenses, and signatures block invalid releases.",
+    "Strict documentation, links, spelling, accessibility, and generated-reference checks pass."
+  ],
+  "assumptions": [
+    "Local observability is complete without hosted services.",
+    "Evidence metadata is sufficient for routine diagnostics."
+  ],
+  "openQuestions": [
+    "Which trace formats are stable public contracts?",
+    "What retention defaults balance diagnosis and privacy?"
+  ],
+  "features": [
+    {
+      "id": "safe-local-observability",
+      "title": "Safe Local Observability",
+      "status": "committed",
+      "summary": "Provide structured logs, metrics, traces, diagnostics, crash reports, health summaries, and performance profiles.",
+      "value": "Operators can diagnose failures without disclosing sensitive content.",
+      "architecture": "All signals pass recursive redaction, classification, retention, and operation-correlation controls.",
+      "dependencies": [
+        "v1.7 policy decisions",
+        "v1.3 state and redaction"
+      ],
+      "acceptance": [
+        "Secret/content exclusion tests pass.",
+        "Retention and deletion are configurable.",
+        "Diagnostic bundles are integrity-verified."
+      ],
+      "risks": [
+        "Metadata can still reveal sensitive patterns.",
+        "High-cardinality signals consume resources."
+      ]
+    },
+    {
+      "id": "supply-chain-documentation-evidence",
+      "title": "Supply Chain and Documentation Evidence",
+      "status": "committed",
+      "summary": "Generate and verify SBOMs, provenance, checksums, attestations, threat checklists, and canonical references.",
+      "value": "Releases and documentation become independently verifiable.",
+      "architecture": "Release verification resolves artifacts and source metadata into signed, checksummed evidence bundles.",
+      "dependencies": [
+        "safe-local-observability"
+      ],
+      "acceptance": [
+        "Artifact hashes reproduce.",
+        "Documentation drift is zero.",
+        "Critical supply-chain policy failures block release."
+      ],
+      "risks": [
+        "Toolchain evidence formats evolve.",
+        "Generated references can hide source metadata defects."
+      ]
+    }
+  ]
+}

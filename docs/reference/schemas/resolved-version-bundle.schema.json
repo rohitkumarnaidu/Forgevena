@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rohitkumarnaidu.github.io/Forgevena/schemas/resolved-version-bundle.schema.json",
+  "title": "Forgevena Resolved Version Bundle",
+  "type": "object",
+  "required": ["schemaVersion", "version", "checkpoint", "generatedFrom", "authorityMode", "files"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "version": { "type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "checkpoint": { "enum": ["planning", "rc", "release"] },
+    "generatedFrom": { "type": "string" },
+    "authorityMode": { "const": "resolved-canonical-snapshots" },
+    "files": { "type": "array", "minItems": 1, "items": { "type": "object", "required": ["path", "sha256"], "properties": { "path": { "type": "string" }, "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }, "additionalProperties": false } }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,84 @@
+{
+  "version": "v2.5.0",
+  "title": "Organization Ecosystem Management",
+  "outcome": "Manage private catalogs, approvals, shared capabilities, compliance packs, controlled promotion, and organization distributions.",
+  "owner": "Enterprise Ecosystem Maintainers",
+  "roadmapAuthority": "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#v250--organization-ecosystem-management",
+  "riskTier": "tier-3",
+  "dependsOn": [
+    "v2.4.0"
+  ],
+  "blocks": [
+    "v2.6.0"
+  ],
+  "architectureDelta": "Extend local and optional control-plane governance with organization package inventories, approval workflows, delegated administration, policy simulation, and distribution promotion.",
+  "interfaceImpacts": [
+    "Version organization catalog, approval, promotion, distribution, inventory, delegated role, compliance, and impact-preview contracts.",
+    "Add organization ecosystem status, approve, block, pin, promote, export, import, audit, and simulation commands."
+  ],
+  "nonGoals": [
+    "No enterprise feature may make local or open registry operation incomplete.",
+    "No compliance pack may claim certification without independent approval."
+  ],
+  "metrics": [
+    "Every organization external-effect boundary enforces deny overrides.",
+    "Catalog and policy bundles remain portable and usable offline.",
+    "Approval and promotion history is complete and immutable."
+  ],
+  "acceptance": [
+    "Private catalogs, approvals, delegated roles, promotion, inventory, and audit pass.",
+    "Tenant isolation and offline enterprise workflows pass.",
+    "Dependency impact previews expose conflicts before promotion."
+  ],
+  "assumptions": [
+    "Organizations may operate self-hosted or local-only.",
+    "Compliance packs remain evidence mappings unless certified."
+  ],
+  "openQuestions": [
+    "How are organization distributions versioned and supported?",
+    "Which approvals require separation of duties?"
+  ],
+  "features": [
+    {
+      "id": "organization-catalog-approvals",
+      "title": "Organization Catalogs and Approvals",
+      "status": "committed",
+      "summary": "Provide private catalogs, artifact approval, blocking, pinning, shared providers, and delegated administration.",
+      "value": "Enterprises standardize capabilities while retaining explicit governance.",
+      "architecture": "Organization overlays constrain registry resolution and Core activation through deny-overrides policy.",
+      "dependencies": [
+        "v2.4 publisher lifecycle",
+        "v1.7 policy"
+      ],
+      "acceptance": [
+        "Approval cannot be bypassed.",
+        "Delegated roles honor least privilege.",
+        "Catalogs export and verify offline."
+      ],
+      "risks": [
+        "Administrative lockout.",
+        "Policy and catalog drift."
+      ]
+    },
+    {
+      "id": "controlled-capability-promotion",
+      "title": "Controlled Capability Promotion",
+      "status": "committed",
+      "summary": "Promote signed packages and organization distributions across development, staging, production, and air-gapped zones.",
+      "value": "Teams adopt capabilities through auditable, repeatable gates.",
+      "architecture": "Promotion uses immutable package hashes, environment policy, impact previews, approvals, and rollback evidence.",
+      "dependencies": [
+        "organization-catalog-approvals"
+      ],
+      "acceptance": [
+        "Promotion is deterministic.",
+        "Dependency impact is previewed.",
+        "Rollback restores the approved prior distribution."
+      ],
+      "risks": [
+        "Environment divergence.",
+        "Delayed security revocation."
+      ]
+    }
+  ]
+}

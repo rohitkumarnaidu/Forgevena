@@ -107,6 +107,14 @@ Documentation work is complete only when:
 7. documentation impact analysis returns `ready`, or every exclusion has an approved rationale and unexpired waiver;
 8. Tier 2, Tier 3, migration, trust-boundary, and release changes retain impact evidence with the readiness and release evidence.
 
+## Enterprise Version Specifications
+
+Approved future releases are represented by generator-owned delta packages under `docs/versions/`. Permanent architecture remains in the canonical authorities resolved through `docs/foundation/foundation-map.yaml`; version packages must not duplicate or silently replace it.
+
+Each planned version has one source record in `docs/versions/version-specifications.json`, stable feature IDs, explicit commitment classifications, dependency order, non-goals, risks, acceptance gates, and evidence requirements. Candidate and deferred entries cannot become committed without the roadmap-change process. Planning bundles may resolve canonical foundation documents, but RC and release bundles remain blocked until retained implementation evidence exists.
+
+Historical tags are represented only by immutable manifests linked to signed tags, release notes, workflows, and retrospective evidence. Current controls are never claimed retroactively.
+
 ## Related Documents
 
 - [Documentation Authority Map](DOCUMENTATION_AUTHORITY_MAP.md)
