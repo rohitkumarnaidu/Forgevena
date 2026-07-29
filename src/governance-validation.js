@@ -5,6 +5,7 @@ import { validateChangeReadinessScorecard } from "./change-readiness.js";
 import { DOCUMENTATION_CLASSES, DOCUMENTATION_LIFECYCLE } from "./documentation-catalog.js";
 import { validateDocumentationImpactReport } from "./documentation-impact.js";
 import { validateDocumentationEvidenceBundle } from "./documentation-evidence.js";
+import { validateReleaseRetrospectives } from "./release-retrospective.js";
 
 const REQUIRED_DOCUMENTS = [
   "AGENTS.md",
@@ -45,6 +46,9 @@ const REQUIRED_DOCUMENTS = [
   "docs/reference/schemas/change-readiness-scorecard.schema.json",
   "docs/reference/schemas/document-catalog.schema.json",
   "docs/reference/schemas/documentation-impact.schema.json",
+  "docs/reference/schemas/release-retrospective.schema.json",
+  "docs/governance/release-retrospectives.json",
+  "docs/reports/HISTORICAL_RELEASE_GOVERNANCE_RETROSPECTIVE.md",
   "docs/evidence/changes/README.md",
   "docs/reference/generated/documentation-catalog.json",
   "docs/reference/generated/documentation-health.json",
@@ -102,7 +106,10 @@ export async function validateGovernance(root, { now = new Date() } = {}) {
   const impactReportsChecked = await validateRetainedImpactReports(root, issues);
   const evidenceBundlesChecked = await validateRetainedDocumentationEvidence(root, issues);
   const documentsChecked = await validateDocumentationGovernance(root, now, issues);
-  return result(issues, scorecardsChecked, documentsChecked, impactReportsChecked, evidenceBundlesChecked);
+  const retrospectiveLedger = await json(root, "docs/governance/release-retrospectives.json", issues);
+  const retrospectiveValidation = retrospectiveLedger ? validateReleaseRetrospectives(retrospectiveLedger) : { issues: [], releasesChecked: 0 };
+  for (const issue of retrospectiveValidation.issues) issues.push(`docs/governance/release-retrospectives.json: ${issue}`);
+  return result(issues, scorecardsChecked, documentsChecked, impactReportsChecked, evidenceBundlesChecked, retrospectiveValidation.releasesChecked);
 }
 
 async function validateDocumentationGovernance(root, now, issues) {
@@ -290,4 +297,4 @@ async function findExtensionFiles(directory, extension) {
   }
   return found.sort();
 }
-function result(issues, scorecardsChecked = 0, documentationRecordsChecked = 0, impactReportsChecked = 0, evidenceBundlesChecked = 0) { return { valid: issues.length === 0, issues, checkedDocuments: REQUIRED_DOCUMENTS.length, scorecardsChecked, documentationRecordsChecked, impactReportsChecked, evidenceBundlesChecked, maturityVocabulary: [...CAPABILITY_MATURITY] }; }
+function result(issues, scorecardsChecked = 0, documentationRecordsChecked = 0, impactReportsChecked = 0, evidenceBundlesChecked = 0, retrospectiveReleasesChecked = 0) { return { valid: issues.length === 0, issues, checkedDocuments: REQUIRED_DOCUMENTS.length, scorecardsChecked, documentationRecordsChecked, impactReportsChecked, evidenceBundlesChecked, retrospectiveReleasesChecked, maturityVocabulary: [...CAPABILITY_MATURITY] }; }

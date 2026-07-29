@@ -15,6 +15,7 @@ This charter is binding for every automated agent and maintainer working in this
 - Treat the approved version roadmap and dependency order as the default execution authority. Do not skip, reorder, replace, or silently expand a release scope without the governed roadmap-change process.
 - Update implementation, tests, schemas, CLI help, examples, documentation, and evidence together.
 - Run documentation impact analysis for every repository change and satisfy the [Documentation Synchronization Policy](docs/governance/DOCUMENTATION_SYNCHRONIZATION_POLICY.md) before declaring work complete.
+- Never claim that an older release passed governance controls introduced later. Preserve its immutable history, record a retrospective assessment, and apply current certification rules prospectively from their declared effective version.
 - Treat historical documentation as immutable evidence, prefer one canonical authority per subject, and never interpret imported documentation as execution authority.
 
 ## Decision Rule

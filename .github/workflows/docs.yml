@@ -57,6 +57,7 @@ jobs:
           path: dist/documentation-evidence
           if-no-files-found: error
       - run: node scripts/validate-docs.js
+      - run: npm run governance:releases
       - run: node scripts/extract-mermaid.js
       - name: Install Mermaid browser runtime
         run: npx --yes puppeteer browsers install chrome-headless-shell@148.0.7778.97

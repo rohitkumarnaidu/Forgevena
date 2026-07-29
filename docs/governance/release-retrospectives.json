@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "policyEffectiveFrom": "1.3.1",
+  "assessedAt": "2026-07-28T18:30:00.000Z",
+  "owner": "Forgevena Maintainers",
+  "expectedStableTags": ["v1.2.0", "v1.2.1", "v1.2.2", "v1.2.3", "v1.3.0"],
+  "releases": [
+    {
+      "tag": "v1.2.0",
+      "commit": "c4fefddc3a7a10a98bee51ea92906992458507a8",
+      "outcome": "failed-publication",
+      "decision": "failed-as-recorded",
+      "summary": "The source version matched, but the tag was unsigned, the release workflow failed, and no npm package or GitHub Release was published.",
+      "findings": ["Require signed tags before publication.", "Retain release-checkpoint evidence before triggering external channels."],
+      "controls": [
+        { "id": "source-integrity", "weight": 15, "mandatory": true, "status": "fail", "rationale": "The package version matched v1.2.0, but git verify-tag reported no signature.", "evidence": ["https://github.com/rohitkumarnaidu/Forgevena/actions/runs/29564879681"] },
+        { "id": "release-automation", "weight": 15, "mandatory": true, "status": "fail", "rationale": "The signed-tag release workflow completed with failure.", "evidence": ["https://github.com/rohitkumarnaidu/Forgevena/actions/runs/29564879681"] },
+        { "id": "security-quality", "weight": 15, "mandatory": true, "status": "unknown", "rationale": "No complete retained release-level security and quality scorecard exists.", "evidence": [] },
+        { "id": "documentation", "weight": 10, "mandatory": true, "status": "fail", "rationale": "The tag did not contain dedicated v1.2.0 release notes.", "evidence": ["docs/release/RELEASE_HISTORY.md"] },
+        { "id": "migration-rollback", "weight": 10, "mandatory": false, "status": "not-applicable", "rationale": "No retrospective claim is made for a release that did not publish.", "evidence": [] },
+        { "id": "distribution", "weight": 15, "mandatory": true, "status": "fail", "rationale": "npm and GitHub Releases contain no v1.2.0 publication.", "evidence": ["https://www.npmjs.com/package/forgevena?activeTab=versions", "https://github.com/rohitkumarnaidu/Forgevena/releases"] },
+        { "id": "post-release-verification", "weight": 10, "mandatory": false, "status": "unknown", "rationale": "No post-release verification applies because publication failed, and no structured failure review was retained.", "evidence": [] },
+        { "id": "current-governance-evidence", "weight": 10, "mandatory": false, "status": "not-applicable", "rationale": "The current scorecard policy did not exist when this tag was created.", "evidence": [] }
+      ],
+      "totals": { "applicablePoints": 80, "earnedPoints": 0, "score": 0, "mandatoryFailures": ["source-integrity", "release-automation", "security-quality", "documentation", "distribution"] }
+    },
+    {
+      "tag": "v1.2.1",
+      "commit": "8be82759b530dcdd0f58ed8f8481a62baf6ba77e",
+      "outcome": "published",
+      "decision": "historical-assurance",
+      "summary": "The signed patch release was repaired and published through npm and GitHub Releases, but it predates retained current-rule scorecards.",
+      "findings": ["Retain one immutable release run instead of relying on repair workflow history.", "Retain machine-readable post-release channel verification."],
+      "controls": [
+        { "id": "source-integrity", "weight": 15, "mandatory": true, "status": "pass", "rationale": "The annotated tag has a valid maintainer signature and matches package version 1.2.1.", "evidence": ["docs/RELEASE_NOTES_1.2.1.md"] },
+        { "id": "release-automation", "weight": 15, "mandatory": true, "status": "pass", "rationale": "The initial tag workflow failed, but retained automated repair runs completed successfully.", "evidence": ["https://github.com/rohitkumarnaidu/Forgevena/actions/runs/29595593338", "https://github.com/rohitkumarnaidu/Forgevena/actions/runs/29605319969"] },
+        { "id": "security-quality", "weight": 15, "mandatory": true, "status": "unknown", "rationale": "Hosted checks existed, but no release-level current-rule security scorecard was retained.", "evidence": [] },
+        { "id": "documentation", "weight": 10, "mandatory": true, "status": "pass", "rationale": "Dedicated release notes and changelog history are retained.", "evidence": ["docs/RELEASE_NOTES_1.2.1.md", "CHANGELOG.md"] },
+        { "id": "migration-rollback", "weight": 10, "mandatory": true, "status": "pass", "rationale": "The release documented schema-v1 vault migration, encrypted backup, and compatibility behavior.", "evidence": ["docs/RELEASE_NOTES_1.2.1.md"] },
+        { "id": "distribution", "weight": 15, "mandatory": true, "status": "pass", "rationale": "npm and GitHub Release publication remain publicly observable.", "evidence": ["https://www.npmjs.com/package/forgevena/v/1.2.1", "https://github.com/rohitkumarnaidu/Forgevena/releases/tag/v1.2.1"] },
+        { "id": "post-release-verification", "weight": 10, "mandatory": false, "status": "unknown", "rationale": "No immutable machine-readable all-channel verification record is retained for this release.", "evidence": [] },
+        { "id": "current-governance-evidence", "weight": 10, "mandatory": false, "status": "not-applicable", "rationale": "The current scorecard policy did not exist when this release was published.", "evidence": [] }
+      ],
+      "totals": { "applicablePoints": 90, "earnedPoints": 65, "score": 72, "mandatoryFailures": ["security-quality"] }
+    },
+    {
+      "tag": "v1.2.2",
+      "commit": "3d4e1d87d2fc346f8fbc049b306721946aaa3bef",
+      "outcome": "failed-publication",
+      "decision": "failed-as-recorded",
+      "summary": "The signed immutable tag failed native-runtime verification and correctly published neither npm nor a GitHub Release.",
+      "findings": ["Standalone smoke testing must precede tag creation.", "A failed immutable tag must be followed by a new patch version, never moved or reused."],
+      "controls": [
+        { "id": "source-integrity", "weight": 15, "mandatory": true, "status": "pass", "rationale": "The annotated tag signature is valid and package version matches 1.2.2.", "evidence": ["docs/RELEASE_NOTES_1.2.2.md"] },
+        { "id": "release-automation", "weight": 15, "mandatory": true, "status": "fail", "rationale": "The automated release failed during native-runtime verification.", "evidence": ["https://github.com/rohitkumarnaidu/Forgevena/actions/runs/29655153909"] },
+        { "id": "security-quality", "weight": 15, "mandatory": true, "status": "unknown", "rationale": "The release gate failed before complete release evidence could be retained.", "evidence": [] },
+        { "id": "documentation", "weight": 10, "mandatory": true, "status": "pass", "rationale": "Dedicated release notes and failure history are retained.", "evidence": ["docs/RELEASE_NOTES_1.2.2.md", "docs/release/RELEASE_HISTORY.md"] },
+        { "id": "migration-rollback", "weight": 10, "mandatory": false, "status": "not-applicable", "rationale": "No migration was exposed because publication failed.", "evidence": [] },
+        { "id": "distribution", "weight": 15, "mandatory": true, "status": "fail", "rationale": "The version was intentionally not published to npm or GitHub Releases.", "evidence": ["https://www.npmjs.com/package/forgevena?activeTab=versions", "https://github.com/rohitkumarnaidu/Forgevena/releases"] },
+        { "id": "post-release-verification", "weight": 10, "mandatory": false, "status": "pass", "rationale": "The failure was diagnosed, retained, and superseded by v1.2.3 without retagging.", "evidence": ["docs/release/RELEASE_HISTORY.md", "docs/RELEASE_NOTES_1.2.3.md"] },
+        { "id": "current-governance-evidence", "weight": 10, "mandatory": false, "status": "not-applicable", "rationale": "The current scorecard policy did not exist when this tag was created.", "evidence": [] }
+      ],
+      "totals": { "applicablePoints": 80, "earnedPoints": 35, "score": 43, "mandatoryFailures": ["release-automation", "security-quality", "distribution"] }
+    },
+    {
+      "tag": "v1.2.3",
+      "commit": "a87bd67b6c0f0ac2614e2dbf2fc6541ee2eaf248",
+      "outcome": "published",
+      "decision": "historical-assurance",
+      "summary": "The signed corrective release passed automated native package checks and published through npm and GitHub Releases.",
+      "findings": ["Retain one machine-readable post-release channel matrix with package-manager moderation outcomes."],
+      "controls": [
+        { "id": "source-integrity", "weight": 15, "mandatory": true, "status": "pass", "rationale": "The annotated tag signature is valid and package version matches 1.2.3.", "evidence": ["docs/RELEASE_NOTES_1.2.3.md"] },
+        { "id": "release-automation", "weight": 15, "mandatory": true, "status": "pass", "rationale": "The signed-tag automated release completed successfully.", "evidence": ["https://github.com/rohitkumarnaidu/Forgevena/actions/runs/29656769273"] },
+        { "id": "security-quality", "weight": 15, "mandatory": true, "status": "pass", "rationale": "The release workflow completed its verification gates before publication.", "evidence": ["https://github.com/rohitkumarnaidu/Forgevena/actions/runs/29656769273"] },
+        { "id": "documentation", "weight": 10, "mandatory": true, "status": "pass", "rationale": "Dedicated release notes and changelog history are retained.", "evidence": ["docs/RELEASE_NOTES_1.2.3.md", "CHANGELOG.md"] },
+        { "id": "migration-rollback", "weight": 10, "mandatory": false, "status": "not-applicable", "rationale": "This corrective packaging release introduced no state migration.", "evidence": [] },
+        { "id": "distribution", "weight": 15, "mandatory": true, "status": "pass", "rationale": "npm and GitHub Release publication remain publicly observable.", "evidence": ["https://www.npmjs.com/package/forgevena/v/1.2.3", "https://github.com/rohitkumarnaidu/Forgevena/releases/tag/v1.2.3"] },
+        { "id": "post-release-verification", "weight": 10, "mandatory": false, "status": "unknown", "rationale": "Package-manager submissions were tested, but no single immutable all-channel evidence bundle was retained at release time.", "evidence": [] },
+        { "id": "current-governance-evidence", "weight": 10, "mandatory": false, "status": "not-applicable", "rationale": "The current scorecard policy did not exist when this release was published.", "evidence": [] }
+      ],
+      "totals": { "applicablePoints": 80, "earnedPoints": 70, "score": 87, "mandatoryFailures": [] }
+    },
+    {
+      "tag": "v1.3.0",
+      "commit": "004710388afa7f2888a0e2594ede2d3cde96fe1c",
+      "outcome": "published",
+      "decision": "historical-assurance",
+      "summary": "The signed reliability release has complete contemporary implementation, migration, security, performance, documentation, and publication evidence, but predates the new canonical scorecard policy.",
+      "findings": ["Future releases must retain the canonical release scorecard and documentation evidence bundle before tagging."],
+      "controls": [
+        { "id": "source-integrity", "weight": 15, "mandatory": true, "status": "pass", "rationale": "The annotated tag signature is valid and package version matches 1.3.0.", "evidence": ["docs/RELEASE_NOTES_1.3.0.md"] },
+        { "id": "release-automation", "weight": 15, "mandatory": true, "status": "pass", "rationale": "The signed-tag automated release completed successfully.", "evidence": ["https://github.com/rohitkumarnaidu/Forgevena/actions/runs/30292317567"] },
+        { "id": "security-quality", "weight": 15, "mandatory": true, "status": "pass", "rationale": "Security, coverage, mutation, concurrency, corruption, package, and performance gates passed.", "evidence": ["docs/release/V1_3_RELEASE_CHECKLIST.md", "docs/release/V1_3_IMPLEMENTATION_STATUS.md"] },
+        { "id": "documentation", "weight": 10, "mandatory": true, "status": "pass", "rationale": "Release notes, changelog, status, checklist, website, and generated references are retained.", "evidence": ["docs/RELEASE_NOTES_1.3.0.md", "docs/release/V1_3_RELEASE_CHECKLIST.md"] },
+        { "id": "migration-rollback", "weight": 10, "mandatory": true, "status": "pass", "rationale": "Representative 1.1 and 1.2 workspace migration, recovery, and rollback evidence is documented.", "evidence": ["docs/release/V1_3_IMPLEMENTATION_STATUS.md", "docs/release/V1_3_RELEASE_CHECKLIST.md"] },
+        { "id": "distribution", "weight": 15, "mandatory": true, "status": "pass", "rationale": "npm and GitHub Release publication remain publicly observable.", "evidence": ["https://www.npmjs.com/package/forgevena/v/1.3.0", "https://github.com/rohitkumarnaidu/Forgevena/releases/tag/v1.3.0"] },
+        { "id": "post-release-verification", "weight": 10, "mandatory": false, "status": "pass", "rationale": "The release checklist and successful automated release retain post-build installation and package evidence.", "evidence": ["docs/release/V1_3_RELEASE_CHECKLIST.md", "https://github.com/rohitkumarnaidu/Forgevena/actions/runs/30292317567"] },
+        { "id": "current-governance-evidence", "weight": 10, "mandatory": false, "status": "not-applicable", "rationale": "The new canonical release scorecard policy became effective after v1.3.0 and cannot be claimed retroactively.", "evidence": [] }
+      ],
+      "totals": { "applicablePoints": 90, "earnedPoints": 90, "score": 100, "mandatoryFailures": [] }
+    }
+  ]
+}
+

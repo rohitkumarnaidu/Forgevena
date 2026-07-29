@@ -7910,6 +7910,46 @@
       }
     },
     {
+      "id": "doc:reports/historical_release_governance_retrospective",
+      "path": "docs/reports/HISTORICAL_RELEASE_GOVERNANCE_RETROSPECTIVE.md",
+      "title": "Historical Release Governance Retrospective",
+      "classification": "active-guide",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Guide supported use of Historical Release Governance Retrospective.",
+      "audiences": [
+        "maintainers",
+        "users",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": true,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:reports/markdown_quality_report",
       "path": "docs/reports/MARKDOWN_QUALITY_REPORT.md",
       "title": "Markdown Quality Report",
@@ -10776,9 +10816,9 @@
     }
   ],
   "summary": {
-    "total": 277,
+    "total": 278,
     "byClassification": {
-      "active-guide": 122,
+      "active-guide": 123,
       "canonical-architecture": 11,
       "canonical-policy": 6,
       "generated-reference": 11,
@@ -10789,7 +10829,7 @@
     },
     "byLifecycle": {
       "archived": 82,
-      "maintained": 195
+      "maintained": 196
     }
   }
 }

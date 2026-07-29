@@ -21,6 +21,8 @@ The [documentation impact schema](../reference/schemas/documentation-impact.sche
 
 The [documentation evidence bundle schema](../reference/schemas/documentation-evidence-bundle.schema.json) defines checksummed pull-request and release synchronization reports. The [visual evidence schema](../reference/schemas/visual-evidence.schema.json) and [executable example schema](../reference/schemas/executable-example-evidence.schema.json) prevent stale images, inaccessible visual claims, unsafe command execution, and unverifiable examples.
 
+The [release retrospective schema](../reference/schemas/release-retrospective.schema.json) defines immutable, evidence-aware evaluation of historical stable tags. It separates historical assurance from current-rule certification and fails future releases closed when prospective governance evidence is missing.
+
 Schema v2 enforces profile-specific domain targets and separate module-criticality targets: standard modules require 90%, important modules 95%, and critical modules 100% at merge and release. An overall score cannot compensate for a failed domain or module.
 
 Capability governance adds dedicated profiles for capability packages, host adapters, agent teams, orchestration, rules and guardrails, knowledge and memory, Capability Studio and publishers, and marketplace or registry distribution. These profiles are readiness contracts only; they do not authorize runtime schemas.

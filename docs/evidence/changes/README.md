@@ -15,3 +15,5 @@ Tier 2, Tier 3, release, migration, trust-boundary, and breaking changes retain 
 Use stable lowercase change IDs such as `issue-142-provider-timeouts`, `rfc-018-forgeregistry-protocol`, or `release-v1.4.0`. Never include secrets, prompts, responses, credentials, local workspace state, private incident data, or user content in retained evidence.
 
 Update the same record as work moves from `push` to `merge` to `release`, or retain checkpoint-specific revisions when audit policy requires immutable evidence. Published release evidence is immutable.
+
+The release scorecard requirement applies prospectively from `v1.3.1`. Do not manufacture scorecards for older versions. Their available evidence and known gaps are retained in [`release-retrospectives.json`](../../governance/release-retrospectives.json) and the generated [historical retrospective report](../../reports/HISTORICAL_RELEASE_GOVERNANCE_RETROSPECTIVE.md).

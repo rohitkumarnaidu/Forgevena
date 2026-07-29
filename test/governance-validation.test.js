@@ -13,6 +13,7 @@ test("repository governance documents and capability claims validate", async () 
   assert.ok(report.checkedDocuments >= 34);
   assert.ok(report.scorecardsChecked >= 1);
   assert.ok(report.documentationRecordsChecked >= 260);
+  assert.equal(report.retrospectiveReleasesChecked, 5);
 });
 
 test("governance validation rejects expired waivers and stale compatibility evidence", async () => {
@@ -148,6 +149,20 @@ test("governance validation rejects unsafe evidence and malformed waiver and com
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
+test("governance validation rejects retroactive release certification", async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "forgevena-governance-releases-"));
+  try {
+    await copyGovernanceFixture(process.cwd(), root);
+    const ledgerPath = path.join(root, "docs/governance/release-retrospectives.json");
+    const ledger = JSON.parse(await readFile(ledgerPath, "utf8"));
+    ledger.releases.find(({ tag }) => tag === "v1.3.0").decision = "current-certified";
+    await writeFile(ledgerPath, JSON.stringify(ledger));
+    const report = await validateGovernance(root, { now: new Date("2026-07-28T00:00:00Z") });
+    assert.equal(report.valid, false);
+    assert.match(report.issues.join("\n"), /cannot be current-certified/);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
 test("governance validates retained documentation impact evidence and fails closed on corruption", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "forgevena-governance-impact-"));
   try {
@@ -175,7 +190,7 @@ test("governance validates retained documentation impact evidence and fails clos
 async function copyGovernanceFixture(source, target) {
   const files = [
     "AGENTS.md", "docs/ENGINEERING_GOVERNANCE.md", "docs/strategy/PLATFORM_CONSTITUTION.md", "docs/strategy/FORGEVENA_PLATFORM_BLUEPRINT.md", "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md", "docs/strategy/INNOVATION_OPPORTUNITY_PORTFOLIO.md", "docs/strategy/FORGEHUB_ECOSYSTEM_VISION.md", "docs/architecture/FORGE_REGISTRY_PROTOCOL_AND_ARCHITECTURE.md", "docs/architecture/ECOSYSTEM_CAPABILITY_AND_PACKAGE_MODEL.md", "docs/architecture/ENTERPRISE_CAPABILITY_SYSTEM.md", "docs/architecture/HOST_ADAPTER_AND_PORTABILITY_STRATEGY.md", "docs/architecture/EXTERNAL_ECOSYSTEM_IMPORT_AND_CONVERSION_STRATEGY.md", "docs/architecture/ORCHESTRATION_AND_AGENT_RUNTIME_STRATEGY.md", "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md", "docs/strategy/FORGEHUB_PRODUCT_EXPERIENCE.md", "docs/developer/PUBLISHER_AND_ECOSYSTEM_SDK_STRATEGY.md", "docs/strategy/AI_ENGINEERING_OS_EVOLUTION.md", "docs/strategy/ECOSYSTEM_PRODUCT_AND_SUSTAINABILITY_STRATEGY.md", "docs/strategy/ECOSYSTEM_ADR_CANDIDATES.md", "docs/capabilities/reference.md",
-    "docs/governance/FEATURE_PROPOSAL_TEMPLATE.md", "docs/governance/ADR_TEMPLATE.md", "docs/governance/THREAT_MODEL_TEMPLATE.md", "docs/governance/RELEASE_SCORECARD_TEMPLATE.md", "docs/governance/COMPATIBILITY_REPORT_TEMPLATE.md", "docs/governance/DEPRECATION_NOTICE_TEMPLATE.md", "docs/governance/POST_RELEASE_REVIEW_TEMPLATE.md", "docs/governance/waivers.json", "docs/governance/compatibility-evidence.json", "docs/governance/CHANGE_READINESS_SCORECARD.md", "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md", "docs/governance/DOCUMENTATION_SYNCHRONIZATION_POLICY.md", "docs/governance/DOCUMENTATION_IMPACT_REPORT_TEMPLATE.md", "docs/governance/DOCUMENTATION_AUTHORITY_MAP.md", "docs/strategy/RESEARCH_AND_STANDARDS_RADAR.md", "docs/reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md", "docs/reference/schemas/change-readiness-scorecard.schema.json", "docs/reference/schemas/document-catalog.schema.json", "docs/reference/schemas/documentation-impact.schema.json", "docs/evidence/changes/README.md", "docs/evidence/changes/example-standard-feature/scorecard.json", "docs/evidence/changes/example-standard-feature/scorecard.md", "docs/reference/generated/documentation-catalog.json", "docs/reference/generated/documentation-health.json",
+    "docs/governance/FEATURE_PROPOSAL_TEMPLATE.md", "docs/governance/ADR_TEMPLATE.md", "docs/governance/THREAT_MODEL_TEMPLATE.md", "docs/governance/RELEASE_SCORECARD_TEMPLATE.md", "docs/governance/COMPATIBILITY_REPORT_TEMPLATE.md", "docs/governance/DEPRECATION_NOTICE_TEMPLATE.md", "docs/governance/POST_RELEASE_REVIEW_TEMPLATE.md", "docs/governance/waivers.json", "docs/governance/compatibility-evidence.json", "docs/governance/release-retrospectives.json", "docs/governance/CHANGE_READINESS_SCORECARD.md", "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md", "docs/governance/DOCUMENTATION_SYNCHRONIZATION_POLICY.md", "docs/governance/DOCUMENTATION_IMPACT_REPORT_TEMPLATE.md", "docs/governance/DOCUMENTATION_AUTHORITY_MAP.md", "docs/strategy/RESEARCH_AND_STANDARDS_RADAR.md", "docs/reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md", "docs/reports/HISTORICAL_RELEASE_GOVERNANCE_RETROSPECTIVE.md", "docs/reference/schemas/change-readiness-scorecard.schema.json", "docs/reference/schemas/document-catalog.schema.json", "docs/reference/schemas/documentation-impact.schema.json", "docs/reference/schemas/release-retrospective.schema.json", "docs/evidence/changes/README.md", "docs/evidence/changes/example-standard-feature/scorecard.json", "docs/evidence/changes/example-standard-feature/scorecard.md", "docs/reference/generated/documentation-catalog.json", "docs/reference/generated/documentation-health.json",
   ];
   for (const relative of files) {
     const destination = path.join(target, relative);

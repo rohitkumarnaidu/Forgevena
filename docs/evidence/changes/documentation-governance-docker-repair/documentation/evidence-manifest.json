@@ -2,31 +2,31 @@
   "schemaVersion": 1,
   "changeId": "documentation-governance-docker-repair",
   "checkpoint": "merge",
-  "generatedAt": "2026-07-28T17:58:45.489Z",
+  "generatedAt": "2026-07-28T18:29:07.411Z",
   "decision": "ready",
   "reports": {
     "documentation-impact.json": {
-      "sha256": "47bf38242176e9e68215f937a68683995f9ba35799715dc17bdaa75964d1875d",
-      "bytes": 28012
+      "sha256": "c3c56e1e7df6ea5ea2f268bd92d78d46e24b012b5dc868d657da982c4f507707",
+      "bytes": 29274
     },
     "documentation-impact.md": {
-      "sha256": "538228d5fb2aeeb21830c57bfac4ff309466b5e87efb30c8c7f61b6dbd3724d1",
-      "bytes": 13454
+      "sha256": "8ba067ffa22136d2da2785a1ded456ec0a755ff02eaad888850dd8201132d925",
+      "bytes": 14064
     },
     "updated-documents.md": {
-      "sha256": "1d816b879fc8f73f1815d3e7d4ad63aedea505d3c5c4e3dcf94928a79e0e43b5",
-      "bytes": 4761
+      "sha256": "4d8cd23fec080b298979f8873d69541a406e051763335e69905d95f20f02263d",
+      "bytes": 4970
     },
     "missing-documentation.md": {
       "sha256": "7424b9bb1c66e1fd5c29a0e4e45db7f91a42350f86c1ca91ebd9554f33d0bbe2",
       "bytes": 79
     },
     "documentation-coverage.md": {
-      "sha256": "9a443e666157b7748ebef7b36038979b5766305e55639676d2e0ef2520464f00",
+      "sha256": "1a29673142261f662f3b7c904062880f23757e0df5e117cba2d3136b93039d7b",
       "bytes": 723
     },
     "documentation-quality.json": {
-      "sha256": "924e9b1e9779cc48da0104ad5de83ed7569d02069acdbfda1d708cc47c645403",
+      "sha256": "9ab3be96ce0881a94b76a78e8d25df4e176bdf5e763c5f62ddff3211ec732bac",
       "bytes": 1435
     },
     "documentation-synchronization.md": {
@@ -46,7 +46,7 @@
       "bytes": 62
     },
     "repository-health.md": {
-      "sha256": "51edf21242efb52e3bb2a872da3c6d8b6318270940c7ae16e46c01868e784f81",
+      "sha256": "675be53057b8352e08e0a6a4eafd3e0568e3d577db300d99c39d052ad9a1eb63",
       "bytes": 131
     }
   }

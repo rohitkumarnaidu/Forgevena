@@ -2,6 +2,8 @@
 
 This is a release-specific extension of the canonical [Enterprise Change Readiness Scorecard](CHANGE_READINESS_SCORECARD.md). Complete and retain the canonical Markdown and JSON records first; this template adds distribution-channel, roadmap, and post-publication evidence without redefining readiness scoring.
 
+This template is mandatory prospectively from `v1.3.1`. Earlier releases are recorded in the [retrospective ledger](release-retrospectives.json) and must never be retroactively certified using reconstructed evidence.
+
 ## Release Metadata
 
 | Field | Value |

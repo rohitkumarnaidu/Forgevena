@@ -144,4 +144,12 @@ The [Documentation Synchronization Policy](governance/DOCUMENTATION_SYNCHRONIZAT
 
 Significant documentation changes use the `documentation-content` readiness profile. Critical controls require 100%, important controls 95%, and standard controls 90%. Scores cannot compensate for a failed mandatory requirement, contradictory authority, stale evidence, unsupported certification claim, unsafe example, missing migration or rollback guidance, or an unindexed historical record.
 
+### Retrospective Release Governance
+
+The [historical release retrospective ledger](governance/release-retrospectives.json) evaluates every stable tag against the evidence that can still be verified. Retrospective evaluation is non-destructive and non-certifying: it does not rewrite tags, release notes, decisions, or historical records, and it never claims that a release passed controls introduced later.
+
+The current release-evidence policy is effective from `v1.3.1`. Every stable release at or after that version must retain a release-checkpoint scorecard, documentation synchronization bundle, security and quality evidence, migration and rollback evidence when applicable, channel verification, and a post-release review. Missing evidence blocks `current-certified` status even when the software itself works.
+
+Older releases use `historical-assurance`, `failed-as-recorded`, or `not-certified`. Their gaps feed future rule improvements and regression tests; they do not justify moving tags, rewriting publication history, or fabricating missing evidence.
+
 External standards are tracked through the [Research and Standards Radar](strategy/RESEARCH_AND_STANDARDS_RADAR.md). A mapping is not certification. Certification language requires an approved scope, independent assessment, current evidence, accountable owner, expiry, and explicit maintainer approval.

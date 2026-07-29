@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "changeId": "documentation-governance-docker-repair",
-  "title": "Documentation governance and Docker repair",
-  "owner": "rohitkumarnaidu",
-  "generatedAt": "2026-07-28T17:58:45.489Z",
+  "title": "Documentation governance, Docker safety, and release retrospectives",
+  "owner": "Forgevena Maintainers",
+  "generatedAt": "2026-07-28T18:29:07.411Z",
   "checkpoint": "merge",
   "comparison": {
     "base": null,
@@ -69,6 +69,7 @@
     "docs/governance/RELEASE_SCORECARD_TEMPLATE.md",
     "docs/governance/THREAT_MODEL_TEMPLATE.md",
     "docs/governance/compatibility-evidence.json",
+    "docs/governance/release-retrospectives.json",
     "docs/governance/waivers.json",
     "docs/operations/runbooks.md",
     "docs/reference/generated/ai-documentation-index.json",
@@ -88,10 +89,13 @@
     "docs/reference/schemas/documentation-evidence-bundle.schema.json",
     "docs/reference/schemas/documentation-impact.schema.json",
     "docs/reference/schemas/executable-example-evidence.schema.json",
+    "docs/reference/schemas/release-retrospective.schema.json",
     "docs/reference/schemas/visual-evidence.schema.json",
+    "docs/release/RELEASE_HISTORY.md",
     "docs/release/V1_3_IMPLEMENTATION_STATUS.md",
     "docs/release/index.md",
     "docs/reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md",
+    "docs/reports/HISTORICAL_RELEASE_GOVERNANCE_RETROSPECTIVE.md",
     "docs/schemas/index.md",
     "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md",
     "docs/strategy/AI_ENGINEERING_OS_EVOLUTION.md",
@@ -111,6 +115,8 @@
     "scripts/validate-docs.js",
     "scripts/validate-documentation-assets.js",
     "scripts/validate-governance.js",
+    "scripts/validate-release-retrospectives.js",
+    "scripts/verify-release.js",
     "src/capabilities.js",
     "src/change-readiness.js",
     "src/cli/handlers/platform.js",
@@ -121,6 +127,7 @@
     "src/documentation-impact.js",
     "src/governance-validation.js",
     "src/performance-metrics.js",
+    "src/release-retrospective.js",
     "test/change-readiness.test.js",
     "test/doctor-read-only.test.js",
     "test/documentation-assets.test.js",
@@ -132,6 +139,7 @@
     "test/governance-validation.test.js",
     "test/performance-metrics.test.js",
     "test/public-contract-branches.test.js",
+    "test/release-retrospective.test.js",
     "website/mkdocs.yml"
   ],
   "changeProfile": "implementation",
@@ -156,6 +164,8 @@
     "scripts/validate-docs.js",
     "scripts/validate-documentation-assets.js",
     "scripts/validate-governance.js",
+    "scripts/validate-release-retrospectives.js",
+    "scripts/verify-release.js",
     "src/capabilities.js",
     "src/change-readiness.js",
     "src/cli/handlers/platform.js",
@@ -165,7 +175,8 @@
     "src/documentation-generator.js",
     "src/documentation-impact.js",
     "src/governance-validation.js",
-    "src/performance-metrics.js"
+    "src/performance-metrics.js",
+    "src/release-retrospective.js"
   ],
   "documentationFiles": [
     "AGENTS.md",
@@ -217,6 +228,7 @@
     "docs/governance/RELEASE_SCORECARD_TEMPLATE.md",
     "docs/governance/THREAT_MODEL_TEMPLATE.md",
     "docs/governance/compatibility-evidence.json",
+    "docs/governance/release-retrospectives.json",
     "docs/governance/waivers.json",
     "docs/operations/runbooks.md",
     "docs/reference/generated/ai-documentation-index.json",
@@ -236,10 +248,13 @@
     "docs/reference/schemas/documentation-evidence-bundle.schema.json",
     "docs/reference/schemas/documentation-impact.schema.json",
     "docs/reference/schemas/executable-example-evidence.schema.json",
+    "docs/reference/schemas/release-retrospective.schema.json",
     "docs/reference/schemas/visual-evidence.schema.json",
+    "docs/release/RELEASE_HISTORY.md",
     "docs/release/V1_3_IMPLEMENTATION_STATUS.md",
     "docs/release/index.md",
     "docs/reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md",
+    "docs/reports/HISTORICAL_RELEASE_GOVERNANCE_RETROSPECTIVE.md",
     "docs/schemas/index.md",
     "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md",
     "docs/strategy/AI_ENGINEERING_OS_EVOLUTION.md",
@@ -266,7 +281,8 @@
     "test/documentation-impact.test.js",
     "test/governance-validation.test.js",
     "test/performance-metrics.test.js",
-    "test/public-contract-branches.test.js"
+    "test/public-contract-branches.test.js",
+    "test/release-retrospective.test.js"
   ],
   "requirements": [
     {
@@ -350,6 +366,7 @@
         "docs/release/"
       ],
       "matchedDocuments": [
+        "docs/release/RELEASE_HISTORY.md",
         "docs/release/V1_3_IMPLEMENTATION_STATUS.md",
         "docs/release/index.md"
       ],
@@ -378,6 +395,7 @@
         "docs/governance/RELEASE_SCORECARD_TEMPLATE.md",
         "docs/governance/THREAT_MODEL_TEMPLATE.md",
         "docs/governance/compatibility-evidence.json",
+        "docs/governance/release-retrospectives.json",
         "docs/governance/waivers.json"
       ],
       "status": "pass",
@@ -464,6 +482,7 @@
         "docs/governance/RELEASE_SCORECARD_TEMPLATE.md",
         "docs/governance/THREAT_MODEL_TEMPLATE.md",
         "docs/governance/compatibility-evidence.json",
+        "docs/governance/release-retrospectives.json",
         "docs/governance/waivers.json",
         "docs/operations/runbooks.md",
         "docs/reference/generated/ai-documentation-index.json",
@@ -483,10 +502,13 @@
         "docs/reference/schemas/documentation-evidence-bundle.schema.json",
         "docs/reference/schemas/documentation-impact.schema.json",
         "docs/reference/schemas/executable-example-evidence.schema.json",
+        "docs/reference/schemas/release-retrospective.schema.json",
         "docs/reference/schemas/visual-evidence.schema.json",
+        "docs/release/RELEASE_HISTORY.md",
         "docs/release/V1_3_IMPLEMENTATION_STATUS.md",
         "docs/release/index.md",
         "docs/reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md",
+        "docs/reports/HISTORICAL_RELEASE_GOVERNANCE_RETROSPECTIVE.md",
         "docs/schemas/index.md",
         "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md",
         "docs/strategy/AI_ENGINEERING_OS_EVOLUTION.md",
@@ -524,7 +546,8 @@
         "test/documentation-impact.test.js",
         "test/governance-validation.test.js",
         "test/performance-metrics.test.js",
-        "test/public-contract-branches.test.js"
+        "test/public-contract-branches.test.js",
+        "test/release-retrospective.test.js"
       ],
       "status": "pass",
       "mandatory": true
@@ -595,7 +618,8 @@
         "docs/release/RELEASE_HISTORY.md"
       ],
       "matchedDocuments": [
-        "CHANGELOG.md"
+        "CHANGELOG.md",
+        "docs/release/RELEASE_HISTORY.md"
       ],
       "status": "pass",
       "mandatory": true
@@ -626,6 +650,7 @@
         "docs/release/"
       ],
       "matchedDocuments": [
+        "docs/release/RELEASE_HISTORY.md",
         "docs/release/V1_3_IMPLEMENTATION_STATUS.md",
         "docs/release/index.md",
         "docs/testing/guide.md"

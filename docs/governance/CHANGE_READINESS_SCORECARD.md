@@ -16,6 +16,8 @@ Use the same scorecard at three checkpoints:
 2. **Merge Ready:** Hosted CI, required review, governance, and compatibility evidence permit merge.
 3. **Release Ready:** Distribution, migration, rollback, documentation, package, and post-publication plans permit release.
 
+The release checkpoint is prospective. Releases created before the current policy effective version are assessed through the [historical release governance retrospective](../reports/HISTORICAL_RELEASE_GOVERNANCE_RETROSPECTIVE.md), not reconstructed as if this scorecard existed at the time.
+
 Significant changes retain both `scorecard.md` and `scorecard.json` under `docs/evidence/changes/<change-id>/`. Trivial typo-only corrections may record the rationale in the pull request instead.
 
 ## 2. Change Metadata

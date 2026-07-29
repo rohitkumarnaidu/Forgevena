@@ -190,6 +190,7 @@ nav:
       - Ecosystem ADR Candidates: strategy/ECOSYSTEM_ADR_CANDIDATES.md
       - Research and Standards Radar: strategy/RESEARCH_AND_STANDARDS_RADAR.md
       - Documentation Audit: reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md
+      - Historical Release Governance: reports/HISTORICAL_RELEASE_GOVERNANCE_RETROSPECTIVE.md
       - Releases: releases/index.md
       - Migration: migration/index.md
       - Support: https://github.com/rohitkumarnaidu/Forgevena/blob/main/SUPPORT.md

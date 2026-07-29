@@ -49,6 +49,7 @@
 - `docs/governance/RELEASE_SCORECARD_TEMPLATE.md`
 - `docs/governance/THREAT_MODEL_TEMPLATE.md`
 - `docs/governance/compatibility-evidence.json`
+- `docs/governance/release-retrospectives.json`
 - `docs/governance/waivers.json`
 - `docs/operations/runbooks.md`
 - `docs/reference/generated/ai-documentation-index.json`
@@ -68,10 +69,13 @@
 - `docs/reference/schemas/documentation-evidence-bundle.schema.json`
 - `docs/reference/schemas/documentation-impact.schema.json`
 - `docs/reference/schemas/executable-example-evidence.schema.json`
+- `docs/reference/schemas/release-retrospective.schema.json`
 - `docs/reference/schemas/visual-evidence.schema.json`
+- `docs/release/RELEASE_HISTORY.md`
 - `docs/release/V1_3_IMPLEMENTATION_STATUS.md`
 - `docs/release/index.md`
 - `docs/reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md`
+- `docs/reports/HISTORICAL_RELEASE_GOVERNANCE_RETROSPECTIVE.md`
 - `docs/schemas/index.md`
 - `docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md`
 - `docs/strategy/AI_ENGINEERING_OS_EVOLUTION.md`
