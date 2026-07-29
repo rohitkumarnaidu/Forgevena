@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 2,
+  "changeId": "pages-dependency-fix",
+  "title": "GitHub Pages dependency repair",
+  "owner": "rohitkumarnaidu",
+  "generatedAt": "2026-07-29T12:06:48.874Z",
+  "checkpoint": "merge",
+  "comparison": {
+    "base": null,
+    "head": null
+  },
+  "changedFiles": [
+    ".github/workflows/pages.yml",
+    "docs/deployment/guide.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation-impact.json",
+    "docs/evidence/changes/pages-dependency-fix/documentation-impact.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/documentation-coverage.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/documentation-impact.json",
+    "docs/evidence/changes/pages-dependency-fix/documentation/documentation-impact.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/documentation-quality.json",
+    "docs/evidence/changes/pages-dependency-fix/documentation/documentation-synchronization.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/evidence-manifest.json",
+    "docs/evidence/changes/pages-dependency-fix/documentation/migration-impact.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/missing-documentation.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/release-documentation-summary.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/repository-health.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/updated-documents.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/version-history-impact.md",
+    "docs/reference/generated/ai-documentation-index.json",
+    "docs/reference/generated/documentation-catalog.json",
+    "docs/reference/generated/documentation-coverage-matrix.md",
+    "docs/reference/generated/documentation-health.json",
+    "docs/reference/generated/documentation-health.md",
+    "docs/reference/generated/manifest.json",
+    "test/documentation-platform.test.js"
+  ],
+  "changeProfile": "implementation",
+  "affectedComponents": [
+    "cloud-infrastructure-and-deployment"
+  ],
+  "implementationFiles": [
+    ".github/workflows/pages.yml"
+  ],
+  "documentationFiles": [
+    "docs/deployment/guide.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation-impact.json",
+    "docs/evidence/changes/pages-dependency-fix/documentation-impact.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/documentation-coverage.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/documentation-impact.json",
+    "docs/evidence/changes/pages-dependency-fix/documentation/documentation-impact.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/documentation-quality.json",
+    "docs/evidence/changes/pages-dependency-fix/documentation/documentation-synchronization.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/evidence-manifest.json",
+    "docs/evidence/changes/pages-dependency-fix/documentation/migration-impact.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/missing-documentation.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/release-documentation-summary.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/repository-health.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/updated-documents.md",
+    "docs/evidence/changes/pages-dependency-fix/documentation/version-history-impact.md",
+    "docs/reference/generated/ai-documentation-index.json",
+    "docs/reference/generated/documentation-catalog.json",
+    "docs/reference/generated/documentation-coverage-matrix.md",
+    "docs/reference/generated/documentation-health.json",
+    "docs/reference/generated/documentation-health.md",
+    "docs/reference/generated/manifest.json"
+  ],
+  "testFiles": [
+    "test/documentation-platform.test.js"
+  ],
+  "requirements": [
+    {
+      "id": "deployment-guidance",
+      "component": "cloud-infrastructure-and-deployment",
+      "criticality": "important",
+      "reason": "cloud-infrastructure-and-deployment changes require synchronized deployment guidance.",
+      "candidateDocuments": [
+        "docs/deployment/",
+        "docs/release/"
+      ],
+      "matchedDocuments": [
+        "docs/deployment/guide.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "implementation-documentation-coupling",
+      "component": "cross-cutting",
+      "criticality": "critical",
+      "reason": "Implementation changes require documentation in the same change.",
+      "candidateDocuments": [
+        "docs/",
+        "README.md",
+        "CHANGELOG.md",
+        "SECURITY.md",
+        "SUPPORTED_VERSIONS.md",
+        "CONTRIBUTING.md",
+        "GOVERNANCE.md",
+        "ROADMAP.md",
+        "RELEASE.md",
+        "AGENTS.md"
+      ],
+      "matchedDocuments": [
+        "docs/deployment/guide.md",
+        "docs/evidence/changes/pages-dependency-fix/documentation-impact.json",
+        "docs/evidence/changes/pages-dependency-fix/documentation-impact.md",
+        "docs/evidence/changes/pages-dependency-fix/documentation/documentation-coverage.md",
+        "docs/evidence/changes/pages-dependency-fix/documentation/documentation-impact.json",
+        "docs/evidence/changes/pages-dependency-fix/documentation/documentation-impact.md",
+        "docs/evidence/changes/pages-dependency-fix/documentation/documentation-quality.json",
+        "docs/evidence/changes/pages-dependency-fix/documentation/documentation-synchronization.md",
+        "docs/evidence/changes/pages-dependency-fix/documentation/evidence-manifest.json",
+        "docs/evidence/changes/pages-dependency-fix/documentation/migration-impact.md",
+        "docs/evidence/changes/pages-dependency-fix/documentation/missing-documentation.md",
+        "docs/evidence/changes/pages-dependency-fix/documentation/release-documentation-summary.md",
+        "docs/evidence/changes/pages-dependency-fix/documentation/repository-health.md",
+        "docs/evidence/changes/pages-dependency-fix/documentation/updated-documents.md",
+        "docs/evidence/changes/pages-dependency-fix/documentation/version-history-impact.md",
+        "docs/reference/generated/ai-documentation-index.json",
+        "docs/reference/generated/documentation-catalog.json",
+        "docs/reference/generated/documentation-coverage-matrix.md",
+        "docs/reference/generated/documentation-health.json",
+        "docs/reference/generated/documentation-health.md",
+        "docs/reference/generated/manifest.json"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "implementation-test-coupling",
+      "component": "cross-cutting",
+      "criticality": "important",
+      "reason": "Implementation changes require executable validation or a governed not-applicable rationale.",
+      "candidateDocuments": [
+        "test/"
+      ],
+      "matchedDocuments": [
+        "test/documentation-platform.test.js"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "operations-and-rollback",
+      "component": "cloud-infrastructure-and-deployment",
+      "criticality": "critical",
+      "reason": "cloud-infrastructure-and-deployment changes require synchronized operations and rollback.",
+      "candidateDocuments": [
+        "docs/operations/",
+        "docs/runbooks/"
+      ],
+      "matchedDocuments": [],
+      "status": "not-applicable",
+      "mandatory": true,
+      "rationale": "The change repairs build-time dependency installation only; deployment authority, runtime state, release artifacts, and rollback behavior are unchanged."
+    }
+  ],
+  "blockers": [],
+  "decision": "ready"
+}
