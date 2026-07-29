@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "changeId": "version-documentation-system",
   "checkpoint": "merge",
-  "generatedAt": "2026-07-29T10:55:40.143Z",
+  "generatedAt": "2026-07-29T11:11:21.153Z",
   "decision": "ready",
   "reports": {
     "documentation-impact.json": {
-      "sha256": "64f840795dd75c1428f177f5937549c76b507975040b27ab802d6256ed8fa4f5",
-      "bytes": 57014
+      "sha256": "61eb45e3a4fba84e21fcc2f486d990a0dcfeda5466443f9e53b22f3760bb4b2e",
+      "bytes": 57231
     },
     "documentation-impact.md": {
-      "sha256": "efa060dd6a0dcb667f7118e4e8b3e9ac0b2c4a48e6871ed1a73549f823986f0a",
-      "bytes": 32171
+      "sha256": "8f1f60f182b556ae36d0be0371da7b99e8ea321fb49dacae6e76f70e966b5ed8",
+      "bytes": 32212
     },
     "updated-documents.md": {
       "sha256": "aac261ed7c84ba6042ed3855e52e9ce0cd41075d3ac60c89d4eb45a9b3bbbbd2",

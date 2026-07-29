@@ -3,7 +3,7 @@
   "changeId": "version-documentation-system",
   "title": "Enterprise Version Documentation System",
   "owner": "rohitkumarnaidu",
-  "generatedAt": "2026-07-29T10:55:40.143Z",
+  "generatedAt": "2026-07-29T11:11:21.153Z",
   "checkpoint": "merge",
   "comparison": {
     "base": null,
@@ -291,12 +291,14 @@
     "docs/versions/v3.0.0/version-spec.yaml",
     "docs/versions/version-specifications.json",
     "package.json",
+    "scripts/documentation-impact.js",
     "scripts/validate-docs.js",
     "scripts/verify-release.js",
     "scripts/version-docs.js",
     "src/cli/handlers/platform.js",
     "src/documentation-catalog.js",
     "src/version-documentation.js",
+    "test/documentation-impact-cli.test.js",
     "test/version-documentation.test.js",
     "website/mkdocs.yml"
   ],
@@ -313,6 +315,7 @@
   "implementationFiles": [
     ".github/workflows/docs.yml",
     "package.json",
+    "scripts/documentation-impact.js",
     "scripts/validate-docs.js",
     "scripts/verify-release.js",
     "scripts/version-docs.js",
@@ -602,6 +605,7 @@
     "website/mkdocs.yml"
   ],
   "testFiles": [
+    "test/documentation-impact-cli.test.js",
     "test/version-documentation.test.js"
   ],
   "requirements": [
@@ -1020,6 +1024,7 @@
         "test/"
       ],
       "matchedDocuments": [
+        "test/documentation-impact-cli.test.js",
         "test/version-documentation.test.js"
       ],
       "status": "pass",
