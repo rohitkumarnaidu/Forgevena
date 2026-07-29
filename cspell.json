@@ -18,6 +18,12 @@
     "ciphertext", "retryable", "Forgevena", "forgevena", "CODEOWNERS", "DOCKERHUB",
     "Astryx", "automatable", "checksummed", "deeplink", "diffable", "doctl",
     "embeddinggemma", "flyctl", "flyio", "googlecloud", "hotfixes", "rohitkumarnaidu",
-    "SLSA", "unreviewed", "WCAG", "Winget"
+    "SLSA", "unreviewed", "WCAG", "Winget", "backpressure", "exfiltration",
+    "explainability", "forgeregistry", "hostable", "inspectable", "irreproducible",
+    "journaled", "livelock", "lockfiles", "operationalizes", "previewable", "Reranker",
+    "replayable", "sandboxed", "sandboxing", "Sigstore", "uiux", "unconsented", "unsustainability",
+    "Diátaxis", "FORGEHUB", "forgehub", "OSPS", "SSDF", "unindexed"
+    ,
+    "Rohit", "Kumar", "Naidu", "findability", "retag"
   ]
 }

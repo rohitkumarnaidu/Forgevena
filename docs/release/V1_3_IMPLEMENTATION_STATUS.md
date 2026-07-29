@@ -15,7 +15,7 @@ The software-controlled `v1.3.0` E1 implementation gates are complete locally. V
 | Corruption fuzzing | 1,000 deterministic malformed journal cases fail without changing state. | `test/state-engine-fuzz.test.js` |
 | Vault lifecycle | AES-256-GCM, Argon2id, PBKDF2 fallback, migration, rotation rollback, recovery, tamper rejection, and bounded encrypted history. | `src/credentials.js`, `test/credentials.test.js` |
 | Mutation testing | State, vault, consent, policy, and rollback each exceed the 80% mutation threshold; the deterministic suite kills 19 of 19 safety mutants. | `scripts/mutation-gate.js`, `npm run test:mutation` |
-| Performance | Warm CLI startup and ordinary state reads have enforced budgets of 250 ms and 50 ms. | `scripts/benchmark.js`, `npm run benchmark` |
+| Performance | Warm CLI startup and ordinary state reads have enforced budgets of 250 ms and 50 ms. CLI startup uses one warm-up and the median of five measured launches so transient runner contention cannot mask sustained regressions. | `scripts/benchmark.js`, `src/performance-metrics.js`, `npm run benchmark` |
 | Coverage enforcement | The test runner fails below 90% lines, 85% branches, or 90% functions. | `scripts/run-tests.js`, `npm run test:coverage` |
 | Managed documentation | Canonical generated references update only when their prior content hash proves generator ownership; modified files fail closed as conflicts. | `src/documentation-generator.js`, `test/documentation-generator.test.js` |
 | Workspace compatibility | Published-state fixtures for v1.1 and v1.2 migrate and roll back without losing state. | `test/fixtures/workspaces/`, `test/upgrade.test.js` |

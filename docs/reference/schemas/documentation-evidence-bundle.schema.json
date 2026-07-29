@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rohitkumarnaidu.github.io/Forgevena/schemas/documentation-evidence-bundle.schema.json",
+  "title": "Forgevena Documentation Evidence Bundle Manifest",
+  "type": "object",
+  "required": ["schemaVersion", "changeId", "checkpoint", "generatedAt", "decision", "reports"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "changeId": { "type": "string", "minLength": 1 },
+    "checkpoint": { "enum": ["push", "merge", "release"] },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "decision": { "enum": ["ready", "hold"] },
+    "reports": {
+      "type": "object",
+      "minProperties": 11,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["sha256", "bytes"],
+        "properties": {
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "bytes": { "type": "integer", "minimum": 1 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

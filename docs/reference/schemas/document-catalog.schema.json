@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rohitkumarnaidu.github.io/Forgevena/schemas/document-catalog.schema.json",
+  "title": "Forgevena Documentation Catalog",
+  "type": "object",
+  "required": ["schemaVersion", "generatedAt", "documents", "summary"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "generatedAt": { "type": "string", "format": "date" },
+    "documents": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/document" }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["total", "byClassification", "byLifecycle"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 1 },
+        "byClassification": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "byLifecycle": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "document": {
+      "type": "object",
+      "required": ["id", "path", "title", "classification", "contentType", "authority", "sourceOfTruth", "purpose", "audiences", "owner", "reviewers", "versions", "lifecycle", "criticality", "lastVerified", "reviewBy", "related", "relevance"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^doc:[a-z0-9][a-z0-9._/-]*$" },
+        "path": { "type": "string", "pattern": "^docs/.*\\.md$" },
+        "title": { "type": "string", "minLength": 1 },
+        "classification": { "enum": ["canonical-policy", "canonical-architecture", "product-strategy", "active-guide", "generated-reference", "operational-runbook", "governance-evidence", "historical-record", "deprecated-superseded", "external-reference"] },
+        "contentType": { "enum": ["tutorial", "how-to", "reference", "explanation", "evidence"] },
+        "authority": { "type": ["string", "null"] },
+        "sourceOfTruth": { "type": ["string", "null"] },
+        "purpose": { "type": "string", "minLength": 1 },
+        "audiences": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "owner": { "type": "string", "minLength": 1 },
+        "reviewers": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "versions": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "lifecycle": { "enum": ["draft", "review", "approved", "published", "maintained", "superseded", "archived", "retired"] },
+        "criticality": { "enum": ["critical", "important", "standard"] },
+        "lastVerified": { "type": "string", "format": "date" },
+        "reviewBy": { "type": "string", "format": "date" },
+        "replacement": { "type": ["string", "null"] },
+        "related": { "type": "array", "items": { "type": "string" } },
+        "relevance": {
+          "type": "object",
+          "required": ["security", "privacy", "accessibility", "regulatory", "operations", "aiAgents"],
+          "additionalProperties": false,
+          "properties": {
+            "security": { "type": "boolean" },
+            "privacy": { "type": "boolean" },
+            "accessibility": { "type": "boolean" },
+            "regulatory": { "type": "boolean" },
+            "operations": { "type": "boolean" },
+            "aiAgents": { "type": "boolean" }
+          }
+        }
+      }
+    }
+  }
+}

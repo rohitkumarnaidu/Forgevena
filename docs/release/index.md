@@ -9,6 +9,7 @@
 - Docker CLI build and smoke test.
 - Windows, Linux, and macOS hosted CI.
 - Machine-readable and human-readable release verification reports with links to every required OS/Node job.
+- A checksummed documentation synchronization bundle covering impact, quality, migration, version history, and repository health.
 - Version manifest, checksums, release notes, compatibility, upgrade, rollback, and known-issues reports.
 - CycloneDX 1.5 SBOM, in-toto/SLSA provenance statement, source checksums, lockfile validation, and secret-scan evidence.
 
@@ -23,6 +24,8 @@ forgevena supply-chain artifacts
 Generated evidence is additive under `dist/supply-chain/`. Existing evidence is never overwritten; create a clean release workspace for each immutable release.
 
 Each automated GitHub Release also includes `RELEASE_VERIFICATION.md` and `release-verification.json`. These files record the release tag, immutable commit, workflow run, attempt, commands, and successful Windows, Ubuntu, and macOS jobs for Node.js 20 and 22. The same summary is appended to the release description automatically.
+
+The release workflow also generates `documentation-evidence/`, validates its manifest and checksums, and appends its synchronization decision to release notes. Tier 2, Tier 3, migration, security, trust-boundary, breaking, and release changes retain the same evidence under `docs/evidence/changes/<change-id>/` before promotion.
 
 ## Distribution channels
 

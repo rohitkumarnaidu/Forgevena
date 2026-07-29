@@ -42,6 +42,7 @@ Forgevena is built on five beliefs:
 3. **AI requires governance, not just connectivity.** Credentials, data egress, provider compatibility, tools, and mutations need explicit controls.
 4. **Release evidence matters as much as release automation.** Packages should be verifiable, reproducible, traceable, and installable.
 5. **Enterprise maturity is earned through evidence.** A feature is not complete until behavior, tests, documentation, security impact, compatibility, and operations agree.
+6. **Documentation is a governed product surface.** Canonical authority, ownership, freshness, lifecycle, historical evidence, examples, and AI-agent context are validated through the documentation catalog and readiness gate.
 
 ## 3. Evolution from the Original Idea
 
@@ -59,7 +60,7 @@ This progression is intentional. Forgevena is no longer a collection of installe
 
 ## 4. Product Principles and Invariants
 
-The following constraints define the 1.x product contract:
+The binding source for product invariants is the [Platform Constitution](PLATFORM_CONSTITUTION.md). The following implementation summary defines the 1.x product contract:
 
 - Modifying commands preview by default.
 - Local writes require `--apply`.
@@ -390,6 +391,14 @@ Forgevena `v1.3.0` does not claim to provide:
 | Local indexing and read-only recommendations | Uploading raw repositories by default |
 | Signed catalogs and policies | A public marketplace without trust controls |
 
+The product follows an open-core boundary without weakening local capability:
+
+- **Open local platform:** CLI, state, vault, bootstrap, providers, plugin SDK, templates, policy, offline workflows, indexing, and verification.
+- **Enterprise capabilities:** fleet governance, advanced compliance packs, organizational approval workflows, long-term support, and enterprise integrations.
+- **Optional managed service:** hosted control plane, managed catalogs, fleet operations, support, and explicitly enabled privacy-preserving analytics.
+
+Forgevena collects no telemetry by default. Future analytics must be explicit, minimal, inspectable, revocable, retention-bounded, and unable to capture source, prompts, responses, or secrets without separate scoped authorization.
+
 ## 13. Success Measures
 
 Forgevena should be evaluated through measurable outcomes:
@@ -409,6 +418,8 @@ Forgevena should be evaluated through measurable outcomes:
 
 ## 14. Canonical References
 
+- [Platform constitution](PLATFORM_CONSTITUTION.md)
+- [Engineering governance](../ENGINEERING_GOVERNANCE.md)
 - [Documentation home](../index.md)
 - [Architecture overview](../architecture/overview.md)
 - [CLI reference](../cli/reference.md)
@@ -418,9 +429,69 @@ Forgevena should be evaluated through measurable outcomes:
 - [Release history](../release/RELEASE_HISTORY.md)
 - [ADR index](../ADR_INDEX.md)
 - [Future version and innovation roadmap](FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md)
+- [Innovation opportunity portfolio](INNOVATION_OPPORTUNITY_PORTFOLIO.md)
 - [Enterprise update management strategy](ENTERPRISE_UPDATE_MANAGEMENT.md)
 
-## 15. Final Product Definition
+## 15. Long-Term Ecosystem Architecture
+
+Forgevena evolves through deliberate product boundaries rather than a monolithic hosted platform:
+
+```mermaid
+flowchart TB
+  Core["Forgevena Core: state, vault, policy, consent, audit, rollback, bootstrap, integrations"]
+  Registry["ForgeRegistry: protocol, resolution, locking, caching, signatures, federation"]
+  Hub["ForgeHub: discovery, publishing, moderation, lifecycle, ecosystem experience"]
+  Control["Optional Control Plane: organization policy, fleet, synchronization, managed operations"]
+  OS["AI Engineering OS: unified governed engineering experience"]
+  Core --> Registry
+  Registry --> Hub
+  Core --> Control
+  Hub --> OS
+  Control --> OS
+  Core --> OS
+```
+
+### 15.1 Boundary Rules
+
+- **Forgevena Core** remains the complete local client and authority for user consent, state, policy, ownership, and rollback.
+- **ForgeRegistry** defines portable package semantics and deterministic resolution; it is independent of marketplace presentation and any single registry operator.
+- **ForgeHub** provides discovery and publisher experiences over ForgeRegistry evidence; it cannot bypass client policy or create hidden trust claims.
+- **The optional control plane** coordinates organizations but is not required for local, private, or air-gapped operation.
+- **The AI Engineering OS** is the combined product experience, not a new privileged runtime that bypasses existing contracts.
+
+### 15.2 Strategic References
+
+- [ForgeHub Ecosystem Vision](FORGEHUB_ECOSYSTEM_VISION.md)
+- [ForgeRegistry Protocol and Architecture](../architecture/FORGE_REGISTRY_PROTOCOL_AND_ARCHITECTURE.md)
+- [Capability and Package Model](../architecture/ECOSYSTEM_CAPABILITY_AND_PACKAGE_MODEL.md)
+- [Ecosystem Trust and Safety](../security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md)
+- [ForgeHub Product Experience](FORGEHUB_PRODUCT_EXPERIENCE.md)
+- [Publisher and SDK Strategy](../developer/PUBLISHER_AND_ECOSYSTEM_SDK_STRATEGY.md)
+- [AI Engineering OS Evolution](AI_ENGINEERING_OS_EVOLUTION.md)
+- [Ecosystem Product and Sustainability](ECOSYSTEM_PRODUCT_AND_SUSTAINABILITY_STRATEGY.md)
+
+## 16. Enterprise Capability Platform Direction
+
+The long-term host-neutral boundary is:
+
+```text
+Forgevena Core → governance, execution, evidence, recovery
+ForgeRegistry → package protocol, trust, resolution, portability
+ForgeHub → discovery, Capability Studio, publishing, lifecycle UX
+Host Adapters → explicit import, translation, installation, verification, removal
+```
+
+The [Enterprise Capability System](../architecture/ENTERPRISE_CAPABILITY_SYSTEM.md) defines the canonical taxonomy and lifecycle. The [Host Adapter Strategy](../architecture/HOST_ADAPTER_AND_PORTABILITY_STRATEGY.md) prevents vendor formats from becoming authoritative. The [Orchestration Strategy](../architecture/ORCHESTRATION_AND_AGENT_RUNTIME_STRATEGY.md) introduces deterministic workflows before dynamic agent systems. This direction does not change the approved release dependency order.
+
+### Future-System Operational Boundaries
+
+Every future ForgeRegistry, ForgeHub, AgentSpace, Capability Studio, Source Adapter, Converter, and Host Adapter capability must document responsibility, owner, inputs, outputs, contracts, permissions, data classes, failure modes, recovery, migration, rollback, support, and retirement. Organization or managed-service capabilities additionally document availability targets, backup, disaster recovery, regional behavior, data residency, tenant isolation, portability, and operator exit.
+
+Agent and workflow capabilities remain bounded by declared iteration, duration, token, cost, concurrency, delegation, recursion, cancellation, replay, memory-isolation, deadlock, livelock, and external-effect controls. Human approval remains required for mutation, deployment, publication, billing, credentials, or irreversible effects.
+
+The documentation authority and lifecycle are defined by the [Documentation Governance Standard](../governance/DOCUMENTATION_GOVERNANCE_STANDARD.md). Historical evidence cannot redefine current architecture, and standards mappings cannot create unsupported compliance or certification claims.
+
+## 17. Final Product Definition
 
 Forgevena is a governed engineering platform that connects project creation, existing-repository adoption, AI ecosystems, local policy, engineering intelligence, delivery preparation, and verifiable releases. Its differentiator is not the number of integrations; it is the consistent safety contract applied across them.
 

@@ -1,5 +1,7 @@
 # Release History Preparation
 
+Current-rule evaluation of all stable tags is retained in the [Historical Release Governance Retrospective](../reports/HISTORICAL_RELEASE_GOVERNANCE_RETROSPECTIVE.md). Historical notes remain immutable evidence and do not imply retrospective certification.
+
 ## v1.3.0
 
 Minor release certifying the reliability and security foundation: decomposed CLI routing, transactional and recoverable state, encrypted vault lifecycle, deterministic corruption and concurrency evidence, enforced coverage and mutation gates, performance budgets, managed documentation ownership, and migration compatibility for published 1.1 and 1.2 workspaces.

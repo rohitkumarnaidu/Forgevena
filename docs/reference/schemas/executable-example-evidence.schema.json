@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forgevena.dev/schemas/executable-example-evidence.schema.json",
+  "title": "Forgevena Executable Example Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "examples"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "description", "executable", "args", "platforms", "timeoutMs", "expectedExitCode", "expectedOutputSha256", "outputContains", "verifiedAt", "reviewBy"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]+$" },
+          "description": { "type": "string", "minLength": 1 },
+          "executable": { "const": "node" },
+          "args": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "platforms": { "type": "array", "minItems": 1, "items": { "enum": ["win32", "linux", "darwin"] }, "uniqueItems": true },
+          "timeoutMs": { "type": "integer", "minimum": 100, "maximum": 10000 },
+          "expectedExitCode": { "type": "integer" },
+          "expectedOutputSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "outputContains": { "type": "array", "items": { "type": "string" } },
+          "verifiedAt": { "type": "string", "format": "date" },
+          "reviewBy": { "type": "string", "format": "date" }
+        }
+      }
+    }
+  }
+}

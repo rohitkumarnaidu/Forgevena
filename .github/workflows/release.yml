@@ -122,6 +122,19 @@ jobs:
           args: --latest --strip header
         env:
           OUTPUT: dist/RELEASE_NOTES.md
+      - name: Generate release documentation evidence
+        shell: bash
+        run: |
+          PREVIOUS_TAG="$(git describe --tags --abbrev=0 "${RELEASE_REF}^" 2>/dev/null || git rev-list --max-parents=0 "${RELEASE_REF}")"
+          node scripts/documentation-impact.js \
+            --base "$PREVIOUS_TAG" \
+            --head "$RELEASE_REF" \
+            --checkpoint release \
+            --change-id "release-${RELEASE_REF}" \
+            --owner "release-engineering" \
+            --output-dir dist/documentation-evidence \
+            --check
+          cat dist/documentation-evidence/documentation-synchronization.md >> dist/RELEASE_NOTES.md
       - run: npm pack
       - run: npm run release:assets
       - run: npm run release:supply-chain
@@ -218,6 +231,7 @@ jobs:
             dist/SHA256SUMS
             dist/RELEASE_SHA256SUMS
             dist/RELEASE_NOTES.md
+            dist/documentation-evidence/**
 
   publish-npm:
     needs: github-release

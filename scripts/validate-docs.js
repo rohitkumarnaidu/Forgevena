@@ -1,5 +1,8 @@
 import { readFile, readdir, stat, access } from "node:fs/promises";
 import path from "node:path";
+import { validateGovernance } from "../src/governance-validation.js";
+import { verifyCanonicalDocumentation } from "../src/documentation-generator.js";
+import { validateDocumentationAssets } from "../src/documentation-assets.js";
 
 const root = process.cwd();
 const docsRoot = path.join(root, "docs");
@@ -39,8 +42,18 @@ for (const required of ["search:", "provider: mike", "navigation.path", "pymdown
   if (!config.includes(required)) issues.push(`website/mkdocs.yml missing ${required}`);
 }
 try { await access(path.join(docsRoot, "404.md")); } catch { issues.push("docs/404.md is missing"); }
+if ((config.match(/^site_description:/gm) ?? []).length !== 1) issues.push("website/mkdocs.yml must define site_description exactly once");
 
-const report = { valid: issues.length === 0, markdownFiles: markdown.length, headings, mermaidBlocks, issues };
+const generated = await verifyCanonicalDocumentation(root);
+issues.push(...generated.issues.map((issue) => `generated documentation: ${issue}`));
+
+const governance = await validateGovernance(root);
+issues.push(...governance.issues.map((issue) => `governance: ${issue}`));
+
+const assets = await validateDocumentationAssets(root);
+issues.push(...assets.issues.map((issue) => `documentation assets: ${issue}`));
+
+const report = { valid: issues.length === 0, markdownFiles: markdown.length, headings, mermaidBlocks, generated, governance, assets, issues };
 console.log(JSON.stringify(report, null, 2));
 if (issues.length) process.exitCode = 1;
 

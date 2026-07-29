@@ -7,17 +7,18 @@
 node_modules/
 .venv/
 __pycache__/
-backups/
-cache/
+/backups/
+/cache/
 .lycheecache
-configs/
-dist/
-logs/
-prompts/
-reference/
-registry/
-templates/
-updates/
+/configs/
+/dist/
+/website/dist/
+/logs/
+/prompts/
+/reference/
+/registry/
+/templates/
+/updates/
 *.tgz
 *.zip
 *.mp3
@@ -25,11 +26,5 @@ updates/
 *.mov
 *.mkv
 
-# Canonical documentation directories intentionally share names with
-# generated workspace directories and must remain version controlled.
-!docs/templates/
-!docs/templates/**
-!docs/reference/
-!docs/reference/**
-!docs/registry/
-!docs/registry/**
+# Workspace-generated directories are root-scoped so canonical documentation
+# with matching names remains visible to Git, MkDocs, and governance tooling.

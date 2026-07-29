@@ -9,11 +9,11 @@ import { generateCanonicalDocumentation, verifyCanonicalDocumentation } from "..
 test("canonical documentation is additive and detects drift", async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "forgevena-docs-"));
   try {
-    assert.equal((await generateCanonicalDocumentation(root, { dryRun: true })).create.length, 5);
+    assert.equal((await generateCanonicalDocumentation(root, { dryRun: true })).create.length, 15);
     const generated = await generateCanonicalDocumentation(root, { dryRun: false });
-    assert.equal(generated.created.length, 5);
+    assert.equal(generated.created.length, 15);
     assert.equal((await verifyCanonicalDocumentation(root)).valid, true);
-    assert.equal((await generateCanonicalDocumentation(root, { dryRun: false })).skipped.length, 5);
+    assert.equal((await generateCanonicalDocumentation(root, { dryRun: false })).skipped.length, 15);
     const cliPath = path.join(root, "docs/reference/generated/cli.md");
     await writeFile(cliPath, (await readFile(cliPath, "utf8")).replace(/\n/g, "\r\n"));
     assert.equal((await verifyCanonicalDocumentation(root)).valid, true);

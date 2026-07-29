@@ -1,0 +1,236 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rohitkumarnaidu.github.io/Forgevena/schemas/change-readiness-scorecard.schema.json",
+  "title": "Forgevena Enterprise Change Readiness Scorecard",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "changeId",
+    "title",
+    "owner",
+    "changeType",
+    "profile",
+    "riskTier",
+    "checkpoint",
+    "version",
+    "maturity",
+    "scope",
+    "affectedComponents",
+    "moduleAssessments",
+    "requirements",
+    "nonGoals",
+    "evidenceLinks",
+    "categories",
+    "blockers",
+    "assessments",
+    "waivers",
+    "totals",
+    "decision",
+    "timestamps"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "changeId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$" },
+    "title": { "type": "string", "minLength": 3 },
+    "owner": { "type": "string", "minLength": 2 },
+    "changeType": { "enum": ["feature", "fix", "refactor", "documentation", "architecture", "registry", "marketplace", "release", "other"] },
+    "profile": { "enum": ["documentation-content", "standard-code", "frontend-uiux", "backend-api-data", "platform-devops", "security-trust", "registry-ecosystem", "release-version", "capability-package", "host-adapter-portability", "agent-team-runtime", "orchestration-automation", "rule-guardrail-package", "knowledge-memory-capability", "capability-builder-publisher", "marketplace-registry-distribution"] },
+    "riskTier": { "enum": ["tier-0", "tier-1", "tier-2", "tier-3"] },
+    "checkpoint": { "enum": ["push", "merge", "release"] },
+    "version": { "type": "string", "minLength": 1 },
+    "maturity": { "enum": ["experimental", "preview", "stable", "enterprise-certified", "deprecated"] },
+    "scope": { "type": "string", "minLength": 3 },
+    "affectedComponents": { "$ref": "#/$defs/nonEmptyStrings" },
+    "moduleAssessments": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/moduleAssessment" }
+    },
+    "requirements": { "$ref": "#/$defs/nonEmptyStrings" },
+    "nonGoals": { "$ref": "#/$defs/nonEmptyStrings" },
+    "evidenceLinks": { "$ref": "#/$defs/nonEmptyStrings" },
+    "categories": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "items": { "$ref": "#/$defs/category" }
+    },
+    "blockers": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": { "$ref": "#/$defs/blocker" }
+    },
+    "assessments": {
+      "type": "object",
+      "required": ["tests", "security", "compatibility", "migration", "rollback", "documentation", "operations"],
+      "properties": {
+        "tests": { "$ref": "#/$defs/nonEmptyStrings" },
+        "security": { "$ref": "#/$defs/nonEmptyStrings" },
+        "compatibility": { "$ref": "#/$defs/nonEmptyStrings" },
+        "migration": { "$ref": "#/$defs/nonEmptyStrings" },
+        "rollback": { "$ref": "#/$defs/nonEmptyStrings" },
+        "documentation": { "$ref": "#/$defs/nonEmptyStrings" },
+        "operations": { "$ref": "#/$defs/nonEmptyStrings" }
+      },
+      "additionalProperties": false
+    },
+    "waivers": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/waiver" }
+    },
+    "totals": {
+      "type": "object",
+      "required": ["maximumWeight", "applicablePoints", "earnedPoints", "score", "qualityBand", "threshold", "minimumDomainScore", "domainGateSatisfied", "moduleGateSatisfied"],
+      "properties": {
+        "maximumWeight": { "const": 100 },
+        "applicablePoints": { "type": "number", "exclusiveMinimum": 0, "maximum": 100 },
+        "earnedPoints": { "type": "number", "minimum": 0, "maximum": 100 },
+        "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "qualityBand": { "enum": ["enterprise-ready", "production-ready", "controlled-low-risk", "not-ready"] },
+        "threshold": { "type": "integer", "minimum": 80, "maximum": 95 },
+        "minimumDomainScore": { "type": "integer", "enum": [70, 80] },
+        "domainGateSatisfied": { "type": "boolean" },
+        "moduleGateSatisfied": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "decision": {
+      "type": "object",
+      "required": ["status", "rationale", "approvedBy"],
+      "properties": {
+        "status": { "enum": ["ready", "hold", "reject"] },
+        "rationale": { "type": "string", "minLength": 3 },
+        "approvedBy": { "type": "array", "items": { "type": "string", "minLength": 2 }, "uniqueItems": true }
+      },
+      "additionalProperties": false
+    },
+    "timestamps": {
+      "type": "object",
+      "required": ["assessedAt", "reviewedAt"],
+      "properties": {
+        "assessedAt": { "type": "string", "format": "date-time" },
+        "reviewedAt": { "type": ["string", "null"], "format": "date-time" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "nonEmptyStrings": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "categoryId": {
+      "enum": [
+        "product-governance",
+        "architecture-system-design",
+        "code-quality-maintainability",
+        "security-privacy-trust",
+        "testing-quality-assurance",
+        "reliability-recovery-rollback",
+        "performance-scalability-cost",
+        "api-contracts-data",
+        "frontend-uiux-accessibility",
+        "backend-integrations-concurrency",
+        "devops-supply-chain",
+        "documentation-developer-experience",
+        "compatibility-versioning-release",
+        "observability-support-sustainability"
+      ]
+    },
+    "category": {
+      "type": "object",
+      "required": ["id", "weight", "status", "applicablePoints", "earnedScore", "scorePercent", "items", "findings", "evidence"],
+      "properties": {
+        "id": { "$ref": "#/$defs/categoryId" },
+        "weight": { "type": "integer", "minimum": 4, "maximum": 12 },
+        "status": { "enum": ["pass", "partial", "fail", "not-applicable"] },
+        "applicablePoints": { "type": "number", "minimum": 0, "maximum": 12 },
+        "earnedScore": { "type": "number", "minimum": 0, "maximum": 12 },
+        "scorePercent": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "requiredScore": { "type": "integer", "minimum": 70, "maximum": 100 },
+        "items": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/scoreItem" } },
+        "findings": { "type": "array", "items": { "type": "string" } },
+        "evidence": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      },
+      "additionalProperties": false
+    },
+    "scoreItem": {
+      "type": "object",
+      "required": ["id", "description", "points", "mandatory", "status", "rationale", "evidence"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{1,127}$" },
+        "description": { "type": "string", "minLength": 3 },
+        "points": { "type": "number", "exclusiveMinimum": 0, "maximum": 12 },
+        "mandatory": { "type": "boolean" },
+        "status": { "enum": ["pass", "partial", "fail", "not-applicable"] },
+        "rationale": { "type": "string" },
+        "evidence": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      },
+      "additionalProperties": false
+    },
+    "moduleAssessment": {
+      "type": "object",
+      "required": ["component", "criticality", "requiredScore", "applicablePoints", "earnedScore", "score", "status", "rationale", "evidence", "criteria"],
+      "properties": {
+        "component": { "type": "string", "minLength": 1 },
+        "criticality": { "enum": ["standard", "important", "critical"] },
+        "requiredScore": { "type": "integer", "minimum": 85, "maximum": 100 },
+        "applicablePoints": { "type": "number", "exclusiveMinimum": 0, "maximum": 100 },
+        "earnedScore": { "type": "number", "minimum": 0, "maximum": 100 },
+        "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "status": { "enum": ["pass", "fail"] },
+        "rationale": { "type": "string", "minLength": 3 },
+        "evidence": { "$ref": "#/$defs/nonEmptyStrings" },
+        "criteria": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/moduleCriterion" } }
+      },
+      "additionalProperties": false
+    },
+    "moduleCriterion": {
+      "type": "object",
+      "required": ["id", "description", "points", "mandatory", "status", "rationale", "evidence"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{1,127}$" },
+        "description": { "type": "string", "minLength": 3 },
+        "points": { "type": "number", "exclusiveMinimum": 0, "maximum": 100 },
+        "mandatory": { "type": "boolean" },
+        "status": { "enum": ["pass", "partial", "fail", "not-applicable"] },
+        "rationale": { "type": "string" },
+        "evidence": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      },
+      "additionalProperties": false
+    },
+    "blocker": {
+      "type": "object",
+      "required": ["id", "description", "status", "rationale", "evidence"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^B-(0[1-9]|1[0-2])$" },
+        "description": { "type": "string", "minLength": 3 },
+        "status": { "enum": ["clear", "triggered", "not-applicable"] },
+        "rationale": { "type": "string" },
+        "evidence": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+      },
+      "additionalProperties": false
+    },
+    "waiver": {
+      "type": "object",
+      "required": ["id", "owner", "requirement", "justification", "risk", "compensatingControls", "approvedBy", "createdAt", "expiresAt", "remediationIssue"],
+      "properties": {
+        "id": { "type": "string", "minLength": 2 },
+        "owner": { "type": "string", "minLength": 2 },
+        "requirement": { "type": "string", "minLength": 2 },
+        "justification": { "type": "string", "minLength": 3 },
+        "risk": { "type": "string", "minLength": 3 },
+        "compensatingControls": { "$ref": "#/$defs/nonEmptyStrings" },
+        "approvedBy": { "type": "string", "minLength": 2 },
+        "createdAt": { "type": "string", "format": "date" },
+        "expiresAt": { "type": "string", "format": "date" },
+        "remediationIssue": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
