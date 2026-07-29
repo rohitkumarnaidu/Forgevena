@@ -1,0 +1,83 @@
+{
+  "version": "v2.0.0",
+  "title": "Optional Self-Hosted Organization Control Plane",
+  "outcome": "Add an optional self-hostable control plane while preserving complete local operation during outages and without accounts.",
+  "owner": "Control Plane Maintainers",
+  "roadmapAuthority": "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#14-v200--optional-self-hosted-organization-control-plane",
+  "riskTier": "tier-3",
+  "dependsOn": [
+    "v1.10.0"
+  ],
+  "blocks": [
+    "v2.1.0"
+  ],
+  "architectureDelta": "Introduce a separately deployable organization service for signed synchronization, fleet inventory, policy distribution, audit retention, and approved catalogs.",
+  "interfaceImpacts": [
+    "Version synchronization, tenant, identity, policy distribution, conflict, audit retention, and disaster-recovery APIs.",
+    "Add previewable enrollment, sync, status, conflict, export, disconnect, and rollback flows."
+  ],
+  "nonGoals": [
+    "No mandatory account, telemetry, network dependency, or hosted-only local feature.",
+    "No silent upload of source, prompts, responses, credentials, or local diagnostics."
+  ],
+  "metrics": [
+    "Offline clients continue operating through control-plane outages.",
+    "Tenant isolation and authorization tests have no high findings.",
+    "Synchronization conflicts are deterministic, auditable, and recoverable."
+  ],
+  "acceptance": [
+    "SSO/OIDC, RBAC, tenant isolation, encrypted synchronization, conflict resolution, key rotation, backup, and disaster recovery pass.",
+    "1.x migration is preview-first and reversible.",
+    "Independent security review and outage exercises pass."
+  ],
+  "assumptions": [
+    "The local platform is enterprise-ready before server implementation begins.",
+    "Self-hosting is a first-class deployment model."
+  ],
+  "openQuestions": [
+    "Which data classes may synchronize by policy?",
+    "What consistency model balances offline autonomy and fleet governance?"
+  ],
+  "features": [
+    {
+      "id": "self-hosted-control-plane",
+      "title": "Self-Hosted Organization Control Plane",
+      "status": "committed",
+      "summary": "Distribute signed policy and catalogs, retain audit evidence, and manage fleet inventory through an optional service.",
+      "value": "Enterprises coordinate many workspaces without sacrificing local autonomy.",
+      "architecture": "A tenant-isolated service exchanges encrypted, policy-approved metadata through versioned synchronization contracts.",
+      "dependencies": [
+        "v1.10 local enterprise GA"
+      ],
+      "acceptance": [
+        "Self-hosted deployment is documented and tested.",
+        "Local clients work during outages.",
+        "Tenant isolation passes independent review."
+      ],
+      "risks": [
+        "Cross-tenant data exposure.",
+        "Operational complexity and disaster recovery."
+      ]
+    },
+    {
+      "id": "encrypted-conflict-aware-sync",
+      "title": "Encrypted Conflict-Aware Synchronization",
+      "status": "committed",
+      "summary": "Synchronize approved registries, policies, inventory, and audit records with deterministic conflict resolution.",
+      "value": "Distributed teams gain recoverable, auditable coordination.",
+      "architecture": "Clients exchange signed deltas, retain local journals, and expose conflicts before applying destructive resolutions.",
+      "dependencies": [
+        "self-hosted-control-plane"
+      ],
+      "acceptance": [
+        "Conflict fixtures are deterministic.",
+        "Key rotation and revocation pass.",
+        "Disconnect and rollback preserve local operation."
+      ],
+      "risks": [
+        "Split-brain state.",
+        "Key compromise or synchronization replay."
+      ]
+    }
+  ]
+}

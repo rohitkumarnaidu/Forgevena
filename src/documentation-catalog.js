@@ -185,6 +185,9 @@ async function describeDocument(root, documentPath, generatedAt) {
 
 function classify(documentPath) {
   if (documentPath.startsWith("docs/reference/generated/")) return "generated-reference";
+  if (documentPath.startsWith("docs/versions/")) return "product-strategy";
+  if (documentPath.startsWith("docs/foundation/")) return "generated-reference";
+  if (documentPath.startsWith("docs/historical/")) return "historical-record";
   if (HISTORICAL_PREFIXES.some((prefix) => documentPath.startsWith(prefix)) || HISTORICAL_ROOT.test(documentPath)) return "historical-record";
   if (documentPath.startsWith("docs/evidence/") || documentPath.startsWith("docs/adr/") || /TEMPLATE\.md$/i.test(documentPath)) return "governance-evidence";
   if (documentPath.startsWith("docs/operations/") || documentPath.startsWith("docs/runbooks/")) return "operational-runbook";
@@ -210,6 +213,8 @@ function inferCriticality(documentPath, classification) {
 
 function sourceOfTruth(documentPath, classification, authority) {
   if (authority) return documentPath;
+  if (documentPath.startsWith("docs/versions/")) return "docs/versions/version-specifications.json and the canonical versioned product roadmap";
+  if (documentPath.startsWith("docs/foundation/")) return "docs/foundation/foundation-map.yaml and its linked canonical authorities";
   if (classification === "generated-reference") return "Forgevena source metadata and documentation generator";
   if (classification === "historical-record") return null;
   if (documentPath.startsWith("docs/cli/") || documentPath.includes("API_REFERENCE")) return "Forgevena command and source contracts";
@@ -258,7 +263,7 @@ function reviewers(documentPath, criticality) {
 }
 
 function versions(documentPath, classification) {
-  const match = documentPath.match(/(?:RELEASE_NOTES_|v)(\d+(?:\.\d+){0,2})/i);
+  const match = documentPath.match(/(?:RELEASE_NOTES_|versions\/v|v)(\d+(?:\.\d+){0,2})/i);
   if (match) return [match[1]];
   if (classification === "product-strategy" || /FUTURE|ROADMAP/i.test(documentPath)) return ["1.x", "2.x", "3.x-strategic"];
   if (classification === "historical-record") return ["historical"];

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "version": "v1.10.0",
+  "state": "required-not-collected",
+  "mandatory": [
+    "requirements",
+    "rfc",
+    "adr",
+    "threat-model",
+    "privacy-review",
+    "readiness-scorecard",
+    "tests",
+    "security",
+    "accessibility",
+    "performance",
+    "migration",
+    "rollback",
+    "documentation-impact",
+    "compatibility",
+    "sbom",
+    "provenance",
+    "release-verification",
+    "post-release-review"
+  ],
+  "gates": {
+    "critical": 100,
+    "important": 95,
+    "standard": 90
+  },
+  "acceptance": [
+    "Index build, update, ignore, retention, deletion, corruption, and recovery pass.",
+    "Copilots remain read-only by default and mutation plans are governed.",
+    "Two release candidates pass migration and rollback rehearsals with no critical/high findings."
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "version": "v1.5.0",
+  "state": "required-not-collected",
+  "mandatory": [
+    "requirements",
+    "rfc",
+    "adr",
+    "threat-model",
+    "privacy-review",
+    "readiness-scorecard",
+    "tests",
+    "security",
+    "accessibility",
+    "performance",
+    "migration",
+    "rollback",
+    "documentation-impact",
+    "compatibility",
+    "sbom",
+    "provenance",
+    "release-verification",
+    "post-release-review"
+  ],
+  "gates": {
+    "critical": 100,
+    "important": 95,
+    "standard": 90
+  },
+  "acceptance": [
+    "Malformed RPC, hangs, crashes, output floods, dependency cycles, signature failures, and rollback are tested.",
+    "Unsigned plugins remain disabled unless explicitly approved.",
+    "MCP authentication, transport, capability, and health policies fail closed."
+  ]
+}

@@ -1,10 +1,11 @@
 import { execFileSync } from "node:child_process";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { analyzeDocumentationImpact, renderDocumentationImpactMarkdown, validateDocumentationImpactReport } from "../src/documentation-impact.js";
 import { writeDocumentationEvidenceBundle } from "../src/documentation-evidence.js";
 
 const args = parseArgs(process.argv.slice(2));
+const fileNotApplicable = args.notApplicableFile ? await readNotApplicable(args.notApplicableFile, args.checkpoint) : {};
 let files;
 try {
   files = args.files ? args.files.split(",") : args.workingTree ? workingTreeFiles() : changedFiles(args.base, args.head);
@@ -20,7 +21,7 @@ const report = analyzeDocumentationImpact(files, {
   base: args.base,
   head: args.head,
   checkpoint: args.checkpoint,
-  notApplicable: args.notApplicable,
+  notApplicable: { ...fileNotApplicable, ...args.notApplicable },
 });
 const validation = validateDocumentationImpactReport(report);
 if (args.jsonOutput) await writeOutput(args.jsonOutput, `${JSON.stringify(report, null, 2)}\n`);
@@ -53,10 +54,35 @@ function parseArgs(values) {
       if (!id || !reason.join("=").trim()) throw new Error("--not-applicable requires <requirement-id>=<reason>");
       parsed.notApplicable[id] = reason.join("=").trim();
     }
-    else if (["--base", "--head", "--files", "--change-id", "--title", "--owner", "--checkpoint", "--json-output", "--markdown-output", "--output-dir"].includes(value)) parsed[toKey(value)] = values[++index];
+    else if (["--base", "--head", "--files", "--change-id", "--title", "--owner", "--checkpoint", "--json-output", "--markdown-output", "--output-dir", "--not-applicable-file"].includes(value)) parsed[toKey(value)] = values[++index];
     else throw new Error(`Unsupported option ${value}`);
   }
   return parsed;
+}
+
+async function readNotApplicable(target, checkpoint) {
+  const resolved = path.resolve(target);
+  let report;
+  try {
+    report = JSON.parse(await readFile(resolved, "utf8"));
+  } catch (error) {
+    throw new Error(`Unable to read --not-applicable-file ${target}: ${error.message}`);
+  }
+  if (report?.schemaVersion !== 2 || !Array.isArray(report.requirements)) {
+    throw new Error("--not-applicable-file must be a schemaVersion 2 documentation impact report");
+  }
+  if (checkpoint && report.checkpoint !== checkpoint) {
+    throw new Error(`--not-applicable-file checkpoint ${report.checkpoint ?? "missing"} does not match ${checkpoint}`);
+  }
+  const rationales = {};
+  for (const requirement of report.requirements) {
+    if (requirement?.status !== "not-applicable") continue;
+    if (typeof requirement.id !== "string" || typeof requirement.rationale !== "string" || !requirement.rationale.trim()) {
+      throw new Error("--not-applicable-file contains an invalid not-applicable requirement");
+    }
+    rationales[requirement.id] = requirement.rationale.trim();
+  }
+  return rationales;
 }
 
 function toKey(value) { return value.slice(2).replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()); }

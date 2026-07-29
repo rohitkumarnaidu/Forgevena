@@ -95,10 +95,10 @@ export async function referenceCommand(root, name, options) {
 
 export async function dockerCommand(root, args, options) {
   const [action = "plan"] = args;
+  if (!["plan", "validate", "up", "down"].includes(action)) throw commandError("CLI_DOCKER_ACTION_INVALID", "Usage: docker <plan|validate|up|down>", 2, { action });
   const status = await readStatus(root);
   if (!status.initialized || !status.registry?.template) throw commandError("CLI_DOCKER_PROJECT_REQUIRED", "Initialize or create a workspace project before using Docker commands.", 2);
   if (action === "validate") return validateDockerAssets(root, status.registry.template);
-  if (!["plan", "up", "down"].includes(action)) throw commandError("CLI_DOCKER_ACTION_INVALID", "Usage: docker <plan|validate|up|down>", 2, { action });
   const plan = await dockerPlan(root, status.registry.template, action === "down" ? "down" : "up");
   if (action === "plan" || options.dryRun) return { ...plan, dryRun: true };
   const approval = await approveExternalAction(plan, options);

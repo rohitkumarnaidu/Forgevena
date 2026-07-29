@@ -41,6 +41,15 @@ jobs:
           fi
           CHANGE_ID="push-${GITHUB_SHA::12}"
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then CHANGE_ID="pr-${{ github.event.pull_request.number }}"; fi
+          mapfile -t IMPACT_REPORTS < <(git diff --name-only "$BASE" "$GITHUB_SHA" | grep -E '^docs/evidence/changes/[^/]+/documentation-impact\.json$' || true)
+          if (( ${#IMPACT_REPORTS[@]} > 1 )); then
+            echo "Exactly one root documentation impact report may be changed; found ${#IMPACT_REPORTS[@]}." >&2
+            exit 1
+          fi
+          IMPACT_ARGS=()
+          if (( ${#IMPACT_REPORTS[@]} == 1 )); then
+            IMPACT_ARGS+=(--not-applicable-file "${IMPACT_REPORTS[0]}")
+          fi
           node scripts/documentation-impact.js \
             --base "$BASE" \
             --head "$GITHUB_SHA" \
@@ -48,6 +57,7 @@ jobs:
             --change-id "$CHANGE_ID" \
             --owner "${{ github.actor }}" \
             --output-dir dist/documentation-evidence \
+            "${IMPACT_ARGS[@]}" \
             --check
       - name: Upload documentation synchronization evidence
         if: always()
@@ -57,6 +67,7 @@ jobs:
           path: dist/documentation-evidence
           if-no-files-found: error
       - run: node scripts/validate-docs.js
+      - run: npm run docs:versions:verify
       - run: npm run governance:releases
       - run: node scripts/extract-mermaid.js
       - name: Install Mermaid browser runtime

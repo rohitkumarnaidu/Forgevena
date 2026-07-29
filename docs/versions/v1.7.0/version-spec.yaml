@@ -1,0 +1,83 @@
+{
+  "version": "v1.7.0",
+  "title": "Local Organization Governance",
+  "outcome": "Enforce signed, portable organization policy bundles without requiring a server or account.",
+  "owner": "Governance and Policy Maintainers",
+  "roadmapAuthority": "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#10-v170--local-organization-governance",
+  "riskTier": "tier-3",
+  "dependsOn": [
+    "v1.6.0"
+  ],
+  "blocks": [
+    "v1.8.0"
+  ],
+  "architectureDelta": "Add one deny-overrides policy evaluator for organizations, principals, roles, artifacts, capabilities, and external-effect boundaries.",
+  "interfaceImpacts": [
+    "Version organization, role, policy, overlay, decision, approval, and compliance schemas.",
+    "Add policy simulation, explanation, signing, import, export, audit, and compliance commands."
+  ],
+  "nonGoals": [
+    "No mandatory hosted identity or control plane.",
+    "No alternate CLI path may bypass policy."
+  ],
+  "metrics": [
+    "Every external-effect boundary invokes policy evaluation.",
+    "Policy decisions are deterministic and explainable.",
+    "Bundles remain portable, signed, and usable offline."
+  ],
+  "acceptance": [
+    "Deny overrides all allow paths and is tested across commands.",
+    "Environment overlays have deterministic precedence.",
+    "Unsigned or unapproved artifacts require explicit governed approval."
+  ],
+  "assumptions": [
+    "Local principals and signatures are sufficient before v2.0.",
+    "Policy metadata excludes sensitive content."
+  ],
+  "openQuestions": [
+    "How are principal keys recovered or rotated?",
+    "Which compliance packs remain guidance rather than certification?"
+  ],
+  "features": [
+    {
+      "id": "signed-organization-policy",
+      "title": "Signed Organization Policy Bundles",
+      "status": "committed",
+      "summary": "Define organizations, principals, roles, permissions, approved artifacts, and capability rules in signed local bundles.",
+      "value": "Teams gain enforceable governance without deploying a server.",
+      "architecture": "Policy bundles are schema-validated, signed, imported transactionally, and evaluated by one deny-overrides engine.",
+      "dependencies": [
+        "v1.6 signed packages and catalogs"
+      ],
+      "acceptance": [
+        "Signatures and schema fail closed.",
+        "Import/export is portable.",
+        "Denied operations cannot use alternate commands."
+      ],
+      "risks": [
+        "Policy lockout.",
+        "Complex precedence may surprise users."
+      ]
+    },
+    {
+      "id": "policy-simulation-compliance",
+      "title": "Policy Simulation and Compliance",
+      "status": "committed",
+      "summary": "Explain effective policy, detect bypass paths, and export metadata-only audit and compliance evidence.",
+      "value": "Reviewers can predict policy impact before enforcing changes.",
+      "architecture": "The simulator evaluates proposed bundles against recorded operation shapes without executing effects.",
+      "dependencies": [
+        "signed-organization-policy"
+      ],
+      "acceptance": [
+        "Simulation matches runtime decisions.",
+        "Bypass analysis covers every command family.",
+        "Exports contain no secrets or source content."
+      ],
+      "risks": [
+        "Simulation/runtime drift.",
+        "Misleading compliance claims."
+      ]
+    }
+  ]
+}

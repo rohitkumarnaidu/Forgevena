@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "owner": "Forgevena Architecture and Documentation Maintainers",
+  "subjects": [
+    { "id": "vision", "title": "Vision and Platform Blueprint", "authority": "docs/strategy/FORGEVENA_PLATFORM_BLUEPRINT.md", "documentId": "FORGEVENA-PLATFORM-BLUEPRINT", "owner": "Forgevena Product and Architecture Maintainers", "lifecycle": "maintained", "reviewBy": "2027-01-31" },
+    { "id": "constitution", "title": "Platform Constitution", "authority": "docs/strategy/PLATFORM_CONSTITUTION.md", "documentId": "FORGEVENA-PLATFORM-CONSTITUTION", "owner": "Forgevena Governance Board", "lifecycle": "maintained", "reviewBy": "2027-01-31" },
+    { "id": "architecture", "title": "Canonical Platform Architecture", "authority": "docs/strategy/FORGEVENA_PLATFORM_BLUEPRINT.md", "documentId": "FORGEVENA-PLATFORM-BLUEPRINT", "owner": "Forgevena Architecture Maintainers", "lifecycle": "maintained", "reviewBy": "2027-01-31" },
+    { "id": "capability-model", "title": "Enterprise Capability System", "authority": "docs/architecture/ENTERPRISE_CAPABILITY_SYSTEM.md", "documentId": "FORGEVENA-ENTERPRISE-CAPABILITY-SYSTEM", "owner": "Forgevena Architecture Maintainers", "lifecycle": "maintained", "reviewBy": "2027-01-31" },
+    { "id": "contracts", "title": "Capability and Package Contracts", "authority": "docs/architecture/ECOSYSTEM_CAPABILITY_AND_PACKAGE_MODEL.md", "documentId": "FORGEVENA-ECOSYSTEM-CAPABILITY-PACKAGE-MODEL", "owner": "Forgevena Registry and Ecosystem Maintainers", "lifecycle": "maintained", "reviewBy": "2027-01-31" },
+    { "id": "standards", "title": "Research and Standards Radar", "authority": "docs/strategy/RESEARCH_AND_STANDARDS_RADAR.md", "documentId": "FORGEVENA-RESEARCH-STANDARDS-RADAR", "owner": "Forgevena Governance Board", "lifecycle": "maintained", "reviewBy": "2027-01-31" },
+    { "id": "governance", "title": "Engineering Governance", "authority": "docs/ENGINEERING_GOVERNANCE.md", "documentId": "FORGEVENA-ENGINEERING-GOVERNANCE", "owner": "Forgevena Governance Board", "lifecycle": "maintained", "reviewBy": "2027-01-31" },
+    { "id": "security-and-trust", "title": "Ecosystem Trust and Safety", "authority": "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md", "documentId": "FORGEVENA-ECOSYSTEM-TRUST-SAFETY", "owner": "Forgevena Security Maintainers", "lifecycle": "maintained", "reviewBy": "2027-01-31" },
+    { "id": "reliability-and-operations", "title": "Reliability and Operations", "authority": "docs/OPERATIONS_GUIDE.md", "documentId": "FORGEVENA-OPERATIONS-GUIDE", "owner": "Forgevena Operations Maintainers", "lifecycle": "maintained", "reviewBy": "2027-01-31" },
+    { "id": "product-experience", "title": "ForgeHub Product Experience", "authority": "docs/strategy/FORGEHUB_PRODUCT_EXPERIENCE.md", "documentId": "FORGEVENA-FORGEHUB-PRODUCT-EXPERIENCE", "owner": "Forgevena Product Maintainers", "lifecycle": "maintained", "reviewBy": "2027-01-31" },
+    { "id": "ecosystem", "title": "ForgeHub Ecosystem Vision", "authority": "docs/strategy/FORGEHUB_ECOSYSTEM_VISION.md", "documentId": "FORGEVENA-FORGEHUB-ECOSYSTEM-VISION", "owner": "Forgevena Ecosystem Maintainers", "lifecycle": "maintained", "reviewBy": "2027-01-31" },
+    { "id": "glossary", "title": "Canonical Glossary", "authority": "docs/glossary/index.md", "documentId": "FORGEVENA-GLOSSARY", "owner": "Forgevena Documentation Maintainers", "lifecycle": "maintained", "reviewBy": "2027-01-31" },
+    { "id": "adr", "title": "Architecture Decision Records", "authority": "docs/adrs/index.md", "documentId": "FORGEVENA-ADR-INDEX", "owner": "Forgevena Architecture Maintainers", "lifecycle": "maintained", "reviewBy": "2027-01-31" }
+  ]
+}

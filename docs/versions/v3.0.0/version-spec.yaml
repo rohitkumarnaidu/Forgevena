@@ -1,0 +1,83 @@
+{
+  "version": "v3.0.0",
+  "title": "AI Engineering Operating System and Ecosystem GA",
+  "outcome": "Unify Forgevena Core, ForgeRegistry, ForgeHub, governance, workflows, evidence, intelligence, and optional managed services into a resilient AI Engineering Operating System.",
+  "owner": "Forgevena Architecture and Ecosystem Maintainers",
+  "roadmapAuthority": "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#v300--ai-engineering-operating-system-and-ecosystem-ga",
+  "riskTier": "tier-3",
+  "dependsOn": [
+    "v2.7.0"
+  ],
+  "blocks": [],
+  "architectureDelta": "Resolve mature local, registry, hub, control-plane, trust, workflow, intelligence, evidence, and operations contracts into one governed experience with explicit migration from 2.x.",
+  "interfaceImpacts": [
+    "Version project digital twin, evidence graph, engineering capsule, release autopilot, resilience exercise, federation, and major-version migration contracts.",
+    "Unify CLI, dashboard, IDE, organization, registry, publisher, and managed-service surfaces without removing local-only operation."
+  ],
+  "nonGoals": [
+    "No mandatory account, telemetry, cloud, managed service, advertising, or surrender of human promotion authority.",
+    "No breaking change without previewable migration, compatibility evidence, rollback, and final-2.x support."
+  ],
+  "metrics": [
+    "Local and offline operation remain complete.",
+    "Federation and control-plane outages preserve productive local work.",
+    "Independent security, privacy, accessibility, reliability, and ecosystem governance reviews pass."
+  ],
+  "acceptance": [
+    "Two release candidates pass migration, rollback, disaster recovery, federation, and offline rehearsals.",
+    "Project digital twins and evidence graphs remain metadata-minimized and explainable.",
+    "Human authority governs mutation, deployment, billing, publication, trust, and policy promotion."
+  ],
+  "assumptions": [
+    "All prior roadmap contracts have reached stable evidence-backed maturity.",
+    "The final 2.x release receives a documented support window."
+  ],
+  "openQuestions": [
+    "Which contracts require a major-version break?",
+    "What governance model sustains a federated global ecosystem?"
+  ],
+  "features": [
+    {
+      "id": "unified-ai-engineering-os",
+      "title": "Unified AI Engineering Operating System",
+      "status": "committed",
+      "summary": "Present local projects, capabilities, workflows, policies, evidence, registries, organizations, and ecosystem operations through one governed platform.",
+      "value": "Engineering teams move from idea to production with consistent trust, portability, and recovery.",
+      "architecture": "Core retains local authority while optional registry, hub, federation, and control-plane services communicate through versioned, policy-controlled contracts.",
+      "dependencies": [
+        "v2.7 trust network",
+        "v2.0 control plane",
+        "v1.10 local enterprise GA"
+      ],
+      "acceptance": [
+        "Local-only mode is complete.",
+        "Major migration is previewable and reversible.",
+        "Independent enterprise reviews pass."
+      ],
+      "risks": [
+        "System complexity.",
+        "Governance or service boundaries may blur."
+      ]
+    },
+    {
+      "id": "evidence-digital-twin-autopilot",
+      "title": "Evidence Graph, Digital Twin, and Release Autopilot",
+      "status": "committed",
+      "summary": "Connect requirements, architecture, code, tests, policies, packages, releases, risks, operations, and recovery into explainable engineering evidence.",
+      "value": "Teams can assess readiness, rehearse recovery, and automate evidence preparation while retaining human promotion authority.",
+      "architecture": "Metadata-only project digital twins and evidence graphs feed bounded workflow plans, engineering capsules, and resilience exercises.",
+      "dependencies": [
+        "unified-ai-engineering-os"
+      ],
+      "acceptance": [
+        "Evidence links are verifiable.",
+        "Autopilot cannot promote releases.",
+        "Capsules reproduce offline with signed manifests."
+      ],
+      "risks": [
+        "Stale evidence graph.",
+        "Automation could be mistaken for approval."
+      ]
+    }
+  ]
+}

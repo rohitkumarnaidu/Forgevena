@@ -1,0 +1,83 @@
+{
+  "version": "v2.3.0",
+  "title": "ForgeHub Discovery and Lifecycle",
+  "outcome": "Deliver accessible, policy-controlled capability discovery, installation, updates, AgentSpace, collections, and lifecycle history.",
+  "owner": "ForgeHub Product Maintainers",
+  "roadmapAuthority": "docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#v230--forgehub-discovery-and-lifecycle",
+  "riskTier": "tier-3",
+  "dependsOn": [
+    "v2.2.0"
+  ],
+  "blocks": [
+    "v2.4.0"
+  ],
+  "architectureDelta": "Add ForgeHub as the discovery and lifecycle experience over ForgeRegistry and Forgevena Core; AgentSpace remains a ForgeHub area.",
+  "interfaceImpacts": [
+    "Version search, package detail, review, collection, installation scope, compatibility, update plan, and lifecycle history contracts.",
+    "Add hub search, agents, collections, reviews, recommendations, and package lifecycle commands and dashboard views."
+  ],
+  "nonGoals": [
+    "No hidden sponsored ranking, behavioral advertising, or marketplace execution outside Core.",
+    "No popularity or verification signal may imply safety."
+  ],
+  "metrics": [
+    "Discovery and lifecycle journeys meet accessibility targets.",
+    "Installs are reproducible and ownership is precise.",
+    "Reviews and publisher evidence are version-scoped and moderated."
+  ],
+  "acceptance": [
+    "Global, organization, workspace, project, shared, and read-only scope precedence passes.",
+    "Install, update, remove, rollback, health, and history are fully evidenced.",
+    "Ranking is explainable, neutral, and policy-aware."
+  ],
+  "assumptions": [
+    "ForgeRegistry is the sole package authority.",
+    "Forgevena Core retains runtime and policy authority."
+  ],
+  "openQuestions": [
+    "How are review abuse and publisher disputes appealed?",
+    "Which installation scopes can inherit or pin versions?"
+  ],
+  "features": [
+    {
+      "id": "forgehub-lifecycle-experience",
+      "title": "ForgeHub Lifecycle Experience",
+      "status": "committed",
+      "summary": "Provide search, package details, docs, compatibility, versions, installation plans, updates, rollback, health, and history.",
+      "value": "Users manage the ecosystem through one accessible, explainable experience.",
+      "architecture": "CLI and dashboard call shared Core lifecycle services and resolve packages exclusively through ForgeRegistry.",
+      "dependencies": [
+        "v2.2 federated registries"
+      ],
+      "acceptance": [
+        "All scopes and precedence rules pass.",
+        "Uninstall and rollback evidence is complete.",
+        "No interface bypasses policy or consent."
+      ],
+      "risks": [
+        "Scope confusion.",
+        "Search ranking manipulation."
+      ]
+    },
+    {
+      "id": "agentspace-collections-community",
+      "title": "AgentSpace, Collections, and Community",
+      "status": "committed",
+      "summary": "Organize agents, teams, profiles, bundles, evaluations, reviews, collections, and publisher responses inside ForgeHub.",
+      "value": "Users can discover and govern complex AI capabilities without creating a separate authority layer.",
+      "architecture": "AgentSpace presents registry definitions and Core execution evidence; community content is moderated and version-scoped.",
+      "dependencies": [
+        "forgehub-lifecycle-experience"
+      ],
+      "acceptance": [
+        "AgentSpace remains inside ForgeHub.",
+        "Trust and maturity are distinct.",
+        "Moderation, appeals, abuse, and accessibility flows pass."
+      ],
+      "risks": [
+        "Social signals may be mistaken for trust.",
+        "Moderation burden and abuse."
+      ]
+    }
+  ]
+}

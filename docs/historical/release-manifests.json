@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "authority": "docs/governance/release-retrospectives.json",
+  "releases": [
+    { "tag": "v1.2.0", "commit": "c4fefddc3a7a10a98bee51ea92906992458507a8", "outcome": "failed-publication", "decision": "failed-as-recorded", "notes": "docs/release/RELEASE_HISTORY.md", "retrospective": "docs/governance/release-retrospectives.json" },
+    { "tag": "v1.2.1", "commit": "8be82759b530dcdd0f58ed8f8481a62baf6ba77e", "outcome": "published", "decision": "historical-assurance", "notes": "docs/RELEASE_NOTES_1.2.1.md", "retrospective": "docs/governance/release-retrospectives.json" },
+    { "tag": "v1.2.2", "commit": "3d4e1d87d2fc346f8fbc049b306721946aaa3bef", "outcome": "failed-publication", "decision": "failed-as-recorded", "notes": "docs/RELEASE_NOTES_1.2.2.md", "retrospective": "docs/governance/release-retrospectives.json" },
+    { "tag": "v1.2.3", "commit": "a87bd67b6c0f0ac2614e2dbf2fc6541ee2eaf248", "outcome": "published", "decision": "historical-assurance", "notes": "docs/RELEASE_NOTES_1.2.3.md", "retrospective": "docs/governance/release-retrospectives.json" },
+    { "tag": "v1.3.0", "commit": "004710388afa7f2888a0e2594ede2d3cde96fe1c", "outcome": "published", "decision": "historical-assurance", "notes": "docs/RELEASE_NOTES_1.3.0.md", "retrospective": "docs/governance/release-retrospectives.json" }
+  ]
+}

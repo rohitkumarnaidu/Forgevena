@@ -32,6 +32,11 @@
 | `docs/audit/REFACTORING_PLAN.md` | Refactoring Plan | `docs/reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md` |
 | `docs/audit/RISK_REPORT.md` | Risk Report | `docs/reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md` |
 | `docs/audit/TECHNICAL_DEBT_REPORT.md` | Technical Debt Report | `docs/reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md` |
+| `docs/historical/README.md` | Historical Documentation Facade | `docs/index.md` |
+| `docs/historical/audits/README.md` | Historical Audits | `docs/index.md` |
+| `docs/historical/phases/README.md` | Historical Phases | `docs/index.md` |
+| `docs/historical/releases/README.md` | Historical Releases | `docs/release/index.md` |
+| `docs/historical/retired-plans/README.md` | Historical Retired Plans | `docs/index.md` |
 | `docs/rc/DISTRIBUTION_REPORT.md` | Distribution Report | `docs/index.md` |
 | `docs/rc/ENTERPRISE_READINESS.md` | Enterprise Readiness Report | `docs/index.md` |
 | `docs/rc/FINAL_RELEASE_READINESS.md` | Historical RC1 Readiness | `docs/release/index.md` |
