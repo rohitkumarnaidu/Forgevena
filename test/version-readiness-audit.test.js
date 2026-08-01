@@ -6,7 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import {
   AUDITED_VERSIONS, SCORE_CATEGORIES, bootstrapVersionReadinessAudits, createProspectiveVersionReadinessAudit,
-  REQUIRED_IMPLEMENTATION_CONTRACT_SECTIONS, assessImplementationContract,
+  REQUIRED_IMPLEMENTATION_CONTRACT_SECTIONS, assessImplementationContract, normalizeGeneratedMarkdown,
   renderAuditMarkdown, renderComparisonMarkdown,
   renderDependencyMapMarkdown, renderOwnershipMatrixMarkdown, validateVersionReadinessAudits,
   validateVersionReadinessAuditRecord, writeVersionReadinessReports,
@@ -34,14 +34,35 @@ test("generated audit reports and consolidated views match retained evidence", a
   const { audits } = await validateVersionReadinessAudits(root);
   for (const audit of audits) {
     const actual = await readFile(path.join(root, `docs/evidence/changes/version-readiness-audit-${audit.auditedVersion}/audit.md`), "utf8");
-    assert.equal(actual, renderAuditMarkdown(audit));
+    assert.equal(normalizeGeneratedMarkdown(actual), renderAuditMarkdown(audit));
   }
   const reports = [
     ["docs/reports/VERSION_IMPLEMENTATION_READINESS_COMPARISON.md", renderComparisonMarkdown(audits)],
     ["docs/reports/VERSION_READINESS_DEPENDENCY_MAP.md", renderDependencyMapMarkdown(audits)],
     ["docs/reports/VERSION_READINESS_BLOCKER_OWNERSHIP_MATRIX.md", renderOwnershipMatrixMarkdown(audits)],
   ];
-  for (const [relative, expected] of reports) assert.equal(await readFile(path.join(root, relative), "utf8"), expected);
+  for (const [relative, expected] of reports) {
+    assert.equal(normalizeGeneratedMarkdown(await readFile(path.join(root, relative), "utf8")), normalizeGeneratedMarkdown(expected));
+  }
+});
+
+test("generated audit verification accepts Windows line endings", async () => {
+  const temporaryRoot = await mkdtemp(path.join(os.tmpdir(), "forgevena-readiness-crlf-"));
+  try {
+    await cp(path.join(root, "docs"), path.join(temporaryRoot, "docs"), { recursive: true });
+    const auditPath = path.join(temporaryRoot, "docs", "evidence", "changes", "version-readiness-audit-v1.4.0", "audit.md");
+    const reportPath = path.join(temporaryRoot, "docs", "reports", "VERSION_IMPLEMENTATION_READINESS_COMPARISON.md");
+    for (const target of [auditPath, reportPath]) {
+      const contents = await readFile(target, "utf8");
+      await writeFile(target, contents.replace(/\n/g, "\r\n"), "utf8");
+    }
+    const script = path.join(root, "scripts", "version-readiness-audits.js");
+    const result = JSON.parse(execFileSync(process.execPath, [script, "--all", "--verify", "--comparison"], { cwd: temporaryRoot, encoding: "utf8" }));
+    assert.equal(result.valid, true);
+    assert.equal(result.versions, 16);
+  } finally {
+    await rm(temporaryRoot, { recursive: true, force: true });
+  }
 });
 
 test("audit schema v2 exposes dependency-aware evidence", async () => {

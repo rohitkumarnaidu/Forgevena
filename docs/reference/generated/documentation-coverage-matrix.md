@@ -10,7 +10,7 @@
 | canonical-architecture | 11 |
 | canonical-policy | 6 |
 | generated-reference | 26 |
-| governance-evidence | 130 |
+| governance-evidence | 128 |
 | historical-record | 87 |
 | operational-runbook | 2 |
 | product-strategy | 221 |
@@ -21,15 +21,15 @@
 |---|---:|
 | users | 128 |
 | developers | 90 |
-| maintainers | 610 |
-| enterprise-reviewers | 170 |
-| ai-coding-agents | 523 |
+| maintainers | 608 |
+| enterprise-reviewers | 169 |
+| ai-coding-agents | 521 |
 
 ## Content-Type Coverage
 
 | Type | Documents |
 |---|---:|
-| evidence | 217 |
+| evidence | 215 |
 | explanation | 272 |
 | how-to | 33 |
 | reference | 85 |

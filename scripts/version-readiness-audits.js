@@ -3,7 +3,8 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import {
   AUDITED_VERSIONS, renderAuditMarkdown, renderComparisonMarkdown, renderDependencyMapMarkdown,
-  renderOwnershipMatrixMarkdown, bootstrapVersionReadinessAudits, validateVersionReadinessAudits, writeVersionReadinessReports,
+  renderOwnershipMatrixMarkdown, bootstrapVersionReadinessAudits, normalizeGeneratedMarkdown,
+  validateVersionReadinessAudits, writeVersionReadinessReports,
 } from "../src/version-readiness-audit.js";
 
 const root = process.cwd();
@@ -42,7 +43,8 @@ async function verifyGenerated(rootDir, audits, options) {
   const issues = [];
   for (const audit of audits) {
     const relative = `docs/evidence/changes/version-readiness-audit-${audit.auditedVersion}/audit.md`;
-    if (await readFile(path.join(rootDir, relative), "utf8").catch(() => "") !== renderAuditMarkdown(audit)) issues.push(`${relative} is missing or stale.`);
+    const actual = await readFile(path.join(rootDir, relative), "utf8").catch(() => "");
+    if (normalizeGeneratedMarkdown(actual) !== renderAuditMarkdown(audit)) issues.push(`${relative} is missing or stale.`);
   }
   if (options.comparison && !options.version) {
     const reports = [
@@ -50,7 +52,10 @@ async function verifyGenerated(rootDir, audits, options) {
       ["docs/reports/VERSION_READINESS_DEPENDENCY_MAP.md", renderDependencyMapMarkdown(audits)],
       ["docs/reports/VERSION_READINESS_BLOCKER_OWNERSHIP_MATRIX.md", renderOwnershipMatrixMarkdown(audits)],
     ];
-    for (const [relative, expected] of reports) if (await readFile(path.join(rootDir, relative), "utf8").catch(() => "") !== expected) issues.push(`${relative} is missing or stale.`);
+    for (const [relative, expected] of reports) {
+      const actual = await readFile(path.join(rootDir, relative), "utf8").catch(() => "");
+      if (normalizeGeneratedMarkdown(actual) !== normalizeGeneratedMarkdown(expected)) issues.push(`${relative} is missing or stale.`);
+    }
   }
   if (options.remediation) await runRemediation(options);
   return issues;

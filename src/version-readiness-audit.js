@@ -98,8 +98,12 @@ function renderAuditMarkdownRaw(audit) {
   return `# ${audit.auditedVersion} Implementation Readiness Audit\n\n> **Audit ID:** \`${audit.auditId}\`  \n> **Audit date:** ${audit.auditedAt}  \n> **Type:** Prospective documentation-only implementation-readiness audit  \n> **Verdict:** **${audit.verdict.toUpperCase()}**\n\n## Executive Verdict\n\n${audit.executiveVerdict}\n\n- **Overall score:** ${audit.overallScore}/100\n- **Implementation readiness:** ${audit.implementationReadiness}\n- **Owned blocking findings:** ${blocking.length}\n- **Inherited dependency blockers:** ${audit.inheritedDependencyBlockers.length}\n- **Re-audit required:** ${audit.reAuditRequired ? "Yes" : "No"}\n\n## Scores\n\n| Domain | Score |\n| --- | ---: |\n${scoreRows}\n\n## Mandatory Blockers\n\n${audit.blockers.map((blocker) => `- **${blocker.id}:** ${blocker.summary} (\`${blocker.sourceReference}\`)`).join("\n")}\n\n## Inherited Dependency Blockers\n\n${inherited}\n\nInherited blockers do not duplicate version-owned findings. They preserve dependency order and close only when the predecessor receives an independent \`APPROVE\` verdict.\n\n## Findings\n\n| ID | Severity | Category | Blocking | Unanswered implementation question |\n| --- | --- | --- | --- | --- |\n${findingRows}\n\n## Feature Traceability\n\n| Feature | Status | Missing implementation contract |\n| --- | --- | --- |\n${traceRows}\n\n## Role-Specific Unanswered Questions\n\n${roleSections}\n\n## AI-Agent Verdict\n\n${AGENTS.map((agent) => `- **${label(agent)}:** ${audit.agentReadiness[agent].toUpperCase()}`).join("\n")}\n\nNo listed agent or new engineering team should implement this version until every owned and inherited blocking finding is closed and the package is independently re-audited.\n\n## Decision-Complete Remediation Backlog\n\n${remediation}\n`;
 }
 
+export function normalizeGeneratedMarkdown(value) {
+  return value.replace(/\r\n?/g, "\n").replace(/\n{3,}/g, "\n\n");
+}
+
 export function renderAuditMarkdown(audit) {
-  return normalizeMarkdown(renderAuditMarkdownRaw(audit));
+  return normalizeGeneratedMarkdown(renderAuditMarkdownRaw(audit));
 }
 
 export function renderComparisonMarkdown(audits) {
@@ -337,8 +341,6 @@ export function assessImplementationContract(contract, specification) {
 }
 
 function contractIssue(category, summary) { return { category, summary }; }
-function normalizeMarkdown(value) { return value.replace(/\n{3,}/g, "\n\n"); }
-
 async function preserveBaselineAudit(root, version, audit) {
   if (!audit) return;
   const directory = path.join(root, `docs/evidence/changes/version-readiness-audit-${version}`);
