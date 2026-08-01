@@ -64,7 +64,7 @@ forgevena version
 forgevena doctor
 ```
 
-The current tap supports x64 release assets. Use npm on arm64 until native arm64 assets are published. Winget and Chocolatey public submissions are independently moderated; see the [installation guide](docs/installation/index.md) for their current status.
+The current tap supports x64 release assets. Use npm on arm64 until native arm64 assets are published. Winget `1.2.3` is published upstream; Chocolatey `1.2.3` has passed automated checks and remains in human moderation. See the [installation guide](docs/installation/index.md) for authoritative channel versions and status.
 
 For an existing repository, always preview first:
 

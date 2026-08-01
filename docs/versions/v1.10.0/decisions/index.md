@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- Which evidence supports an explainable workspace health score?
-- How should semantic embeddings be deleted and verified?
+- None.
 
 ## Decision Expiry
 

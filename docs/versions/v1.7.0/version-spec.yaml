@@ -34,10 +34,8 @@
     "Local principals and signatures are sufficient before v2.0.",
     "Policy metadata excludes sensitive content."
   ],
-  "openQuestions": [
-    "How are principal keys recovered or rotated?",
-    "Which compliance packs remain guidance rather than certification?"
-  ],
+  "openQuestions": [],
+  "implementationContract": "docs/versions/v1.7.0/implementation-contract.md",
   "features": [
     {
       "id": "signed-organization-policy",

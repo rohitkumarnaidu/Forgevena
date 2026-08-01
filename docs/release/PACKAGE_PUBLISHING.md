@@ -26,6 +26,12 @@ Use `Retry Package Publication` only for GitHub Packages or container failures. 
 
 `npm run release:assets` consumes the npm archive and three native x64 executables under `dist/standalone/`, then creates checksummed submission manifests under `dist/`. Homebrew consumes immutable macOS/Linux binaries, Winget consumes the Windows executable, and Chocolatey embeds the same checksum-verified Windows executable with install and uninstall scripts. Submission to external package-manager repositories requires account ownership, review, and their normal pull-request processes.
 
+Current external evidence:
+
+- Winget `1.2.3` was accepted and published through [microsoft/winget-pkgs PR 404506](https://github.com/microsoft/winget-pkgs/pull/404506). Maintainers verify propagation with `winget source update` and `winget show --id RohitKumarNaidu.Forgevena --exact`.
+- Chocolatey `1.2.3` passed package validation and automated installation testing. It remains under human moderation at the [Chocolatey package page](https://community.chocolatey.org/packages/forgevena/1.2.3); no repository change can accelerate that external review.
+- The Homebrew tap publishes `1.3.0`. External channel versions may trail npm and must be reported independently rather than described as one synchronized release.
+
 ## Rollback
 
 - npm: `npm deprecate forgevena@<version> "Reason and replacement"`.

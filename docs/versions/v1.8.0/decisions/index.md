@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- Which trace formats are stable public contracts?
-- What retention defaults balance diagnosis and privacy?
+- None.
 
 ## Decision Expiry
 

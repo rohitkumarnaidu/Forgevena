@@ -34,10 +34,8 @@
     "Template assets remain additive and content-addressed.",
     "Native package channels keep external moderation authority."
   ],
-  "openQuestions": [
-    "Which inheritance patterns remain deterministic?",
-    "How are abandoned template publishers handled?"
-  ],
+  "openQuestions": [],
+  "implementationContract": "docs/versions/v1.6.0/implementation-contract.md",
   "features": [
     {
       "id": "versioned-template-packages",

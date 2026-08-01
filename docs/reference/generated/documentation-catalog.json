@@ -4797,6 +4797,357 @@
       }
     },
     {
+      "id": "doc:evidence/changes/all-version-readiness-audit/documentation-coverage",
+      "path": "docs/evidence/changes/all-version-readiness-audit/documentation-coverage.md",
+      "title": "Generated Documentation Coverage Matrix",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Generated Documentation Coverage Matrix.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/all-version-readiness-audit/documentation-impact",
+      "path": "docs/evidence/changes/all-version-readiness-audit/documentation-impact.md",
+      "title": "Documentation Impact Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Documentation Impact Report.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/all-version-readiness-audit/documentation-synchronization",
+      "path": "docs/evidence/changes/all-version-readiness-audit/documentation-synchronization.md",
+      "title": "Documentation Synchronization Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Documentation Synchronization Report.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/all-version-readiness-audit/migration-impact",
+      "path": "docs/evidence/changes/all-version-readiness-audit/migration-impact.md",
+      "title": "Migration Impact Summary",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Migration Impact Summary.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/all-version-readiness-audit/missing-documentation",
+      "path": "docs/evidence/changes/all-version-readiness-audit/missing-documentation.md",
+      "title": "Missing Documentation Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Missing Documentation Report.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/all-version-readiness-audit/release-documentation-summary",
+      "path": "docs/evidence/changes/all-version-readiness-audit/release-documentation-summary.md",
+      "title": "Release Documentation Summary",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Release Documentation Summary.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/all-version-readiness-audit/repository-health",
+      "path": "docs/evidence/changes/all-version-readiness-audit/repository-health.md",
+      "title": "Repository Health Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Repository Health Report.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/all-version-readiness-audit/updated-documents",
+      "path": "docs/evidence/changes/all-version-readiness-audit/updated-documents.md",
+      "title": "Updated Document List",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Updated Document List.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/all-version-readiness-audit/version-history-impact",
+      "path": "docs/evidence/changes/all-version-readiness-audit/version-history-impact.md",
+      "title": "Version History Impact",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Version History Impact.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:evidence/changes/documentation-governance-docker-repair/documentation/documentation-coverage",
       "path": "docs/evidence/changes/documentation-governance-docker-repair/documentation/documentation-coverage.md",
       "title": "Generated Documentation Coverage Matrix",
@@ -5566,6 +5917,396 @@
       }
     },
     {
+      "id": "doc:evidence/changes/three-version-readiness-audit/documentation-impact",
+      "path": "docs/evidence/changes/three-version-readiness-audit/documentation-impact.md",
+      "title": "Documentation Impact Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Documentation Impact Report.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/three-version-readiness-audit/documentation/documentation-coverage",
+      "path": "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-coverage.md",
+      "title": "Generated Documentation Coverage Matrix",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Generated Documentation Coverage Matrix.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/three-version-readiness-audit/documentation/documentation-impact",
+      "path": "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-impact.md",
+      "title": "Documentation Impact Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Documentation Impact Report.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/three-version-readiness-audit/documentation/documentation-synchronization",
+      "path": "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-synchronization.md",
+      "title": "Documentation Synchronization Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Documentation Synchronization Report.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/three-version-readiness-audit/documentation/migration-impact",
+      "path": "docs/evidence/changes/three-version-readiness-audit/documentation/migration-impact.md",
+      "title": "Migration Impact Summary",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Migration Impact Summary.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/three-version-readiness-audit/documentation/missing-documentation",
+      "path": "docs/evidence/changes/three-version-readiness-audit/documentation/missing-documentation.md",
+      "title": "Missing Documentation Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Missing Documentation Report.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/three-version-readiness-audit/documentation/release-documentation-summary",
+      "path": "docs/evidence/changes/three-version-readiness-audit/documentation/release-documentation-summary.md",
+      "title": "Release Documentation Summary",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Release Documentation Summary.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/three-version-readiness-audit/documentation/repository-health",
+      "path": "docs/evidence/changes/three-version-readiness-audit/documentation/repository-health.md",
+      "title": "Repository Health Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Repository Health Report.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/three-version-readiness-audit/documentation/updated-documents",
+      "path": "docs/evidence/changes/three-version-readiness-audit/documentation/updated-documents.md",
+      "title": "Updated Document List",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Updated Document List.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/three-version-readiness-audit/documentation/version-history-impact",
+      "path": "docs/evidence/changes/three-version-readiness-audit/documentation/version-history-impact.md",
+      "title": "Version History Impact",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Version History Impact.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:evidence/changes/version-documentation-system/documentation-impact",
       "path": "docs/evidence/changes/version-documentation-system/documentation-impact.md",
       "title": "Documentation Impact Report",
@@ -5946,6 +6687,2258 @@
       }
     },
     {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.10.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.10.0/audit.md",
+      "title": "v1.10.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.10.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.10.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.10.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.10.0/baseline-hold-audit.md",
+      "title": "v1.10.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.10.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.10.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.10.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.10.0/remediation-plan.md",
+      "title": "v1.10.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.10.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.10.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.4.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.4.0/audit.md",
+      "title": "v1.4.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.4.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.4.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.4.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.4.0/baseline-hold-audit.md",
+      "title": "v1.4.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.4.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.4.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.4.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.4.0/remediation-plan.md",
+      "title": "v1.4.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.4.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.4.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.5.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.5.0/audit.md",
+      "title": "v1.5.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.5.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.5.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.5.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.5.0/baseline-hold-audit.md",
+      "title": "v1.5.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.5.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.5.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.5.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.5.0/remediation-plan.md",
+      "title": "v1.5.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.5.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.5.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.6.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.6.0/audit.md",
+      "title": "v1.6.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.6.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.6.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.6.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.6.0/baseline-hold-audit.md",
+      "title": "v1.6.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.6.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.6.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.6.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.6.0/remediation-plan.md",
+      "title": "v1.6.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.6.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.6.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.7.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.7.0/audit.md",
+      "title": "v1.7.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.7.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.7.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.7.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.7.0/baseline-hold-audit.md",
+      "title": "v1.7.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.7.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.7.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.7.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.7.0/remediation-plan.md",
+      "title": "v1.7.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.7.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.7.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.8.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.8.0/audit.md",
+      "title": "v1.8.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.8.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.8.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.8.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.8.0/baseline-hold-audit.md",
+      "title": "v1.8.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.8.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.8.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.8.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.8.0/remediation-plan.md",
+      "title": "v1.8.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.8.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.8.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.9.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.9.0/audit.md",
+      "title": "v1.9.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.9.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.9.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.9.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.9.0/baseline-hold-audit.md",
+      "title": "v1.9.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.9.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.9.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v1.9.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v1.9.0/remediation-plan.md",
+      "title": "v1.9.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v1.9.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.9.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.0.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.0.0/audit.md",
+      "title": "v2.0.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.0.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.0.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.0.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.0.0/baseline-hold-audit.md",
+      "title": "v2.0.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.0.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.0.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.0.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.0.0/remediation-plan.md",
+      "title": "v2.0.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.0.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.0.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.1.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.1.0/audit.md",
+      "title": "v2.1.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.1.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.1.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.1.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.1.0/baseline-hold-audit.md",
+      "title": "v2.1.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.1.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.1.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.1.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.1.0/remediation-plan.md",
+      "title": "v2.1.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.1.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.1.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.2.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.2.0/audit.md",
+      "title": "v2.2.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.2.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.2.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.2.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.2.0/baseline-hold-audit.md",
+      "title": "v2.2.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.2.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.2.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.2.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.2.0/remediation-plan.md",
+      "title": "v2.2.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.2.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.2.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.3.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.3.0/audit.md",
+      "title": "v2.3.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.3.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.3.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.3.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.3.0/baseline-hold-audit.md",
+      "title": "v2.3.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.3.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.3.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.3.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.3.0/remediation-plan.md",
+      "title": "v2.3.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.3.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.3.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.4.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.4.0/audit.md",
+      "title": "v2.4.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.4.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.4.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.4.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.4.0/baseline-hold-audit.md",
+      "title": "v2.4.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.4.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.4.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.4.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.4.0/remediation-plan.md",
+      "title": "v2.4.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.4.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.4.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.5.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.5.0/audit.md",
+      "title": "v2.5.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.5.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.5.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.5.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.5.0/baseline-hold-audit.md",
+      "title": "v2.5.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.5.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.5.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.5.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.5.0/remediation-plan.md",
+      "title": "v2.5.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.5.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.5.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.6.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.6.0/audit.md",
+      "title": "v2.6.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.6.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.6.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.6.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.6.0/baseline-hold-audit.md",
+      "title": "v2.6.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.6.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.6.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.6.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.6.0/remediation-plan.md",
+      "title": "v2.6.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.6.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.6.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.7.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.7.0/audit.md",
+      "title": "v2.7.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.7.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.7.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.7.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.7.0/baseline-hold-audit.md",
+      "title": "v2.7.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.7.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.7.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v2.7.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v2.7.0/remediation-plan.md",
+      "title": "v2.7.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v2.7.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.7.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v3.0.0/audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v3.0.0/audit.md",
+      "title": "v3.0.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v3.0.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "3.0.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v3.0.0/baseline-hold-audit",
+      "path": "docs/evidence/changes/version-readiness-audit-v3.0.0/baseline-hold-audit.md",
+      "title": "v3.0.0 Implementation Readiness Audit",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v3.0.0 Implementation Readiness Audit.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "3.0.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-audit-v3.0.0/remediation-plan",
+      "path": "docs/evidence/changes/version-readiness-audit-v3.0.0/remediation-plan.md",
+      "title": "v3.0.0 Implementation Readiness Remediation Plan",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for v3.0.0 Implementation Readiness Remediation Plan.",
+      "audiences": [
+        "maintainers",
+        "enterprise-reviewers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "3.0.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-remediation-planning/documentation-impact",
+      "path": "docs/evidence/changes/version-readiness-remediation-planning/documentation-impact.md",
+      "title": "Documentation Impact Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Documentation Impact Report.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-remediation-planning/documentation/documentation-coverage",
+      "path": "docs/evidence/changes/version-readiness-remediation-planning/documentation/documentation-coverage.md",
+      "title": "Generated Documentation Coverage Matrix",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Generated Documentation Coverage Matrix.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-remediation-planning/documentation/documentation-impact",
+      "path": "docs/evidence/changes/version-readiness-remediation-planning/documentation/documentation-impact.md",
+      "title": "Documentation Impact Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Documentation Impact Report.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-remediation-planning/documentation/documentation-synchronization",
+      "path": "docs/evidence/changes/version-readiness-remediation-planning/documentation/documentation-synchronization.md",
+      "title": "Documentation Synchronization Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Documentation Synchronization Report.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-remediation-planning/documentation/migration-impact",
+      "path": "docs/evidence/changes/version-readiness-remediation-planning/documentation/migration-impact.md",
+      "title": "Migration Impact Summary",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Migration Impact Summary.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-remediation-planning/documentation/missing-documentation",
+      "path": "docs/evidence/changes/version-readiness-remediation-planning/documentation/missing-documentation.md",
+      "title": "Missing Documentation Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Missing Documentation Report.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-remediation-planning/documentation/release-documentation-summary",
+      "path": "docs/evidence/changes/version-readiness-remediation-planning/documentation/release-documentation-summary.md",
+      "title": "Release Documentation Summary",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Release Documentation Summary.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-remediation-planning/documentation/repository-health",
+      "path": "docs/evidence/changes/version-readiness-remediation-planning/documentation/repository-health.md",
+      "title": "Repository Health Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Repository Health Report.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-remediation-planning/documentation/updated-documents",
+      "path": "docs/evidence/changes/version-readiness-remediation-planning/documentation/updated-documents.md",
+      "title": "Updated Document List",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Updated Document List.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/version-readiness-remediation-planning/documentation/version-history-impact",
+      "path": "docs/evidence/changes/version-readiness-remediation-planning/documentation/version-history-impact.md",
+      "title": "Version History Impact",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Version History Impact.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:examples/readme",
       "path": "docs/examples/README.md",
       "title": "Runnable Examples",
@@ -6265,6 +9258,44 @@
       "authority": null,
       "sourceOfTruth": "docs/foundation/foundation-map.yaml and its linked canonical authorities",
       "purpose": "Provide source-generated reference for Platform Constitution.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Generator Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:foundation/contracts/implementation_specification_standard",
+      "path": "docs/foundation/contracts/IMPLEMENTATION_SPECIFICATION_STANDARD.md",
+      "title": "Implementation Specification Standard",
+      "classification": "generated-reference",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/foundation/foundation-map.yaml and its linked canonical authorities",
+      "purpose": "Provide source-generated reference for Implementation Specification Standard.",
       "audiences": [
         "maintainers",
         "ai-coding-agents"
@@ -9590,6 +12621,162 @@
       }
     },
     {
+      "id": "doc:reports/version_implementation_readiness_comparison",
+      "path": "docs/reports/VERSION_IMPLEMENTATION_READINESS_COMPARISON.md",
+      "title": "All-Version Implementation Readiness Comparison",
+      "classification": "active-guide",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Guide supported use of All-Version Implementation Readiness Comparison.",
+      "audiences": [
+        "maintainers",
+        "users",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:reports/version_implementation_readiness_remediation_plan",
+      "path": "docs/reports/VERSION_IMPLEMENTATION_READINESS_REMEDIATION_PLAN.md",
+      "title": "Version Implementation Readiness Remediation Program",
+      "classification": "active-guide",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Guide supported use of Version Implementation Readiness Remediation Program.",
+      "audiences": [
+        "maintainers",
+        "users",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:reports/version_readiness_blocker_ownership_matrix",
+      "path": "docs/reports/VERSION_READINESS_BLOCKER_OWNERSHIP_MATRIX.md",
+      "title": "Version Readiness Blocker and Ownership Matrix",
+      "classification": "active-guide",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Guide supported use of Version Readiness Blocker and Ownership Matrix.",
+      "audiences": [
+        "maintainers",
+        "users",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:reports/version_readiness_dependency_map",
+      "path": "docs/reports/VERSION_READINESS_DEPENDENCY_MAP.md",
+      "title": "Version Readiness Dependency Map",
+      "classification": "active-guide",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Guide supported use of Version Readiness Dependency Map.",
+      "audiences": [
+        "maintainers",
+        "users",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.3.x"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:roadmap/index",
       "path": "docs/roadmap/index.md",
       "title": "Roadmap",
@@ -12649,6 +15836,44 @@
       }
     },
     {
+      "id": "doc:versions/v1.10.0/implementation-contract",
+      "path": "docs/versions/v1.10.0/implementation-contract.md",
+      "title": "v1.10.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v1.10.0 Normative Implementation Contract.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.10.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:versions/v1.10.0/interfaces/contracts",
       "path": "docs/versions/v1.10.0/interfaces/contracts.md",
       "title": "v1.10.0 — Engineering Intelligence and Local Enterprise GA",
@@ -13082,6 +16307,44 @@
       "authority": null,
       "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
       "purpose": "Explain governed product direction for v1.4.0 — Production Provider Platform.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.4.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:versions/v1.4.0/implementation-contract",
+      "path": "docs/versions/v1.4.0/implementation-contract.md",
+      "title": "v1.4.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v1.4.0 Normative Implementation Contract.",
       "audiences": [
         "maintainers",
         "ai-coding-agents"
@@ -13575,6 +16838,44 @@
       }
     },
     {
+      "id": "doc:versions/v1.5.0/implementation-contract",
+      "path": "docs/versions/v1.5.0/implementation-contract.md",
+      "title": "v1.5.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v1.5.0 Normative Implementation Contract.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.5.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:versions/v1.5.0/interfaces/contracts",
       "path": "docs/versions/v1.5.0/interfaces/contracts.md",
       "title": "v1.5.0 — Isolated Plugin and MCP Ecosystem",
@@ -14006,6 +17307,44 @@
       "authority": null,
       "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
       "purpose": "Explain governed product direction for v1.6.0 — Template Packages and Native Distribution.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.6.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:versions/v1.6.0/implementation-contract",
+      "path": "docs/versions/v1.6.0/implementation-contract.md",
+      "title": "v1.6.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v1.6.0 Normative Implementation Contract.",
       "audiences": [
         "maintainers",
         "ai-coding-agents"
@@ -14497,6 +17836,44 @@
       }
     },
     {
+      "id": "doc:versions/v1.7.0/implementation-contract",
+      "path": "docs/versions/v1.7.0/implementation-contract.md",
+      "title": "v1.7.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v1.7.0 Normative Implementation Contract.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.7.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:versions/v1.7.0/interfaces/contracts",
       "path": "docs/versions/v1.7.0/interfaces/contracts.md",
       "title": "v1.7.0 — Local Organization Governance",
@@ -14928,6 +18305,44 @@
       "authority": null,
       "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
       "purpose": "Explain governed product direction for v1.8.0 — Observability, Supply Chain, and Documentation.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.8.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:versions/v1.8.0/implementation-contract",
+      "path": "docs/versions/v1.8.0/implementation-contract.md",
+      "title": "v1.8.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v1.8.0 Normative Implementation Contract.",
       "audiences": [
         "maintainers",
         "ai-coding-agents"
@@ -15419,6 +18834,44 @@
       }
     },
     {
+      "id": "doc:versions/v1.9.0/implementation-contract",
+      "path": "docs/versions/v1.9.0/implementation-contract.md",
+      "title": "v1.9.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v1.9.0 Normative Implementation Contract.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.9.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:versions/v1.9.0/interfaces/contracts",
       "path": "docs/versions/v1.9.0/interfaces/contracts.md",
       "title": "v1.9.0 — Signed Skills and Deterministic Workflows",
@@ -15850,6 +19303,44 @@
       "authority": null,
       "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
       "purpose": "Explain governed product direction for v2.0.0 — Optional Self-Hosted Organization Control Plane.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.0.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:versions/v2.0.0/implementation-contract",
+      "path": "docs/versions/v2.0.0/implementation-contract.md",
+      "title": "v2.0.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v2.0.0 Normative Implementation Contract.",
       "audiences": [
         "maintainers",
         "ai-coding-agents"
@@ -16341,6 +19832,44 @@
       }
     },
     {
+      "id": "doc:versions/v2.1.0/implementation-contract",
+      "path": "docs/versions/v2.1.0/implementation-contract.md",
+      "title": "v2.1.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v2.1.0 Normative Implementation Contract.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.1.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:versions/v2.1.0/interfaces/contracts",
       "path": "docs/versions/v2.1.0/interfaces/contracts.md",
       "title": "v2.1.0 — ForgeRegistry Protocol Foundation",
@@ -16772,6 +20301,44 @@
       "authority": null,
       "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
       "purpose": "Explain governed product direction for v2.2.0 — ForgeRegistry Federation and Enterprise Registries.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.2.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:versions/v2.2.0/implementation-contract",
+      "path": "docs/versions/v2.2.0/implementation-contract.md",
+      "title": "v2.2.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v2.2.0 Normative Implementation Contract.",
       "audiences": [
         "maintainers",
         "ai-coding-agents"
@@ -17264,6 +20831,44 @@
       }
     },
     {
+      "id": "doc:versions/v2.3.0/implementation-contract",
+      "path": "docs/versions/v2.3.0/implementation-contract.md",
+      "title": "v2.3.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v2.3.0 Normative Implementation Contract.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.3.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:versions/v2.3.0/interfaces/contracts",
       "path": "docs/versions/v2.3.0/interfaces/contracts.md",
       "title": "v2.3.0 — ForgeHub Discovery and Lifecycle",
@@ -17695,6 +21300,44 @@
       "authority": null,
       "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
       "purpose": "Explain governed product direction for v2.4.0 — Publisher Platform and Ecosystem SDK.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.4.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:versions/v2.4.0/implementation-contract",
+      "path": "docs/versions/v2.4.0/implementation-contract.md",
+      "title": "v2.4.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v2.4.0 Normative Implementation Contract.",
       "audiences": [
         "maintainers",
         "ai-coding-agents"
@@ -18186,6 +21829,44 @@
       }
     },
     {
+      "id": "doc:versions/v2.5.0/implementation-contract",
+      "path": "docs/versions/v2.5.0/implementation-contract.md",
+      "title": "v2.5.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v2.5.0 Normative Implementation Contract.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.5.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:versions/v2.5.0/interfaces/contracts",
       "path": "docs/versions/v2.5.0/interfaces/contracts.md",
       "title": "v2.5.0 — Organization Ecosystem Management",
@@ -18617,6 +22298,44 @@
       "authority": null,
       "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
       "purpose": "Explain governed product direction for v2.6.0 — ForgeHub Intelligence and Experience.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.6.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:versions/v2.6.0/implementation-contract",
+      "path": "docs/versions/v2.6.0/implementation-contract.md",
+      "title": "v2.6.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v2.6.0 Normative Implementation Contract.",
       "audiences": [
         "maintainers",
         "ai-coding-agents"
@@ -19108,6 +22827,44 @@
       }
     },
     {
+      "id": "doc:versions/v2.7.0/implementation-contract",
+      "path": "docs/versions/v2.7.0/implementation-contract.md",
+      "title": "v2.7.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v2.7.0 Normative Implementation Contract.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "2.7.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:versions/v2.7.0/interfaces/contracts",
       "path": "docs/versions/v2.7.0/interfaces/contracts.md",
       "title": "v2.7.0 — Ecosystem Trust and Compatibility Network",
@@ -19569,6 +23326,44 @@
       }
     },
     {
+      "id": "doc:versions/v3.0.0/implementation-contract",
+      "path": "docs/versions/v3.0.0/implementation-contract.md",
+      "title": "v3.0.0 Normative Implementation Contract",
+      "classification": "product-strategy",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "docs/versions/version-specifications.json and the canonical versioned product roadmap",
+      "purpose": "Explain governed product direction for v3.0.0 Normative Implementation Contract.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Documentation Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "3.0.0"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "standard",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-07-28",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": false,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:versions/v3.0.0/interfaces/contracts",
       "path": "docs/versions/v3.0.0/interfaces/contracts.md",
       "title": "v3.0.0 — AI Engineering Operating System and Ecosystem GA",
@@ -19801,20 +23596,20 @@
     }
   ],
   "summary": {
-    "total": 512,
+    "total": 610,
     "byClassification": {
-      "active-guide": 123,
+      "active-guide": 127,
       "canonical-architecture": 11,
       "canonical-policy": 6,
-      "generated-reference": 25,
-      "governance-evidence": 53,
+      "generated-reference": 26,
+      "governance-evidence": 130,
       "historical-record": 87,
       "operational-runbook": 2,
-      "product-strategy": 205
+      "product-strategy": 221
     },
     "byLifecycle": {
       "archived": 87,
-      "maintained": 425
+      "maintained": 523
     }
   }
 }

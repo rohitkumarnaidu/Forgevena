@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- Which contracts require a major-version break?
-- What governance model sustains a federated global ecosystem?
+- None.
 
 ## Decision Expiry
 

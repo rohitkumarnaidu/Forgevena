@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- How are organization distributions versioned and supported?
-- Which approvals require separation of duties?
+- None.
 
 ## Decision Expiry
 

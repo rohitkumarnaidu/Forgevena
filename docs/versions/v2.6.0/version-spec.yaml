@@ -34,10 +34,8 @@
     "Metadata-only evidence supports useful ecosystem recommendations.",
     "Host vendors expose sufficient extension contracts."
   ],
-  "openQuestions": [
-    "How is recommendation quality measured without surveillance?",
-    "Which host capabilities can be certified exact?"
-  ],
+  "openQuestions": [],
+  "implementationContract": "docs/versions/v2.6.0/implementation-contract.md",
   "features": [
     {
       "id": "explainable-ecosystem-intelligence",

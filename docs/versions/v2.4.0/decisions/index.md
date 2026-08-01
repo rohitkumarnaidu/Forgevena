@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- Which identity proof is required for official publishers?
-- How are abandoned critical packages escrowed or transferred?
+- None.
 
 ## Decision Expiry
 

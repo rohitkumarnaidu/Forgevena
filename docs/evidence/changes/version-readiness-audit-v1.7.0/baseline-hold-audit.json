@@ -1,0 +1,327 @@
+{
+  "schemaVersion": 2,
+  "auditId": "version-readiness-audit-v1.7.0-2026-07-30",
+  "auditedVersion": "v1.7.0",
+  "auditedAt": "2026-07-30",
+  "verdict": "hold",
+  "overallScore": 51,
+  "implementationReadiness": "Not implementation-ready. Local Organization Governance defines governed intent but lacks decision-complete runtime, contract, assurance, verification, migration, and operating specifications.",
+  "executiveVerdict": "A new engineering team or AI coding agent cannot implement v1.7.0 without inventing material behavior. Its explicit open questions, normative contracts, threat boundaries, executable test matrix, migration and rollback state, and service objectives require approval before implementation.",
+  "dependencyStatus": "v1.6.0 remains HOLD; this version inherits that release blocker without duplicating its owned findings.",
+  "inheritedDependencyBlockers": [
+    {
+      "version": "v1.6.0",
+      "auditId": "version-readiness-audit-v1.6.0-2026-07-30",
+      "summary": "v1.6.0 remains HOLD and must be independently approved before this version can advance."
+    }
+  ],
+  "scores": {
+    "product": 59,
+    "architecture": 51,
+    "engineering": 43,
+    "documentation": 55,
+    "security": 47,
+    "testing": 45,
+    "release": 51,
+    "enterpriseReadiness": 46,
+    "openSourceReadiness": 57,
+    "aiAgentReadiness": 41,
+    "maintainability": 49,
+    "extensibility": 51
+  },
+  "blockers": [
+    {
+      "id": "V170-B01",
+      "summary": "Implementation decision remains unresolved: How are principal keys recovered or rotated?",
+      "sourceReference": "docs/versions/v1.7.0/decisions/index.md"
+    },
+    {
+      "id": "V170-B02",
+      "summary": "Implementation decision remains unresolved: Which compliance packs remain guidance rather than certification?",
+      "sourceReference": "docs/versions/v1.7.0/decisions/index.md"
+    },
+    {
+      "id": "V170-B03",
+      "summary": "Architecture delta lacks executable component and state contracts",
+      "sourceReference": "docs/versions/v1.7.0/architecture/delta.md"
+    },
+    {
+      "id": "V170-B04",
+      "summary": "Threat boundaries, permissions, and data flow are not decision-complete",
+      "sourceReference": "docs/versions/v1.7.0/assurance/assurance-plan.md"
+    }
+  ],
+  "findings": [
+    {
+      "id": "V170-F01",
+      "severity": "critical",
+      "category": "product-and-architecture-decision",
+      "summary": "Implementation decision remains unresolved: How are principal keys recovered or rotated?",
+      "affectedFeatures": [
+        "signed-organization-policy",
+        "policy-simulation-compliance"
+      ],
+      "sourceReference": "docs/versions/v1.7.0/decisions/index.md",
+      "question": "How are principal keys recovered or rotated?",
+      "impact": "The version package explicitly identifies this as unresolved, so implementers would have to choose behavior without approved authority.",
+      "owner": "Governance and Policy Maintainers",
+      "targetDocument": "docs/versions/v1.7.0/decisions/open-question-1.md",
+      "requiredArtifact": "Approved RFC and ADR with rejected alternatives",
+      "dependency": "v1.6.0",
+      "remediation": "Resolve the decision with normative behavior, alternatives, ownership, compatibility, security, migration, rollback, operational, and support consequences.",
+      "acceptanceEvidence": "Approved decision record, linked contract updates, objective conformance examples, and independent re-audit.",
+      "blocking": true
+    },
+    {
+      "id": "V170-F02",
+      "severity": "critical",
+      "category": "product-and-architecture-decision",
+      "summary": "Implementation decision remains unresolved: Which compliance packs remain guidance rather than certification?",
+      "affectedFeatures": [
+        "signed-organization-policy",
+        "policy-simulation-compliance"
+      ],
+      "sourceReference": "docs/versions/v1.7.0/decisions/index.md",
+      "question": "Which compliance packs remain guidance rather than certification?",
+      "impact": "The version package explicitly identifies this as unresolved, so implementers would have to choose behavior without approved authority.",
+      "owner": "Governance and Policy Maintainers",
+      "targetDocument": "docs/versions/v1.7.0/decisions/open-question-2.md",
+      "requiredArtifact": "Approved RFC and ADR with rejected alternatives",
+      "dependency": "v1.6.0",
+      "remediation": "Resolve the decision with normative behavior, alternatives, ownership, compatibility, security, migration, rollback, operational, and support consequences.",
+      "acceptanceEvidence": "Approved decision record, linked contract updates, objective conformance examples, and independent re-audit.",
+      "blocking": true
+    },
+    {
+      "id": "V170-F03",
+      "severity": "critical",
+      "category": "architecture-and-state",
+      "summary": "Architecture delta lacks executable component and state contracts",
+      "affectedFeatures": [
+        "signed-organization-policy",
+        "policy-simulation-compliance"
+      ],
+      "sourceReference": "docs/versions/v1.7.0/architecture/delta.md",
+      "question": "What exact components, state machines, ownership boundaries, invariants, and failure transitions implement Local Organization Governance?",
+      "impact": "The current architecture describes intent but cannot drive deterministic decomposition, concurrency behavior, crash recovery, or implementation ownership.",
+      "owner": "Governance and Policy Maintainers",
+      "targetDocument": "docs/versions/v1.7.0/architecture/executable-design.md",
+      "requiredArtifact": "Approved architecture design and state-transition contract",
+      "dependency": "Add one deny-overrides policy evaluator for organizations, principals, roles, artifacts, capabilities, and external-effect boundaries.",
+      "remediation": "Specify components, responsibilities, persisted state, control and data flows, concurrency, idempotency, failure states, recovery, extension points, and prohibited coupling.",
+      "acceptanceEvidence": "Approved diagrams, state tables, invariants, failure scenarios, and architecture conformance checks.",
+      "blocking": true
+    },
+    {
+      "id": "V170-F04",
+      "severity": "critical",
+      "category": "security-trust-and-data-flow",
+      "summary": "Threat boundaries, permissions, and data flow are not decision-complete",
+      "affectedFeatures": [
+        "signed-organization-policy",
+        "policy-simulation-compliance"
+      ],
+      "sourceReference": "docs/versions/v1.7.0/assurance/assurance-plan.md",
+      "question": "Which identities, permissions, data classes, trust roots, external effects, retention rules, and human approvals apply to each operation?",
+      "impact": "Security, privacy, consent, and human-authority controls cannot be implemented or tested without explicit trust and data-flow contracts.",
+      "owner": "Governance and Policy Maintainers; Security Maintainers",
+      "targetDocument": "docs/versions/v1.7.0/assurance/threat-model-and-data-flow.md",
+      "requiredArtifact": "Threat model, privacy review, permission matrix, and abuse-case analysis",
+      "dependency": "Platform Constitution, policy, vault, consent, audit, and rollback authorities",
+      "remediation": "Document assets, actors, trust boundaries, threats, permission propagation, data classification, retention, deletion, residency, redaction, consent, emergency controls, and residual risks.",
+      "acceptanceEvidence": "Approved threat model with negative, adversarial, bypass, redaction, revocation, and recovery tests.",
+      "blocking": true
+    },
+    {
+      "id": "V170-F05",
+      "severity": "high",
+      "category": "public-contracts",
+      "summary": "CLI, API, SDK, schema, and compatibility contracts remain descriptive",
+      "affectedFeatures": [
+        "signed-organization-policy",
+        "policy-simulation-compliance"
+      ],
+      "sourceReference": "docs/versions/v1.7.0/interfaces/contracts.md",
+      "question": "What are the exact commands, request and response schemas, stable errors, version negotiation, lifecycle states, compatibility rules, and deprecation behavior?",
+      "impact": "Independent implementations would expose incompatible public behavior and could bypass shared domain controls.",
+      "owner": "Governance and Policy Maintainers",
+      "targetDocument": "docs/versions/v1.7.0/interfaces/normative-contracts.md",
+      "requiredArtifact": "Versioned schemas, interface definitions, examples, and contract fixtures",
+      "dependency": "Version organization, role, policy, overlay, decision, approval, and compliance schemas.; Add policy simulation, explanation, signing, import, export, audit, and compliance commands.",
+      "remediation": "Define syntax, types, validation, envelopes, errors, pagination or streaming, cancellation, accessibility, policy and consent boundaries, compatibility, deprecation, and conformance fixtures.",
+      "acceptanceEvidence": "Schema-valid golden examples and cross-surface contract tests for positive and negative paths.",
+      "blocking": true
+    },
+    {
+      "id": "V170-F06",
+      "severity": "high",
+      "category": "testing-and-evaluation",
+      "summary": "Evidence requirements do not define an executable verification matrix",
+      "affectedFeatures": [
+        "signed-organization-policy",
+        "policy-simulation-compliance"
+      ],
+      "sourceReference": "docs/versions/v1.7.0/evidence/evidence-requirements.json",
+      "question": "Which fixtures, environments, fault models, security cases, performance thresholds, compatibility matrices, and pass criteria certify each committed feature?",
+      "impact": "Teams cannot determine completion, reproduce claims, or distinguish required evidence from future aspirational results.",
+      "owner": "Governance and Policy Maintainers; Quality Engineering Maintainers",
+      "targetDocument": "docs/versions/v1.7.0/delivery/test-and-evaluation-matrix.md",
+      "requiredArtifact": "Executable test, evaluation, fuzz, failure-injection, and compatibility plan",
+      "dependency": "Approved architecture and public contracts",
+      "remediation": "Map every requirement and acceptance gate to deterministic unit, integration, end-to-end, adversarial, migration, rollback, accessibility, performance, and platform tests without fabricating results.",
+      "acceptanceEvidence": "Reviewed matrix with fixture ownership, pass thresholds, evidence retention, freshness, and failure triage rules.",
+      "blocking": true
+    },
+    {
+      "id": "V170-F07",
+      "severity": "high",
+      "category": "migration-rollback-and-release",
+      "summary": "Migration, rollback, roll-forward, and release transitions are generic",
+      "affectedFeatures": [
+        "signed-organization-policy",
+        "policy-simulation-compliance"
+      ],
+      "sourceReference": "docs/versions/v1.7.0/delivery/delivery-plan.md",
+      "question": "How do existing state and consumers migrate, recover from partial failure, roll back, roll forward, and preserve compatibility across supported releases?",
+      "impact": "Implementation can strand workspaces, duplicate effects, or ship without a recoverable promotion path.",
+      "owner": "Governance and Policy Maintainers; Release Maintainers",
+      "targetDocument": "docs/versions/v1.7.0/delivery/migration-rollback-release-plan.md",
+      "requiredArtifact": "Versioned migration state machine and release rehearsal plan",
+      "dependency": "v1.6.0",
+      "remediation": "Inventory affected state and contracts; define preflight, backups, transforms, checkpoints, crash recovery, rollback limits, roll-forward, feature flags, kill switches, support window, and RC rehearsals.",
+      "acceptanceEvidence": "Representative upgrade, downgrade, interruption, corruption, rollback, and clean-install rehearsals with retained evidence.",
+      "blocking": true
+    },
+    {
+      "id": "V170-F08",
+      "severity": "high",
+      "category": "operations-reliability-and-support",
+      "summary": "Service objectives and operating model are not measurable",
+      "affectedFeatures": [
+        "signed-organization-policy",
+        "policy-simulation-compliance"
+      ],
+      "sourceReference": "docs/versions/v1.7.0/operations/operability.md",
+      "question": "What SLOs, error budgets, capacity targets, diagnostics, alerts, incident paths, backup, disaster recovery, cost limits, and support ownership apply?",
+      "impact": "Reliability, scalability, enterprise support, and regression gates cannot be verified or operated.",
+      "owner": "Governance and Policy Maintainers; Operations Maintainers",
+      "targetDocument": "docs/versions/v1.7.0/operations/service-objectives-and-runbooks.md",
+      "requiredArtifact": "SLO, capacity, observability, incident, continuity, and support plan",
+      "dependency": "Approved runtime, state, and failure contracts",
+      "remediation": "Define reference workloads, latency, throughput, availability, durability, resource and cost budgets, alerts, diagnostics, degraded modes, incidents, recovery objectives, support escalation, and decommissioning.",
+      "acceptanceEvidence": "Approved objectives with benchmark, load, outage, recovery, and incident-exercise procedures.",
+      "blocking": true
+    },
+    {
+      "id": "V170-F09",
+      "severity": "medium",
+      "category": "documentation-and-developer-experience",
+      "summary": "Implementation and operator journeys lack executable examples",
+      "affectedFeatures": [
+        "signed-organization-policy",
+        "policy-simulation-compliance"
+      ],
+      "sourceReference": "docs/versions/v1.7.0/delivery/delivery-plan.md",
+      "question": "Which exact setup, configuration, failure, migration, rollback, offline, accessibility, and troubleshooting journeys must ship?",
+      "impact": "Users, maintainers, and coding agents lack a reproducible path from contracts to successful operation.",
+      "owner": "Governance and Policy Maintainers; Documentation Maintainers",
+      "targetDocument": "docs/versions/v1.7.0/delivery/documentation-and-adoption-plan.md",
+      "requiredArtifact": "Documentation architecture, executable examples, training, and support journey plan",
+      "dependency": "Final interfaces, operations, and migration decisions",
+      "remediation": "Define tutorials, how-to guides, references, explanations, examples, troubleshooting trees, limitations, adoption, training, release communication, and inclusive accessibility requirements.",
+      "acceptanceEvidence": "Allowlisted examples execute safely and documentation maps to every committed feature and support scenario.",
+      "blocking": false
+    }
+  ],
+  "roleQuestions": [
+    {
+      "role": "Product",
+      "unanswered": [
+        "Which measurable user outcomes and non-goals define completion for Local Organization Governance?"
+      ]
+    },
+    {
+      "role": "Architecture",
+      "unanswered": [
+        "Which component, state, data-flow, and failure contracts are normative for Local Organization Governance?"
+      ]
+    },
+    {
+      "role": "Engineering",
+      "unanswered": [
+        "Which exact types, schemas, defaults, lifecycle transitions, and extension points must be implemented?"
+      ]
+    },
+    {
+      "role": "QA",
+      "unanswered": [
+        "Which deterministic fixtures, adversarial cases, platforms, and thresholds prove each committed feature?"
+      ]
+    },
+    {
+      "role": "Security",
+      "unanswered": [
+        "Which permissions, trust roots, data classes, abuse paths, and human approvals govern every effect?"
+      ]
+    },
+    {
+      "role": "DevOps",
+      "unanswered": [
+        "How are release, migration, rollback, capacity, incident, and recovery exercises executed and retained?"
+      ]
+    },
+    {
+      "role": "Documentation",
+      "unanswered": [
+        "Which executable user, operator, maintainer, accessibility, and troubleshooting journeys must ship?"
+      ]
+    },
+    {
+      "role": "Support",
+      "unanswered": [
+        "What SLOs, escalation, compatibility expiry, LTS, and decommissioning policies apply?"
+      ]
+    },
+    {
+      "role": "AI coding agent",
+      "unanswered": [
+        "Which behavior is normative when specifications, dependencies, or compatibility evidence are incomplete?"
+      ]
+    }
+  ],
+  "traceability": [
+    {
+      "featureId": "signed-organization-policy",
+      "status": "partial",
+      "gaps": [
+        "normative architecture",
+        "public contracts",
+        "threat and data flow",
+        "executable tests",
+        "migration and rollback",
+        "service objectives"
+      ]
+    },
+    {
+      "featureId": "policy-simulation-compliance",
+      "status": "partial",
+      "gaps": [
+        "normative architecture",
+        "public contracts",
+        "threat and data flow",
+        "executable tests",
+        "migration and rollback",
+        "service objectives"
+      ]
+    }
+  ],
+  "agentReadiness": {
+    "engineeringTeam": "no",
+    "codex": "no",
+    "claudeCode": "no",
+    "cursor": "no",
+    "geminiCli": "no",
+    "futureAiSystems": "no"
+  },
+  "reAuditRequired": true
+}

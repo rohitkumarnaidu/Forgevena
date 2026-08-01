@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- Which model capabilities qualify for stable support?
-- How long does compatibility evidence remain current?
+- None.
 
 ## Decision Expiry
 

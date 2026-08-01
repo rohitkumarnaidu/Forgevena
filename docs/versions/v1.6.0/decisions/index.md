@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- Which inheritance patterns remain deterministic?
-- How are abandoned template publishers handled?
+- None.
 
 ## Decision Expiry
 

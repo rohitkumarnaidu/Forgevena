@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- How are cross-registry namespaces reconciled?
-- What transparency guarantees apply to private registries?
+- None.
 
 ## Decision Expiry
 

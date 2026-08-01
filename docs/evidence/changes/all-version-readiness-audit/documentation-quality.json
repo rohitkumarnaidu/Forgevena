@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "assessedAt": "2026-07-28",
+  "documentCount": 577,
+  "domains": [
+    {
+      "id": "authority",
+      "criticality": "critical",
+      "required": 100,
+      "score": 100,
+      "status": "pass"
+    },
+    {
+      "id": "metadata",
+      "criticality": "critical",
+      "required": 100,
+      "score": 100,
+      "status": "pass"
+    },
+    {
+      "id": "freshness",
+      "criticality": "critical",
+      "required": 100,
+      "score": 100,
+      "status": "pass"
+    },
+    {
+      "id": "source-parity",
+      "criticality": "critical",
+      "required": 100,
+      "score": 100,
+      "status": "pass"
+    },
+    {
+      "id": "historical-separation",
+      "criticality": "important",
+      "required": 95,
+      "score": 100,
+      "status": "pass"
+    },
+    {
+      "id": "navigation-findability",
+      "criticality": "important",
+      "required": 95,
+      "score": 100,
+      "status": "pass"
+    },
+    {
+      "id": "developer-experience",
+      "criticality": "standard",
+      "required": 90,
+      "score": 100,
+      "status": "pass"
+    }
+  ],
+  "score": 100,
+  "decision": "ready",
+  "issues": [],
+  "unresolvedExternalBoundaries": [
+    "Network-enabled external-link availability is validated in dedicated CI.",
+    "Formal certification requires independent assessment and approval.",
+    "Executable examples require isolated cross-platform fixtures before support claims."
+  ]
+}

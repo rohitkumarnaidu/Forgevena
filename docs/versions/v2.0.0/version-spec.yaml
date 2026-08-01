@@ -34,10 +34,8 @@
     "The local platform is enterprise-ready before server implementation begins.",
     "Self-hosting is a first-class deployment model."
   ],
-  "openQuestions": [
-    "Which data classes may synchronize by policy?",
-    "What consistency model balances offline autonomy and fleet governance?"
-  ],
+  "openQuestions": [],
+  "implementationContract": "docs/versions/v2.0.0/implementation-contract.md",
   "features": [
     {
       "id": "self-hosted-control-plane",

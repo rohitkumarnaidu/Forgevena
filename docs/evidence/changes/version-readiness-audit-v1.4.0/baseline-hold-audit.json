@@ -1,0 +1,375 @@
+{
+  "schemaVersion": 2,
+  "auditId": "version-readiness-audit-v1.4.0-2026-07-30",
+  "auditedVersion": "v1.4.0",
+  "auditedAt": "2026-07-30",
+  "verdict": "hold",
+  "overallScore": 49,
+  "implementationReadiness": "Not implementation-ready. The package defines intent and safety boundaries but not deterministic provider contracts or per-provider behavior.",
+  "executiveVerdict": "A new team or AI agent cannot implement v1.4.0 without inventing public interfaces, retry and fallback semantics, provider-specific behavior, security controls, migration behavior, and operational targets. The two explicit open questions are implementation-affecting and independently force HOLD.",
+  "dependencyStatus": "v1.3.0 is published, but v1.4.0 has not resolved or pinned the exact v1.3 contracts it consumes.",
+  "scores": {
+    "product": 66,
+    "architecture": 51,
+    "engineering": 39,
+    "documentation": 55,
+    "security": 48,
+    "testing": 43,
+    "release": 54,
+    "enterpriseReadiness": 42,
+    "openSourceReadiness": 59,
+    "aiAgentReadiness": 34,
+    "maintainability": 49,
+    "extensibility": 52
+  },
+  "blockers": [
+    {
+      "id": "V14-B01",
+      "summary": "Stable provider and model support criteria are unresolved.",
+      "sourceReference": "docs/versions/v1.4.0/decisions/index.md"
+    },
+    {
+      "id": "V14-B02",
+      "summary": "Compatibility evidence freshness and expiry are unresolved.",
+      "sourceReference": "docs/versions/v1.4.0/decisions/index.md"
+    },
+    {
+      "id": "V14-B03",
+      "summary": "ProviderAdapter wire contracts and normalized failure semantics are not specified.",
+      "sourceReference": "docs/versions/v1.4.0/interfaces/contracts.md"
+    },
+    {
+      "id": "V14-B04",
+      "summary": "Required RFC, ADR, threat model, schemas, and privacy review are absent.",
+      "sourceReference": "docs/versions/v1.4.0/evidence/README.md"
+    }
+  ],
+  "findings": [
+    {
+      "id": "V14-F01",
+      "severity": "critical",
+      "category": "product-and-compatibility",
+      "summary": "Stable support qualification is undefined",
+      "affectedFeatures": [
+        "provider-adapter-contract",
+        "provider-resilience-compatibility"
+      ],
+      "sourceReference": "docs/versions/v1.4.0/decisions/index.md",
+      "question": "Which provider and model capabilities qualify for stable support, and what evidence promotes or demotes them?",
+      "impact": "Implementers cannot determine supported scope, compatibility claims, or release eligibility.",
+      "owner": "Provider Platform Maintainers",
+      "targetDocument": "docs/versions/v1.4.0/decisions/provider-support-policy.md",
+      "requiredArtifact": "Approved provider-support policy and compatibility matrix contract",
+      "dependency": "Provider capability taxonomy and release maturity policy",
+      "remediation": "Define mandatory capabilities, optional capabilities, evidence thresholds, degradation rules, support tiers, promotion, expiry, deprecation, and removal behavior for every provider and model.",
+      "acceptanceEvidence": "Approved decision with fixtures showing stable, preview, degraded, expired, and unsupported classifications.",
+      "blocking": true
+    },
+    {
+      "id": "V14-F02",
+      "severity": "critical",
+      "category": "compatibility",
+      "summary": "Compatibility evidence freshness is undefined",
+      "affectedFeatures": [
+        "provider-resilience-compatibility"
+      ],
+      "sourceReference": "docs/versions/v1.4.0/decisions/index.md",
+      "question": "How long is provider and model compatibility evidence valid, and what occurs when it expires?",
+      "impact": "The platform can present stale support claims or behave inconsistently during provider drift.",
+      "owner": "Provider Platform Maintainers",
+      "targetDocument": "docs/versions/v1.4.0/decisions/compatibility-freshness-policy.md",
+      "requiredArtifact": "Compatibility evidence lifecycle ADR",
+      "dependency": "Compatibility manifest schema",
+      "remediation": "Set evidence TTLs by maturity and risk, refresh triggers, stale-state behavior, offline behavior, warning periods, revocation, and release blocking rules.",
+      "acceptanceEvidence": "Approved ADR plus deterministic expiry and stale-evidence scenarios.",
+      "blocking": true
+    },
+    {
+      "id": "V14-F03",
+      "severity": "critical",
+      "category": "api-contracts",
+      "summary": "ProviderAdapter contract is descriptive rather than executable",
+      "affectedFeatures": [
+        "provider-adapter-contract"
+      ],
+      "sourceReference": "docs/providers/adapter-contract.md",
+      "question": "What are the exact method signatures, inputs, outputs, streaming events, tool calls, structured-output semantics, cancellation contract, and normalized errors?",
+      "impact": "Different implementers will create incompatible adapters and hidden provider-specific behavior.",
+      "owner": "Provider Platform Maintainers",
+      "targetDocument": "docs/versions/v1.4.0/interfaces/provider-adapter-v1.md",
+      "requiredArtifact": "Versioned ProviderAdapter schema, type definitions, error catalog, and contract examples",
+      "dependency": "v1.3 structured envelope and application context",
+      "remediation": "Specify each operation, required and optional fields, validation, nullability, event ordering, backpressure, cancellation, usage accounting, error codes, and capability negotiation.",
+      "acceptanceEvidence": "Schema-valid examples and provider-neutral contract tests covering every operation and failure class.",
+      "blocking": true
+    },
+    {
+      "id": "V14-F04",
+      "severity": "critical",
+      "category": "reliability",
+      "summary": "Retry, idempotency, fallback, and budget semantics are incomplete",
+      "affectedFeatures": [
+        "provider-resilience-compatibility"
+      ],
+      "sourceReference": "docs/versions/v1.4.0/capabilities/provider-resilience-compatibility.md",
+      "question": "Which operations are safely retryable, how are idempotency keys scoped, and how do policy, cost, privacy, region, deadlines, and fallback ordering interact?",
+      "impact": "Retries may duplicate effects, change semantics, exceed budgets, or violate provider policy.",
+      "owner": "Provider Platform Maintainers",
+      "targetDocument": "docs/versions/v1.4.0/architecture/invocation-policy.md",
+      "requiredArtifact": "Invocation resilience state machine and policy precedence ADR",
+      "dependency": "ProviderAdapter v1 and organization policy contracts",
+      "remediation": "Define attempt limits, delay calculation, Retry-After parsing, idempotency classes, fallback eligibility, semantic-equivalence rules, cancellation propagation, budget units, and terminal outcomes.",
+      "acceptanceEvidence": "State-transition table and deterministic tests for retry, cancellation, fallback, budget exhaustion, and unsafe operations.",
+      "blocking": true
+    },
+    {
+      "id": "V14-F05",
+      "severity": "critical",
+      "category": "security-and-privacy",
+      "summary": "Provider data-flow and privacy contract is incomplete",
+      "affectedFeatures": [
+        "provider-adapter-contract",
+        "provider-resilience-compatibility"
+      ],
+      "sourceReference": "docs/versions/v1.4.0/assurance/assurance-plan.md",
+      "question": "What data classes may reach each provider, endpoint, region, log, cache, fixture, and diagnostic surface?",
+      "impact": "Implementers cannot enforce data-egress, retention, deletion, residency, or redaction requirements consistently.",
+      "owner": "Security and Provider Platform Maintainers",
+      "targetDocument": "docs/versions/v1.4.0/assurance/provider-data-flow-threat-model.md",
+      "requiredArtifact": "Threat model, privacy review, and provider data-flow diagrams",
+      "dependency": "ADR 0007 and provider-specific terms",
+      "remediation": "Document trust boundaries, request fields, headers, tool payloads, streaming content, retention, caching, fixtures, residency, subprocesses, telemetry, deletion, and incident response per provider.",
+      "acceptanceEvidence": "Approved threat model and privacy review with negative redaction and unauthorized-egress tests.",
+      "blocking": true
+    },
+    {
+      "id": "V14-F06",
+      "severity": "high",
+      "category": "provider-behavior",
+      "summary": "Per-provider implementation profiles are missing",
+      "affectedFeatures": [
+        "provider-adapter-contract"
+      ],
+      "sourceReference": "docs/versions/v1.4.0/product/brief.md",
+      "question": "How do OpenAI, Anthropic, Gemini, OpenRouter, and Ollama differ in authentication, discovery, streaming, tools, structured output, usage, rate limits, endpoints, and errors?",
+      "impact": "A common abstraction may silently erase required provider semantics.",
+      "owner": "Provider Platform Maintainers",
+      "targetDocument": "docs/versions/v1.4.0/interfaces/provider-profiles.md",
+      "requiredArtifact": "Dated provider profile specifications",
+      "dependency": "ProviderAdapter v1",
+      "remediation": "Define exact supported operations and deviations for each committed provider, including local Ollama discovery and account-backed API constraints.",
+      "acceptanceEvidence": "One profile and fixture suite per provider with explicit unsupported and degraded capabilities.",
+      "blocking": true
+    },
+    {
+      "id": "V14-F07",
+      "severity": "high",
+      "category": "configuration",
+      "summary": "Configuration schema and precedence are unspecified",
+      "affectedFeatures": [
+        "provider-adapter-contract"
+      ],
+      "sourceReference": "docs/versions/v1.4.0/capabilities/provider-adapter-contract.md",
+      "question": "Which provider settings exist, where are they stored, how do scopes override each other, and which values require secret references?",
+      "impact": "CLI, dashboard, SDK, and project behavior can diverge or expose credentials.",
+      "owner": "Provider Platform Maintainers",
+      "targetDocument": "docs/versions/v1.4.0/interfaces/provider-configuration-v1.md",
+      "requiredArtifact": "Provider configuration schema and precedence table",
+      "dependency": "v1.3 state and vault schemas",
+      "remediation": "Define fields, defaults, scopes, precedence, validation, environment references, exports, migrations, and redacted status output.",
+      "acceptanceEvidence": "Schema fixtures for valid, invalid, inherited, conflicting, offline, and migrated configurations.",
+      "blocking": true
+    },
+    {
+      "id": "V14-F08",
+      "severity": "high",
+      "category": "cli-dashboard-sdk",
+      "summary": "User-facing interface behavior is not decision-complete",
+      "affectedFeatures": [
+        "provider-adapter-contract",
+        "provider-resilience-compatibility"
+      ],
+      "sourceReference": "docs/versions/v1.4.0/interfaces/contracts.md",
+      "question": "What exact commands, options, prompts, output envelopes, exit codes, dashboard states, and SDK calls are added or changed?",
+      "impact": "Implementers must invent observable behavior and compatibility guarantees.",
+      "owner": "Provider Platform Maintainers",
+      "targetDocument": "docs/versions/v1.4.0/interfaces/surface-specification.md",
+      "requiredArtifact": "CLI, dashboard, SDK, and API interaction contract",
+      "dependency": "Provider domain services",
+      "remediation": "Specify commands and aliases, structured schemas, pagination, prompts, dry-run/apply boundaries, errors, empty/loading/degraded states, accessibility, and examples.",
+      "acceptanceEvidence": "Golden CLI fixtures, accessibility-reviewed dashboard flows, and SDK/API contract tests.",
+      "blocking": true
+    },
+    {
+      "id": "V14-F09",
+      "severity": "high",
+      "category": "testing",
+      "summary": "Test strategy names categories but not executable matrices",
+      "affectedFeatures": [
+        "provider-adapter-contract",
+        "provider-resilience-compatibility"
+      ],
+      "sourceReference": "docs/versions/v1.4.0/evidence/evidence-requirements.json",
+      "question": "Which deterministic fixtures, recorded responses, fault injections, provider accounts, models, operating systems, and pass thresholds form the certification suite?",
+      "impact": "Teams cannot reproduce support claims or know when implementation is complete.",
+      "owner": "QA and Provider Platform Maintainers",
+      "targetDocument": "docs/versions/v1.4.0/delivery/provider-test-matrix.md",
+      "requiredArtifact": "Provider contract and compatibility test plan",
+      "dependency": "Provider profiles and compatibility policy",
+      "remediation": "Define fixture format, sanitization, replay, model matrix, negative cases, account-gated smoke tests, rate-limit simulation, cross-platform requirements, and evidence expiry.",
+      "acceptanceEvidence": "Reviewed test matrix mapped to every adapter operation and acceptance gate.",
+      "blocking": true
+    },
+    {
+      "id": "V14-F10",
+      "severity": "high",
+      "category": "migration-and-rollback",
+      "summary": "Existing provider state migration is generic",
+      "affectedFeatures": [
+        "provider-adapter-contract"
+      ],
+      "sourceReference": "docs/versions/v1.4.0/delivery/delivery-plan.md",
+      "question": "How are current provider profiles, credentials references, model selections, and project MCP mappings migrated and rolled back?",
+      "impact": "Upgrades may lose configuration or create incompatible state despite nominal 1.x compatibility.",
+      "owner": "Provider Platform and State Maintainers",
+      "targetDocument": "docs/versions/v1.4.0/delivery/provider-migration-plan.md",
+      "requiredArtifact": "Versioned migration and rollback specification",
+      "dependency": "Current provider registry and state schemas",
+      "remediation": "Inventory current state, define schema transforms, backups, dry-run output, partial-failure recovery, rollback limits, and previous-two-version fixtures.",
+      "acceptanceEvidence": "Migration and rollback rehearsals using representative v1.2 and v1.3 workspaces.",
+      "blocking": true
+    },
+    {
+      "id": "V14-F11",
+      "severity": "high",
+      "category": "operations-performance",
+      "summary": "Service objectives, budgets, and operational ownership are deferred",
+      "affectedFeatures": [
+        "provider-adapter-contract",
+        "provider-resilience-compatibility"
+      ],
+      "sourceReference": "docs/versions/v1.4.0/operations/operability.md",
+      "question": "What are the approved latency, availability, correctness, cost, compatibility-freshness, incident, and support objectives?",
+      "impact": "Enterprise readiness and performance regression cannot be measured.",
+      "owner": "Provider Platform and Operations Maintainers",
+      "targetDocument": "docs/versions/v1.4.0/operations/provider-service-level-objectives.md",
+      "requiredArtifact": "Service-level objective, error-budget, alert, capacity, cost, and incident runbook",
+      "dependency": "Provider test and compatibility matrices",
+      "remediation": "Set measurable local and external-operation objectives, reference hardware, alert thresholds, cost accounting, degraded modes, escalation, and support response targets.",
+      "acceptanceEvidence": "Approved service-level objectives with benchmark and failure-exercise procedures.",
+      "blocking": true
+    },
+    {
+      "id": "V14-F12",
+      "severity": "medium",
+      "category": "developer-experience",
+      "summary": "Examples and troubleshooting are requirements rather than authored flows",
+      "affectedFeatures": [
+        "provider-adapter-contract",
+        "provider-resilience-compatibility"
+      ],
+      "sourceReference": "docs/versions/v1.4.0/delivery/delivery-plan.md",
+      "question": "What exact setup, offline, fallback, failure, rotation, migration, and rollback journeys should users follow?",
+      "impact": "Implementers and users lack executable examples and support diagnostics.",
+      "owner": "Provider Platform and Documentation Maintainers",
+      "targetDocument": "docs/versions/v1.4.0/delivery/documentation-plan.md",
+      "requiredArtifact": "Documentation information architecture and executable-example plan",
+      "dependency": "Finalized interfaces and provider profiles",
+      "remediation": "Enumerate tutorials, how-to guides, references, troubleshooting decision trees, FAQs, glossary terms, and secret-safe executable examples.",
+      "acceptanceEvidence": "Reviewed documentation plan with commands mapped to interface fixtures and support cases.",
+      "blocking": false
+    }
+  ],
+  "roleQuestions": [
+    {
+      "role": "Product",
+      "unanswered": [
+        "Which provider capabilities and user outcomes define v1.4 success beyond broad compatibility?"
+      ]
+    },
+    {
+      "role": "Architecture",
+      "unanswered": [
+        "What exact ProviderAdapter and invocation-policy contracts are authoritative?"
+      ]
+    },
+    {
+      "role": "Engineering",
+      "unanswered": [
+        "Which types, methods, schemas, defaults, and state transitions must be implemented?"
+      ]
+    },
+    {
+      "role": "QA",
+      "unanswered": [
+        "Which fixture and live-account matrix certifies each provider and model?"
+      ]
+    },
+    {
+      "role": "Security",
+      "unanswered": [
+        "What provider-specific data leaves the machine and under which policy decision?"
+      ]
+    },
+    {
+      "role": "DevOps",
+      "unanswered": [
+        "How are credential-gated tests scheduled, isolated, budgeted, and retained?"
+      ]
+    },
+    {
+      "role": "Documentation",
+      "unanswered": [
+        "Which exact user journeys, examples, errors, and limitations must ship?"
+      ]
+    },
+    {
+      "role": "Support",
+      "unanswered": [
+        "What SLO, escalation, compatibility-expiry, and provider-outage runbooks apply?"
+      ]
+    },
+    {
+      "role": "AI coding agent",
+      "unanswered": [
+        "Which behavior is normative when provider semantics cannot be normalized exactly?"
+      ]
+    }
+  ],
+  "traceability": [
+    {
+      "featureId": "provider-adapter-contract",
+      "status": "partial",
+      "gaps": [
+        "wire contract",
+        "provider profiles",
+        "configuration schema",
+        "data-flow threat model",
+        "migration fixtures",
+        "surface specification"
+      ]
+    },
+    {
+      "featureId": "provider-resilience-compatibility",
+      "status": "partial",
+      "gaps": [
+        "idempotency classes",
+        "fallback state machine",
+        "budget model",
+        "compatibility TTL",
+        "test matrix",
+        "SLOs"
+      ]
+    }
+  ],
+  "agentReadiness": {
+    "engineeringTeam": "no",
+    "codex": "no",
+    "claudeCode": "no",
+    "cursor": "no",
+    "geminiCli": "no",
+    "futureAiSystems": "no"
+  },
+  "reAuditRequired": true,
+  "inheritedDependencyBlockers": []
+}

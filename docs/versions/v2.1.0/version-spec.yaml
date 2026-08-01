@@ -34,10 +34,8 @@
     "The canonical package is vendor-neutral.",
     "OCI may transport artifacts but does not define package semantics."
   ],
-  "openQuestions": [
-    "Which trust roots are built in versus organization-managed?",
-    "How are namespace ownership disputes resolved?"
-  ],
+  "openQuestions": [],
+  "implementationContract": "docs/versions/v2.1.0/implementation-contract.md",
   "features": [
     {
       "id": "canonical-capability-package",

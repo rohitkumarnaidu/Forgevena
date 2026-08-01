@@ -34,10 +34,8 @@
     "Provider APIs remain external trust boundaries.",
     "Live validation requires user-owned credentials and explicit consent."
   ],
-  "openQuestions": [
-    "Which model capabilities qualify for stable support?",
-    "How long does compatibility evidence remain current?"
-  ],
+  "openQuestions": [],
+  "implementationContract": "docs/versions/v1.4.0/implementation-contract.md",
   "features": [
     {
       "id": "provider-adapter-contract",

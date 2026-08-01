@@ -34,10 +34,8 @@
     "Worker processes provide the initial portable isolation boundary.",
     "Vendor formats remain projections, not canonical package truth."
   ],
-  "openQuestions": [
-    "Which OS sandbox controls are required beyond process isolation?",
-    "Which host translations can be exact rather than degraded?"
-  ],
+  "openQuestions": [],
+  "implementationContract": "docs/versions/v1.5.0/implementation-contract.md",
   "features": [
     {
       "id": "isolated-plugin-runtime",

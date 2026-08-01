@@ -24,6 +24,7 @@ Support trusted public, private, mirrored, federated, and air-gapped registries 
 
 - [Product brief](product/brief.md)
 - [Architecture delta](architecture/delta.md)
+- [Normative implementation contract](implementation-contract.md)
 - [Capabilities](capabilities/index.md)
 - [Interfaces and contracts](interfaces/contracts.md)
 - [Assurance plan](assurance/assurance-plan.md)

@@ -32,4 +32,13 @@ Clone the repository, use Node.js 20.19+, run `npm test`, and execute `node ./bi
 
 Build `Dockerfile.cli`, run the image with `version`, and mount a disposable project directory for modifying commands.
 
-Homebrew, Winget, and Chocolatey packages are generated from the same immutable native executables. The Homebrew tap is published. The [Winget submission](https://github.com/microsoft/winget-pkgs/pull/404506) and Chocolatey submission remain subject to independent external moderation. See [Publishing Guide](../RELEASE_GUIDE.md) and [Compatibility Matrix](../COMPATIBILITY_MATRIX.md).
+## Package-channel status
+
+| Channel | Available version | Status | Install or verification |
+| --- | --- | --- | --- |
+| npm | `1.3.0` | Published stable | `npm install --global forgevena@1.3.0` |
+| Homebrew tap | `1.3.0` | Published | `brew install rohitkumarnaidu/forgevena/forgevena` |
+| Winget | `1.2.3` | Published upstream after [PR 404506](https://github.com/microsoft/winget-pkgs/pull/404506) passed validation and moderation | Run `winget source update`, then `winget install --id RohitKumarNaidu.Forgevena --exact` |
+| Chocolatey community | `1.2.3` | Validation and automated testing passed; human moderation remains pending | Do not treat the community package as generally available until the [package page](https://community.chocolatey.org/packages/forgevena/1.2.3) reports approval |
+
+Homebrew, Winget, and Chocolatey bundles originate from immutable native release executables, but each external repository publishes on its own schedule. Winget currently trails the stable npm and Homebrew release. See the [Publishing Guide](../RELEASE_GUIDE.md) and [Compatibility Matrix](../COMPATIBILITY_MATRIX.md).

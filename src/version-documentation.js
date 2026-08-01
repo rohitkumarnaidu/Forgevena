@@ -44,6 +44,8 @@ export async function generateVersionDocumentation(root, { apply = false, versio
   if (!validation.valid) return { ...validation, create: [], update: [], remove: [] };
   const selected = version ? sources.catalog.versions.filter((entry) => entry.version === version) : sources.catalog.versions;
   if (version && selected.length !== 1) return { valid: false, issues: [`Unknown roadmap version ${version}.`], create: [], update: [], remove: [] };
+  const contractIssues = await validateImplementationContracts(root, selected);
+  if (contractIssues.length) return { ...validation, valid: false, issues: contractIssues, create: [], update: [], remove: [] };
 
   const expected = new Map();
   for (const specification of selected) {
@@ -53,7 +55,7 @@ export async function generateVersionDocumentation(root, { apply = false, versio
     for (const [relative, contents] of renderSystemIndexes(sources).entries()) expected.set(relative, contents);
   }
 
-  const changes = await compareExpected(root, expected);
+  const changes = await compareExpected(root, expected, new Set(selected.map(({ implementationContract }) => implementationContract)));
   if (apply) for (const [relative, contents] of expected) {
     const target = path.join(root, relative);
     await mkdir(path.dirname(target), { recursive: true });
@@ -75,6 +77,7 @@ export async function createVersionBundle(root, version, checkpoint = "planning"
   const output = path.join(root, "dist", "version-bundles", `${version}-${checkpoint}`);
   await rm(output, { recursive: true, force: true });
   const files = new Map(renderVersionPackage(specification, sources.catalog));
+  files.set("implementation-contract.md", await readFile(path.join(root, specification.implementationContract), "utf8"));
   for (const subject of sources.foundation.subjects) {
     const canonicalPath = path.join(root, subject.authority);
     files.set(path.join("foundation", subject.id, path.basename(subject.authority)).replaceAll("\\", "/"), await readFile(canonicalPath, "utf8"));
@@ -125,8 +128,9 @@ function validateCatalog(catalog, issues) {
   const ids = new Set();
   for (const [index, version] of catalog.versions.entries()) {
     const prefix = `Version ${version?.version ?? `<index:${index}>`}`;
-    for (const field of ["version", "title", "outcome", "owner", "roadmapAuthority", "riskTier"]) if (!nonEmpty(version?.[field])) issues.push(`${prefix} requires ${field}.`);
+    for (const field of ["version", "title", "outcome", "owner", "roadmapAuthority", "riskTier", "implementationContract"]) if (!nonEmpty(version?.[field])) issues.push(`${prefix} requires ${field}.`);
     if (!/^v\d+\.\d+\.\d+$/.test(version?.version ?? "")) issues.push(`${prefix} must use vX.Y.Z.`);
+    if (version?.implementationContract !== `docs/versions/${version?.version}/implementation-contract.md`) issues.push(`${prefix} requires its canonical implementation contract.`);
     if (!Array.isArray(version?.dependsOn) || !Array.isArray(version?.blocks)) issues.push(`${prefix} requires dependency arrays.`);
     if (!Array.isArray(version?.nonGoals) || !version.nonGoals.length) issues.push(`${prefix} requires non-goals.`);
     if (!Array.isArray(version?.metrics) || !version.metrics.length) issues.push(`${prefix} requires measurable outcomes.`);
@@ -180,7 +184,7 @@ function renderSystemIndexes({ catalog, foundation, history }) {
 }
 
 function renderReadme(version) {
-  return header(version, `${version.title} is an approved roadmap delta specification. It does not authorize implementation by itself.`) + `## Outcome\n\n${version.outcome}\n\n## Status\n\n- **Lifecycle:** planned\n- **Product maturity:** not implemented\n- **Risk:** ${version.riskTier}\n- **Owner:** ${version.owner}\n- **Depends on:** ${listInline(version.dependsOn)}\n- **Blocks:** ${listInline(version.blocks)}\n\n## Package Navigation\n\n- [Product brief](product/brief.md)\n- [Architecture delta](architecture/delta.md)\n- [Capabilities](capabilities/index.md)\n- [Interfaces and contracts](interfaces/contracts.md)\n- [Assurance plan](assurance/assurance-plan.md)\n- [Delivery plan](delivery/delivery-plan.md)\n- [Operability](operations/operability.md)\n- [Decisions](decisions/index.md)\n- [Evidence requirements](evidence/README.md)\n\n## Authority\n\nPermanent architecture remains in the [foundation facade](../../foundation/README.md). This package records only the version delta and must be reconciled through RFC, ADR, threat model, and readiness approval before implementation.\n`;
+  return header(version, `${version.title} is an approved roadmap delta specification. It does not authorize implementation by itself.`) + `## Outcome\n\n${version.outcome}\n\n## Status\n\n- **Lifecycle:** planned\n- **Product maturity:** not implemented\n- **Risk:** ${version.riskTier}\n- **Owner:** ${version.owner}\n- **Depends on:** ${listInline(version.dependsOn)}\n- **Blocks:** ${listInline(version.blocks)}\n\n## Package Navigation\n\n- [Product brief](product/brief.md)\n- [Architecture delta](architecture/delta.md)\n- [Normative implementation contract](implementation-contract.md)\n- [Capabilities](capabilities/index.md)\n- [Interfaces and contracts](interfaces/contracts.md)\n- [Assurance plan](assurance/assurance-plan.md)\n- [Delivery plan](delivery/delivery-plan.md)\n- [Operability](operations/operability.md)\n- [Decisions](decisions/index.md)\n- [Evidence requirements](evidence/README.md)\n\n## Authority\n\nPermanent architecture remains in the [foundation facade](../../foundation/README.md). This package records only the version delta and must be reconciled through RFC, ADR, threat model, and readiness approval before implementation.\n`;
 }
 
 function renderProduct(version) {
@@ -273,7 +277,7 @@ function header(version, purpose) {
   return `# ${version.version} — ${version.title}\n\n> **Purpose:** ${purpose}\n> **Audience:** product, architecture, engineering, security, operations, documentation, release, and AI coding agents\n> **Owner:** ${version.owner}\n> **Roadmap authority:** \`${version.roadmapAuthority}\`\n> **Lifecycle:** planned\n> **Review:** before implementation and at every lifecycle promotion\n\n`;
 }
 
-async function compareExpected(root, expected) {
+async function compareExpected(root, expected, preserved = new Set()) {
   const create = [];
   const update = [];
   for (const [relative, contents] of expected) {
@@ -287,11 +291,26 @@ async function compareExpected(root, expected) {
       for (const relative of await walk(generatedRoot)) {
         const repositoryRelative = path.relative(root, relative).replaceAll("\\", "/");
         if (repositoryRelative.endsWith("version-specifications.json")) continue;
-        if (!expected.has(repositoryRelative) && /docs\/versions\/v\d/.test(repositoryRelative)) remove.push(repositoryRelative);
+        if (!expected.has(repositoryRelative) && !preserved.has(repositoryRelative) && /docs\/versions\/v\d/.test(repositoryRelative)) remove.push(repositoryRelative);
       }
     } catch (error) { if (error.code !== "ENOENT") throw error; }
   }
   return { create, update, remove, valid: create.length === 0 && update.length === 0 && remove.length === 0, issues: [...create.map((file) => `${file} is missing.`), ...update.map((file) => `${file} is stale.`), ...remove.map((file) => `${file} is unmanaged.`)] };
+}
+
+async function validateImplementationContracts(root, specifications) {
+  const issues = [];
+  for (const specification of specifications) {
+    const contractPath = specification.implementationContract;
+    try {
+      const contents = await readFile(path.join(root, contractPath), "utf8");
+      if (contents.length < 1800 || !contents.includes("# ")) issues.push(`${contractPath} is incomplete.`);
+    } catch (error) {
+      if (error.code === "ENOENT") issues.push(`${contractPath} is missing.`);
+      else throw error;
+    }
+  }
+  return issues;
 }
 
 async function walk(directory) {
@@ -309,7 +328,7 @@ function sha256(value) { return createHash("sha256").update(normalize(value)).di
 function normalize(value) { return String(value).replace(/\r\n/g, "\n"); }
 function nonEmpty(value) { return typeof value === "string" && value.trim().length > 0; }
 function isObject(value) { return value && typeof value === "object" && !Array.isArray(value); }
-function bullets(values) { return values.map((value) => `- ${value}`).join("\n"); }
+function bullets(values) { return values.length ? values.map((value) => `- ${value}`).join("\n") : "- None."; }
 function featureList(version, status) { const values = version.features.filter((feature) => feature.status === status).map((feature) => `**${feature.title}:** ${feature.summary}`); return values.length ? bullets(values) : "- None approved."; }
 function listInline(values) { return values.length ? values.map((value) => `\`${value}\``).join(", ") : "current stable platform"; }
 function nodeId(value) { return value.replaceAll(".", "_").replace("v", "V"); }

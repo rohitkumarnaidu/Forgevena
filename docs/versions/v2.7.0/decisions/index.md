@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- Who governs certification criteria and appeals?
-- How is private evidence disclosed to auditors without public leakage?
+- None.
 
 ## Decision Expiry
 

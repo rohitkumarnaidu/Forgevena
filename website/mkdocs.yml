@@ -212,6 +212,43 @@ nav:
       - Ecosystem ADR Candidates: strategy/ECOSYSTEM_ADR_CANDIDATES.md
       - Research and Standards Radar: strategy/RESEARCH_AND_STANDARDS_RADAR.md
       - Documentation Audit: reports/ENTERPRISE_DOCUMENTATION_AUDIT_REPORT.md
+      - Version Readiness Comparison: reports/VERSION_IMPLEMENTATION_READINESS_COMPARISON.md
+      - Version Readiness Remediation: reports/VERSION_IMPLEMENTATION_READINESS_REMEDIATION_PLAN.md
+      - Version Readiness Dependency Map: reports/VERSION_READINESS_DEPENDENCY_MAP.md
+      - Version Readiness Ownership Matrix: reports/VERSION_READINESS_BLOCKER_OWNERSHIP_MATRIX.md
+      - Version Readiness Audits:
+          - v1.4.0 Audit: evidence/changes/version-readiness-audit-v1.4.0/audit.md
+          - v1.4.0 Remediation: evidence/changes/version-readiness-audit-v1.4.0/remediation-plan.md
+          - v1.5.0 Audit: evidence/changes/version-readiness-audit-v1.5.0/audit.md
+          - v1.5.0 Remediation: evidence/changes/version-readiness-audit-v1.5.0/remediation-plan.md
+          - v1.6.0 Audit: evidence/changes/version-readiness-audit-v1.6.0/audit.md
+          - v1.6.0 Remediation: evidence/changes/version-readiness-audit-v1.6.0/remediation-plan.md
+          - v1.7.0 Audit: evidence/changes/version-readiness-audit-v1.7.0/audit.md
+          - v1.7.0 Remediation: evidence/changes/version-readiness-audit-v1.7.0/remediation-plan.md
+          - v1.8.0 Audit: evidence/changes/version-readiness-audit-v1.8.0/audit.md
+          - v1.8.0 Remediation: evidence/changes/version-readiness-audit-v1.8.0/remediation-plan.md
+          - v1.9.0 Audit: evidence/changes/version-readiness-audit-v1.9.0/audit.md
+          - v1.9.0 Remediation: evidence/changes/version-readiness-audit-v1.9.0/remediation-plan.md
+          - v1.10.0 Audit: evidence/changes/version-readiness-audit-v1.10.0/audit.md
+          - v1.10.0 Remediation: evidence/changes/version-readiness-audit-v1.10.0/remediation-plan.md
+          - v2.0.0 Audit: evidence/changes/version-readiness-audit-v2.0.0/audit.md
+          - v2.0.0 Remediation: evidence/changes/version-readiness-audit-v2.0.0/remediation-plan.md
+          - v2.1.0 Audit: evidence/changes/version-readiness-audit-v2.1.0/audit.md
+          - v2.1.0 Remediation: evidence/changes/version-readiness-audit-v2.1.0/remediation-plan.md
+          - v2.2.0 Audit: evidence/changes/version-readiness-audit-v2.2.0/audit.md
+          - v2.2.0 Remediation: evidence/changes/version-readiness-audit-v2.2.0/remediation-plan.md
+          - v2.3.0 Audit: evidence/changes/version-readiness-audit-v2.3.0/audit.md
+          - v2.3.0 Remediation: evidence/changes/version-readiness-audit-v2.3.0/remediation-plan.md
+          - v2.4.0 Audit: evidence/changes/version-readiness-audit-v2.4.0/audit.md
+          - v2.4.0 Remediation: evidence/changes/version-readiness-audit-v2.4.0/remediation-plan.md
+          - v2.5.0 Audit: evidence/changes/version-readiness-audit-v2.5.0/audit.md
+          - v2.5.0 Remediation: evidence/changes/version-readiness-audit-v2.5.0/remediation-plan.md
+          - v2.6.0 Audit: evidence/changes/version-readiness-audit-v2.6.0/audit.md
+          - v2.6.0 Remediation: evidence/changes/version-readiness-audit-v2.6.0/remediation-plan.md
+          - v2.7.0 Audit: evidence/changes/version-readiness-audit-v2.7.0/audit.md
+          - v2.7.0 Remediation: evidence/changes/version-readiness-audit-v2.7.0/remediation-plan.md
+          - v3.0.0 Audit: evidence/changes/version-readiness-audit-v3.0.0/audit.md
+          - v3.0.0 Remediation: evidence/changes/version-readiness-audit-v3.0.0/remediation-plan.md
       - Historical Release Governance: reports/HISTORICAL_RELEASE_GOVERNANCE_RETROSPECTIVE.md
       - Releases: releases/index.md
       - Migration: migration/index.md

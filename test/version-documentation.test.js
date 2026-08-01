@@ -21,6 +21,7 @@ test("every version package exposes complete enterprise documentation surfaces",
   for (const version of catalog.versions) {
     const files = renderVersionPackage(version, catalog);
     for (const required of ["README.md", "version-spec.yaml", "product/brief.md", "architecture/delta.md", "capabilities/index.md", "interfaces/contracts.md", "assurance/assurance-plan.md", "delivery/delivery-plan.md", "operations/operability.md", "decisions/index.md", "evidence/README.md", "evidence/evidence-requirements.json"]) assert.equal(files.has(`docs/versions/${version.version}/${required}`), true, `${version.version} lacks ${required}`);
+    assert.equal(version.implementationContract, `docs/versions/${version.version}/implementation-contract.md`);
     for (const feature of version.features.filter(({ status }) => status === "committed")) assert.equal(files.has(`docs/versions/${version.version}/capabilities/${feature.id}.md`), true);
   }
 });
@@ -42,6 +43,12 @@ test("version generation applies safely and reports stale or unmanaged outputs",
       await mkdir(path.dirname(target), { recursive: true });
       await copyFile(path.join(root, relative), target);
     }
+    const { catalog } = await loadVersionDocumentationSources(root);
+    for (const version of catalog.versions) {
+      const target = path.join(temporary, version.implementationContract);
+      await mkdir(path.dirname(target), { recursive: true });
+      await copyFile(path.join(root, version.implementationContract), target);
+    }
     const applied = await generateVersionDocumentation(temporary, { apply: true });
     assert.equal(applied.valid, true, applied.issues.join("\n"));
     assert.equal(applied.applied, true);
@@ -53,6 +60,7 @@ test("version generation applies safely and reports stale or unmanaged outputs",
     assert.equal(stale.valid, false);
     assert.ok(stale.update.includes("docs/versions/v1.4.0/README.md"));
     assert.ok(stale.remove.includes("docs/versions/v1.4.0/unmanaged.md"));
+    assert.equal(stale.remove.includes("docs/versions/v1.4.0/implementation-contract.md"), false);
   } finally {
     await rm(temporary, { recursive: true, force: true });
   }

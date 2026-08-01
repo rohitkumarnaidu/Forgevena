@@ -34,10 +34,8 @@
     "Organizations may operate self-hosted or local-only.",
     "Compliance packs remain evidence mappings unless certified."
   ],
-  "openQuestions": [
-    "How are organization distributions versioned and supported?",
-    "Which approvals require separation of duties?"
-  ],
+  "openQuestions": [],
+  "implementationContract": "docs/versions/v2.5.0/implementation-contract.md",
   "features": [
     {
       "id": "organization-catalog-approvals",

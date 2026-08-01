@@ -32,10 +32,8 @@
     "All prior roadmap contracts have reached stable evidence-backed maturity.",
     "The final 2.x release receives a documented support window."
   ],
-  "openQuestions": [
-    "Which contracts require a major-version break?",
-    "What governance model sustains a federated global ecosystem?"
-  ],
+  "openQuestions": [],
+  "implementationContract": "docs/versions/v3.0.0/implementation-contract.md",
   "features": [
     {
       "id": "unified-ai-engineering-os",

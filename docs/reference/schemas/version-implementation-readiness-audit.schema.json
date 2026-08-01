@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rohitkumarnaidu.github.io/Forgevena/schemas/version-implementation-readiness-audit.schema.json",
+  "title": "Forgevena Version Implementation Readiness Audit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "auditId", "auditedVersion", "auditedAt", "verdict", "overallScore", "implementationReadiness", "executiveVerdict", "dependencyStatus", "inheritedDependencyBlockers", "scores", "blockers", "findings", "roleQuestions", "traceability", "agentReadiness", "reAuditRequired"],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "auditId": { "type": "string", "minLength": 1 },
+    "auditedVersion": { "enum": ["v1.4.0", "v1.5.0", "v1.6.0", "v1.7.0", "v1.8.0", "v1.9.0", "v1.10.0", "v2.0.0", "v2.1.0", "v2.2.0", "v2.3.0", "v2.4.0", "v2.5.0", "v2.6.0", "v2.7.0", "v3.0.0"] },
+    "auditedAt": { "type": "string", "format": "date" },
+    "verdict": { "enum": ["approve", "hold", "reject"] },
+    "overallScore": { "$ref": "#/$defs/score" },
+    "implementationReadiness": { "type": "string", "minLength": 1 },
+    "executiveVerdict": { "type": "string", "minLength": 1 },
+    "dependencyStatus": { "type": "string", "minLength": 1 },
+    "inheritedDependencyBlockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["version", "auditId", "summary"],
+        "properties": {
+          "version": { "type": "string" },
+          "auditId": { "type": "string" },
+          "summary": { "type": "string" }
+        }
+      }
+    },
+    "scores": {
+      "type": "object",
+      "required": ["product", "architecture", "engineering", "documentation", "security", "testing", "release", "enterpriseReadiness", "openSourceReadiness", "aiAgentReadiness", "maintainability", "extensibility"],
+      "additionalProperties": false,
+      "properties": {
+        "product": { "$ref": "#/$defs/score" }, "architecture": { "$ref": "#/$defs/score" }, "engineering": { "$ref": "#/$defs/score" }, "documentation": { "$ref": "#/$defs/score" }, "security": { "$ref": "#/$defs/score" }, "testing": { "$ref": "#/$defs/score" }, "release": { "$ref": "#/$defs/score" }, "enterpriseReadiness": { "$ref": "#/$defs/score" }, "openSourceReadiness": { "$ref": "#/$defs/score" }, "aiAgentReadiness": { "$ref": "#/$defs/score" }, "maintainability": { "$ref": "#/$defs/score" }, "extensibility": { "$ref": "#/$defs/score" }
+      }
+    },
+    "blockers": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/blocker" } },
+    "findings": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/finding" } },
+    "roleQuestions": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/roleQuestion" } },
+    "traceability": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/traceability" } },
+    "agentReadiness": { "type": "object", "required": ["engineeringTeam", "codex", "claudeCode", "cursor", "geminiCli", "futureAiSystems"], "additionalProperties": false, "properties": { "engineeringTeam": { "$ref": "#/$defs/agentDecision" }, "codex": { "$ref": "#/$defs/agentDecision" }, "claudeCode": { "$ref": "#/$defs/agentDecision" }, "cursor": { "$ref": "#/$defs/agentDecision" }, "geminiCli": { "$ref": "#/$defs/agentDecision" }, "futureAiSystems": { "$ref": "#/$defs/agentDecision" } } },
+    "reAuditRequired": { "type": "boolean" }
+  },
+  "$defs": {
+    "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "agentDecision": { "enum": ["yes", "no", "conditional"] },
+    "blocker": { "type": "object", "additionalProperties": false, "required": ["id", "summary", "sourceReference"], "properties": { "id": { "type": "string" }, "summary": { "type": "string" }, "sourceReference": { "type": "string" } } },
+    "roleQuestion": { "type": "object", "additionalProperties": false, "required": ["role", "unanswered"], "properties": { "role": { "type": "string" }, "unanswered": { "type": "array", "minItems": 1, "items": { "type": "string" } } },
+    "traceability": { "type": "object", "additionalProperties": false, "required": ["featureId", "status", "gaps"], "properties": { "featureId": { "type": "string" }, "status": { "enum": ["complete", "partial", "missing", "contradictory"] }, "gaps": { "type": "array", "items": { "type": "string" } } } },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "severity", "category", "summary", "affectedFeatures", "sourceReference", "question", "impact", "owner", "targetDocument", "requiredArtifact", "dependency", "remediation", "acceptanceEvidence", "blocking"],
+      "properties": {
+        "id": { "type": "string" }, "severity": { "enum": ["critical", "high", "medium", "low", "opportunity"] }, "category": { "type": "string" }, "summary": { "type": "string" }, "affectedFeatures": { "type": "array", "items": { "type": "string" } }, "sourceReference": { "type": "string" }, "question": { "type": "string" }, "impact": { "type": "string" }, "owner": { "type": "string" }, "targetDocument": { "type": "string" }, "requiredArtifact": { "type": "string" }, "dependency": { "type": "string" }, "remediation": { "type": "string" }, "acceptanceEvidence": { "type": "string" }, "blocking": { "type": "boolean" }
+      }
+    }
+  }
+}
+}
