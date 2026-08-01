@@ -8,48 +8,56 @@ const executeFile = promisify(execFile);
 
 export const PROVIDER_DEFINITIONS = Object.freeze({
   openai: {
+    service: "OpenAI",
     kind: "model-api",
     credential: "OPENAI_API_KEY",
     defaultModel: "gpt-5.4-mini",
-    capabilities: ["generate", "health", "mcp-host"],
+    capabilities: ["generate", "invoke", "stream", "structured-output", "tools", "cancel", "health", "mcp-host"],
   },
   claude: {
+    service: "Anthropic",
     kind: "model-api",
     credential: "ANTHROPIC_API_KEY",
     defaultModel: "claude-sonnet-4-5",
-    capabilities: ["generate", "health", "mcp-host"],
+    capabilities: ["generate", "invoke", "stream", "structured-output", "tools", "cancel", "health", "mcp-host"],
   },
   gemini: {
+    service: "Google Gemini",
     kind: "model-api",
     credential: "GEMINI_API_KEY",
     defaultModel: "gemini-2.5-flash",
-    capabilities: ["generate", "health", "mcp-host"],
+    capabilities: ["generate", "invoke", "stream", "structured-output", "tools", "cancel", "health", "mcp-host"],
   },
   openrouter: {
+    service: "OpenRouter",
     kind: "model-api",
     credential: "OPENROUTER_API_KEY",
     defaultModel: "openrouter/auto",
-    capabilities: ["generate", "health"],
+    capabilities: ["generate", "invoke", "stream", "structured-output", "tools", "cancel", "health"],
   },
   ollama: {
+    service: "Ollama",
     kind: "local-model",
     credential: null,
     defaultModel: "llama3.2",
-    capabilities: ["generate", "health", "model-discovery"],
+    capabilities: ["generate", "invoke", "stream", "structured-output", "tools", "cancel", "health", "model-discovery"],
   },
   codex: {
+    service: "OpenAI Codex",
     kind: "agent-host",
     credential: "OPENAI_API_KEY",
     executable: "codex",
     capabilities: ["agent-execute", "auth-status", "mcp-host"],
   },
   cursor: {
+    service: "Cursor",
     kind: "agent-host",
     credential: "CURSOR_API_KEY",
     executable: "cursor-agent",
     capabilities: ["agent-execute", "auth-status", "mcp-host"],
   },
   windsurf: {
+    service: "Windsurf",
     kind: "agent-host",
     credential: null,
     executable: "windsurf",
@@ -96,7 +104,7 @@ export async function providerRuntimeStatus(root, name, { execImpl = executeFile
   };
 }
 
-export async function invokeProvider(root, name, request, { fetchImpl = globalThis.fetch, execImpl = executeFile, sleepImpl = delay, randomImpl = Math.random } = {}) {
+export async function invokeProvider(root, name, request, { fetchImpl = globalThis.fetch, execImpl = executeFile, sleepImpl = delay, randomImpl = Math.random, signal, recordUsage = true } = {}) {
   const definition = providerDefinition(name);
   const policy = await readProviderPolicy(root, name);
   const normalized = validateRequest(name, request, policy);
@@ -106,17 +114,18 @@ export async function invokeProvider(root, name, request, { fetchImpl = globalTh
   let lastError;
   for (let attempt = 0; attempt <= normalized.retries; attempt += 1) {
     const controller = new AbortController();
+    const combinedSignal = combineSignals(signal, controller.signal);
     const timeout = setTimeout(() => controller.abort(), normalized.timeoutMs);
     try {
-      const response = await fetchImpl(buildUrl(name, normalized.model), { method: "POST", headers: buildHeaders(name, key, normalized.idempotencyKey), body: JSON.stringify(buildBody(name, normalized)), signal: controller.signal });
+      const response = await fetchImpl(buildUrl(name, normalized.model), { method: "POST", headers: buildHeaders(name, key, normalized.idempotencyKey), body: JSON.stringify(buildBody(name, normalized)), signal: combinedSignal });
       const payload = await readPayload(response);
       if (!response.ok) throw providerHttpError(name, response.status, payload, response.headers);
       const result = normalizeResponse(name, payload, normalized.model);
-      await recordProviderUsage(root, name, { inputCharacters: normalized.prompt.length, outputCharacters: result.text.length, usage: result.usage });
-      return { ...result, attempts: attempt + 1 };
+      if (recordUsage) await recordProviderUsage(root, name, { inputCharacters: normalized.prompt.length, outputCharacters: result.text.length, usage: result.usage });
+      return { ...result, operationId: normalized.operationId, finishReason: result.finishReason ?? null, warnings: [], attempts: attempt + 1 };
     } catch (error) {
-      lastError = error?.name === "AbortError" ? new ProviderRequestError(`Provider request timed out after ${normalized.timeoutMs}ms.`, { provider: name, retryable: true, code: "timeout" }) : error instanceof ProviderRequestError ? error : new ProviderRequestError(error?.message ?? "Provider request failed.", { provider: name, retryable: true });
-      if (!lastError.retryable || attempt === normalized.retries) throw lastError;
+      lastError = error?.name === "AbortError" ? new ProviderRequestError(signal?.aborted ? "Provider request was cancelled." : `Provider request timed out after ${normalized.timeoutMs}ms.`, { provider: name, retryable: !signal?.aborted, code: signal?.aborted ? "cancellation" : "timeout" }) : error instanceof ProviderRequestError ? error : new ProviderRequestError("Provider transport failed.", { provider: name, retryable: true, code: "transport" });
+      if (!lastError.retryable || attempt === normalized.retries || !safeToRetry(normalized)) throw lastError;
       const exponential = Math.min(250 * (2 ** attempt), 2000);
       const jittered = Math.round(exponential * (0.5 + randomImpl() * 0.5));
       await sleepImpl(lastError.retryAfterMs ?? jittered);
@@ -130,6 +139,57 @@ export async function discoverOllamaModels({ fetchImpl = globalThis.fetch } = {}
   if (!response.ok) throw new ProviderRequestError(`Ollama health check failed with HTTP ${response.status}.`, { provider: "ollama", status: response.status, code: "local_model_unavailable" });
   const payload = await response.json();
   return Array.isArray(payload.models) ? payload.models.map((model) => ({ name: model.name, size: model.size ?? null, modifiedAt: model.modified_at ?? null })) : [];
+}
+
+export async function* streamProvider(root, name, request, { fetchImpl = globalThis.fetch, signal, recordUsage = true } = {}) {
+  const definition = providerDefinition(name);
+  if (definition.kind === "agent-host") throw new ProviderRequestError(`${name} does not expose the ProviderAdapter streaming contract.`, { provider: name, code: "capability_unavailable" });
+  const policy = await readProviderPolicy(root, name);
+  const normalized = validateRequest(name, { ...request, retries: 0 }, policy);
+  const key = definition.credential ? await readCredential(root, definition.credential) : null;
+  if (definition.credential && !key) throw new ProviderRequestError(`Missing ${definition.credential}. Configure the provider before invoking it.`, { provider: name, code: "credential_missing" });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), normalized.timeoutMs);
+  let outputCharacters = 0;
+  let finalUsage = null;
+  let completed = false;
+  try {
+    const response = await fetchImpl(buildStreamUrl(name, normalized.model), { method: "POST", headers: buildHeaders(name, key, normalized.idempotencyKey), body: JSON.stringify({ ...buildBody(name, normalized), stream: true }), signal: combineSignals(signal, controller.signal) });
+    if (!response.ok) throw providerHttpError(name, response.status, await readPayload(response), response.headers);
+    if (!response.body) throw new ProviderRequestError("Provider stream did not include a response body.", { provider: name, code: "malformed_response" });
+    let buffer = "";
+    const decoder = new TextDecoder();
+    for await (const chunk of response.body) {
+      buffer += decoder.decode(chunk, { stream: true });
+      const lines = buffer.split(/\r?\n/);
+      buffer = lines.pop() ?? "";
+      for (const line of lines) {
+        const payload = parseStreamLine(line);
+        if (!payload) continue;
+        for (const event of normalizeStreamPayload(name, payload)) {
+          if (event.type === "content-delta") outputCharacters += String(event.delta ?? "").length;
+          if (event.type === "usage") finalUsage = event.usage;
+          if (event.type === "complete") completed = true;
+          yield event;
+        }
+      }
+    }
+    buffer += decoder.decode();
+    if (buffer.trim()) {
+      const payload = parseStreamLine(buffer);
+      if (payload) for (const event of normalizeStreamPayload(name, payload)) {
+        if (event.type === "content-delta") outputCharacters += String(event.delta ?? "").length;
+        if (event.type === "usage") finalUsage = event.usage;
+        if (event.type === "complete") completed = true;
+        yield event;
+      }
+    }
+    if (!completed) yield { type: "complete", finishReason: "stream-ended" };
+    if (recordUsage) await recordProviderUsage(root, name, { inputCharacters: normalized.prompt.length, outputCharacters, usage: finalUsage });
+  } catch (error) {
+    if (error?.name === "AbortError") throw new ProviderRequestError(signal?.aborted ? "Provider stream was cancelled." : "Provider stream timed out.", { provider: name, code: signal?.aborted ? "cancellation" : "timeout", retryable: false });
+    throw error;
+  } finally { clearTimeout(timeout); }
 }
 
 export function providerAuthPlan(name, action = "login") {
@@ -150,7 +210,8 @@ function validateRequest(name, request, policy) {
   if (!definition.capabilities.includes("generate") && !definition.capabilities.includes("agent-execute")) {
     throw new ProviderRequestError(definition.limitation ?? `${name} does not support invocation.`, { provider: name, code: "capability_unavailable" });
   }
-  const prompt = request?.prompt?.trim();
+  const messages = normalizeMessages(request);
+  const prompt = messages.map((entry) => entry.content).join("\n").trim();
   if (!prompt) throw new ProviderRequestError("A non-empty prompt is required.", { provider: name, code: "invalid_request" });
   if (policy.mode !== "unrestricted" && prompt.length > policy.maxInputCharacters) {
     throw new ProviderRequestError(`Prompt exceeds the ${policy.maxInputCharacters} character policy limit.`, { provider: name, code: "policy_limit" });
@@ -158,13 +219,23 @@ function validateRequest(name, request, policy) {
   if (policy.mode === "budgeted" && policy.usage.requests >= policy.monthlyRequestLimit) {
     throw new ProviderRequestError("The configured local request budget has been reached.", { provider: name, code: "budget_exceeded" });
   }
+  if (!['public', 'internal', 'confidential', 'restricted'].includes(request.dataClassification ?? 'restricted')) throw new ProviderRequestError("dataClassification must be public, internal, confidential, or restricted.", { provider: name, code: "invalid_request" });
+  if (request.tools !== undefined && !Array.isArray(request.tools)) throw new ProviderRequestError("tools must be an array.", { provider: name, code: "invalid_request" });
+  if (request.structuredOutput !== undefined && request.structuredOutput !== null && (typeof request.structuredOutput !== "object" || Array.isArray(request.structuredOutput))) throw new ProviderRequestError("structuredOutput must be a JSON Schema object.", { provider: name, code: "invalid_request" });
   return {
     prompt,
+    messages,
+    operationId: request.operationId ?? randomUUID(),
     model: request.model ?? definition.defaultModel,
     maxOutputTokens: Math.min(Number(request.maxOutputTokens ?? policy.maxOutputTokens), policy.mode === "unrestricted" ? 131072 : policy.maxOutputTokens),
     timeoutMs: Math.min(Number(request.timeoutMs ?? policy.timeoutMs), policy.mode === "unrestricted" ? 600000 : policy.timeoutMs),
-    retries: Math.min(Number(request.retries ?? policy.retries), 5),
+    retries: Math.min(Number(request.retries ?? policy.retries), 2),
     idempotencyKey: request.idempotencyKey ?? randomUUID(),
+    idempotency: request.idempotency ?? (request.tools?.length ? "non-idempotent" : "read-only"),
+    dataClassification: request.dataClassification ?? "restricted",
+    tools: request.tools ?? [],
+    structuredOutput: request.structuredOutput ?? null,
+    budget: request.budget ?? {},
   };
 }
 
@@ -186,6 +257,7 @@ function buildUrl(name, model) {
   if (name === "gemini") return `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
   return "https://openrouter.ai/api/v1/chat/completions";
 }
+function buildStreamUrl(name, model) { return name === "gemini" ? `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:streamGenerateContent?alt=sse` : buildUrl(name, model); }
 
 function buildHeaders(name, key, idempotencyKey) {
   const common = { "content-type": "application/json" };
@@ -196,22 +268,28 @@ function buildHeaders(name, key, idempotencyKey) {
 }
 
 function buildBody(name, request) {
-  if (name === "ollama") return { model: request.model, prompt: request.prompt, stream: false, options: { num_predict: request.maxOutputTokens } };
-  if (name === "openai") return { model: request.model, input: request.prompt, max_output_tokens: request.maxOutputTokens };
-  if (name === "claude") return { model: request.model, max_tokens: request.maxOutputTokens, messages: [{ role: "user", content: request.prompt }] };
-  if (name === "gemini") return { contents: [{ role: "user", parts: [{ text: request.prompt }] }], generationConfig: { maxOutputTokens: request.maxOutputTokens } };
-  return { model: request.model, max_tokens: request.maxOutputTokens, messages: [{ role: "user", content: request.prompt }] };
+  if (name === "ollama") return { model: request.model, prompt: request.prompt, stream: false, options: { num_predict: request.maxOutputTokens }, ...(request.tools.length ? { tools: request.tools } : {}), ...(request.structuredOutput ? { format: request.structuredOutput } : {}) };
+  if (name === "openai") {
+    const input = request.messages.length === 1 && request.messages[0].role === "user" ? request.messages[0].content : request.messages;
+    return { model: request.model, input, max_output_tokens: request.maxOutputTokens, ...(request.tools.length ? { tools: request.tools } : {}), ...(request.structuredOutput ? { text: { format: { type: "json_schema", schema: request.structuredOutput } } } : {}) };
+  }
+  if (name === "claude") return { model: request.model, max_tokens: request.maxOutputTokens, messages: request.messages.filter((entry) => entry.role !== "system"), ...(request.tools.length ? { tools: request.tools } : {}), ...(request.messages.some((entry) => entry.role === "system") ? { system: request.messages.filter((entry) => entry.role === "system").map((entry) => entry.content).join("\n") } : {}) };
+  if (name === "gemini") return { contents: request.messages.filter((entry) => entry.role !== "system").map((entry) => ({ role: entry.role === "assistant" ? "model" : "user", parts: [{ text: entry.content }] })), generationConfig: { maxOutputTokens: request.maxOutputTokens, ...(request.structuredOutput ? { responseMimeType: "application/json", responseSchema: request.structuredOutput } : {}) }, ...(request.tools.length ? { tools: [{ functionDeclarations: request.tools }] } : {}) };
+  return { model: request.model, max_tokens: request.maxOutputTokens, messages: request.messages, ...(request.tools.length ? { tools: request.tools } : {}), ...(request.structuredOutput ? { response_format: { type: "json_schema", json_schema: request.structuredOutput } } : {}) };
 }
 
 function normalizeResponse(name, payload, model) {
-  if (name === "ollama") return { provider: name, kind: "local-model", model: payload.model ?? model, text: payload.response ?? "", usage: { inputTokens: payload.prompt_eval_count ?? null, outputTokens: payload.eval_count ?? null }, requestId: null };
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) throw malformedResponse(name);
+  if (name === "ollama") { if (typeof payload.response !== "string") throw malformedResponse(name); return { provider: name, kind: "local-model", model: payload.model ?? model, text: payload.response, usage: { inputTokens: payload.prompt_eval_count ?? null, outputTokens: payload.eval_count ?? null }, requestId: null }; }
   if (name === "openai") {
+    if (typeof payload.output_text !== "string" && !Array.isArray(payload.output)) throw malformedResponse(name);
     const text = payload.output_text ?? payload.output?.flatMap((item) => item.content ?? []).filter((item) => item.type === "output_text").map((item) => item.text).join("") ?? "";
     return { provider: name, kind: "model-api", model: payload.model ?? model, text, usage: payload.usage ?? null, requestId: payload.id ?? null };
   }
-  if (name === "claude") return { provider: name, kind: "model-api", model: payload.model ?? model, text: payload.content?.filter((item) => item.type === "text").map((item) => item.text).join("") ?? "", usage: payload.usage ?? null, requestId: payload.id ?? null };
-  if (name === "gemini") return { provider: name, kind: "model-api", model, text: payload.candidates?.[0]?.content?.parts?.map((item) => item.text ?? "").join("") ?? "", usage: payload.usageMetadata ?? null, requestId: payload.responseId ?? null };
-  return { provider: name, kind: "model-api", model: payload.model ?? model, text: payload.choices?.[0]?.message?.content ?? "", usage: payload.usage ?? null, requestId: payload.id ?? null };
+  if (name === "claude") { if (!Array.isArray(payload.content)) throw malformedResponse(name); return { provider: name, kind: "model-api", model: payload.model ?? model, text: payload.content.filter((item) => item.type === "text").map((item) => item.text).join(""), usage: payload.usage ?? null, requestId: payload.id ?? null }; }
+  if (name === "gemini") { if (!Array.isArray(payload.candidates)) throw malformedResponse(name); return { provider: name, kind: "model-api", model, text: payload.candidates[0]?.content?.parts?.map((item) => item.text ?? "").join("") ?? "", usage: payload.usageMetadata ?? null, requestId: payload.responseId ?? null }; }
+  if (!Array.isArray(payload.choices)) throw malformedResponse(name);
+  return { provider: name, kind: "model-api", model: payload.model ?? model, text: payload.choices[0]?.message?.content ?? "", usage: payload.usage ?? null, requestId: payload.id ?? null };
 }
 function ollamaBaseUrl() { return (process.env.OLLAMA_HOST ?? "http://127.0.0.1:11434").replace(/\/$/, ""); }
 function delay(milliseconds) { return new Promise((resolve) => setTimeout(resolve, milliseconds)); }
@@ -231,8 +309,42 @@ async function readPayload(response) {
   try { return JSON.parse(text); } catch { return { message: text.slice(0, 1000) }; }
 }
 
-function providerHttpError(provider, status, payload, headers) {
-  const message = payload?.error?.message ?? payload?.message ?? `Provider returned HTTP ${status}.`;
-  return new ProviderRequestError(message, { provider, status, retryable: status === 408 || status === 429 || status >= 500, code: "provider_http_error", retryAfterMs: parseRetryAfter(headers?.get?.("retry-after")) });
+function providerHttpError(provider, status, _payload, headers) {
+  const code = status === 401 ? "authentication" : status === 402 ? "quota" : status === 403 ? "authorization" : status === 404 ? "model_unavailable" : status === 408 ? "timeout" : status === 429 ? "rate_limit" : status >= 500 ? "provider_unavailable" : "invalid_request";
+  return new ProviderRequestError(`Provider ${provider} request failed with HTTP ${status}.`, { provider, status, retryable: status === 408 || status === 429 || status >= 500, code, retryAfterMs: parseRetryAfter(headers?.get?.("retry-after")) });
 }
 function parseRetryAfter(value) { if (!value) return null; if (/^\d+(?:\.\d+)?$/.test(value)) return Math.max(0, Math.round(Number(value) * 1000)); const date = Date.parse(value); return Number.isNaN(date) ? null : Math.max(0, date - Date.now()); }
+function parseStreamLine(line) {
+  const trimmed = line.trim();
+  if (!trimmed || trimmed.startsWith(":") || /^(event|id|retry):/.test(trimmed)) return null;
+  const content = trimmed.startsWith("data:") ? trimmed.slice(5).trim() : trimmed;
+  if (content === "[DONE]") return { done: true };
+  try { return JSON.parse(content); } catch { throw new ProviderRequestError("Provider stream contained malformed JSON.", { code: "malformed_response", retryable: false }); }
+}
+function normalizeStreamPayload(name, payload) {
+  if (name === "ollama") return [...(payload.response ? [{ type: "content-delta", delta: payload.response }] : []), ...(payload.done ? [{ type: "usage", usage: { inputTokens: payload.prompt_eval_count ?? null, outputTokens: payload.eval_count ?? null, totalTokens: null, estimatedCost: null } }, { type: "complete", finishReason: payload.done_reason ?? "stop" }] : [])];
+  if (payload.done === true) return [{ type: "complete", finishReason: "stop" }];
+  if (name === "openai") return payload.type === "response.output_text.delta" ? [{ type: "content-delta", delta: payload.delta ?? "" }] : payload.type === "response.function_call_arguments.delta" ? [{ type: "tool-call", toolCall: { id: payload.item_id ?? null, name: payload.name ?? null, argumentsDelta: payload.delta ?? "" } }] : payload.type === "response.completed" ? [{ type: "usage", usage: payload.response?.usage ?? null }, { type: "complete", finishReason: payload.response?.status ?? "stop" }] : [];
+  if (name === "claude") return payload.type === "content_block_start" && payload.content_block?.type === "tool_use" ? [{ type: "tool-call", toolCall: { id: payload.content_block.id, name: payload.content_block.name, input: payload.content_block.input ?? {} } }] : payload.type === "content_block_delta" && payload.delta?.text ? [{ type: "content-delta", delta: payload.delta.text }] : payload.type === "content_block_delta" && payload.delta?.partial_json ? [{ type: "tool-call", toolCall: { argumentsDelta: payload.delta.partial_json } }] : payload.type === "message_delta" ? [{ type: "usage", usage: payload.usage ?? null }] : payload.type === "message_stop" ? [{ type: "complete", finishReason: "stop" }] : [];
+  if (name === "gemini") {
+    const parts = payload.candidates?.[0]?.content?.parts ?? [];
+    return [...parts.filter((entry) => entry.text).map((entry) => ({ type: "content-delta", delta: entry.text })), ...parts.filter((entry) => entry.functionCall).map((entry) => ({ type: "tool-call", toolCall: entry.functionCall })), ...(payload.usageMetadata ? [{ type: "usage", usage: payload.usageMetadata }] : []), ...(payload.candidates?.[0]?.finishReason ? [{ type: "complete", finishReason: payload.candidates[0].finishReason }] : [])];
+  }
+  const delta = payload.choices?.[0]?.delta;
+  return [...(delta?.content ? [{ type: "content-delta", delta: delta.content }] : []), ...(delta?.tool_calls ? delta.tool_calls.map((toolCall) => ({ type: "tool-call", toolCall })) : []), ...(payload.usage ? [{ type: "usage", usage: payload.usage }] : []), ...(payload.choices?.[0]?.finish_reason ? [{ type: "complete", finishReason: payload.choices[0].finish_reason }] : [])];
+}
+function normalizeMessages(request) {
+  if (Array.isArray(request?.messages) && request.messages.length) return request.messages.map((entry) => { const role = String(entry.role ?? "user"); if (!['system', 'user', 'assistant', 'tool'].includes(role)) throw new ProviderRequestError(`Unsupported message role ${role}.`, { code: "invalid_request" }); return { role, content: String(entry.content ?? "") }; });
+  return request?.prompt === undefined ? [] : [{ role: "user", content: String(request.prompt) }];
+}
+function malformedResponse(provider) { return new ProviderRequestError("Provider returned a malformed response.", { provider, code: "malformed_response", retryable: false }); }
+function safeToRetry(request) { return request.idempotency === "read-only" || request.idempotency === "idempotent"; }
+function combineSignals(external, internal) {
+  if (!external) return internal;
+  if (typeof AbortSignal.any === "function") return AbortSignal.any([external, internal]);
+  const controller = new AbortController();
+  const abort = () => controller.abort();
+  external.addEventListener("abort", abort, { once: true });
+  internal.addEventListener("abort", abort, { once: true });
+  return controller.signal;
+}

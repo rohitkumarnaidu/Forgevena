@@ -1,6 +1,6 @@
 # v1.7.0 — Local Organization Governance
 
-> **Purpose:** Local Organization Governance is an approved roadmap delta specification. It does not authorize implementation by itself.
+> **Purpose:** Local Organization Governance is an approved roadmap delta specification. Its lifecycle metadata distinguishes implementation progress from release certification.
 > **Audience:** product, architecture, engineering, security, operations, documentation, release, and AI coding agents
 > **Owner:** Governance and Policy Maintainers
 > **Roadmap authority:** `docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#10-v170--local-organization-governance`
@@ -14,7 +14,7 @@ Enforce signed, portable organization policy bundles without requiring a server 
 ## Status
 
 - **Lifecycle:** planned
-- **Product maturity:** not implemented
+- **Product maturity:** not-implemented
 - **Risk:** tier-3
 - **Owner:** Governance and Policy Maintainers
 - **Depends on:** `v1.6.0`
@@ -35,4 +35,4 @@ Enforce signed, portable organization policy bundles without requiring a server 
 
 ## Authority
 
-Permanent architecture remains in the [foundation facade](../../foundation/README.md). This package records only the version delta and must be reconciled through RFC, ADR, threat model, and readiness approval before implementation.
+Permanent architecture remains in the [foundation facade](../../foundation/README.md). Implementation-preview status records completed local software work only; it does not authorize release or stable compatibility claims.

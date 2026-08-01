@@ -26,6 +26,18 @@ test("every version package exposes complete enterprise documentation surfaces",
   }
 });
 
+test("v1.4 generated documentation distinguishes implementation preview from release certification", async () => {
+  const { catalog } = await loadVersionDocumentationSources(root);
+  const version = catalog.versions.find(({ version: number }) => number === "v1.4.0");
+  const files = renderVersionPackage(version, catalog);
+  const readme = files.get("docs/versions/v1.4.0/README.md");
+  const evidence = JSON.parse(files.get("docs/versions/v1.4.0/evidence/evidence-requirements.json"));
+  assert.match(readme, /Lifecycle:\*\* implementation-preview/);
+  assert.match(readme, /Product maturity:\*\* preview/);
+  assert.match(readme, /does not authorize release or stable compatibility claims/);
+  assert.equal(evidence.state, "partially-collected");
+});
+
 test("generated version documentation is current", async () => {
   const result = await generateVersionDocumentation(root);
   assert.equal(result.valid, true, result.issues.join("\n"));

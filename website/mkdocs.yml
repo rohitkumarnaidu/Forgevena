@@ -129,6 +129,10 @@ nav:
       - Runbooks: operations/runbooks.md
       - Testing: testing/guide.md
       - Release Engineering: release/index.md
+      - v1.0–v1.4 Completion Matrix: release/V1_0_TO_V1_4_COMPLETION_MATRIX.md
+      - v1.3 Published Status: release/V1_3_IMPLEMENTATION_STATUS.md
+      - v1.4 Implementation Status: release/V1_4_IMPLEMENTATION_STATUS.md
+      - v1.4 Release Checklist: release/V1_4_RELEASE_CHECKLIST.md
       - Release Notes 1.3.0: RELEASE_NOTES_1.3.0.md
       - Release Notes 1.2.3: RELEASE_NOTES_1.2.3.md
       - Release Notes 1.2.2: RELEASE_NOTES_1.2.2.md

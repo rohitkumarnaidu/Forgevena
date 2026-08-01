@@ -4,7 +4,7 @@
 > **Audience:** product, architecture, engineering, security, operations, documentation, release, and AI coding agents
 > **Owner:** Provider Platform Maintainers
 > **Roadmap authority:** `docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#7-v140--production-provider-platform`
-> **Lifecycle:** planned
+> **Lifecycle:** implementation-preview
 > **Review:** before implementation and at every lifecycle promotion
 
 ## Contract Rules

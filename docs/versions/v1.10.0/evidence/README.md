@@ -1,6 +1,6 @@
 # v1.10.0 — Engineering Intelligence and Local Enterprise GA
 
-> **Purpose:** Lists evidence required before this planned version can advance; no future results are claimed here.
+> **Purpose:** Lists collected and outstanding evidence without converting local implementation results into release certification.
 > **Audience:** product, architecture, engineering, security, operations, documentation, release, and AI coding agents
 > **Owner:** Engineering Intelligence Maintainers
 > **Roadmap authority:** `docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#13-v1100--engineering-intelligence-and-local-enterprise-ga`
@@ -11,7 +11,7 @@
 
 **Not collected.** This version is planned and documentation alone does not authorize implementation or certify readiness.
 
-## Required Evidence
+## Required Release Evidence
 
 - Requirements, RFC, ADR, threat model, privacy review, and readiness scorecard.
 - Unit, integration, CLI/API contract, security, accessibility, performance, resilience, migration, rollback, and cross-platform results.

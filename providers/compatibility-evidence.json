@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "evidenceType": "deterministic-offline-contract",
+  "providers": [
+    {
+      "provider": "openai",
+      "service": "OpenAI",
+      "support": "preview",
+      "fixture": "providers/fixtures/openai.sse",
+      "fixtureSha256": "21842ef987a01a93335e64b12a3404f9c1f8ffc97af7a3c5224c40bd537a84fe",
+      "verifiedAt": "2026-08-01T00:00:00.000Z",
+      "liveVerified": false,
+      "limitations": ["Live account and model compatibility are not claimed by offline fixtures."]
+    },
+    {
+      "provider": "claude",
+      "service": "Anthropic",
+      "support": "preview",
+      "fixture": "providers/fixtures/claude.sse",
+      "fixtureSha256": "57b79eab41322b2756366c669eaa782a57d540f44712e27539108a6758a0d53f",
+      "verifiedAt": "2026-08-01T00:00:00.000Z",
+      "liveVerified": false,
+      "limitations": ["The public 1.x provider ID remains claude; live account and model compatibility are not claimed."]
+    },
+    {
+      "provider": "gemini",
+      "service": "Google Gemini",
+      "support": "preview",
+      "fixture": "providers/fixtures/gemini.sse",
+      "fixtureSha256": "b1767b5d513f127fdfc3a4de1d52af82d23e2be8889b705fc6dae653ab2a2385",
+      "verifiedAt": "2026-08-01T00:00:00.000Z",
+      "liveVerified": false,
+      "limitations": ["Live account and model compatibility are not claimed by offline fixtures."]
+    },
+    {
+      "provider": "openrouter",
+      "service": "OpenRouter",
+      "support": "preview",
+      "fixture": "providers/fixtures/openrouter.sse",
+      "fixtureSha256": "54ba3d501275ebe0191a0b22465821a78910b23f43fed225d8376c4811551567",
+      "verifiedAt": "2026-08-01T00:00:00.000Z",
+      "liveVerified": false,
+      "limitations": ["Upstream model availability varies; live model compatibility is not claimed."]
+    },
+    {
+      "provider": "ollama",
+      "service": "Ollama",
+      "support": "preview",
+      "fixture": "providers/fixtures/ollama.ndjson",
+      "fixtureSha256": "6739e517ac365430990cc8af23d4e69578b781c814fc29602699057333f7ff15",
+      "verifiedAt": "2026-08-01T00:00:00.000Z",
+      "liveVerified": false,
+      "limitations": ["Local runtime and pinned model compatibility require an opt-in smoke test."]
+    }
+  ]
+}

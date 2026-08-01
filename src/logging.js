@@ -2,7 +2,7 @@ import { mkdir, readdir, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const EVENT_FILES = { doctor: "doctor.log", install: "install.log", update: "update.log", rollback: "rollback.log", error: "errors.log", workspace: "workspace.log" };
-const SENSITIVE_KEY = /(?:secret|token|password|authorization|api[-_]?key|credential|private[-_]?key)/i;
+const SENSITIVE_KEY = /(?:secret|token|password|authorization|api[-_]?key|credential|private[-_]?key|prompt|response|messages?|content|tool[-_ ]?(?:payload|arguments|input))/i;
 
 export async function logEvent(root, type, details, retentionDays = 30) {
   const directory = path.join(root, ".ai-workspace", "logs");

@@ -22,12 +22,21 @@
 
 ## Hosted release evidence
 
-- [ ] Pull-request CI passes on Windows, Ubuntu, and macOS with Node.js 20 and 22.
-- [ ] Coverage, mutation, performance, package, documentation, dependency, and security checks pass.
-- [ ] The release pull request is reviewed and merged.
-- [ ] The signed `v1.3.0` tag resolves to the approved merge commit.
-- [ ] npm, GitHub Release, GHCR, documentation, and downloadable assets publish successfully.
-- [ ] Checksums, SBOM, provenance, verification reports, and native package bundles agree on version `1.3.0`.
-- [ ] Clean-install and post-release smoke tests pass.
+- [x] Pull-request CI passed on Windows, Ubuntu, and macOS with Node.js 20 and 22.
+- [x] Coverage, mutation, performance, package, documentation, dependency, and security checks passed.
+- [x] The release pull request was reviewed and merged.
+- [x] The signed `v1.3.0` tag resolves to commit `004710388afa7f2888a0e2594ede2d3cde96fe1c`.
+- [x] npm, GitHub Release, GHCR, documentation, and downloadable assets published successfully.
+- [x] Checksums, SBOM, provenance, verification reports, and native package bundles agree on version `1.3.0`.
+- [x] Clean-install and post-release smoke tests passed in the release workflow.
+
+## Immutable publication evidence
+
+- [GitHub Release v1.3.0](https://github.com/rohitkumarnaidu/Forgevena/releases/tag/v1.3.0)
+- [Release workflow run 30292317567](https://github.com/rohitkumarnaidu/Forgevena/actions/runs/30292317567)
+- [npm package forgevena@1.3.0](https://www.npmjs.com/package/forgevena/v/1.3.0)
+- [GHCR package](https://github.com/rohitkumarnaidu/Forgevena/pkgs/container/forgevena)
+
+This checklist was reconciled on 2026-08-02 against immutable publication records. It preserves the historical assurance level of `v1.3.0`; it does not retroactively apply controls introduced after that release.
 
 No published tag may be moved or reused. Any code or metadata correction after publication requires the next patch version.

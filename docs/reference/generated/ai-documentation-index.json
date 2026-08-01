@@ -2158,6 +2158,278 @@
       ]
     },
     {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/readme",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/README.md",
+      "title": "v1.4.0 Provider Platform Change Evidence",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for v1.4.0 Provider Platform Change Evidence.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/adr",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/adr.md",
+      "title": "ADR — Governed Provider Boundary",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for ADR — Governed Provider Boundary.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/documentation-impact",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/documentation-impact.md",
+      "title": "Documentation Impact Report",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Documentation Impact Report.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/documentation-impact/documentation-coverage",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/documentation-impact/documentation-coverage.md",
+      "title": "Generated Documentation Coverage Matrix",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Generated Documentation Coverage Matrix.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/documentation-impact/documentation-impact",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/documentation-impact/documentation-impact.md",
+      "title": "Documentation Impact Report",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Documentation Impact Report.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/documentation-impact/documentation-synchronization",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/documentation-impact/documentation-synchronization.md",
+      "title": "Documentation Synchronization Report",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Documentation Synchronization Report.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/documentation-impact/migration-impact",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/documentation-impact/migration-impact.md",
+      "title": "Migration Impact Summary",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Migration Impact Summary.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/documentation-impact/missing-documentation",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/documentation-impact/missing-documentation.md",
+      "title": "Missing Documentation Report",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Missing Documentation Report.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/documentation-impact/release-documentation-summary",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/documentation-impact/release-documentation-summary.md",
+      "title": "Release Documentation Summary",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Release Documentation Summary.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/documentation-impact/repository-health",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/documentation-impact/repository-health.md",
+      "title": "Repository Health Report",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Repository Health Report.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/documentation-impact/updated-documents",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/documentation-impact/updated-documents.md",
+      "title": "Updated Document List",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Updated Document List.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/documentation-impact/version-history-impact",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/documentation-impact/version-history-impact.md",
+      "title": "Version History Impact",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Version History Impact.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/privacy-review",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/privacy-review.md",
+      "title": "Privacy Review — Production Provider Platform",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Privacy Review — Production Provider Platform.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/rfc",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/rfc.md",
+      "title": "RFC — Production Provider Platform",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for RFC — Production Provider Platform.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/scorecard",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/scorecard.md",
+      "title": "v1.4.0 Provider Platform Push Readiness",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for v1.4.0 Provider Platform Push Readiness.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/threat-model",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/threat-model.md",
+      "title": "Threat Model — Production Provider Platform",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Threat Model — Production Provider Platform.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
       "id": "doc:evidence/changes/version-documentation-system/documentation-impact",
       "path": "docs/evidence/changes/version-documentation-system/documentation-impact.md",
       "title": "Documentation Impact Report",
@@ -3886,6 +4158,23 @@
       ]
     },
     {
+      "id": "doc:operations/provider-platform-runbook",
+      "path": "docs/operations/provider-platform-runbook.md",
+      "title": "Provider Platform Runbook",
+      "classification": "operational-runbook",
+      "authority": null,
+      "purpose": "Guide repeatable operation and recovery for Provider Platform Runbook.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.3.x"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
       "id": "doc:operations/runbooks",
       "path": "docs/operations/runbooks.md",
       "title": "Operations Runbooks",
@@ -3942,6 +4231,23 @@
       "classification": "active-guide",
       "authority": null,
       "purpose": "Guide supported use of Provider Adapter Contract.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.3.x"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:providers/compatibility-matrix",
+      "path": "docs/providers/compatibility-matrix.md",
+      "title": "Compatibility Matrix",
+      "classification": "active-guide",
+      "authority": null,
+      "purpose": "Guide supported use of Compatibility Matrix.",
       "lifecycle": "maintained",
       "versions": [
         "1.3.x"
@@ -4260,6 +4566,22 @@
       ]
     },
     {
+      "id": "doc:release/v1_0_to_v1_4_completion_matrix",
+      "path": "docs/release/V1_0_TO_V1_4_COMPLETION_MATRIX.md",
+      "title": "Forgevena v1.0–v1.4 Completion Matrix",
+      "classification": "active-guide",
+      "authority": null,
+      "purpose": "Guide supported use of Forgevena v1.0–v1.4 Completion Matrix.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
       "id": "doc:release/v1_3_implementation_status",
       "path": "docs/release/V1_3_IMPLEMENTATION_STATUS.md",
       "title": "Forgevena v1.3 Implementation Status",
@@ -4282,6 +4604,38 @@
       "classification": "active-guide",
       "authority": null,
       "purpose": "Guide supported use of Forgevena v1.3.0 Release Checklist.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
+      "id": "doc:release/v1_4_implementation_status",
+      "path": "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+      "title": "Forgevena v1.4.0 Implementation Status",
+      "classification": "active-guide",
+      "authority": null,
+      "purpose": "Guide supported use of Forgevena v1.4.0 Implementation Status.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
+      "id": "doc:release/v1_4_release_checklist",
+      "path": "docs/release/V1_4_RELEASE_CHECKLIST.md",
+      "title": "Forgevena v1.4.0 Release Checklist",
+      "classification": "active-guide",
+      "authority": null,
+      "purpose": "Guide supported use of Forgevena v1.4.0 Release Checklist.",
       "lifecycle": "maintained",
       "versions": [
         "1"

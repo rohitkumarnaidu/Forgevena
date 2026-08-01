@@ -11,6 +11,22 @@
     "owner": { "type": "string", "minLength": 1 },
     "roadmapAuthority": { "type": "string", "pattern": "^docs/.*\\.md#" },
     "riskTier": { "enum": ["tier-0", "tier-1", "tier-2", "tier-3"] },
+    "lifecycle": { "enum": ["planned", "implementation-preview", "release-candidate", "released"] },
+    "productMaturity": { "enum": ["not-implemented", "preview", "stable"] },
+    "evidenceState": { "enum": ["required-not-collected", "partially-collected", "collected", "verified", "expired"] },
+    "evidenceSummary": { "type": "string", "minLength": 1 },
+    "evidenceLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title", "href"],
+        "properties": {
+          "title": { "type": "string", "minLength": 1 },
+          "href": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
     "implementationContract": { "type": "string", "pattern": "^docs/versions/v[0-9]+\\.[0-9]+\\.[0-9]+/implementation-contract\\.md$" },
     "dependsOn": { "type": "array", "items": { "type": "string" } },
     "blocks": { "type": "array", "items": { "type": "string" } },

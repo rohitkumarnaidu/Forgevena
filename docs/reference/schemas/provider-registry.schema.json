@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forgevena.dev/schemas/provider-registry/v1",
+  "title": "Provider Registry v1",
+  "type": "object",
+  "required": ["schemaVersion", "profiles", "compatibilityEvidence", "updatedAt"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "profiles": { "type": "object", "additionalProperties": { "$ref": "provider-profile.schema.json" } },
+    "compatibilityEvidence": { "type": "object", "additionalProperties": { "$ref": "provider-compatibility.schema.json" } },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }, "additionalProperties": false
+}

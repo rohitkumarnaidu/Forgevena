@@ -1,6 +1,6 @@
 # v1.6.0 — Template Packages and Native Distribution
 
-> **Purpose:** Template Packages and Native Distribution is an approved roadmap delta specification. It does not authorize implementation by itself.
+> **Purpose:** Template Packages and Native Distribution is an approved roadmap delta specification. Its lifecycle metadata distinguishes implementation progress from release certification.
 > **Audience:** product, architecture, engineering, security, operations, documentation, release, and AI coding agents
 > **Owner:** Template and Distribution Maintainers
 > **Roadmap authority:** `docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#9-v160--template-packages-and-native-distribution`
@@ -14,7 +14,7 @@ Move templates into signed, independently versioned packages and certify reprodu
 ## Status
 
 - **Lifecycle:** planned
-- **Product maturity:** not implemented
+- **Product maturity:** not-implemented
 - **Risk:** tier-2
 - **Owner:** Template and Distribution Maintainers
 - **Depends on:** `v1.5.0`
@@ -35,4 +35,4 @@ Move templates into signed, independently versioned packages and certify reprodu
 
 ## Authority
 
-Permanent architecture remains in the [foundation facade](../../foundation/README.md). This package records only the version delta and must be reconciled through RFC, ADR, threat model, and readiness approval before implementation.
+Permanent architecture remains in the [foundation facade](../../foundation/README.md). Implementation-preview status records completed local software work only; it does not authorize release or stable compatibility claims.

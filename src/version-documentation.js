@@ -11,6 +11,9 @@ export const HISTORICAL_TAGS = Object.freeze(["v1.2.0", "v1.2.1", "v1.2.2", "v1.
 
 const CHECKPOINTS = Object.freeze(["planning", "rc", "release"]);
 const FEATURE_STATUSES = Object.freeze(["committed", "candidate", "deferred"]);
+const VERSION_LIFECYCLES = Object.freeze(["planned", "implementation-preview", "release-candidate", "released"]);
+const PRODUCT_MATURITIES = Object.freeze(["not-implemented", "preview", "stable"]);
+const EVIDENCE_STATES = Object.freeze(["required-not-collected", "partially-collected", "collected", "verified", "expired"]);
 const VERSION_SOURCE = path.join("docs", "versions", "version-specifications.json");
 const FOUNDATION_SOURCE = path.join("docs", "foundation", "foundation-map.yaml");
 const HISTORY_SOURCE = path.join("docs", "historical", "release-manifests.json");
@@ -135,6 +138,9 @@ function validateCatalog(catalog, issues) {
     if (!Array.isArray(version?.nonGoals) || !version.nonGoals.length) issues.push(`${prefix} requires non-goals.`);
     if (!Array.isArray(version?.metrics) || !version.metrics.length) issues.push(`${prefix} requires measurable outcomes.`);
     if (!Array.isArray(version?.acceptance) || !version.acceptance.length) issues.push(`${prefix} requires acceptance gates.`);
+    if (version?.lifecycle && !VERSION_LIFECYCLES.includes(version.lifecycle)) issues.push(`${prefix} has unsupported lifecycle ${version.lifecycle}.`);
+    if (version?.productMaturity && !PRODUCT_MATURITIES.includes(version.productMaturity)) issues.push(`${prefix} has unsupported product maturity ${version.productMaturity}.`);
+    if (version?.evidenceState && !EVIDENCE_STATES.includes(version.evidenceState)) issues.push(`${prefix} has unsupported evidence state ${version.evidenceState}.`);
     if (!Array.isArray(version?.features) || !version.features.some(({ status }) => status === "committed")) issues.push(`${prefix} requires committed features.`);
     for (const feature of version?.features ?? []) validateFeature(feature, prefix, ids, issues);
     for (const dependency of version?.dependsOn ?? []) if (FUTURE_VERSIONS.includes(dependency) && FUTURE_VERSIONS.indexOf(dependency) >= index) issues.push(`${prefix} depends on non-prior version ${dependency}.`);
@@ -184,7 +190,7 @@ function renderSystemIndexes({ catalog, foundation, history }) {
 }
 
 function renderReadme(version) {
-  return header(version, `${version.title} is an approved roadmap delta specification. It does not authorize implementation by itself.`) + `## Outcome\n\n${version.outcome}\n\n## Status\n\n- **Lifecycle:** planned\n- **Product maturity:** not implemented\n- **Risk:** ${version.riskTier}\n- **Owner:** ${version.owner}\n- **Depends on:** ${listInline(version.dependsOn)}\n- **Blocks:** ${listInline(version.blocks)}\n\n## Package Navigation\n\n- [Product brief](product/brief.md)\n- [Architecture delta](architecture/delta.md)\n- [Normative implementation contract](implementation-contract.md)\n- [Capabilities](capabilities/index.md)\n- [Interfaces and contracts](interfaces/contracts.md)\n- [Assurance plan](assurance/assurance-plan.md)\n- [Delivery plan](delivery/delivery-plan.md)\n- [Operability](operations/operability.md)\n- [Decisions](decisions/index.md)\n- [Evidence requirements](evidence/README.md)\n\n## Authority\n\nPermanent architecture remains in the [foundation facade](../../foundation/README.md). This package records only the version delta and must be reconciled through RFC, ADR, threat model, and readiness approval before implementation.\n`;
+  return header(version, `${version.title} is an approved roadmap delta specification. Its lifecycle metadata distinguishes implementation progress from release certification.`) + `## Outcome\n\n${version.outcome}\n\n## Status\n\n- **Lifecycle:** ${lifecycle(version)}\n- **Product maturity:** ${productMaturity(version)}\n- **Risk:** ${version.riskTier}\n- **Owner:** ${version.owner}\n- **Depends on:** ${listInline(version.dependsOn)}\n- **Blocks:** ${listInline(version.blocks)}\n\n## Package Navigation\n\n- [Product brief](product/brief.md)\n- [Architecture delta](architecture/delta.md)\n- [Normative implementation contract](implementation-contract.md)\n- [Capabilities](capabilities/index.md)\n- [Interfaces and contracts](interfaces/contracts.md)\n- [Assurance plan](assurance/assurance-plan.md)\n- [Delivery plan](delivery/delivery-plan.md)\n- [Operability](operations/operability.md)\n- [Decisions](decisions/index.md)\n- [Evidence requirements](evidence/README.md)\n\n## Authority\n\nPermanent architecture remains in the [foundation facade](../../foundation/README.md). Implementation-preview status records completed local software work only; it does not authorize release or stable compatibility claims.\n`;
 }
 
 function renderProduct(version) {
@@ -225,14 +231,18 @@ function renderDecisions(version) {
 }
 
 function renderEvidence(version) {
-  return header(version, "Lists evidence required before this planned version can advance; no future results are claimed here.") + `## Current Evidence Status\n\n**Not collected.** This version is planned and documentation alone does not authorize implementation or certify readiness.\n\n## Required Evidence\n\n- Requirements, RFC, ADR, threat model, privacy review, and readiness scorecard.\n- Unit, integration, CLI/API contract, security, accessibility, performance, resilience, migration, rollback, and cross-platform results.\n- Documentation impact bundle, compatibility report, SBOM, provenance, checksums, and license review.\n- Release-candidate installation, upgrade, offline, rollback, and post-release channel verification.\n\nMachine-readable requirements are retained in [evidence-requirements.json](evidence-requirements.json).\n`;
+  const status = evidenceState(version) === "required-not-collected"
+    ? "**Not collected.** This version is planned and documentation alone does not authorize implementation or certify readiness."
+    : `**Partially collected.** ${version.evidenceSummary}`;
+  const links = (version.evidenceLinks ?? []).length ? `\n\n## Retained Local Evidence\n\n${version.evidenceLinks.map((entry) => `- [${entry.title}](${entry.href})`).join("\n")}` : "";
+  return header(version, "Lists collected and outstanding evidence without converting local implementation results into release certification.") + `## Current Evidence Status\n\n${status}${links}\n\n## Required Release Evidence\n\n- Requirements, RFC, ADR, threat model, privacy review, and readiness scorecard.\n- Unit, integration, CLI/API contract, security, accessibility, performance, resilience, migration, rollback, and cross-platform results.\n- Documentation impact bundle, compatibility report, SBOM, provenance, checksums, and license review.\n- Release-candidate installation, upgrade, offline, rollback, and post-release channel verification.\n\nMachine-readable requirements are retained in [evidence-requirements.json](evidence-requirements.json).\n`;
 }
 
 function evidenceRequirements(version) {
   return {
     schemaVersion: 1,
     version: version.version,
-    state: "required-not-collected",
+    state: evidenceState(version),
     mandatory: ["requirements", "rfc", "adr", "threat-model", "privacy-review", "readiness-scorecard", "tests", "security", "accessibility", "performance", "migration", "rollback", "documentation-impact", "compatibility", "sbom", "provenance", "release-verification", "post-release-review"],
     gates: { critical: 100, important: 95, standard: 90 },
     acceptance: version.acceptance,
@@ -274,7 +284,19 @@ function renderHistoricalGroup(group, history) {
 }
 
 function header(version, purpose) {
-  return `# ${version.version} — ${version.title}\n\n> **Purpose:** ${purpose}\n> **Audience:** product, architecture, engineering, security, operations, documentation, release, and AI coding agents\n> **Owner:** ${version.owner}\n> **Roadmap authority:** \`${version.roadmapAuthority}\`\n> **Lifecycle:** planned\n> **Review:** before implementation and at every lifecycle promotion\n\n`;
+  return `# ${version.version} — ${version.title}\n\n> **Purpose:** ${purpose}\n> **Audience:** product, architecture, engineering, security, operations, documentation, release, and AI coding agents\n> **Owner:** ${version.owner}\n> **Roadmap authority:** \`${version.roadmapAuthority}\`\n> **Lifecycle:** ${lifecycle(version)}\n> **Review:** before implementation and at every lifecycle promotion\n\n`;
+}
+
+function lifecycle(version) {
+  return version.lifecycle ?? "planned";
+}
+
+function productMaturity(version) {
+  return version.productMaturity ?? "not-implemented";
+}
+
+function evidenceState(version) {
+  return version.evidenceState ?? "required-not-collected";
 }
 
 async function compareExpected(root, expected, preserved = new Set()) {

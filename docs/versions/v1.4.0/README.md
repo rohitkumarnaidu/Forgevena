@@ -1,10 +1,10 @@
 # v1.4.0 — Production Provider Platform
 
-> **Purpose:** Production Provider Platform is an approved roadmap delta specification. It does not authorize implementation by itself.
+> **Purpose:** Production Provider Platform is an approved roadmap delta specification. Its lifecycle metadata distinguishes implementation progress from release certification.
 > **Audience:** product, architecture, engineering, security, operations, documentation, release, and AI coding agents
 > **Owner:** Provider Platform Maintainers
 > **Roadmap authority:** `docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#7-v140--production-provider-platform`
-> **Lifecycle:** planned
+> **Lifecycle:** implementation-preview
 > **Review:** before implementation and at every lifecycle promotion
 
 ## Outcome
@@ -13,8 +13,8 @@ Promote provider integrations into one secure, observable, provider-neutral cont
 
 ## Status
 
-- **Lifecycle:** planned
-- **Product maturity:** not implemented
+- **Lifecycle:** implementation-preview
+- **Product maturity:** preview
 - **Risk:** tier-3
 - **Owner:** Provider Platform Maintainers
 - **Depends on:** `v1.3.0`
@@ -35,4 +35,4 @@ Promote provider integrations into one secure, observable, provider-neutral cont
 
 ## Authority
 
-Permanent architecture remains in the [foundation facade](../../foundation/README.md). This package records only the version delta and must be reconciled through RFC, ADR, threat model, and readiness approval before implementation.
+Permanent architecture remains in the [foundation facade](../../foundation/README.md). Implementation-preview status records completed local software work only; it does not authorize release or stable compatibility claims.

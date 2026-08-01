@@ -26,14 +26,17 @@ test("logging writes the command-specific JSONL file", async () => {
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
-test("logging redacts nested credential material", async () => {
+test("logging redacts nested credential and provider content", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "ai-workspace-redacted-log-"));
   try {
-    await logEvent(root, "workspace", { provider: "openai", apiKey: "secret-value", nested: { authorization: "Bearer secret-value" } });
+    await logEvent(root, "workspace", { provider: "openai", apiKey: "secret-value", prompt: "restricted-prompt", response: "restricted-response", nested: { authorization: "Bearer secret-value", toolPayload: { input: "restricted-tool-input" } } });
     const log = await readFile(path.join(root, ".ai-workspace", "logs", "workspace.log"), "utf8");
-    assert.doesNotMatch(log, /secret-value/);
+    assert.doesNotMatch(log, /secret-value|restricted-prompt|restricted-response|restricted-tool-input/);
     assert.equal(JSON.parse(log).details.apiKey, "[REDACTED]");
     assert.equal(JSON.parse(log).details.nested.authorization, "[REDACTED]");
+    assert.equal(JSON.parse(log).details.prompt, "[REDACTED]");
+    assert.equal(JSON.parse(log).details.response, "[REDACTED]");
+    assert.equal(JSON.parse(log).details.nested.toolPayload, "[REDACTED]");
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 

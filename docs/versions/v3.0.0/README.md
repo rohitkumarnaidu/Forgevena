@@ -1,6 +1,6 @@
 # v3.0.0 — AI Engineering Operating System and Ecosystem GA
 
-> **Purpose:** AI Engineering Operating System and Ecosystem GA is an approved roadmap delta specification. It does not authorize implementation by itself.
+> **Purpose:** AI Engineering Operating System and Ecosystem GA is an approved roadmap delta specification. Its lifecycle metadata distinguishes implementation progress from release certification.
 > **Audience:** product, architecture, engineering, security, operations, documentation, release, and AI coding agents
 > **Owner:** Forgevena Architecture and Ecosystem Maintainers
 > **Roadmap authority:** `docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#v300--ai-engineering-operating-system-and-ecosystem-ga`
@@ -14,7 +14,7 @@ Unify Forgevena Core, ForgeRegistry, ForgeHub, governance, workflows, evidence, 
 ## Status
 
 - **Lifecycle:** planned
-- **Product maturity:** not implemented
+- **Product maturity:** not-implemented
 - **Risk:** tier-3
 - **Owner:** Forgevena Architecture and Ecosystem Maintainers
 - **Depends on:** `v2.7.0`
@@ -35,4 +35,4 @@ Unify Forgevena Core, ForgeRegistry, ForgeHub, governance, workflows, evidence, 
 
 ## Authority
 
-Permanent architecture remains in the [foundation facade](../../foundation/README.md). This package records only the version delta and must be reconciled through RFC, ADR, threat model, and readiness approval before implementation.
+Permanent architecture remains in the [foundation facade](../../foundation/README.md). Implementation-preview status records completed local software work only; it does not authorize release or stable compatibility claims.

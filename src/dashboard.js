@@ -1,7 +1,6 @@
 import http from "node:http";
 import { randomBytes, timingSafeEqual } from "node:crypto";
-import { configureProviderCredential, initializeProviderProfile, listProviderProfiles, providerStatus } from "./providers.js";
-import { invokeProvider } from "./provider-runtime.js";
+import { createProviderService } from "./provider-service.js";
 import { readProviderPolicy, setProviderPolicy } from "./provider-policy.js";
 import { listMcpServers, registerMcpServer, setMcpActivation } from "./mcp.js";
 import { listPlugins, setPluginEnabled } from "./plugins.js";
@@ -15,7 +14,8 @@ const MAX_BODY_BYTES = 64 * 1024;
 
 export async function startDashboard(root, { port = 0 } = {}) {
   const token = randomBytes(32).toString("base64url");
-  const server = http.createServer((request, response) => handleRequest(root, token, request, response));
+  const providerService = createProviderService(root);
+  const server = http.createServer((request, response) => handleRequest(root, token, providerService, request, response));
   await new Promise((resolve, reject) => {
     server.once("error", reject);
     server.listen(port, HOST, resolve);
@@ -32,29 +32,29 @@ export async function startDashboard(root, { port = 0 } = {}) {
   return result;
 }
 
-async function handleRequest(root, token, request, response) {
+async function handleRequest(root, token, providerService, request, response) {
   securityHeaders(response);
   try {
     const url = new URL(request.url, `http://${HOST}`);
     if (request.method === "GET" && url.pathname === "/") return html(response, dashboardHtml());
     if (!authorized(request, token)) return json(response, 401, { error: "unauthorized" });
     if (request.method === "GET" && url.pathname === "/api/providers") {
-      const profiles = listProviderProfiles();
-      const status = await providerStatus(root);
+      const profiles = providerService.list();
+      const status = await providerService.status();
       const policies = Object.fromEntries(await Promise.all(profiles.map(async ({ name }) => [name, await readProviderPolicy(root, name)])));
-      return json(response, 200, { profiles, status, policies });
+      return json(response, 200, { profiles, status, policies, compatibility: await Promise.all(profiles.map(async ({ name }) => [name, await providerService.registry.compatibility(name)])) });
     }
     if (request.method === "GET" && url.pathname === "/api/platform") return json(response, 200, { mcpServers: await listMcpServers(root), plugins: await listPlugins(root), render: { ...(await validateRenderBlueprint(root)), credential: await credentialStatus(root, "render") }, ecosystem: await inspectEcosystem(root) });
     if (request.method === "GET" && url.pathname === "/api/clouds") return json(response, 200, { clouds: await Promise.all(listCloudPlatforms().map(({ name }) => validateCloudPlatform(root, name))) });
     if (request.method !== "POST") return json(response, 404, { error: "not_found" });
     const body = await readJson(request);
-    if (url.pathname === "/api/providers/profile") return json(response, 200, await initializeProviderProfile(root, body.provider, { dryRun: false }));
-    if (url.pathname === "/api/providers/credential") return json(response, 200, await configureProviderCredential(root, body.provider, body.secret, { dryRun: false }));
+    if (url.pathname === "/api/providers/profile") return json(response, 200, await providerService.initialize(body.provider, { dryRun: false }));
+    if (url.pathname === "/api/providers/credential") return json(response, 200, await providerService.configureCredential(body.provider, body.secret, { dryRun: false }));
     if (url.pathname === "/api/providers/policy") return json(response, 200, await setProviderPolicy(root, body.provider, body.policy ?? {}, { dryRun: false }));
     if (url.pathname === "/api/providers/test") {
       if (body.confirmDataEgress !== true) return json(response, 400, { error: "consent_required", message: "Confirm external data transmission before testing a provider." });
-      const result = await invokeProvider(root, body.provider, { prompt: "Reply only with OK.", model: body.model });
-      return json(response, 200, { provider: result.provider, model: result.model, text: result.text, usage: result.usage });
+      const result = await providerService.invoke(body.provider, { prompt: "Reply only with OK.", model: body.model, idempotency: "read-only" });
+      return json(response, 200, { schemaVersion: 1, operationId: result.operationId, status: "success", provider: result.provider, model: result.model, text: result.text, usage: result.usage, compatibilityEvidenceId: result.compatibilityEvidenceId ?? null, warnings: result.warnings ?? [] });
     }
     if (url.pathname === "/api/mcp/register") return json(response, 200, await registerMcpServer(root, body, { dryRun: false }));
     if (url.pathname === "/api/mcp/activation") {
@@ -130,7 +130,7 @@ function dashboardHtml() {
 const token=new URLSearchParams(location.hash.slice(1)).get('token');history.replaceState(null,'',location.pathname);const headers={'x-ai-workspace-session':token};
 async function api(path,body){const options={headers:{...headers}};if(body){options.method='POST';options.headers['content-type']='application/json';options.body=JSON.stringify(body)}const response=await fetch(path,options);const data=await response.json();if(!response.ok)throw new Error(data.message||data.error);return data}
 function escapeHtml(value){return String(value??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]))}
-async function load(){const data=await api('/api/providers');document.querySelector('#providers').innerHTML=data.profiles.map(profile=>{const status=data.status.find(item=>item.provider===profile.name);const policy=data.policies[profile.name];return '<section class="card"><span class="badge">'+escapeHtml(profile.kind)+'</span><h2>'+escapeHtml(profile.name)+'</h2><p>'+escapeHtml(profile.capabilities.join(', '))+'</p><p>Credential: '+(status.credentialAvailable?'available':'not detected')+'</p><label>Development key<input id="key-'+profile.name+'" type="password" autocomplete="off"></label><button onclick="saveKey(\''+profile.name+'\')">Configure key</button><label>Policy<select id="mode-'+profile.name+'"><option '+(policy.mode==='guarded'?'selected':'')+'>guarded</option><option '+(policy.mode==='budgeted'?'selected':'')+'>budgeted</option><option '+(policy.mode==='unrestricted'?'selected':'')+'>unrestricted</option></select></label><button class="secondary" onclick="savePolicy(\''+profile.name+'\')">Save policy</button><button class="secondary" onclick="testProvider(\''+profile.name+'\')">Test provider</button><div class="status" id="status-'+profile.name+'"></div></section>'}).join('');await loadPlatform()}
+async function load(){const data=await api('/api/providers');const compatibility=Object.fromEntries(data.compatibility);document.querySelector('#providers').innerHTML=data.profiles.map(profile=>{const status=data.status.find(item=>item.provider===profile.name);const policy=data.policies[profile.name];const evidence=compatibility[profile.name];return '<section class="card"><span class="badge">'+escapeHtml(profile.kind)+'</span><h2>'+escapeHtml(profile.name)+'</h2><p>'+escapeHtml(profile.capabilities.join(', '))+'</p><p>Credential: '+(status.credentialAvailable?'available':'not detected')+'</p><p>Compatibility: '+escapeHtml(evidence.freshness)+'</p><label>Development key<input id="key-'+profile.name+'" type="password" autocomplete="off"></label><button onclick="saveKey(\''+profile.name+'\')">Configure key</button><label>Policy<select id="mode-'+profile.name+'"><option '+(policy.mode==='guarded'?'selected':'')+'>guarded</option><option '+(policy.mode==='budgeted'?'selected':'')+'>budgeted</option><option '+(policy.mode==='unrestricted'?'selected':'')+'>unrestricted</option></select></label><button class="secondary" onclick="savePolicy(\''+profile.name+'\')">Save policy</button><button class="secondary" onclick="testProvider(\''+profile.name+'\')">Test provider</button><div class="status" id="status-'+profile.name+'"></div></section>'}).join('');await loadPlatform()}
 async function loadPlatform(){const data=await api('/api/platform');document.querySelector('#platform').innerHTML='<section class="card"><h2>MCP servers</h2><p>'+data.mcpServers.length+' registered</p><label>Name<input id="mcp-name"></label><label>HTTPS URL<input id="mcp-url"></label><label>Authorization env<input id="mcp-env" placeholder="MCP_AUTH_HEADER"></label><button onclick="addMcp()">Register disabled server</button><div class="status" id="status-mcp"></div></section><section class="card"><h2>Plugins</h2><p>'+data.plugins.length+' declarative plugins registered</p><p>Install and integrity-check plugin manifests through the CLI; activation is available here after installation.</p></section><section class="card"><h2>Render</h2><p>Blueprint: '+(data.render.valid?'valid':'not ready')+'</p><p>Git repository: '+(data.render.repositoryReady?'ready':'not connected')+'</p><p>Credential: '+(data.render.credential.configured?'available':'not configured')+'</p><label>Render API key<input id="render-key" type="password" autocomplete="off"></label><button onclick="saveRenderKey()">Configure Render key</button><button class="secondary" onclick="generateRender()">Generate render.yaml</button><div class="status" id="status-render"></div></section>'}
 async function run(name,work){const target=document.querySelector('#status-'+name);try{target.textContent='Working…';const value=await work();target.textContent=value}catch(error){target.textContent=error.message}}
 function saveKey(name){run(name,async()=>{const field=document.querySelector('#key-'+name);await api('/api/providers/credential',{provider:name,secret:field.value});field.value='';return'Credential configured'})}
