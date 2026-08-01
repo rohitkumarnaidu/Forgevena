@@ -28,6 +28,8 @@ Profiles store references, never secret values. Runtime requests enforce prompt,
 
 Use `providers update` to preview migration into `.ai-workspace/providers/registry.json`; add `--apply` to commit after the plan is reviewed. Compatibility evidence expires after 90 days for hosted providers and 180 days for pinned Ollama versions.
 
+Offline fixture integrity is verified with SHA-256 after canonical UTF-8 line-ending normalization. This prevents checkout-specific CRLF conversion from invalidating otherwise identical evidence across supported operating systems.
+
 ## Best practices
 
 - Use environment variables or encrypted local storage for development; use an approved secret manager in production.

@@ -21,3 +21,5 @@ Streaming events use `start`, `content-delta`, `tool-call`, `usage`, `warning`, 
 The invocation coordinator applies one deadline across attempts, limits automatic attempts to three, honors `Retry-After`, and otherwise uses exponential backoff with full jitter. Retry and fallback require safe idempotency. Fallback is never hidden and is denied after a committed tool or external effect.
 
 Prompts, responses, tool payloads, credentials, and authorization headers are restricted data. They are excluded from logs, diagnostics, registries, fixtures, errors, and compatibility evidence.
+
+Recorded compatibility fixtures use SHA-256 over UTF-8 content normalized to LF. Verification therefore remains deterministic when Git checks out the same fixture with CRLF on Windows, while any semantic fixture change still fails closed.

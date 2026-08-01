@@ -12,3 +12,5 @@
 | `codex` | agent-host | agent-execute, auth-status, mcp-host | `OPENAI_API_KEY` |
 | `cursor` | agent-host | agent-execute, auth-status, mcp-host | `CURSOR_API_KEY` |
 | `windsurf` | agent-host | auth-status, mcp-host | host-managed |
+
+Compatibility fixture checksums use UTF-8 content normalized to LF so evidence remains deterministic across Windows, macOS, and Linux checkouts.

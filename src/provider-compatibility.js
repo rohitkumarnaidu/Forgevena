@@ -20,9 +20,14 @@ export async function verifyProviderCompatibility(root) {
     if (record.liveVerified !== false) issues.push(`${record.provider} fixture evidence must explicitly declare liveVerified false until an account-backed smoke test passes.`);
     if (!record.fixture || !record.fixtureSha256) { issues.push(`${record.provider} fixture reference is incomplete.`); continue; }
     try {
-      const fixture = await readFile(path.join(root, record.fixture));
-      if (crypto.createHash("sha256").update(fixture).digest("hex") !== record.fixtureSha256) issues.push(`${record.provider} fixture checksum does not match.`);
+      const fixture = await readFile(path.join(root, record.fixture), "utf8");
+      if (fixtureChecksum(fixture) !== record.fixtureSha256) issues.push(`${record.provider} fixture checksum does not match.`);
     } catch { issues.push(`${record.provider} fixture is missing.`); }
   }
   return { valid: issues.length === 0, issues, providersChecked: records.length, liveProvidersVerified: records.filter((entry) => entry.liveVerified).length, support: "offline-contract-evidence" };
+}
+
+function fixtureChecksum(contents) {
+  const canonical = contents.replace(/\r\n?/g, "\n");
+  return crypto.createHash("sha256").update(canonical).digest("hex");
 }
