@@ -54,7 +54,7 @@ test("generated audit verification accepts Windows line endings", async () => {
     const reportPath = path.join(temporaryRoot, "docs", "reports", "VERSION_IMPLEMENTATION_READINESS_COMPARISON.md");
     for (const target of [auditPath, reportPath]) {
       const contents = await readFile(target, "utf8");
-      await writeFile(target, contents.replace(/\n/g, "\r\n"), "utf8");
+      await writeFile(target, normalizeGeneratedMarkdown(contents).replace(/\n/g, "\r\n"), "utf8");
     }
     const script = path.join(root, "scripts", "version-readiness-audits.js");
     const result = JSON.parse(execFileSync(process.execPath, [script, "--all", "--verify", "--comparison"], { cwd: temporaryRoot, encoding: "utf8" }));

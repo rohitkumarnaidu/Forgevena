@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { readFile } from "node:fs/promises";
+import { cp, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import os from "node:os";
 import path from "node:path";
 import test from "node:test";
-import { AUDITED_VERSIONS } from "../src/version-readiness-audit.js";
+import { AUDITED_VERSIONS, normalizeGeneratedMarkdown } from "../src/version-readiness-audit.js";
 
 const root = process.cwd();
 
@@ -50,6 +51,27 @@ test("generated remediation evidence is current for all and single versions", ()
   assert.equal(single.valid, true);
   assert.equal(single.versions, 1);
   assert.equal(single.files, 1);
+});
+
+test("generated remediation verification accepts Windows line endings", async () => {
+  const temporaryRoot = await mkdtemp(path.join(os.tmpdir(), "forgevena-remediation-crlf-"));
+  try {
+    await cp(path.join(root, "docs"), path.join(temporaryRoot, "docs"), { recursive: true });
+    const targets = [
+      path.join(temporaryRoot, "docs", "evidence", "changes", "version-readiness-audit-v1.4.0", "remediation-plan.md"),
+      path.join(temporaryRoot, "docs", "reports", "VERSION_IMPLEMENTATION_READINESS_REMEDIATION_PLAN.md"),
+    ];
+    for (const target of targets) {
+      const contents = await readFile(target, "utf8");
+      await writeFile(target, normalizeGeneratedMarkdown(contents).replace(/\n/g, "\r\n"), "utf8");
+    }
+    const script = path.join(root, "scripts", "version-readiness-remediation.js");
+    const result = JSON.parse(execFileSync(process.execPath, [script, "--all", "--verify"], { cwd: temporaryRoot, encoding: "utf8" }));
+    assert.equal(result.valid, true);
+    assert.equal(result.versions, 16);
+  } finally {
+    await rm(temporaryRoot, { recursive: true, force: true });
+  }
 });
 
 test("remediation generator can deterministically refresh all retained plans", () => {
