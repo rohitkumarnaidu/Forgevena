@@ -1,37 +1,37 @@
 {
   "schemaVersion": 1,
-  "changeId": "v1.4.0-provider-platform",
-  "checkpoint": "push",
-  "generatedAt": "2026-08-01T19:24:18.955Z",
+  "changeId": "pr-42",
+  "checkpoint": "merge",
+  "generatedAt": "2026-08-01T21:29:43.993Z",
   "decision": "ready",
   "reports": {
     "documentation-impact.json": {
-      "sha256": "016232599159a44439d7be26d26e5696e3e3f8ee4ea57e598b53a25d272cb47e",
-      "bytes": 22542
+      "sha256": "ebf1a86ce27406ccc366a2c130d4826c1943c30a1f9f535685765b3eee2cc790",
+      "bytes": 30503
     },
     "documentation-impact.md": {
-      "sha256": "d23a8ca7ce621ba4a9560d2dfe626cfaf460f84b7c45745c7dffef0bb3891320",
-      "bytes": 9270
+      "sha256": "a6179a6c0f2ca01a516a9b27bb72328c8d21edd3c546a8ddc3c5ca4b341be234",
+      "bytes": 13915
     },
     "updated-documents.md": {
-      "sha256": "6151e15829898828833e5499a4536c6f8051b06575e2794ec17b2f987f313c08",
-      "bytes": 2864
+      "sha256": "07bf44cd91f047e9786ed3e1c40d9292e7a5013f4e51fb7190212a1e7f7383e3",
+      "bytes": 5181
     },
     "missing-documentation.md": {
       "sha256": "7424b9bb1c66e1fd5c29a0e4e45db7f91a42350f86c1ca91ebd9554f33d0bbe2",
       "bytes": 79
     },
     "documentation-coverage.md": {
-      "sha256": "ee57827863f246758c318ac5a42427cd04f51a1f518bb02e4dd92c93f590167f",
+      "sha256": "058e0a7bc5b9d403945f569f372ed6902ab2a725a6a3380bb952cb3fdef2b07a",
       "bytes": 727
     },
     "documentation-quality.json": {
-      "sha256": "24d2739b5963d89d26cf8d062375230b56950aff72ea71e94999d109d2678ccd",
+      "sha256": "8c8c428b5cc24816ba5d815db53166eac9a0bc2ddfb296f5e1a7996ab4928951",
       "bytes": 1435
     },
     "documentation-synchronization.md": {
-      "sha256": "ac502a0f660259cd594f1533aaf722173b747bd634ae28c1e095800d33dde85f",
-      "bytes": 116
+      "sha256": "b300c23f14448eed2d0b0540d70834839119d06be5127fdd15ae4774d9f8a945",
+      "bytes": 117
     },
     "release-documentation-summary.md": {
       "sha256": "7c6ccbdcc606cb0d34eb4eb14b1223c59f31e2d89d36c0cceea76356834c6336",
@@ -46,7 +46,7 @@
       "bytes": 105
     },
     "repository-health.md": {
-      "sha256": "7ebf6add5f7b7e70aabbf893c669c98ba9913f6aa3c1a8b144db2acd16f0b6af",
+      "sha256": "7c99b535665f4a772a556e658c6ef46fefa4e7b384a9ac1c906adba69d9e0683",
       "bytes": 131
     }
   }
