@@ -1,6 +1,6 @@
 # v2.2.0 — ForgeRegistry Federation and Enterprise Registries
 
-> **Purpose:** ForgeRegistry Federation and Enterprise Registries is an approved roadmap delta specification. It does not authorize implementation by itself.
+> **Purpose:** ForgeRegistry Federation and Enterprise Registries is an approved roadmap delta specification. Its lifecycle metadata distinguishes implementation progress from release certification.
 > **Audience:** product, architecture, engineering, security, operations, documentation, release, and AI coding agents
 > **Owner:** ForgeRegistry Federation Maintainers
 > **Roadmap authority:** `docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#v220--forgeregistry-federation-and-enterprise-registries`
@@ -14,7 +14,7 @@ Support trusted public, private, mirrored, federated, and air-gapped registries 
 ## Status
 
 - **Lifecycle:** planned
-- **Product maturity:** not implemented
+- **Product maturity:** not-implemented
 - **Risk:** tier-3
 - **Owner:** ForgeRegistry Federation Maintainers
 - **Depends on:** `v2.1.0`
@@ -35,4 +35,4 @@ Support trusted public, private, mirrored, federated, and air-gapped registries 
 
 ## Authority
 
-Permanent architecture remains in the [foundation facade](../../foundation/README.md). This package records only the version delta and must be reconciled through RFC, ADR, threat model, and readiness approval before implementation.
+Permanent architecture remains in the [foundation facade](../../foundation/README.md). Implementation-preview status records completed local software work only; it does not authorize release or stable compatibility claims.

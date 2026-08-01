@@ -1,6 +1,6 @@
 # v1.8.0 — Observability, Supply Chain, and Documentation
 
-> **Purpose:** Observability, Supply Chain, and Documentation is an approved roadmap delta specification. It does not authorize implementation by itself.
+> **Purpose:** Observability, Supply Chain, and Documentation is an approved roadmap delta specification. Its lifecycle metadata distinguishes implementation progress from release certification.
 > **Audience:** product, architecture, engineering, security, operations, documentation, release, and AI coding agents
 > **Owner:** Operations, Security, and Documentation Maintainers
 > **Roadmap authority:** `docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#11-v180--observability-supply-chain-and-documentation`
@@ -14,7 +14,7 @@ Make runtime health, release integrity, documentation authority, and operational
 ## Status
 
 - **Lifecycle:** planned
-- **Product maturity:** not implemented
+- **Product maturity:** not-implemented
 - **Risk:** tier-2
 - **Owner:** Operations, Security, and Documentation Maintainers
 - **Depends on:** `v1.7.0`
@@ -35,4 +35,4 @@ Make runtime health, release integrity, documentation authority, and operational
 
 ## Authority
 
-Permanent architecture remains in the [foundation facade](../../foundation/README.md). This package records only the version delta and must be reconciled through RFC, ADR, threat model, and readiness approval before implementation.
+Permanent architecture remains in the [foundation facade](../../foundation/README.md). Implementation-preview status records completed local software work only; it does not authorize release or stable compatibility claims.

@@ -4566,6 +4566,22 @@
       ]
     },
     {
+      "id": "doc:release/v1_0_to_v1_4_completion_matrix",
+      "path": "docs/release/V1_0_TO_V1_4_COMPLETION_MATRIX.md",
+      "title": "Forgevena v1.0–v1.4 Completion Matrix",
+      "classification": "active-guide",
+      "authority": null,
+      "purpose": "Guide supported use of Forgevena v1.0–v1.4 Completion Matrix.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
       "id": "doc:release/v1_3_implementation_status",
       "path": "docs/release/V1_3_IMPLEMENTATION_STATUS.md",
       "title": "Forgevena v1.3 Implementation Status",
@@ -4588,6 +4604,38 @@
       "classification": "active-guide",
       "authority": null,
       "purpose": "Guide supported use of Forgevena v1.3.0 Release Checklist.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
+      "id": "doc:release/v1_4_implementation_status",
+      "path": "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+      "title": "Forgevena v1.4.0 Implementation Status",
+      "classification": "active-guide",
+      "authority": null,
+      "purpose": "Guide supported use of Forgevena v1.4.0 Implementation Status.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
+      "id": "doc:release/v1_4_release_checklist",
+      "path": "docs/release/V1_4_RELEASE_CHECKLIST.md",
+      "title": "Forgevena v1.4.0 Release Checklist",
+      "classification": "active-guide",
+      "authority": null,
+      "purpose": "Guide supported use of Forgevena v1.4.0 Release Checklist.",
       "lifecycle": "maintained",
       "versions": [
         "1"

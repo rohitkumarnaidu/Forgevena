@@ -14,12 +14,14 @@
 - [Architecture decision](adr.md)
 - [Push readiness scorecard](scorecard.md)
 - [Machine-readable scorecard](scorecard.json)
+- [Implementation status](../../../release/V1_4_IMPLEMENTATION_STATUS.md)
+- [Release checklist](../../../release/V1_4_RELEASE_CHECKLIST.md)
 
 ## Traceability
 
 | Feature | Runtime | Contracts | Tests | Documentation | Evidence |
 | --- | --- | --- | --- | --- | --- |
-| `provider-adapter-contract` | Provider adapter and service modules | Provider contract and profile schemas | Shared adapter, fixture, CLI, and migration suites | Provider reference and CLI guide | Pending implementation results |
-| `provider-resilience-compatibility` | Invocation coordinator and registry | Compatibility and registry schemas | Retry, cancellation, fallback, budget, freshness, and recovery suites | Operations and compatibility guides | Pending implementation results |
+| `provider-adapter-contract` | Provider adapter and service modules | Provider contract and profile schemas | Shared adapter, fixture, CLI, and migration suites | Provider reference and CLI guide | Local implementation and push evidence retained |
+| `provider-resilience-compatibility` | Invocation coordinator and registry | Compatibility and registry schemas | Retry, cancellation, fallback, budget, freshness, and recovery suites | Operations and compatibility guides | Local implementation and push evidence retained |
 
-No future result is claimed by this directory. Local push evidence is retained only after the corresponding command passes; hosted, live-account, RC, and release results remain pending.
+No hosted or future release result is claimed by this directory. Local implementation and push evidence is retained; hosted, live-account, RC, and release results remain pending.

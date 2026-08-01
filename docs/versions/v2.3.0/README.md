@@ -1,6 +1,6 @@
 # v2.3.0 — ForgeHub Discovery and Lifecycle
 
-> **Purpose:** ForgeHub Discovery and Lifecycle is an approved roadmap delta specification. It does not authorize implementation by itself.
+> **Purpose:** ForgeHub Discovery and Lifecycle is an approved roadmap delta specification. Its lifecycle metadata distinguishes implementation progress from release certification.
 > **Audience:** product, architecture, engineering, security, operations, documentation, release, and AI coding agents
 > **Owner:** ForgeHub Product Maintainers
 > **Roadmap authority:** `docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#v230--forgehub-discovery-and-lifecycle`
@@ -14,7 +14,7 @@ Deliver accessible, policy-controlled capability discovery, installation, update
 ## Status
 
 - **Lifecycle:** planned
-- **Product maturity:** not implemented
+- **Product maturity:** not-implemented
 - **Risk:** tier-3
 - **Owner:** ForgeHub Product Maintainers
 - **Depends on:** `v2.2.0`
@@ -35,4 +35,4 @@ Deliver accessible, policy-controlled capability discovery, installation, update
 
 ## Authority
 
-Permanent architecture remains in the [foundation facade](../../foundation/README.md). This package records only the version delta and must be reconciled through RFC, ADR, threat model, and readiness approval before implementation.
+Permanent architecture remains in the [foundation facade](../../foundation/README.md). Implementation-preview status records completed local software work only; it does not authorize release or stable compatibility claims.

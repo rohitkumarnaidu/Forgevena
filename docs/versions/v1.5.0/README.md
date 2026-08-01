@@ -1,6 +1,6 @@
 # v1.5.0 — Isolated Plugin and MCP Ecosystem
 
-> **Purpose:** Isolated Plugin and MCP Ecosystem is an approved roadmap delta specification. It does not authorize implementation by itself.
+> **Purpose:** Isolated Plugin and MCP Ecosystem is an approved roadmap delta specification. Its lifecycle metadata distinguishes implementation progress from release certification.
 > **Audience:** product, architecture, engineering, security, operations, documentation, release, and AI coding agents
 > **Owner:** Plugin and MCP Maintainers
 > **Roadmap authority:** `docs/strategy/FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md#8-v150--isolated-plugin-and-mcp-ecosystem`
@@ -14,7 +14,7 @@ Execute extensions out of process with deny-by-default permissions, signed manif
 ## Status
 
 - **Lifecycle:** planned
-- **Product maturity:** not implemented
+- **Product maturity:** not-implemented
 - **Risk:** tier-3
 - **Owner:** Plugin and MCP Maintainers
 - **Depends on:** `v1.4.0`
@@ -35,4 +35,4 @@ Execute extensions out of process with deny-by-default permissions, signed manif
 
 ## Authority
 
-Permanent architecture remains in the [foundation facade](../../foundation/README.md). This package records only the version delta and must be reconciled through RFC, ADR, threat model, and readiness approval before implementation.
+Permanent architecture remains in the [foundation facade](../../foundation/README.md). Implementation-preview status records completed local software work only; it does not authorize release or stable compatibility claims.

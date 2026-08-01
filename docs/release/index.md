@@ -33,4 +33,4 @@ Provider releases additionally require dated compatibility evidence for every st
 
 Signed tags automatically generate release notes and publish the GitHub Release, npm package, GitHub Package, GHCR image, Docker Hub image, smoke-tested standalone executables, distribution manifest, checksums, and supply-chain evidence through protected GitHub Actions. Winget, Chocolatey, and Homebrew remain external review processes that consume the immutable release assets.
 
-See [Release Checklist](../RELEASE_CHECKLIST.md), [Release Guide](../RELEASE_GUIDE.md), [Final Readiness](../rc/FINAL_RELEASE_READINESS.md), and [1.0.0 Notes](../RELEASE_NOTES_1.0.0.md).
+See [Release Checklist](../RELEASE_CHECKLIST.md), [Release Guide](../RELEASE_GUIDE.md), [v1.0–v1.4 Completion Matrix](V1_0_TO_V1_4_COMPLETION_MATRIX.md), [v1.3 Published Status](V1_3_IMPLEMENTATION_STATUS.md), [v1.4 Implementation Status](V1_4_IMPLEMENTATION_STATUS.md), [v1.4 Release Checklist](V1_4_RELEASE_CHECKLIST.md), [Final Readiness](../rc/FINAL_RELEASE_READINESS.md), and [1.0.0 Notes](../RELEASE_NOTES_1.0.0.md).

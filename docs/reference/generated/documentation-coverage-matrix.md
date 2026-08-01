@@ -6,7 +6,7 @@
 
 | Classification | Documents |
 |---|---:|
-| active-guide | 128 |
+| active-guide | 131 |
 | canonical-architecture | 11 |
 | canonical-policy | 6 |
 | generated-reference | 26 |
@@ -19,18 +19,18 @@
 
 | Persona | Documents |
 |---|---:|
-| users | 129 |
+| users | 132 |
 | developers | 108 |
-| maintainers | 626 |
+| maintainers | 629 |
 | enterprise-reviewers | 169 |
-| ai-coding-agents | 539 |
+| ai-coding-agents | 542 |
 
 ## Content-Type Coverage
 
 | Type | Documents |
 |---|---:|
 | evidence | 231 |
-| explanation | 272 |
+| explanation | 275 |
 | how-to | 34 |
 | reference | 86 |
 | tutorial | 3 |

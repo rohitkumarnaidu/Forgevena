@@ -12563,6 +12563,45 @@
       }
     },
     {
+      "id": "doc:release/v1_0_to_v1_4_completion_matrix",
+      "path": "docs/release/V1_0_TO_V1_4_COMPLETION_MATRIX.md",
+      "title": "Forgevena v1.0–v1.4 Completion Matrix",
+      "classification": "active-guide",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Guide supported use of Forgevena v1.0–v1.4 Completion Matrix.",
+      "audiences": [
+        "maintainers",
+        "users",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:release/v1_3_implementation_status",
       "path": "docs/release/V1_3_IMPLEMENTATION_STATUS.md",
       "title": "Forgevena v1.3 Implementation Status",
@@ -12610,6 +12649,84 @@
       "authority": null,
       "sourceOfTruth": "Forgevena maintained documentation",
       "purpose": "Guide supported use of Forgevena v1.3.0 Release Checklist.",
+      "audiences": [
+        "maintainers",
+        "users",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:release/v1_4_implementation_status",
+      "path": "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+      "title": "Forgevena v1.4.0 Implementation Status",
+      "classification": "active-guide",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Guide supported use of Forgevena v1.4.0 Implementation Status.",
+      "audiences": [
+        "maintainers",
+        "users",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:release/v1_4_release_checklist",
+      "path": "docs/release/V1_4_RELEASE_CHECKLIST.md",
+      "title": "Forgevena v1.4.0 Release Checklist",
+      "classification": "active-guide",
+      "contentType": "explanation",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Guide supported use of Forgevena v1.4.0 Release Checklist.",
       "audiences": [
         "maintainers",
         "users",
@@ -24240,9 +24357,9 @@
     }
   ],
   "summary": {
-    "total": 626,
+    "total": 629,
     "byClassification": {
-      "active-guide": 128,
+      "active-guide": 131,
       "canonical-architecture": 11,
       "canonical-policy": 6,
       "generated-reference": 26,
@@ -24253,7 +24370,7 @@
     },
     "byLifecycle": {
       "archived": 87,
-      "maintained": 539
+      "maintained": 542
     }
   }
 }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "version": "v1.4.0",
-  "state": "required-not-collected",
+  "state": "partially-collected",
   "mandatory": [
     "requirements",
     "rfc",

@@ -2,7 +2,7 @@
 
 ## Decision
 
-The software-controlled `v1.3.0` E1 implementation gates are complete locally. Version, changelog, release notes, compatibility, installation, and website metadata are synchronized for release review. The architecture remains frozen, and publication still requires hosted CI, review, and the normal signed-release protocol.
+The software-controlled `v1.3.0` E1 implementation and historical release protocol are complete. The signed tag, npm package, GitHub Release, GHCR image, documentation, standalone binaries, checksums, SBOM, provenance, and distribution bundles were published from the approved release commit. This status records historical assurance and does not claim compliance with controls introduced after `v1.3.0`.
 
 ## Implemented
 
@@ -38,11 +38,14 @@ The software-controlled `v1.3.0` E1 implementation gates are complete locally. V
 | Warm CLI startup | 127.66 ms (maximum 250 ms) |
 | Canonical documentation | Verified with zero drift |
 
-## Remaining Release Operations
+## Published Release Evidence
 
-1. Review and merge the dedicated release pull request without unrelated local media or archives.
-2. Pass hosted Windows, Ubuntu, macOS, documentation, security, mutation, performance, and package checks.
-3. Create and verify the signed `v1.3.0` tag from the approved merge commit.
-4. Verify npm, GitHub Release assets, GHCR, documentation, checksums, SBOM, provenance, and package-manager bundles.
+| Evidence | Result |
+| --- | --- |
+| Signed tag | `v1.3.0` resolves to `004710388afa7f2888a0e2594ede2d3cde96fe1c` |
+| Release workflow | [Run 30292317567](https://github.com/rohitkumarnaidu/Forgevena/actions/runs/30292317567) succeeded |
+| GitHub Release | [v1.3.0](https://github.com/rohitkumarnaidu/Forgevena/releases/tag/v1.3.0) published with release assets |
+| npm | [`forgevena@1.3.0`](https://www.npmjs.com/package/forgevena/v/1.3.0) published |
+| Container | [GHCR package](https://github.com/rohitkumarnaidu/Forgevena/pkgs/container/forgevena) published with `1.3.0` and `latest` tags |
 
-No signed `v1.3.0` tag or package publication is performed by this local implementation pass.
+There are no remaining software-controlled or publication tasks for `v1.3.0`. Future corrections use a new immutable version.
