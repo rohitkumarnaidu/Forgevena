@@ -1,7 +1,6 @@
 import http from "node:http";
 import { randomBytes, timingSafeEqual } from "node:crypto";
-import { configureProviderCredential, initializeProviderProfile, listProviderProfiles, providerStatus } from "./providers.js";
-import { invokeProvider } from "./provider-runtime.js";
+import { createProviderService } from "./provider-service.js";
 import { readProviderPolicy, setProviderPolicy } from "./provider-policy.js";
 import { listMcpServers, registerMcpServer, setMcpActivation } from "./mcp.js";
 import { listPlugins, setPluginEnabled } from "./plugins.js";
@@ -15,7 +14,8 @@ const MAX_BODY_BYTES = 64 * 1024;
 
 export async function startDashboard(root, { port = 0 } = {}) {
   const token = randomBytes(32).toString("base64url");
-  const server = http.createServer((request, response) => handleRequest(root, token, request, response));
+  const providerService = createProviderService(root);
+  const server = http.createServer((request, response) => handleRequest(root, token, providerService, request, response));
   await new Promise((resolve, reject) => {
     server.once("error", reject);
     server.listen(port, HOST, resolve);
@@ -32,15 +32,15 @@ export async function startDashboard(root, { port = 0 } = {}) {
   return result;
 }
 
-async function handleRequest(root, token, request, response) {
+async function handleRequest(root, token, providerService, request, response) {
   securityHeaders(response);
   try {
     const url = new URL(request.url, `http://${HOST}`);
     if (request.method === "GET" && url.pathname === "/") return html(response, dashboardHtml());
     if (!authorized(request, token)) return json(response, 401, { error: "unauthorized" });
     if (request.method === "GET" && url.pathname === "/api/providers") {
-      const profiles = listProviderProfiles();
-      const status = await providerStatus(root);
+      const profiles = providerService.list();
+      const status = await providerService.status();
       const policies = Object.fromEntries(await Promise.all(profiles.map(async ({ name }) => [name, await readProviderPolicy(root, name)])));
       return json(response, 200, { profiles, status, policies });
     }
@@ -48,13 +48,13 @@ async function handleRequest(root, token, request, response) {
     if (request.method === "GET" && url.pathname === "/api/clouds") return json(response, 200, { clouds: await Promise.all(listCloudPlatforms().map(({ name }) => validateCloudPlatform(root, name))) });
     if (request.method !== "POST") return json(response, 404, { error: "not_found" });
     const body = await readJson(request);
-    if (url.pathname === "/api/providers/profile") return json(response, 200, await initializeProviderProfile(root, body.provider, { dryRun: false }));
-    if (url.pathname === "/api/providers/credential") return json(response, 200, await configureProviderCredential(root, body.provider, body.secret, { dryRun: false }));
+    if (url.pathname === "/api/providers/profile") return json(response, 200, await providerService.initialize(body.provider, { dryRun: false }));
+    if (url.pathname === "/api/providers/credential") return json(response, 200, await providerService.configureCredential(body.provider, body.secret, { dryRun: false }));
     if (url.pathname === "/api/providers/policy") return json(response, 200, await setProviderPolicy(root, body.provider, body.policy ?? {}, { dryRun: false }));
     if (url.pathname === "/api/providers/test") {
       if (body.confirmDataEgress !== true) return json(response, 400, { error: "consent_required", message: "Confirm external data transmission before testing a provider." });
-      const result = await invokeProvider(root, body.provider, { prompt: "Reply only with OK.", model: body.model });
-      return json(response, 200, { provider: result.provider, model: result.model, text: result.text, usage: result.usage });
+      const result = await providerService.invoke(body.provider, { prompt: "Reply only with OK.", model: body.model, idempotency: "read-only" });
+      return json(response, 200, { schemaVersion: 1, operationId: result.operationId, status: "success", provider: result.provider, model: result.model, text: result.text, usage: result.usage, compatibilityEvidenceId: result.compatibilityEvidenceId ?? null, warnings: result.warnings ?? [] });
     }
     if (url.pathname === "/api/mcp/register") return json(response, 200, await registerMcpServer(root, body, { dryRun: false }));
     if (url.pathname === "/api/mcp/activation") {

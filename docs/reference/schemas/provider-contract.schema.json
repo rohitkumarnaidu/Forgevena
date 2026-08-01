@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forgevena.dev/schemas/provider-contract/v1",
+  "title": "Forgevena Provider Contract v1",
+  "$defs": {
+    "capability": { "enum": ["health", "model-discovery", "invoke", "stream", "structured-output", "tools", "cancel"] },
+    "metadata": {
+      "type": "object",
+      "required": ["schemaVersion", "id", "service", "kind", "support", "capabilities", "credentialReference", "storesSecrets"],
+      "properties": {
+        "schemaVersion": { "const": 1 }, "id": { "type": "string" }, "service": { "type": "string" },
+        "kind": { "enum": ["model-api", "local-model", "agent-host"] }, "support": { "enum": ["stable", "preview", "compatibility-only", "stale"] },
+        "capabilities": { "type": "array", "items": { "$ref": "#/$defs/capability" }, "uniqueItems": true },
+        "credentialReference": { "type": ["string", "null"] }, "storesSecrets": { "const": false }
+      }, "additionalProperties": true
+    },
+    "request": {
+      "type": "object", "required": ["operationId", "messages", "idempotency", "timeoutMs"],
+      "properties": {
+        "operationId": { "type": "string" }, "model": { "type": ["string", "null"] },
+        "messages": { "type": "array", "minItems": 1, "items": { "type": "object", "required": ["role", "content"], "properties": { "role": { "enum": ["system", "user", "assistant", "tool"] }, "content": { "type": "string" } }, "additionalProperties": false },
+        "idempotency": { "enum": ["read-only", "idempotent", "non-idempotent"] }, "timeoutMs": { "type": "integer", "minimum": 1 },
+        "dataClassification": { "enum": ["public", "internal", "confidential", "restricted"] },
+        "tools": { "type": "array" }, "structuredOutput": { "type": ["object", "null"] }, "budget": { "type": "object" }
+      }, "additionalProperties": true
+    },
+    "usage": { "type": "object", "properties": { "inputTokens": { "type": ["integer", "null"] }, "outputTokens": { "type": ["integer", "null"] }, "totalTokens": { "type": ["integer", "null"] }, "estimatedCost": { "type": ["number", "null"] } }, "additionalProperties": false },
+    "response": { "type": "object", "required": ["provider", "operationId", "finishReason", "warnings"], "properties": { "provider": { "type": "string" }, "operationId": { "type": "string" }, "text": { "type": "string" }, "finishReason": { "type": ["string", "null"] }, "usage": { "$ref": "#/$defs/usage" }, "warnings": { "type": "array", "items": { "type": "string" } }, "compatibilityEvidenceId": { "type": ["string", "null"] } }, "additionalProperties": true },
+    "streamEvent": { "type": "object", "required": ["type", "operationId", "sequence"], "properties": { "type": { "enum": ["start", "content-delta", "tool-call", "usage", "warning", "complete", "error"] }, "operationId": { "type": "string" }, "sequence": { "type": "integer", "minimum": 0 } }, "additionalProperties": true },
+    "error": { "type": "object", "required": ["code", "message", "retryable"], "properties": { "code": { "enum": ["authentication", "authorization", "invalid_request", "model_unavailable", "rate_limit", "quota", "timeout", "cancellation", "transport", "provider_unavailable", "policy_denial", "compatibility_stale", "unsafe_retry", "malformed_response", "credential_missing", "capability_unavailable", "budget_exhausted"] }, "message": { "type": "string" }, "retryable": { "type": "boolean" }, "retryAfterMs": { "type": ["integer", "null"], "minimum": 0 } }, "additionalProperties": true }
+  }
+}

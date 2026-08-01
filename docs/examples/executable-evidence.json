@@ -22,10 +22,10 @@
       "platforms": ["win32", "linux", "darwin"],
       "timeoutMs": 5000,
       "expectedExitCode": 0,
-      "expectedOutputSha256": "757a6316297051ccee8401b92953997bffa7a093214f8bab3eec0cd13d40d785",
+      "expectedOutputSha256": "b4f07b2231a5038b30c9df3071e03dd71d18e89e98a0edc776177fcb22772114",
       "outputContains": ["Modifying commands preview by default.", "Existing files are never overwritten"],
-      "verifiedAt": "2026-07-28",
-      "reviewBy": "2027-01-28"
+      "verifiedAt": "2026-08-01",
+      "reviewBy": "2027-02-01"
     },
     {
       "id": "template-catalog",

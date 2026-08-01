@@ -26,3 +26,34 @@ test("provider adapters dispatch through injected implementations", async () => 
   assert.equal((await adapter.invoke({ prompt: "hello" })).text, "ok");
   assert.deepEqual(calls.map(([operation]) => operation), ["status", "invoke"]);
 });
+
+test("provider adapters emit ordered stream events and cancel active operations", async () => {
+  let streamSignal;
+  const adapter = createProviderAdapter("workspace", "openai", {
+    stream: async function* (_root, _provider, _request, options) {
+      streamSignal = options.signal;
+      yield { type: "content-delta", delta: "ok" };
+      if (!options.signal.aborted) await new Promise((resolve) => options.signal.addEventListener("abort", resolve, { once: true }));
+      const error = new Error("Provider request was cancelled.");
+      error.code = "cancellation";
+      throw error;
+    },
+  });
+  const iterator = adapter.stream({ prompt: "hello", operationId: "stream-operation" });
+  assert.deepEqual((await iterator.next()).value, { type: "start", operationId: "stream-operation", sequence: 0, provider: "openai" });
+  assert.equal((await iterator.next()).value.sequence, 1);
+  assert.equal(streamSignal.aborted, false);
+  assert.deepEqual(adapter.cancel("stream-operation"), { operationId: "stream-operation", cancelled: true });
+  const terminal = await iterator.next();
+  assert.equal(terminal.value.type, "error");
+  assert.equal(terminal.value.error.code, "cancellation");
+  assert.equal((await iterator.next()).done, true);
+});
+
+test("provider adapter validates tool and structured-output declarations", () => {
+  const adapter = createProviderAdapter(".", "openai");
+  assert.equal(adapter.validateConfiguration({ provider: "openai", timeoutMs: 1000, tools: [{ name: "lookup" }], structuredOutput: { type: "object" } }).valid, true);
+  assert.equal(adapter.validateConfiguration({ provider: "ollama", timeoutMs: 0 }).valid, false);
+  assert.equal(adapter.metadata().service, "OpenAI");
+  assert.equal(adapter.metadata().support, "stable");
+});

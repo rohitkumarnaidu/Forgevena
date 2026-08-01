@@ -25,6 +25,8 @@ test("provider handler covers safe lifecycle and stable validation errors", () =
   assert.equal((await providerCommand(root, ["limits", "openai"], { dryRun: true })).mode, "guarded");
   assert.equal((await providerCommand(root, ["limits", "openai", "--mode", "guarded"], { dryRun: true })).dryRun, true);
   assert.equal((await providerCommand(root, ["invoke", "openai", "--prompt", "hello"], { dryRun: true })).promptCharacters, 5);
+  assert.equal((await providerCommand(root, ["stream", "openai", "--prompt", "hello"], { dryRun: true })).promptCharacters, 5);
+  assert.deepEqual(await providerCommand(root, ["cancel", "operation-1"], { dryRun: true }, { providers: { cancel: (operationId) => ({ operationId, cancelled: true }) } }), { operationId: "operation-1", cancelled: true });
   assert.equal((await providerCommand(root, ["test", "openai"], { dryRun: true })).promptLogged, false);
   await assert.rejects(() => providerCommand(root, ["models", "openai"], { dryRun: true }), { code: "CLI_PROVIDER_MODELS_UNSUPPORTED" });
   await assert.rejects(() => providerCommand(root, ["limits"], { dryRun: true }), { code: "CLI_PROVIDER_REQUIRED" });

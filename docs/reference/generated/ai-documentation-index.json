@@ -2158,6 +2158,91 @@
       ]
     },
     {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/readme",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/README.md",
+      "title": "v1.4.0 Provider Platform Change Evidence",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for v1.4.0 Provider Platform Change Evidence.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/adr",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/adr.md",
+      "title": "ADR — Governed Provider Boundary",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for ADR — Governed Provider Boundary.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/privacy-review",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/privacy-review.md",
+      "title": "Privacy Review — Production Provider Platform",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Privacy Review — Production Provider Platform.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/rfc",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/rfc.md",
+      "title": "RFC — Production Provider Platform",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for RFC — Production Provider Platform.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4.0-provider-platform/threat-model",
+      "path": "docs/evidence/changes/v1.4.0-provider-platform/threat-model.md",
+      "title": "Threat Model — Production Provider Platform",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Threat Model — Production Provider Platform.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4.0"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
+      ]
+    },
+    {
       "id": "doc:evidence/changes/version-documentation-system/documentation-impact",
       "path": "docs/evidence/changes/version-documentation-system/documentation-impact.md",
       "title": "Documentation Impact Report",
@@ -3883,6 +3968,23 @@
       "sourceOfTruth": "Forgevena maintained documentation",
       "related": [
         "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
+      "id": "doc:operations/provider-platform-runbook",
+      "path": "docs/operations/provider-platform-runbook.md",
+      "title": "Provider Platform Runbook",
+      "classification": "operational-runbook",
+      "authority": null,
+      "purpose": "Guide repeatable operation and recovery for Provider Platform Runbook.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.3.x"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/security/ECOSYSTEM_TRUST_AND_SAFETY_MODEL.md"
       ]
     },
     {

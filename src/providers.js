@@ -4,6 +4,7 @@ import path from "node:path";
 import { PROVIDER_DEFINITIONS, providerDefinition, providerRuntimeStatus } from "./provider-runtime.js";
 import { configureCredential, readCredential } from "./credentials.js";
 import { readStateDocument, updateStateDocument } from "./state-documents.js";
+import { ProviderRegistry, profileFromDefinition } from "./provider-registry.js";
 
 const providerMetadata = {
   claude: { host: "Claude Code or Anthropic API", mcp: "Configure MCP through the selected host after reviewing its permissions." },
@@ -23,13 +24,19 @@ export async function initializeProviderProfile(root, name, { dryRun = true } = 
   const profilePath = path.join(".ai-workspace", "providers", `${name}.json`);
   const documentationPath = path.join("docs", "ai-providers", `${name}.md`);
   const profile = {
+    schemaVersion: 1,
     provider: name,
+    service: definition.service,
     kind: definition.kind,
+    support: definition.support,
     capabilities: definition.capabilities,
     defaultModel: definition.defaultModel ?? null,
+    allowedModels: [],
+    endpointProfile: "default",
     credentialSource: definition.environmentVariable ? { type: "environment-variable", name: definition.environmentVariable } : { type: "host-managed", name: definition.host },
     mcp: { status: "manual-configuration-required", guidance: definition.mcp },
     storesSecrets: false,
+    compatibilityEvidenceId: null,
   };
   const files = [{ relative: profilePath, contents: `${JSON.stringify(profile, null, 2)}\n` }, { relative: documentationPath, contents: `# ${name} Provider\n\nCredential source: ${definition.environmentVariable ?? "managed by the provider host"}.\n\n${definition.mcp}\n\nNever add keys to this repository or workspace profile.\n` }];
   const create = [];
@@ -42,6 +49,7 @@ export async function initializeProviderProfile(root, name, { dryRun = true } = 
     await writeFile(target, file.contents, "utf8");
   }
   await updateRegistry(root, name);
+  await new ProviderRegistry(root).registerProfile(profile);
   return { provider: name, dryRun: false, created: create.map((file) => file.relative), skipped: skipped.map((file) => file.relative), storesSecrets: false };
 }
 
@@ -61,11 +69,13 @@ export async function configureProviderCredential(root, name, secret, { dryRun =
 }
 
 export async function providerStatus(root, name) {
+  const registry = new ProviderRegistry(root);
   const names = name ? [name] : Object.keys(PROVIDER_DEFINITIONS);
   return Promise.all(names.map(async (providerName) => {
     const definition = provider(providerName);
     const runtime = await providerRuntimeStatus(root, providerName);
     const profilePath = path.join(root, ".ai-workspace", "providers", `${providerName}.json`);
+    const compatibility = await registry.compatibility(providerName);
     return {
       provider: providerName,
       profile: await exists(profilePath),
@@ -74,6 +84,7 @@ export async function providerStatus(root, name) {
       mcp: "manual-configuration-required",
       storesSecrets: false,
       runtime,
+      compatibility,
     };
   }));
 }
@@ -89,12 +100,14 @@ export async function removeProviderProfile(root, name, { dryRun = true } = {}) 
   if (registry.providerCredentialStatus) delete registry.providerCredentialStatus[name];
   registry.updatedAt = new Date().toISOString();
   await updateStateDocument(root, ".ai-workspace/workspace.json", () => registry, registry);
+  await new ProviderRegistry(root).unregisterProfile(name);
   return { ...plan, dryRun: false, removed: true };
 }
 
 function definition(name) {
   const runtime = providerDefinition(name);
-  return { name, ...providerMetadata[name], environmentVariable: runtime.credential, kind: runtime.kind, capabilities: runtime.capabilities, defaultModel: runtime.defaultModel ?? null, storesSecrets: false };
+  const profile = profileFromDefinition(name);
+  return { name, ...providerMetadata[name], service: profile.service, support: profile.support, environmentVariable: runtime.credential, kind: runtime.kind, capabilities: runtime.capabilities, defaultModel: runtime.defaultModel ?? null, storesSecrets: false };
 }
 function provider(name) { return definition(name); }
 async function exists(target) { try { await access(target); return true; } catch { return false; } }

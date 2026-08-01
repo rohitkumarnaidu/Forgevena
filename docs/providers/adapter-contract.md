@@ -4,15 +4,20 @@ Forgevena provider adapters expose a versioned capability boundary over model AP
 
 Every adapter publishes its provider name, kind, credential reference, default model, declared capabilities, and known limitations. Operations fail closed when a capability is not declared.
 
-Current adapter operations are:
+ProviderAdapter v1 operations are:
 
 - `metadata()` for compatibility discovery.
 - `supports()` and `require()` for capability enforcement.
 - `health()` for provider-specific readiness.
 - `invoke()` for normalized generation or agent execution.
-- `models()` for providers declaring model discovery.
+- `validateConfiguration()` for fail-closed profile and capability checks.
+- `discoverModels()` and the 1.x `models()` wrapper for providers declaring discovery.
+- `stream()` for ordered, normalized events.
+- `cancel()` for operation-scoped cancellation.
 - `auth()` for hosts declaring authentication status.
 
-API retries preserve a stable idempotency key for supported providers, honor `Retry-After`, and otherwise use bounded exponential backoff with jitter. Provider prompts, responses, and credentials are excluded from logs.
+Streaming events use `start`, `content-delta`, `tool-call`, `usage`, `warning`, `complete`, and `error`. Adapters may emit only capabilities declared by their profile. Unsupported capabilities fail visibly.
 
-Streaming, structured outputs, and tool calling are not advertised until their provider-specific implementations and contract tests are complete.
+The invocation coordinator applies one deadline across attempts, limits automatic attempts to three, honors `Retry-After`, and otherwise uses exponential backoff with full jitter. Retry and fallback require safe idempotency. Fallback is never hidden and is denied after a committed tool or external effect.
+
+Prompts, responses, tool payloads, credentials, and authorization headers are restricted data. They are excluded from logs, diagnostics, registries, fixtures, errors, and compatibility evidence.

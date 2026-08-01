@@ -17,18 +17,20 @@ import { credentialCommand, foundationServices } from "./foundation.js";
 
 export async function providerCommand(root, args, options, services = foundationServices) {
   const [action = "list", name] = args;
-  if (action === "list") return { providers: listProviderProfiles() };
+  const providerService = services.providers;
+  if (action === "list") return { providers: providerService?.list ? providerService.list() : listProviderProfiles() };
   if (action === "dashboard") return startDashboard(root, { port: Number(valueAfter(args, "--port") ?? 0) });
-  if (action === "init") return initializeProviderProfile(root, name, options);
+  if (action === "init") return providerService?.initialize ? providerService.initialize(name, options) : initializeProviderProfile(root, name, options);
   if (action === "configure") {
     const preview = await configureProviderCredential(root, name, undefined, { dryRun: true });
     if (options.dryRun) return preview;
     if (options.nonInteractive) throw commandError("CLI_PROVIDER_INTERACTIVE_REQUIRED", "Provider key entry is intentionally unavailable in non-interactive mode. Set the documented environment variable yourself.", 2);
     const secret = await services.promptSecret(`Enter ${preview.environmentVariable} for ${name} (input is masked): `);
-    return configureProviderCredential(root, name, secret, { dryRun: false });
+    return providerService?.configureCredential ? providerService.configureCredential(name, secret, { dryRun: false }) : configureProviderCredential(root, name, secret, { dryRun: false });
   }
-  if (["status", "mcp", "doctor", "validate", "update"].includes(action)) return providerStatus(root, name);
-  if (action === "remove") return removeProviderProfile(root, name, options);
+  if (["status", "mcp", "doctor", "validate"].includes(action)) return providerService?.status ? providerService.status(name) : providerStatus(root, name);
+  if (action === "update") return providerService?.migrateLegacy ? providerService.migrateLegacy({ dryRun: options.dryRun }) : providerStatus(root, name);
+  if (action === "remove") return providerService?.remove ? providerService.remove(name, options) : removeProviderProfile(root, name, options);
   if (action === "models") {
     if (name !== "ollama") throw commandError("CLI_PROVIDER_MODELS_UNSUPPORTED", "Model discovery is currently available for ollama.", 2, { provider: name });
     return { provider: "ollama", models: await discoverOllamaModels() };
@@ -38,6 +40,7 @@ export async function providerCommand(root, args, options, services = foundation
       defaultProvider: valueAfter(args, "--default"), fallbackProvider: valueAfter(args, "--fallback"), embeddingProvider: valueAfter(args, "--embedding-provider"),
       model: valueAfter(args, "--model"), embeddingModel: valueAfter(args, "--embedding-model"), temperature: valueAfter(args, "--temperature"),
       maxOutputTokens: valueAfter(args, "--max-output-tokens"), retries: valueAfter(args, "--retries"), timeoutMs: valueAfter(args, "--timeout-ms"), priority: parseCsv(valueAfter(args, "--priority")),
+      requireCurrentCompatibility: flagValue(args, "--require-current-compatibility"), dataRegion: valueAfter(args, "--data-region"), maxAttempts: valueAfter(args, "--max-attempts"), maxTotalTokens: valueAfter(args, "--max-total-tokens"), maxEstimatedCost: valueAfter(args, "--max-estimated-cost"),
     };
     return Object.values(updates).some((value) => value !== undefined && (!Array.isArray(value) || value.length)) ? configureProjectProviders(root, updates, options) : readProjectProviderConfig(root);
   }
@@ -47,6 +50,8 @@ export async function providerCommand(root, args, options, services = foundation
       ["mode", valueAfter(args, "--mode")], ["maxInputCharacters", valueAfter(args, "--max-input-characters")],
       ["maxOutputTokens", valueAfter(args, "--max-output-tokens")], ["timeoutMs", valueAfter(args, "--timeout-ms")],
       ["retries", valueAfter(args, "--retries")], ["monthlyRequestLimit", valueAfter(args, "--monthly-request-limit")],
+      ["requireCurrentCompatibility", flagValue(args, "--require-current-compatibility")], ["maxAttempts", valueAfter(args, "--max-attempts")],
+      ["maxTotalTokens", valueAfter(args, "--max-total-tokens")], ["maxEstimatedCost", valueAfter(args, "--max-estimated-cost")],
     ].filter(([, value]) => value !== undefined));
     return Object.keys(updates).length ? setProviderPolicy(root, name, updates, options) : readProviderPolicy(root, name);
   }
@@ -57,7 +62,11 @@ export async function providerCommand(root, args, options, services = foundation
     if (!approval.approved) return { ...plan, approval };
     return { ...(await executeProviderAuth(plan)), approval };
   }
-  if (action === "invoke" || action === "test" || action === "verify") {
+  if (action === "cancel") {
+    if (!name) throw commandError("CLI_PROVIDER_OPERATION_REQUIRED", "Usage: providers cancel <operation-id>", 2);
+    return providerService?.cancel ? providerService.cancel(name) : { operationId: name, cancelled: false, reason: "provider-service-unavailable" };
+  }
+  if (action === "invoke" || action === "stream" || action === "test" || action === "verify") {
     if (!name) throw commandError("CLI_PROVIDER_REQUIRED", `Usage: providers ${action} <provider> --prompt <text> --apply`, 2);
     const prompt = action === "test" || action === "verify" ? "Reply only with OK." : valueAfter(args, "--prompt");
     if (!prompt) throw commandError("CLI_PROVIDER_PROMPT_REQUIRED", "Use --prompt <text>. Avoid placing sensitive data in shell history.", 2);
@@ -65,11 +74,18 @@ export async function providerCommand(root, args, options, services = foundation
     if (options.dryRun) return { ...plan, dryRun: true, promptCharacters: prompt.length, promptLogged: false };
     const approval = await approveExternalAction(plan, options);
     if (!approval.approved) return { ...plan, approval };
-    const result = await invokeProvider(root, name, { prompt, model: valueAfter(args, "--model"), maxOutputTokens: valueAfter(args, "--max-output-tokens"), timeoutMs: valueAfter(args, "--timeout-ms") });
+    const request = { prompt, model: valueAfter(args, "--model"), maxOutputTokens: valueAfter(args, "--max-output-tokens"), timeoutMs: valueAfter(args, "--timeout-ms"), idempotency: valueAfter(args, "--idempotency") ?? "read-only", allowFallback: args.includes("--allow-fallback"), fallbackProviders: parseCsv(valueAfter(args, "--fallback")), dataClassification: valueAfter(args, "--data-classification") ?? "restricted", requiredCapabilities: parseCsv(valueAfter(args, "--require-capabilities")), tools: parseJsonOption(args, "--tools-json", []), structuredOutput: parseJsonOption(args, "--structured-output-json", undefined), requireCurrentCompatibility: args.includes("--require-current-compatibility"), budget: { maxAttempts: numberOption(args, "--max-attempts"), maxTotalTokens: numberOption(args, "--max-total-tokens"), maxEstimatedCost: numberOption(args, "--max-estimated-cost") } };
+    if (action === "stream") {
+      if (!providerService?.stream) throw commandError("CLI_PROVIDER_STREAM_UNAVAILABLE", "Provider streaming service is unavailable.", 2);
+      const events = [];
+      for await (const event of providerService.stream(name, request)) events.push(event);
+      return { provider: name, operationId: events[0]?.operationId ?? null, events, approval };
+    }
+    const result = providerService?.invoke ? await providerService.invoke(name, request, { fallbackProviders: request.fallbackProviders }) : await invokeProvider(root, name, request);
     await logEvent(root, "workspace", { command: "providers", action, provider: name, model: result.model, promptCharacters: prompt.length, responseCharacters: result.text.length, promptLogged: false });
     return { ...result, approval };
   }
-  throw commandError("CLI_PROVIDER_ACTION_INVALID", "Usage: providers <list|init|configure|status|doctor|validate|update|remove|models|project|mcp|invoke|test|verify|login|logout|limits> [provider]", 2, { action });
+  throw commandError("CLI_PROVIDER_ACTION_INVALID", "Usage: providers <list|init|configure|status|doctor|validate|update|remove|models|project|mcp|invoke|stream|cancel|test|verify|login|logout|limits> [provider]", 2, { action });
 }
 
 export async function mcpCommand(root, args, options) {
@@ -172,3 +188,5 @@ function parseJsonOption(args, flag, fallback) {
   try { return JSON.parse(value); }
   catch { throw commandError("CLI_JSON_OPTION_INVALID", `${flag} must contain valid JSON.`, 2, { flag }); }
 }
+function numberOption(args, flag) { const value = valueAfter(args, flag); return value === undefined ? undefined : Number(value); }
+function flagValue(args, flag) { return args.includes(flag) ? true : undefined; }

@@ -19,6 +19,7 @@ import { BRAND } from "./brand.js";
 import { parseGlobalOptions, stripGlobalOptions, valueAfter } from "./cli/options.js";
 import { renderResult } from "./cli/output.js";
 import { createApplicationContext } from "./cli/context.js";
+import { createProviderService } from "./provider-service.js";
 import { CommandRouter } from "./cli/router.js";
 import { credentialCommand, foundationServices, stateCommand, vaultCommand } from "./cli/handlers/foundation.js";
 import { diagnosticsCommand, organizationCommand, supplyChainCommand } from "./cli/handlers/governance.js";
@@ -37,11 +38,12 @@ export async function run(args) {
   const [command, subject] = commandArgs;
   const root = process.cwd();
   const options = parseGlobalOptions(args);
+  const providerService = createProviderService(root);
   const context = createApplicationContext(root, { services: {
     foundation: foundationServices,
     logging: Object.freeze({ logEvent }),
     consent: Object.freeze({ approveExternalAction }),
-    providers: Object.freeze({ configureProviderCredential, initializeProviderProfile, listProviderProfiles, providerStatus, removeProviderProfile }),
+    providers: providerService,
     plugins: Object.freeze({ installPlugin, listPlugins, removePlugin, setPluginEnabled, updatePlugin, validatePlugin }),
     bootstrap: Object.freeze({ initializeProject, validateBootstrap }),
     registry: Object.freeze({ readStatus }),
@@ -78,7 +80,7 @@ function commandRouter() {
     config: async ({ root, subject, args, options }) => output(subject === "export" ? await exportSafeConfiguration(root, valueAfter(args, "--output"), options) : subject === "import" ? await importSafeConfiguration(root, valueAfter(args, "--input"), options) : subject ? await setConfig(root, subject, args[2], options) : await loadConfig(root), options),
     install: async ({ root, subject, options }) => output(await toolCommand(root, subject, options), options),
     reference: async ({ root, subject, options }) => output(await referenceCommand(root, subject, options), options),
-    providers: async ({ root, args, options }) => output(await providerCommand(root, args.slice(1), options), options),
+    providers: async ({ root, args, options, context }) => output(await providerCommand(root, args.slice(1), options, { ...foundationServices, providers: context.services.providers }), options),
     dashboard: async ({ root, args, options }) => output(await startDashboard(root, { port: Number(valueAfter(args, "--port") ?? 0) }), options),
     docker: async ({ root, args, options }) => output(await dockerCommand(root, args.slice(1), options), options),
     init: async ({ root, options }) => output(await initializeProject(root, options), options),
@@ -98,5 +100,5 @@ function printJson(value, options = {}) { console.log(renderResult(value, option
 function releaseHelp() { return `Release:\n  version (${PLATFORM_VERSION}) | upgrade [rollback]\n\nEngineering intelligence:\n  index <build|status|query|recommend> | semantic <configure|status|plan|build|query> | copilot <plan|run>`; }
 
 function help() {
-  return `${BRAND.name}\n${BRAND.caption}\n\nModifying commands preview by default. Use --apply for local writes; external operations also require explicit consent. Existing files are skipped.\n\nCommands:\n  doctor [--apply] | status | validate | version | help\n  state <validate|repair|snapshot|migrate|history> | vault <initialize|rotate|recover|migrate|audit>\n  init | create <name> | add <module> | remove <module> | update | rollback [operation]\n  install [tool] | reference [name] | capabilities | integrations\n  credentials <init|list|configure|rotate|validate|status|backup|remove> [name]\n  providers <list|init|configure|status|doctor|validate|update|remove|models|project|mcp|invoke|test|verify|login|logout|limits|dashboard> [provider]\n  mcp <list|add|validate|health|activate|deactivate|remove> [name]\n  plugins <list|install|update|trust|enable|disable|validate|health|remove> [source-or-id]\n  cloud list | cloud <provider> <prepare|validate|verify|deploy|status|health|credentials|rollback>\n  cloud render <generate|validate|credentials|configure|plan|deploy|status|rollback>\n  dashboard [--port <port>] | docker <plan|validate|up|down>\n  templates | config [key value] | config <export|import>\n\nCreate:\n  create <name> --template <template> [--provider <name>] [--output <path>] [--apply]\n\nSafety options:\n  --dry-run | --apply | --yes | --non-interactive | --verbose | --structured | --merge skip|merge|replace | --skip <module-or-path,...>\n  Credential values use masked prompts and are never accepted as command arguments.\n  Existing files are never overwritten; merge and replace requests remain skip-only.\n\nFoundation modules:\n  ${[...ADDABLE_MODULES].join(", ")}\n\nCompatibility:\n  ${BRAND.legacyExecutable} remains supported during the 1.x transition. Project state remains in ${BRAND.stateDirectory}.`;
+  return `${BRAND.name}\n${BRAND.caption}\n\nModifying commands preview by default. Use --apply for local writes; external operations also require explicit consent. Existing files are skipped.\n\nCommands:\n  doctor [--apply] | status | validate | version | help\n  state <validate|repair|snapshot|migrate|history> | vault <initialize|rotate|recover|migrate|audit>\n  init | create <name> | add <module> | remove <module> | update | rollback [operation]\n  install [tool] | reference [name] | capabilities | integrations\n  credentials <init|list|configure|rotate|validate|status|backup|remove> [name]\n  providers <list|init|configure|status|doctor|validate|update|remove|models|project|mcp|invoke|stream|cancel|test|verify|login|logout|limits|dashboard> [provider]\n  mcp <list|add|validate|health|activate|deactivate|remove> [name]\n  plugins <list|install|update|trust|enable|disable|validate|health|remove> [source-or-id]\n  cloud list | cloud <provider> <prepare|validate|verify|deploy|status|health|credentials|rollback>\n  cloud render <generate|validate|credentials|configure|plan|deploy|status|rollback>\n  dashboard [--port <port>] | docker <plan|validate|up|down>\n  templates | config [key value] | config <export|import>\n\nProvider invocation:\n  providers invoke <provider> --prompt <text> --apply [--allow-fallback --fallback <provider,...>]\n  providers stream <provider> --prompt <text> --apply [--tools-json <json> --structured-output-json <json>]\n  providers cancel <operation-id>\n\nCreate:\n  create <name> --template <template> [--provider <name>] [--output <path>] [--apply]\n\nSafety options:\n  --dry-run | --apply | --yes | --non-interactive | --verbose | --structured | --merge skip|merge|replace | --skip <module-or-path,...>\n  Credential values use masked prompts and are never accepted as command arguments.\n  Existing files are never overwritten; merge and replace requests remain skip-only.\n\nFoundation modules:\n  ${[...ADDABLE_MODULES].join(", ")}\n\nCompatibility:\n  ${BRAND.legacyExecutable} remains supported during the 1.x transition. Project state remains in ${BRAND.stateDirectory}.`;
 }

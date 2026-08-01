@@ -152,7 +152,7 @@ test("provider invocation fails closed for invalid requests, credentials, hosts,
     let calls = 0;
     await assert.rejects(() => invokeProvider(root, "openai", { prompt: "hello", retries: 2 }, { fetchImpl: async () => { calls += 1; return new Response(JSON.stringify({ error: { message: "bad request" } }), { status: 400 }); } }), (error) => error.status === 400 && error.retryable === false);
     assert.equal(calls, 1);
-    await assert.rejects(() => invokeProvider(root, "openai", { prompt: "hello", retries: 0 }, { fetchImpl: async () => { throw new Error("network down"); } }), (error) => error.retryable === true && /network down/.test(error.message));
+    await assert.rejects(() => invokeProvider(root, "openai", { prompt: "hello", retries: 0 }, { fetchImpl: async () => { throw new Error("network down"); } }), (error) => error.retryable === true && error.code === "transport" && error.message === "Provider transport failed.");
   } finally {
     if (previous === undefined) delete process.env.OPENAI_API_KEY; else process.env.OPENAI_API_KEY = previous;
     await rm(root, { recursive: true, force: true });
