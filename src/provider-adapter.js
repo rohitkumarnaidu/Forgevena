@@ -49,16 +49,16 @@ export class ProviderAdapter {
     if (!(this.supports("invoke") || this.supports("generate") || this.supports("agent-execute"))) throw new ProviderCapabilityError(this.name, "invoke");
     this.#validateRequestCapabilities(request);
     const operationId = request?.operationId ?? randomUUID();
-    const controller = new AbortController();
+    const { controller, detach } = linkedController(options.signal);
     this.operations.set(operationId, controller);
     try { return await this.implementation.invoke(this.root, this.name, { ...request, operationId }, { ...options, signal: controller.signal }); }
-    finally { this.operations.delete(operationId); }
+    finally { detach(); this.operations.delete(operationId); }
   }
   async *stream(request, options = {}) {
     this.require("stream");
     this.#validateRequestCapabilities(request);
     const operationId = request?.operationId ?? randomUUID();
-    const controller = new AbortController();
+    const { controller, detach } = linkedController(options.signal);
     this.operations.set(operationId, controller);
     let sequence = 0;
     try {
@@ -68,7 +68,7 @@ export class ProviderAdapter {
       }
     } catch (error) {
       yield { type: "error", operationId, sequence: sequence++, error: { code: error.code ?? "provider_unavailable", message: error.message, retryable: Boolean(error.retryable) } };
-    } finally { this.operations.delete(operationId); }
+    } finally { detach(); this.operations.delete(operationId); }
   }
   async discoverModels(options) { this.require("model-discovery"); return this.implementation.models(options); }
   async models(options) { return this.discoverModels(options); }
@@ -79,3 +79,4 @@ export class ProviderAdapter {
 
 export function createProviderAdapter(root, name, implementation) { return new ProviderAdapter(root, name, implementation); }
 export function providerCompatibilityMatrix(root = process.cwd()) { return Object.keys(PROVIDER_DEFINITIONS).map((name) => createProviderAdapter(root, name).metadata()); }
+function linkedController(signal) { const controller = new AbortController(); const abort = () => controller.abort(); if (signal?.aborted) controller.abort(); else signal?.addEventListener("abort", abort, { once: true }); return { controller, detach: () => signal?.removeEventListener("abort", abort) }; }

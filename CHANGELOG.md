@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add the preview `ProviderAdapter v1` platform for OpenAI, Anthropic/Claude, Gemini, OpenRouter, and Ollama with normalized invocation, ordered streaming, bounded retry and fallback, compatibility evidence, registry migration, and restricted-data redaction.
+- Preserve Codex, Cursor, and Windsurf as compatibility-only agent-host integrations; stable provider certification remains blocked on dated, credential-gated live evidence and the complete `v1.4.0` release gate.
 - Make `doctor` strictly read-only by default and persist health or logs only after explicit `--apply` consent.
 - Run the non-root CLI container from a writable `/workspace` on Node.js 22 LTS while preserving Node.js 20 package compatibility.
 - Generate checksummed documentation synchronization evidence for pull requests and releases, including impact, coverage, quality, migration, version-history, and repository-health reports.

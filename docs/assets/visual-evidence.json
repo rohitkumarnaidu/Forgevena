@@ -9,7 +9,7 @@
       "reviewedAt": "2026-08-01",
       "reviewBy": "2027-02-01",
       "sha256": "0752bca72d98dda40cb1bed801d439dc581ed268f8f402dd5102779cd43f2fc2",
-      "sourceDependencies": [{ "path": "README.md", "sha256": "143ae804c7e787747731c0313a526560358fcc940db662bfb1209c36144246b9" }]
+      "sourceDependencies": [{ "path": "README.md", "sha256": "0dbed126a5db0fe3e666adf56e1652d6d333387bafaf3f4d2a5d9ef1aa188d5d" }]
     },
     {
       "path": "docs/assets/favicon.svg",
@@ -29,7 +29,7 @@
       "reviewedAt": "2026-07-28",
       "reviewBy": "2027-01-28",
       "sha256": "b75ade85cad8a8ddf91a929e0c9a2aa992be655ccc4221a7236fb7f705fa8723",
-      "sourceDependencies": [{ "path": "README.md", "sha256": "143ae804c7e787747731c0313a526560358fcc940db662bfb1209c36144246b9" }]
+      "sourceDependencies": [{ "path": "README.md", "sha256": "0dbed126a5db0fe3e666adf56e1652d6d333387bafaf3f4d2a5d9ef1aa188d5d" }]
     },
     {
       "path": "docs/assets/forgevena-social-preview.png",
@@ -49,7 +49,7 @@
       "reviewedAt": "2026-07-28",
       "reviewBy": "2027-01-28",
       "sha256": "2eaa15af61228e5e57421177f1b7dca934b0ac9463f4cba7782621e71fe7f0d7",
-      "sourceDependencies": [{ "path": "README.md", "sha256": "143ae804c7e787747731c0313a526560358fcc940db662bfb1209c36144246b9" }]
+      "sourceDependencies": [{ "path": "README.md", "sha256": "0dbed126a5db0fe3e666adf56e1652d6d333387bafaf3f4d2a5d9ef1aa188d5d" }]
     },
     {
       "path": "docs/assets/logo.svg",

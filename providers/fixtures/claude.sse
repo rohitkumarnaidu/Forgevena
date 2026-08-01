@@ -1,0 +1,5 @@
+event: content_block_delta
+data: {"type":"content_block_delta","delta":{"text":"claude"}}
+
+event: message_stop
+data: {"type":"message_stop"}

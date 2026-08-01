@@ -32,7 +32,7 @@ export class InvocationCoordinator {
       for (let candidateIndex = 0; candidateIndex < candidates.length; candidateIndex += 1) {
         const candidate = candidates[candidateIndex];
         if (candidateIndex > 0) this.#assertFallbackAllowed(request, idempotency);
-        if (this.registry && (options.requireCurrentCompatibility ?? request.requireCurrentCompatibility ?? policy.requireCurrentCompatibility)) await this.registry.compatibility(candidate, { requireCurrent: true });
+        const compatibility = this.registry ? await this.registry.compatibility(candidate, { requireCurrent: options.requireCurrentCompatibility ?? request.requireCurrentCompatibility ?? policy.requireCurrentCompatibility }) : null;
         const adapter = this.adapterFactory(this.root, candidate, options.implementations?.[candidate]);
         this.#assertEquivalentCapabilities(adapter, request);
         let candidateAttempt = 0;
@@ -45,7 +45,7 @@ export class InvocationCoordinator {
             const response = await adapter.invoke({ ...request, provider: candidate, operationId, idempotency, timeoutMs: remainingMs, retries: 0 }, { ...options, signal: controller.signal, recordUsage: false });
             assertResponseBudget(response, request.budget ?? policy);
             await recordProviderUsage(this.root, candidate, { inputCharacters: requestCharacters(request), outputCharacters: String(response.text ?? "").length, usage: response.usage });
-            return { ...response, provider: candidate, operationId, attempts: attempt, fallbackUsed: candidateIndex > 0, warnings: [...(response.warnings ?? []), ...(candidateIndex > 0 ? [`Fallback used: ${candidate}.`] : [])] };
+            return { ...response, provider: candidate, operationId, attempts: attempt, fallbackUsed: candidateIndex > 0, policyResult: { approved: true, mode: policy.mode, idempotency, fallbackAllowed: request.allowFallback === true, maxAttempts, deadlineMs: timeoutMs }, compatibilityEvidence: compatibility?.evidence ?? null, compatibilityFreshness: compatibility?.freshness ?? "not-evaluated", warnings: [...(response.warnings ?? []), ...(compatibility && compatibility.freshness !== "current" ? [`Compatibility evidence is ${compatibility.freshness}.`] : []), ...(candidateIndex > 0 ? [`Fallback used: ${candidate}.`] : [])] };
           } catch (error) {
             lastError = normalizeError(error, candidate);
             if (controller.signal.aborted) throw new ProviderRequestError("Provider invocation was cancelled.", { provider: candidate, code: "cancellation", retryable: false });
@@ -62,9 +62,17 @@ export class InvocationCoordinator {
     } finally { this.operations.delete(operationId); }
   }
 
-  stream(provider, request = {}, options = {}) {
-    const adapter = this.adapterFactory(this.root, provider, options.implementations?.[provider]);
-    return adapter.stream(request, options);
+  async *stream(provider, request = {}, options = {}) {
+    const operationId = request.operationId ?? randomUUID();
+    const policy = await readProviderPolicy(this.root, provider);
+    if (this.registry && (options.requireCurrentCompatibility ?? request.requireCurrentCompatibility ?? policy.requireCurrentCompatibility)) await this.registry.compatibility(provider, { requireCurrent: true });
+    const controller = new AbortController();
+    this.operations.set(operationId, controller);
+    try {
+      const adapter = this.adapterFactory(this.root, provider, options.implementations?.[provider]);
+      this.#assertEquivalentCapabilities(adapter, request);
+      for await (const event of adapter.stream({ ...request, operationId, timeoutMs: request.timeoutMs ?? policy.timeoutMs }, { ...options, signal: controller.signal })) yield event;
+    } finally { this.operations.delete(operationId); }
   }
 
   cancel(operationId) {

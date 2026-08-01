@@ -23,7 +23,11 @@ test("provider profiles record references and never a secret", async () => {
     assert.equal(result.storesSecrets, false);
     const profile = await readFile(path.join(root, ".ai-workspace", "providers", "openai.json"), "utf8");
     assert.doesNotMatch(profile, /sk-/);
-    assert.equal((await providerStatus(root, "openai"))[0].storesSecrets, false);
+    const status = (await providerStatus(root, "openai"))[0];
+    assert.equal(status.storesSecrets, false);
+    assert.equal(status.health.authentication, "not-configured");
+    assert.equal(status.health.compatibility, "missing");
+    assert.equal(status.health.rateLimit, "within-local-budget");
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 

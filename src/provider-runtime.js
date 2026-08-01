@@ -141,7 +141,7 @@ export async function discoverOllamaModels({ fetchImpl = globalThis.fetch } = {}
   return Array.isArray(payload.models) ? payload.models.map((model) => ({ name: model.name, size: model.size ?? null, modifiedAt: model.modified_at ?? null })) : [];
 }
 
-export async function* streamProvider(root, name, request, { fetchImpl = globalThis.fetch, signal } = {}) {
+export async function* streamProvider(root, name, request, { fetchImpl = globalThis.fetch, signal, recordUsage = true } = {}) {
   const definition = providerDefinition(name);
   if (definition.kind === "agent-host") throw new ProviderRequestError(`${name} does not expose the ProviderAdapter streaming contract.`, { provider: name, code: "capability_unavailable" });
   const policy = await readProviderPolicy(root, name);
@@ -150,25 +150,42 @@ export async function* streamProvider(root, name, request, { fetchImpl = globalT
   if (definition.credential && !key) throw new ProviderRequestError(`Missing ${definition.credential}. Configure the provider before invoking it.`, { provider: name, code: "credential_missing" });
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), normalized.timeoutMs);
+  let outputCharacters = 0;
+  let finalUsage = null;
+  let completed = false;
   try {
     const response = await fetchImpl(buildStreamUrl(name, normalized.model), { method: "POST", headers: buildHeaders(name, key, normalized.idempotencyKey), body: JSON.stringify({ ...buildBody(name, normalized), stream: true }), signal: combineSignals(signal, controller.signal) });
     if (!response.ok) throw providerHttpError(name, response.status, await readPayload(response), response.headers);
     if (!response.body) throw new ProviderRequestError("Provider stream did not include a response body.", { provider: name, code: "malformed_response" });
     let buffer = "";
+    const decoder = new TextDecoder();
     for await (const chunk of response.body) {
-      buffer += new TextDecoder().decode(chunk, { stream: true });
+      buffer += decoder.decode(chunk, { stream: true });
       const lines = buffer.split(/\r?\n/);
       buffer = lines.pop() ?? "";
       for (const line of lines) {
         const payload = parseStreamLine(line);
         if (!payload) continue;
-        for (const event of normalizeStreamPayload(name, payload)) yield event;
+        for (const event of normalizeStreamPayload(name, payload)) {
+          if (event.type === "content-delta") outputCharacters += String(event.delta ?? "").length;
+          if (event.type === "usage") finalUsage = event.usage;
+          if (event.type === "complete") completed = true;
+          yield event;
+        }
       }
     }
+    buffer += decoder.decode();
     if (buffer.trim()) {
       const payload = parseStreamLine(buffer);
-      if (payload) for (const event of normalizeStreamPayload(name, payload)) yield event;
+      if (payload) for (const event of normalizeStreamPayload(name, payload)) {
+        if (event.type === "content-delta") outputCharacters += String(event.delta ?? "").length;
+        if (event.type === "usage") finalUsage = event.usage;
+        if (event.type === "complete") completed = true;
+        yield event;
+      }
     }
+    if (!completed) yield { type: "complete", finishReason: "stream-ended" };
+    if (recordUsage) await recordProviderUsage(root, name, { inputCharacters: normalized.prompt.length, outputCharacters, usage: finalUsage });
   } catch (error) {
     if (error?.name === "AbortError") throw new ProviderRequestError(signal?.aborted ? "Provider stream was cancelled." : "Provider stream timed out.", { provider: name, code: signal?.aborted ? "cancellation" : "timeout", retryable: false });
     throw error;
@@ -202,6 +219,9 @@ function validateRequest(name, request, policy) {
   if (policy.mode === "budgeted" && policy.usage.requests >= policy.monthlyRequestLimit) {
     throw new ProviderRequestError("The configured local request budget has been reached.", { provider: name, code: "budget_exceeded" });
   }
+  if (!['public', 'internal', 'confidential', 'restricted'].includes(request.dataClassification ?? 'restricted')) throw new ProviderRequestError("dataClassification must be public, internal, confidential, or restricted.", { provider: name, code: "invalid_request" });
+  if (request.tools !== undefined && !Array.isArray(request.tools)) throw new ProviderRequestError("tools must be an array.", { provider: name, code: "invalid_request" });
+  if (request.structuredOutput !== undefined && request.structuredOutput !== null && (typeof request.structuredOutput !== "object" || Array.isArray(request.structuredOutput))) throw new ProviderRequestError("structuredOutput must be a JSON Schema object.", { provider: name, code: "invalid_request" });
   return {
     prompt,
     messages,
@@ -259,14 +279,17 @@ function buildBody(name, request) {
 }
 
 function normalizeResponse(name, payload, model) {
-  if (name === "ollama") return { provider: name, kind: "local-model", model: payload.model ?? model, text: payload.response ?? "", usage: { inputTokens: payload.prompt_eval_count ?? null, outputTokens: payload.eval_count ?? null }, requestId: null };
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) throw malformedResponse(name);
+  if (name === "ollama") { if (typeof payload.response !== "string") throw malformedResponse(name); return { provider: name, kind: "local-model", model: payload.model ?? model, text: payload.response, usage: { inputTokens: payload.prompt_eval_count ?? null, outputTokens: payload.eval_count ?? null }, requestId: null }; }
   if (name === "openai") {
+    if (typeof payload.output_text !== "string" && !Array.isArray(payload.output)) throw malformedResponse(name);
     const text = payload.output_text ?? payload.output?.flatMap((item) => item.content ?? []).filter((item) => item.type === "output_text").map((item) => item.text).join("") ?? "";
     return { provider: name, kind: "model-api", model: payload.model ?? model, text, usage: payload.usage ?? null, requestId: payload.id ?? null };
   }
-  if (name === "claude") return { provider: name, kind: "model-api", model: payload.model ?? model, text: payload.content?.filter((item) => item.type === "text").map((item) => item.text).join("") ?? "", usage: payload.usage ?? null, requestId: payload.id ?? null };
-  if (name === "gemini") return { provider: name, kind: "model-api", model, text: payload.candidates?.[0]?.content?.parts?.map((item) => item.text ?? "").join("") ?? "", usage: payload.usageMetadata ?? null, requestId: payload.responseId ?? null };
-  return { provider: name, kind: "model-api", model: payload.model ?? model, text: payload.choices?.[0]?.message?.content ?? "", usage: payload.usage ?? null, requestId: payload.id ?? null };
+  if (name === "claude") { if (!Array.isArray(payload.content)) throw malformedResponse(name); return { provider: name, kind: "model-api", model: payload.model ?? model, text: payload.content.filter((item) => item.type === "text").map((item) => item.text).join(""), usage: payload.usage ?? null, requestId: payload.id ?? null }; }
+  if (name === "gemini") { if (!Array.isArray(payload.candidates)) throw malformedResponse(name); return { provider: name, kind: "model-api", model, text: payload.candidates[0]?.content?.parts?.map((item) => item.text ?? "").join("") ?? "", usage: payload.usageMetadata ?? null, requestId: payload.responseId ?? null }; }
+  if (!Array.isArray(payload.choices)) throw malformedResponse(name);
+  return { provider: name, kind: "model-api", model: payload.model ?? model, text: payload.choices[0]?.message?.content ?? "", usage: payload.usage ?? null, requestId: payload.id ?? null };
 }
 function ollamaBaseUrl() { return (process.env.OLLAMA_HOST ?? "http://127.0.0.1:11434").replace(/\/$/, ""); }
 function delay(milliseconds) { return new Promise((resolve) => setTimeout(resolve, milliseconds)); }
@@ -287,30 +310,34 @@ async function readPayload(response) {
 }
 
 function providerHttpError(provider, status, _payload, headers) {
-  const code = status === 401 ? "authentication" : status === 403 ? "authorization" : status === 404 ? "model_unavailable" : status === 408 ? "timeout" : status === 429 ? "rate_limit" : status >= 500 ? "provider_unavailable" : "invalid_request";
+  const code = status === 401 ? "authentication" : status === 402 ? "quota" : status === 403 ? "authorization" : status === 404 ? "model_unavailable" : status === 408 ? "timeout" : status === 429 ? "rate_limit" : status >= 500 ? "provider_unavailable" : "invalid_request";
   return new ProviderRequestError(`Provider ${provider} request failed with HTTP ${status}.`, { provider, status, retryable: status === 408 || status === 429 || status >= 500, code, retryAfterMs: parseRetryAfter(headers?.get?.("retry-after")) });
 }
 function parseRetryAfter(value) { if (!value) return null; if (/^\d+(?:\.\d+)?$/.test(value)) return Math.max(0, Math.round(Number(value) * 1000)); const date = Date.parse(value); return Number.isNaN(date) ? null : Math.max(0, date - Date.now()); }
 function parseStreamLine(line) {
   const trimmed = line.trim();
-  if (!trimmed || trimmed.startsWith(":")) return null;
+  if (!trimmed || trimmed.startsWith(":") || /^(event|id|retry):/.test(trimmed)) return null;
   const content = trimmed.startsWith("data:") ? trimmed.slice(5).trim() : trimmed;
   if (content === "[DONE]") return { done: true };
   try { return JSON.parse(content); } catch { throw new ProviderRequestError("Provider stream contained malformed JSON.", { code: "malformed_response", retryable: false }); }
 }
 function normalizeStreamPayload(name, payload) {
-  if (payload.done === true) return [{ type: "complete", finishReason: "stop" }];
   if (name === "ollama") return [...(payload.response ? [{ type: "content-delta", delta: payload.response }] : []), ...(payload.done ? [{ type: "usage", usage: { inputTokens: payload.prompt_eval_count ?? null, outputTokens: payload.eval_count ?? null, totalTokens: null, estimatedCost: null } }, { type: "complete", finishReason: payload.done_reason ?? "stop" }] : [])];
-  if (name === "openai") return payload.type === "response.output_text.delta" ? [{ type: "content-delta", delta: payload.delta ?? "" }] : payload.type === "response.completed" ? [{ type: "usage", usage: payload.response?.usage ?? null }, { type: "complete", finishReason: "stop" }] : [];
-  if (name === "claude") return payload.type === "content_block_delta" && payload.delta?.text ? [{ type: "content-delta", delta: payload.delta.text }] : payload.type === "message_delta" ? [{ type: "usage", usage: payload.usage ?? null }] : payload.type === "message_stop" ? [{ type: "complete", finishReason: "stop" }] : [];
-  if (name === "gemini") return [...(payload.candidates?.[0]?.content?.parts?.map((entry) => ({ type: "content-delta", delta: entry.text ?? "" })) ?? []), ...(payload.usageMetadata ? [{ type: "usage", usage: payload.usageMetadata }] : [])];
+  if (payload.done === true) return [{ type: "complete", finishReason: "stop" }];
+  if (name === "openai") return payload.type === "response.output_text.delta" ? [{ type: "content-delta", delta: payload.delta ?? "" }] : payload.type === "response.function_call_arguments.delta" ? [{ type: "tool-call", toolCall: { id: payload.item_id ?? null, name: payload.name ?? null, argumentsDelta: payload.delta ?? "" } }] : payload.type === "response.completed" ? [{ type: "usage", usage: payload.response?.usage ?? null }, { type: "complete", finishReason: payload.response?.status ?? "stop" }] : [];
+  if (name === "claude") return payload.type === "content_block_start" && payload.content_block?.type === "tool_use" ? [{ type: "tool-call", toolCall: { id: payload.content_block.id, name: payload.content_block.name, input: payload.content_block.input ?? {} } }] : payload.type === "content_block_delta" && payload.delta?.text ? [{ type: "content-delta", delta: payload.delta.text }] : payload.type === "content_block_delta" && payload.delta?.partial_json ? [{ type: "tool-call", toolCall: { argumentsDelta: payload.delta.partial_json } }] : payload.type === "message_delta" ? [{ type: "usage", usage: payload.usage ?? null }] : payload.type === "message_stop" ? [{ type: "complete", finishReason: "stop" }] : [];
+  if (name === "gemini") {
+    const parts = payload.candidates?.[0]?.content?.parts ?? [];
+    return [...parts.filter((entry) => entry.text).map((entry) => ({ type: "content-delta", delta: entry.text })), ...parts.filter((entry) => entry.functionCall).map((entry) => ({ type: "tool-call", toolCall: entry.functionCall })), ...(payload.usageMetadata ? [{ type: "usage", usage: payload.usageMetadata }] : []), ...(payload.candidates?.[0]?.finishReason ? [{ type: "complete", finishReason: payload.candidates[0].finishReason }] : [])];
+  }
   const delta = payload.choices?.[0]?.delta;
   return [...(delta?.content ? [{ type: "content-delta", delta: delta.content }] : []), ...(delta?.tool_calls ? delta.tool_calls.map((toolCall) => ({ type: "tool-call", toolCall })) : []), ...(payload.usage ? [{ type: "usage", usage: payload.usage }] : []), ...(payload.choices?.[0]?.finish_reason ? [{ type: "complete", finishReason: payload.choices[0].finish_reason }] : [])];
 }
 function normalizeMessages(request) {
-  if (Array.isArray(request?.messages) && request.messages.length) return request.messages.map((entry) => ({ role: String(entry.role ?? "user"), content: String(entry.content ?? "") }));
+  if (Array.isArray(request?.messages) && request.messages.length) return request.messages.map((entry) => { const role = String(entry.role ?? "user"); if (!['system', 'user', 'assistant', 'tool'].includes(role)) throw new ProviderRequestError(`Unsupported message role ${role}.`, { code: "invalid_request" }); return { role, content: String(entry.content ?? "") }; });
   return request?.prompt === undefined ? [] : [{ role: "user", content: String(request.prompt) }];
 }
+function malformedResponse(provider) { return new ProviderRequestError("Provider returned a malformed response.", { provider, code: "malformed_response", retryable: false }); }
 function safeToRetry(request) { return request.idempotency === "read-only" || request.idempotency === "idempotent"; }
 function combineSignals(external, internal) {
   if (!external) return internal;

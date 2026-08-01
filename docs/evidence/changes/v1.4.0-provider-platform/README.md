@@ -12,6 +12,8 @@
 - [Threat model](threat-model.md)
 - [Privacy review](privacy-review.md)
 - [Architecture decision](adr.md)
+- [Push readiness scorecard](scorecard.md)
+- [Machine-readable scorecard](scorecard.json)
 
 ## Traceability
 
@@ -20,4 +22,4 @@
 | `provider-adapter-contract` | Provider adapter and service modules | Provider contract and profile schemas | Shared adapter, fixture, CLI, and migration suites | Provider reference and CLI guide | Pending implementation results |
 | `provider-resilience-compatibility` | Invocation coordinator and registry | Compatibility and registry schemas | Retry, cancellation, fallback, budget, freshness, and recovery suites | Operations and compatibility guides | Pending implementation results |
 
-No future result is claimed by this directory. Evidence is added only after the corresponding command passes.
+No future result is claimed by this directory. Local push evidence is retained only after the corresponding command passes; hosted, live-account, RC, and release results remain pending.

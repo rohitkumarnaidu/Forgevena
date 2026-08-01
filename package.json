@@ -79,6 +79,7 @@
     "governance:releases:write": "node ./scripts/validate-release-retrospectives.js --write",
     "release:assets": "node ./scripts/generate-distribution.js",
     "benchmark": "node ./scripts/benchmark.js",
+    "providers:verify": "node -e \"import('./src/provider-compatibility.js').then(async ({verifyProviderCompatibility}) => { const result = await verifyProviderCompatibility(process.cwd()); console.log(JSON.stringify(result, null, 2)); if (!result.valid) process.exitCode = 1; })\"",
     "build:standalone": "node ./scripts/build-standalone.js",
     "prepack": "npm test && npm run release:verify"
   },

@@ -27,6 +27,8 @@ Each automated GitHub Release also includes `RELEASE_VERIFICATION.md` and `relea
 
 The release workflow also generates `documentation-evidence/`, validates its manifest and checksums, and appends its synchronization decision to release notes. Tier 2, Tier 3, migration, security, trust-boundary, breaking, and release changes retain the same evidence under `docs/evidence/changes/<change-id>/` before promotion.
 
+Provider releases additionally require dated compatibility evidence for every stable support claim, credential-gated and consent-gated smoke tests, malformed-stream and fallback-denial evidence, registry migration and rollback exercises, and proof that restricted provider content is absent from retained artifacts. Offline fixtures may satisfy development gates but cannot independently satisfy stable certification.
+
 ## Distribution channels
 
 Signed tags automatically generate release notes and publish the GitHub Release, npm package, GitHub Package, GHCR image, Docker Hub image, smoke-tested standalone executables, distribution manifest, checksums, and supply-chain evidence through protected GitHub Actions. Winget, Chocolatey, and Homebrew remain external review processes that consume the immutable release assets.

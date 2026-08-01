@@ -51,7 +51,7 @@ function validatePolicy(policy) {
     if (!Number.isInteger(Number(policy[field])) || Number(policy[field]) <= 0) throw new Error(`${field} must be a positive integer.`);
     policy[field] = Number(policy[field]);
   }
-  if (!Number.isInteger(Number(policy.retries)) || Number(policy.retries) < 0 || Number(policy.retries) > 2) throw new Error("retries must be an integer between 0 and 2.");
+  if (!Number.isInteger(Number(policy.retries)) || Number(policy.retries) < 0 || Number(policy.retries) > 3) throw new Error("retries must be an integer between 0 and 3.");
   policy.retries = Number(policy.retries);
   if (policy.maxAttempts > 3) throw new Error("maxAttempts cannot exceed 3.");
   policy.requireCurrentCompatibility = policy.requireCurrentCompatibility === true || policy.requireCurrentCompatibility === "true";

@@ -5,6 +5,7 @@ import { PROVIDER_DEFINITIONS, providerDefinition, providerRuntimeStatus } from 
 import { configureCredential, readCredential } from "./credentials.js";
 import { readStateDocument, updateStateDocument } from "./state-documents.js";
 import { ProviderRegistry, profileFromDefinition } from "./provider-registry.js";
+import { readProviderPolicy } from "./provider-policy.js";
 
 const providerMetadata = {
   claude: { host: "Claude Code or Anthropic API", mcp: "Configure MCP through the selected host after reviewing its permissions." },
@@ -76,6 +77,9 @@ export async function providerStatus(root, name) {
     const runtime = await providerRuntimeStatus(root, providerName);
     const profilePath = path.join(root, ".ai-workspace", "providers", `${providerName}.json`);
     const compatibility = await registry.compatibility(providerName);
+    const policy = await readProviderPolicy(root, providerName);
+    const usage = policy.usage;
+    const authentication = definition.environmentVariable ? (Boolean(await readCredential(root, definition.environmentVariable)) ? "ready" : "not-configured") : definition.kind === "local-model" ? "not-required" : runtime.executableAvailable ? "host-available" : "host-unavailable";
     return {
       provider: providerName,
       profile: await exists(profilePath),
@@ -85,6 +89,13 @@ export async function providerStatus(root, name) {
       storesSecrets: false,
       runtime,
       compatibility,
+      health: {
+        authentication,
+        discovery: definition.capabilities.includes("model-discovery") ? (runtime.healthy ? "healthy" : "unavailable") : "not-supported",
+        invocation: runtime.healthy === false || runtime.executableAvailable === false ? "unavailable" : "not-tested",
+        rateLimit: policy.mode === "budgeted" && usage.requests >= policy.monthlyRequestLimit ? "local-budget-exhausted" : "within-local-budget",
+        compatibility: compatibility.freshness,
+      },
     };
   }));
 }

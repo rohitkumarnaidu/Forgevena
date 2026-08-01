@@ -26,3 +26,7 @@ Never commit `.env`, `.credentials/`, or `.ai-workspace/local-secrets/`. Product
 ## Incident response
 
 If a credential may be exposed: revoke it at the provider, remove local state, rotate it with masked input, verify access, inspect redacted logs, and follow [Security response](../SECURITY_RESPONSE.md).
+
+## Provider invocation
+
+Prompts, responses, tool payloads, credentials, authorization headers, and raw provider payloads are restricted data. Provider invocation requires an explicit preview and transmission consent. Adapters return allowlisted metadata and normalized errors only; logs, diagnostics, compatibility fixtures, registries, and retained evidence must not contain restricted content. Automatic retry is limited to read-only or explicitly idempotent requests, and fallback stops on capability, trust, privacy, region, budget, or committed-tool-effect mismatches.

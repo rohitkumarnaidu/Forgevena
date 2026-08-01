@@ -12,7 +12,7 @@ export async function configureProjectProviders(root, updates, { dryRun = true }
   const next = { ...current, ...clean(updates) };
   for (const name of [next.defaultProvider, next.fallbackProvider, next.embeddingProvider, ...next.priority].filter(Boolean)) providerDefinition(name);
   if (!(Number(next.temperature) >= 0 && Number(next.temperature) <= 2)) throw new Error("Temperature must be between 0 and 2.");
-  if (!(Number(next.maxOutputTokens) > 0) || !(Number(next.retries) >= 0) || Number(next.retries) > 2 || !(Number(next.timeoutMs) > 0) || !(Number(next.maxAttempts) > 0) || Number(next.maxAttempts) > 3) throw new Error("Token, retry, timeout, and attempt values must be within governed limits.");
+  if (!(Number(next.maxOutputTokens) > 0) || !(Number(next.retries) >= 0) || Number(next.retries) > 3 || !(Number(next.timeoutMs) > 0) || !(Number(next.maxAttempts) > 0) || Number(next.maxAttempts) > 3) throw new Error("Token, retry, timeout, and attempt values must be positive limits within governed maximums.");
   if (next.maxTotalTokens !== null && !(Number(next.maxTotalTokens) > 0)) throw new Error("maxTotalTokens must be null or a positive number.");
   if (next.maxEstimatedCost !== null && !(Number(next.maxEstimatedCost) >= 0)) throw new Error("maxEstimatedCost must be null or a non-negative number.");
   next.requireCurrentCompatibility = next.requireCurrentCompatibility === true || next.requireCurrentCompatibility === "true";

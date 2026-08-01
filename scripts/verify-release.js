@@ -6,10 +6,11 @@ import { verifySupplyChainReadiness } from "../src/supply-chain.js";
 import { verifyCanonicalDocumentation } from "../src/documentation-generator.js";
 import { renderReleaseRetrospective, validateReleaseRetrospectives } from "../src/release-retrospective.js";
 import { generateVersionDocumentation } from "../src/version-documentation.js";
+import { verifyProviderCompatibility } from "../src/provider-compatibility.js";
 
 const root = process.cwd();
-const [release, supplyChain, documentation, retrospective, versionDocumentation] = await Promise.all([verifyReleasePackage(root), verifySupplyChainReadiness(root), verifyCanonicalDocumentation(root), verifyRetrospectives(root), generateVersionDocumentation(root)]);
-const result = { valid: release.valid && supplyChain.valid && documentation.valid && retrospective.valid && versionDocumentation.valid, release, supplyChain, documentation, retrospective, versionDocumentation };
+const [release, supplyChain, documentation, retrospective, versionDocumentation, providerCompatibility] = await Promise.all([verifyReleasePackage(root), verifySupplyChainReadiness(root), verifyCanonicalDocumentation(root), verifyRetrospectives(root), generateVersionDocumentation(root), verifyProviderCompatibility(root)]);
+const result = { valid: release.valid && supplyChain.valid && documentation.valid && retrospective.valid && versionDocumentation.valid && providerCompatibility.valid, release, supplyChain, documentation, retrospective, versionDocumentation, providerCompatibility };
 console.log(JSON.stringify(result, null, 2));
 if (!result.valid) process.exitCode = 1;
 

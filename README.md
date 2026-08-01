@@ -35,7 +35,7 @@ Modern engineering teams repeatedly solve the same setup, governance, integratio
 - **Enterprise bootstrap:** React, Next.js, FastAPI, Express, Python, Flutter, AI agent, RAG, full-stack AI, microservices, library, CLI, blank, and enterprise templates.
 - **Existing-project safety:** preview-first initialization that skips every existing file and protects application directories.
 - **Governed integrations:** OpenSpec, SkillOpt, gstack, design.md, claude-mem, GitNexus, Understand Anything, MCP servers, and declarative plugins.
-- **Provider controls:** OpenAI, Anthropic, Gemini, OpenRouter, Ollama, Codex, Claude, Cursor, and Windsurf profiles with secret-reference-only tracked configuration.
+- **Provider controls:** OpenAI, Anthropic/Claude, Gemini, OpenRouter, and Ollama use the preview `ProviderAdapter v1` contract with secret-reference-only configuration, explicit transmission consent, compatibility evidence, ordered streaming, and bounded resilience. Codex, Cursor, and Windsurf remain compatibility-only agent hosts.
 - **Cloud preparation:** Render, Railway, Vercel, AWS, Azure, and Google Cloud preflight plans, validation, dry runs, health checks, and rollback guidance.
 - **Release engineering:** signed-tag automation for changelog notes, GitHub Releases, npm, GitHub Packages, GHCR, Docker Hub, checksums, SBOMs, provenance, and package-manager bundles.
 - **Certified reliability:** checksummed state, transaction recovery, encrypted vault migration, 32-writer concurrency, 1,000 corruption cases, mutation testing, and enforced performance budgets.

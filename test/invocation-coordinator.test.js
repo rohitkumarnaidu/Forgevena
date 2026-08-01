@@ -22,6 +22,7 @@ test("invocation coordinator applies bounded retries within one operation", asyn
     const result = await coordinator.invoke("openai", { prompt: "hello", retries: 1, idempotency: "read-only" });
     assert.equal(result.attempts, 2);
     assert.equal(calls[0].request.operationId, calls[1].request.operationId);
+    assert.equal(result.policyResult.approved, true);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
@@ -54,5 +55,25 @@ test("invocation coordinator enforces response and compatibility budgets", async
     });
     await assert.rejects(() => coordinator.invoke("openai", { prompt: "hello", retries: 0, requireCurrentCompatibility: true, budget: { maxAttempts: 1, maxTotalTokens: 10 } }), (error) => error.code === "budget_exhausted");
     assert.deepEqual(registryCalls, [["openai", { requireCurrent: true }]]);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("invocation coordinator cancels active streams", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "coordinator-stream-cancel-"));
+  try {
+    const coordinator = new InvocationCoordinator(root, { adapterFactory: () => ({
+      name: "openai",
+      supports: () => true,
+      stream: async function* (request, options) {
+        yield { type: "start", operationId: request.operationId, sequence: 0 };
+        if (!options.signal.aborted) await new Promise((resolve) => options.signal.addEventListener("abort", resolve, { once: true }));
+        yield { type: "error", operationId: request.operationId, sequence: 1, error: { code: "cancellation" } };
+      },
+    }) });
+    const iterator = coordinator.stream("openai", { prompt: "hello", operationId: "coordinator-stream" });
+    assert.equal((await iterator.next()).value.type, "start");
+    assert.deepEqual(coordinator.cancel("coordinator-stream"), { operationId: "coordinator-stream", cancelled: true });
+    assert.equal((await iterator.next()).value.error.code, "cancellation");
+    assert.equal((await iterator.next()).done, true);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
