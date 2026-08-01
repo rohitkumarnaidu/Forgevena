@@ -6,31 +6,31 @@
 
 | Classification | Documents |
 |---|---:|
-| active-guide | 123 |
+| active-guide | 127 |
 | canonical-architecture | 11 |
 | canonical-policy | 6 |
-| generated-reference | 25 |
-| governance-evidence | 53 |
+| generated-reference | 26 |
+| governance-evidence | 128 |
 | historical-record | 87 |
 | operational-runbook | 2 |
-| product-strategy | 205 |
+| product-strategy | 221 |
 
 ## Persona Coverage
 
 | Persona | Documents |
 |---|---:|
-| users | 124 |
+| users | 128 |
 | developers | 90 |
-| maintainers | 512 |
-| enterprise-reviewers | 103 |
-| ai-coding-agents | 425 |
+| maintainers | 608 |
+| enterprise-reviewers | 169 |
+| ai-coding-agents | 521 |
 
 ## Content-Type Coverage
 
 | Type | Documents |
 |---|---:|
-| evidence | 140 |
-| explanation | 251 |
+| evidence | 215 |
+| explanation | 272 |
 | how-to | 33 |
 | reference | 85 |
 | tutorial | 3 |

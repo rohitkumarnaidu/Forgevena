@@ -1,0 +1,265 @@
+{
+  "schemaVersion": 2,
+  "changeId": "three-version-readiness-audit",
+  "title": "Three-Version Implementation Readiness Audit",
+  "owner": "Platform Architecture and Documentation Governance",
+  "generatedAt": "2026-07-29T19:24:29.576Z",
+  "checkpoint": "merge",
+  "comparison": {
+    "base": null,
+    "head": null
+  },
+  "changedFiles": [
+    "docs/evidence/changes/three-version-readiness-audit/documentation-impact.json",
+    "docs/evidence/changes/three-version-readiness-audit/documentation-impact.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-coverage.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-impact.json",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-impact.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-quality.json",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-synchronization.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/evidence-manifest.json",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/migration-impact.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/missing-documentation.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/release-documentation-summary.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/repository-health.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/updated-documents.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/version-history-impact.md",
+    "docs/evidence/changes/version-readiness-audit-v1.4.0/audit.json",
+    "docs/evidence/changes/version-readiness-audit-v1.4.0/audit.md",
+    "docs/evidence/changes/version-readiness-audit-v1.5.0/audit.json",
+    "docs/evidence/changes/version-readiness-audit-v1.5.0/audit.md",
+    "docs/evidence/changes/version-readiness-audit-v3.0.0/audit.json",
+    "docs/evidence/changes/version-readiness-audit-v3.0.0/audit.md",
+    "docs/reference/generated/ai-documentation-index.json",
+    "docs/reference/generated/documentation-catalog.json",
+    "docs/reference/generated/documentation-coverage-matrix.md",
+    "docs/reference/generated/documentation-health.json",
+    "docs/reference/generated/documentation-health.md",
+    "docs/reference/generated/manifest.json",
+    "docs/reference/schemas/version-implementation-readiness-audit.schema.json",
+    "docs/reports/VERSION_IMPLEMENTATION_READINESS_COMPARISON.md",
+    "docs/schemas/index.md",
+    "package.json",
+    "scripts/validate-docs.js",
+    "scripts/version-readiness-audits.js",
+    "src/governance-validation.js",
+    "src/version-readiness-audit.js",
+    "test/governance-validation.test.js",
+    "test/version-readiness-audit.test.js",
+    "website/mkdocs.yml"
+  ],
+  "changeProfile": "implementation",
+  "affectedComponents": [
+    "api-and-contracts",
+    "governance-and-policy",
+    "public-contract"
+  ],
+  "implementationFiles": [
+    "package.json",
+    "scripts/validate-docs.js",
+    "scripts/version-readiness-audits.js",
+    "src/governance-validation.js",
+    "src/version-readiness-audit.js"
+  ],
+  "documentationFiles": [
+    "docs/evidence/changes/three-version-readiness-audit/documentation-impact.json",
+    "docs/evidence/changes/three-version-readiness-audit/documentation-impact.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-coverage.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-impact.json",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-impact.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-quality.json",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-synchronization.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/evidence-manifest.json",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/migration-impact.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/missing-documentation.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/release-documentation-summary.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/repository-health.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/updated-documents.md",
+    "docs/evidence/changes/three-version-readiness-audit/documentation/version-history-impact.md",
+    "docs/evidence/changes/version-readiness-audit-v1.4.0/audit.json",
+    "docs/evidence/changes/version-readiness-audit-v1.4.0/audit.md",
+    "docs/evidence/changes/version-readiness-audit-v1.5.0/audit.json",
+    "docs/evidence/changes/version-readiness-audit-v1.5.0/audit.md",
+    "docs/evidence/changes/version-readiness-audit-v3.0.0/audit.json",
+    "docs/evidence/changes/version-readiness-audit-v3.0.0/audit.md",
+    "docs/reference/generated/ai-documentation-index.json",
+    "docs/reference/generated/documentation-catalog.json",
+    "docs/reference/generated/documentation-coverage-matrix.md",
+    "docs/reference/generated/documentation-health.json",
+    "docs/reference/generated/documentation-health.md",
+    "docs/reference/generated/manifest.json",
+    "docs/reference/schemas/version-implementation-readiness-audit.schema.json",
+    "docs/reports/VERSION_IMPLEMENTATION_READINESS_COMPARISON.md",
+    "docs/schemas/index.md",
+    "website/mkdocs.yml"
+  ],
+  "testFiles": [
+    "test/governance-validation.test.js",
+    "test/version-readiness-audit.test.js"
+  ],
+  "requirements": [
+    {
+      "id": "constitutional-alignment",
+      "component": "governance-and-policy",
+      "criticality": "critical",
+      "reason": "governance-and-policy changes require synchronized constitutional alignment.",
+      "candidateDocuments": [
+        "docs/strategy/PLATFORM_CONSTITUTION.md"
+      ],
+      "matchedDocuments": [],
+      "status": "not-applicable",
+      "mandatory": true,
+      "rationale": "The audit preserves every constitutional invariant and changes no product authority or runtime behavior."
+    },
+    {
+      "id": "contract-reference",
+      "component": "api-and-contracts",
+      "criticality": "critical",
+      "reason": "api-and-contracts changes require synchronized contract reference.",
+      "candidateDocuments": [
+        "docs/api/",
+        "docs/schemas/index.md",
+        "docs/reference/generated/"
+      ],
+      "matchedDocuments": [
+        "docs/reference/generated/ai-documentation-index.json",
+        "docs/reference/generated/documentation-catalog.json",
+        "docs/reference/generated/documentation-coverage-matrix.md",
+        "docs/reference/generated/documentation-health.json",
+        "docs/reference/generated/documentation-health.md",
+        "docs/reference/generated/manifest.json",
+        "docs/schemas/index.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "documentation-governance",
+      "component": "governance-and-policy",
+      "criticality": "critical",
+      "reason": "governance-and-policy changes require synchronized documentation governance.",
+      "candidateDocuments": [
+        "docs/governance/"
+      ],
+      "matchedDocuments": [],
+      "status": "not-applicable",
+      "mandatory": true,
+      "rationale": "Existing documentation governance already requires retained machine-readable evidence; this change implements that requirement without changing the policy."
+    },
+    {
+      "id": "engineering-governance",
+      "component": "governance-and-policy",
+      "criticality": "critical",
+      "reason": "governance-and-policy changes require synchronized engineering governance.",
+      "candidateDocuments": [
+        "docs/ENGINEERING_GOVERNANCE.md"
+      ],
+      "matchedDocuments": [],
+      "status": "not-applicable",
+      "mandatory": true,
+      "rationale": "No readiness threshold, approval rule, roadmap order, or engineering governance requirement changes."
+    },
+    {
+      "id": "implementation-documentation-coupling",
+      "component": "cross-cutting",
+      "criticality": "critical",
+      "reason": "Implementation changes require documentation in the same change.",
+      "candidateDocuments": [
+        "docs/",
+        "README.md",
+        "CHANGELOG.md",
+        "SECURITY.md",
+        "SUPPORTED_VERSIONS.md",
+        "CONTRIBUTING.md",
+        "GOVERNANCE.md",
+        "ROADMAP.md",
+        "RELEASE.md",
+        "AGENTS.md"
+      ],
+      "matchedDocuments": [
+        "docs/evidence/changes/three-version-readiness-audit/documentation-impact.json",
+        "docs/evidence/changes/three-version-readiness-audit/documentation-impact.md",
+        "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-coverage.md",
+        "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-impact.json",
+        "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-impact.md",
+        "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-quality.json",
+        "docs/evidence/changes/three-version-readiness-audit/documentation/documentation-synchronization.md",
+        "docs/evidence/changes/three-version-readiness-audit/documentation/evidence-manifest.json",
+        "docs/evidence/changes/three-version-readiness-audit/documentation/migration-impact.md",
+        "docs/evidence/changes/three-version-readiness-audit/documentation/missing-documentation.md",
+        "docs/evidence/changes/three-version-readiness-audit/documentation/release-documentation-summary.md",
+        "docs/evidence/changes/three-version-readiness-audit/documentation/repository-health.md",
+        "docs/evidence/changes/three-version-readiness-audit/documentation/updated-documents.md",
+        "docs/evidence/changes/three-version-readiness-audit/documentation/version-history-impact.md",
+        "docs/evidence/changes/version-readiness-audit-v1.4.0/audit.json",
+        "docs/evidence/changes/version-readiness-audit-v1.4.0/audit.md",
+        "docs/evidence/changes/version-readiness-audit-v1.5.0/audit.json",
+        "docs/evidence/changes/version-readiness-audit-v1.5.0/audit.md",
+        "docs/evidence/changes/version-readiness-audit-v3.0.0/audit.json",
+        "docs/evidence/changes/version-readiness-audit-v3.0.0/audit.md",
+        "docs/reference/generated/ai-documentation-index.json",
+        "docs/reference/generated/documentation-catalog.json",
+        "docs/reference/generated/documentation-coverage-matrix.md",
+        "docs/reference/generated/documentation-health.json",
+        "docs/reference/generated/documentation-health.md",
+        "docs/reference/generated/manifest.json",
+        "docs/reference/schemas/version-implementation-readiness-audit.schema.json",
+        "docs/reports/VERSION_IMPLEMENTATION_READINESS_COMPARISON.md",
+        "docs/schemas/index.md",
+        "website/mkdocs.yml"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "implementation-test-coupling",
+      "component": "cross-cutting",
+      "criticality": "important",
+      "reason": "Implementation changes require executable validation or a governed not-applicable rationale.",
+      "candidateDocuments": [
+        "test/"
+      ],
+      "matchedDocuments": [
+        "test/governance-validation.test.js",
+        "test/version-readiness-audit.test.js"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "public-generated-reference",
+      "component": "public-contract",
+      "criticality": "important",
+      "reason": "public-contract changes require synchronized public generated reference.",
+      "candidateDocuments": [
+        "docs/reference/generated/"
+      ],
+      "matchedDocuments": [
+        "docs/reference/generated/ai-documentation-index.json",
+        "docs/reference/generated/documentation-catalog.json",
+        "docs/reference/generated/documentation-coverage-matrix.md",
+        "docs/reference/generated/documentation-health.json",
+        "docs/reference/generated/documentation-health.md",
+        "docs/reference/generated/manifest.json"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "public-product-guidance",
+      "component": "public-contract",
+      "criticality": "important",
+      "reason": "public-contract changes require synchronized public product guidance.",
+      "candidateDocuments": [
+        "README.md",
+        "docs/ROADMAP.md"
+      ],
+      "matchedDocuments": [],
+      "status": "not-applicable",
+      "mandatory": true,
+      "rationale": "The audit introduces no user-facing product capability, command, release promise, or roadmap scope."
+    }
+  ],
+  "blockers": [],
+  "decision": "ready"
+}

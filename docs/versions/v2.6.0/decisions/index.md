@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- How is recommendation quality measured without surveillance?
-- Which host capabilities can be certified exact?
+- None.
 
 ## Decision Expiry
 

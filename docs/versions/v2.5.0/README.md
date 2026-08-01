@@ -24,6 +24,7 @@ Manage private catalogs, approvals, shared capabilities, compliance packs, contr
 
 - [Product brief](product/brief.md)
 - [Architecture delta](architecture/delta.md)
+- [Normative implementation contract](implementation-contract.md)
 - [Capabilities](capabilities/index.md)
 - [Interfaces and contracts](interfaces/contracts.md)
 - [Assurance plan](assurance/assurance-plan.md)

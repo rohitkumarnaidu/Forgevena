@@ -34,10 +34,8 @@
     "Registries expose signed immutable metadata.",
     "Regional and private deployments may impose residency constraints."
   ],
-  "openQuestions": [
-    "How are cross-registry namespaces reconciled?",
-    "What transparency guarantees apply to private registries?"
-  ],
+  "openQuestions": [],
+  "implementationContract": "docs/versions/v2.2.0/implementation-contract.md",
   "features": [
     {
       "id": "federated-registry-sources",

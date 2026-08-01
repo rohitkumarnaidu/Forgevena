@@ -34,10 +34,8 @@
     "Symbol and relationship metadata supports useful planning without storing raw content.",
     "Live provider evidence is available before GA support claims."
   ],
-  "openQuestions": [
-    "Which evidence supports an explainable workspace health score?",
-    "How should semantic embeddings be deleted and verified?"
-  ],
+  "openQuestions": [],
+  "implementationContract": "docs/versions/v1.10.0/implementation-contract.md",
   "features": [
     {
       "id": "local-project-intelligence",

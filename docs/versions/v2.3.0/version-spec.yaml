@@ -34,10 +34,8 @@
     "ForgeRegistry is the sole package authority.",
     "Forgevena Core retains runtime and policy authority."
   ],
-  "openQuestions": [
-    "How are review abuse and publisher disputes appealed?",
-    "Which installation scopes can inherit or pin versions?"
-  ],
+  "openQuestions": [],
+  "implementationContract": "docs/versions/v2.3.0/implementation-contract.md",
   "features": [
     {
       "id": "forgehub-lifecycle-experience",

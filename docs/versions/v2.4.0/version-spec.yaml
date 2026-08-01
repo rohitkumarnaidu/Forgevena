@@ -34,10 +34,8 @@
     "Publisher identity may use multiple approved verification methods.",
     "Commerce metadata is license-ready but transactions remain deferred."
   ],
-  "openQuestions": [
-    "Which identity proof is required for official publishers?",
-    "How are abandoned critical packages escrowed or transferred?"
-  ],
+  "openQuestions": [],
+  "implementationContract": "docs/versions/v2.4.0/implementation-contract.md",
   "features": [
     {
       "id": "capability-studio-sdk",

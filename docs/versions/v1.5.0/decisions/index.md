@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- Which OS sandbox controls are required beyond process isolation?
-- Which host translations can be exact rather than degraded?
+- None.
 
 ## Decision Expiry
 

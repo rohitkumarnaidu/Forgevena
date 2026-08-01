@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- Which workflow state is portable across hosts?
-- How are provider nondeterminism and model drift represented?
+- None.
 
 ## Decision Expiry
 

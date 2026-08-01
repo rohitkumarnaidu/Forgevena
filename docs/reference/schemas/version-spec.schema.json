@@ -3,7 +3,7 @@
   "$id": "https://rohitkumarnaidu.github.io/Forgevena/schemas/version-spec.schema.json",
   "title": "Forgevena Version Specification",
   "type": "object",
-  "required": ["version", "title", "outcome", "owner", "roadmapAuthority", "riskTier", "dependsOn", "blocks", "features", "nonGoals", "metrics", "acceptance"],
+  "required": ["version", "title", "outcome", "owner", "roadmapAuthority", "riskTier", "implementationContract", "dependsOn", "blocks", "features", "nonGoals", "metrics", "acceptance"],
   "properties": {
     "version": { "type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$" },
     "title": { "type": "string", "minLength": 1 },
@@ -11,6 +11,7 @@
     "owner": { "type": "string", "minLength": 1 },
     "roadmapAuthority": { "type": "string", "pattern": "^docs/.*\\.md#" },
     "riskTier": { "enum": ["tier-0", "tier-1", "tier-2", "tier-3"] },
+    "implementationContract": { "type": "string", "pattern": "^docs/versions/v[0-9]+\\.[0-9]+\\.[0-9]+/implementation-contract\\.md$" },
     "dependsOn": { "type": "array", "items": { "type": "string" } },
     "blocks": { "type": "array", "items": { "type": "string" } },
     "features": { "type": "array", "minItems": 1, "items": { "$ref": "version-feature.schema.json" } },

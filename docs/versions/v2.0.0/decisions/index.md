@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- Which data classes may synchronize by policy?
-- What consistency model balances offline autonomy and fleet governance?
+- None.
 
 ## Decision Expiry
 

@@ -1,9 +1,11 @@
 import { readFile, readdir, stat, access } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { validateGovernance } from "../src/governance-validation.js";
 import { verifyCanonicalDocumentation } from "../src/documentation-generator.js";
 import { validateDocumentationAssets } from "../src/documentation-assets.js";
 import { generateVersionDocumentation } from "../src/version-documentation.js";
+import { validateVersionReadinessAudits } from "../src/version-readiness-audit.js";
 
 const root = process.cwd();
 const docsRoot = path.join(root, "docs");
@@ -57,7 +59,19 @@ issues.push(...assets.issues.map((issue) => `documentation assets: ${issue}`));
 const versionDocumentation = await generateVersionDocumentation(root);
 issues.push(...versionDocumentation.issues.map((issue) => `version documentation: ${issue}`));
 
-const report = { valid: issues.length === 0, markdownFiles: markdown.length, headings, mermaidBlocks, generated, governance, assets, versionDocumentation, issues };
+const versionReadinessAudits = await validateVersionReadinessAudits(root);
+issues.push(...versionReadinessAudits.issues.map((issue) => `version readiness audit: ${issue}`));
+
+let versionReadinessRemediation = { valid: true };
+try {
+  const output = execFileSync(process.execPath, [path.join(root, "scripts", "version-readiness-remediation.js")], { cwd: root, encoding: "utf8" });
+  versionReadinessRemediation = JSON.parse(output);
+} catch (error) {
+  versionReadinessRemediation = { valid: false, error: error.stderr?.toString().trim() || error.message };
+  issues.push(`version readiness remediation: ${versionReadinessRemediation.error}`);
+}
+
+const report = { valid: issues.length === 0, markdownFiles: markdown.length, headings, mermaidBlocks, generated, governance, assets, versionDocumentation, versionReadinessAudits: { valid: versionReadinessAudits.valid, audits: versionReadinessAudits.audits.length }, versionReadinessRemediation, issues };
 console.log(JSON.stringify(report, null, 2));
 if (issues.length) process.exitCode = 1;
 

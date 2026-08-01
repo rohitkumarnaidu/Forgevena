@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- How are review abuse and publisher disputes appealed?
-- Which installation scopes can inherit or pin versions?
+- None.
 
 ## Decision Expiry
 

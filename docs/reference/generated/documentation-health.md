@@ -3,7 +3,7 @@
 > Generated from the documentation catalog. Do not edit manually.
 
 - Assessed: 2026-07-28
-- Documents: 512
+- Documents: 608
 - Score: **100/100**
 - Decision: **ready**
 

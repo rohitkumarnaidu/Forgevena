@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- How are principal keys recovered or rotated?
-- Which compliance packs remain guidance rather than certification?
+- None.
 
 ## Decision Expiry
 

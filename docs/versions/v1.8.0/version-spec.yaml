@@ -34,10 +34,8 @@
     "Local observability is complete without hosted services.",
     "Evidence metadata is sufficient for routine diagnostics."
   ],
-  "openQuestions": [
-    "Which trace formats are stable public contracts?",
-    "What retention defaults balance diagnosis and privacy?"
-  ],
+  "openQuestions": [],
+  "implementationContract": "docs/versions/v1.8.0/implementation-contract.md",
   "features": [
     {
       "id": "safe-local-observability",

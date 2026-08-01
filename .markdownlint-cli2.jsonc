@@ -8,5 +8,5 @@
     "MD046": false,
     "MD060": false
   },
-  "ignores": ["node_modules/**", "dist/**", ".venv-docs/**", "cache/**"]
+  "ignores": ["node_modules/**", "dist/**", ".venv/**", ".venv-docs/**", ".tmp-mkdocs/**", ".tmp-tests/**", "cache/**"]
 }

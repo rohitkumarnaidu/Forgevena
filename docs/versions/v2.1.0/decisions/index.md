@@ -19,8 +19,7 @@
 
 ## Open Questions
 
-- Which trust roots are built in versus organization-managed?
-- How are namespace ownership disputes resolved?
+- None.
 
 ## Decision Expiry
 
