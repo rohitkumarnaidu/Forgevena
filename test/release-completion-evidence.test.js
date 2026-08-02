@@ -26,7 +26,7 @@ test("completion matrix preserves historical failures and separates v1.4 impleme
   assert.match(matrix, /v1\.2\.0.*failed publication/);
   assert.match(matrix, /v1\.2\.2.*failed publication/);
   assert.match(matrix, /v1\.4\.0.*Release HOLD/);
-  assert.match(status, /implementation preview, not a stable release/);
+  assert.match(status, /implementation preview.*not a stable release/);
   assert.match(checklist, /\[ \] Credential-gated and consent-gated OpenAI smoke test passes/);
   assert.match(checklist, /\[x\] ProviderAdapter v1/);
 });

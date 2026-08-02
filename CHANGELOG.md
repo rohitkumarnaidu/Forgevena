@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Prepare the immutable `v1.4.0-rc.1` prerelease after the provider-platform implementation and post-merge hosted gates passed on Windows, Ubuntu, and macOS.
 - Add the preview `ProviderAdapter v1` platform for OpenAI, Anthropic/Claude, Gemini, OpenRouter, and Ollama with normalized invocation, ordered streaming, bounded retry and fallback, compatibility evidence, registry migration, and restricted-data redaction.
 - Preserve Codex, Cursor, and Windsurf as compatibility-only agent-host integrations; stable provider certification remains blocked on dated, credential-gated live evidence and the complete `v1.4.0` release gate.
 - Make `doctor` strictly read-only by default and persist health or logs only after explicit `--apply` consent.

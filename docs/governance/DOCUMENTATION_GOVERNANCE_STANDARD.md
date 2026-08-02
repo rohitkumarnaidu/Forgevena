@@ -115,6 +115,10 @@ Each planned version has one source record in `docs/versions/version-specificati
 
 Historical tags are represented only by immutable manifests linked to signed tags, release notes, workflows, and retrospective evidence. Current controls are never claimed retroactively.
 
+## Generated Release Identity
+
+Generated public references must identify the source package version from canonical metadata. When that version is a prerelease, the reference must state that it is candidate metadata and must not replace stable installation guidance. Stable-support claims continue to derive from immutable published release evidence, not from a branch version string.
+
 ## Related Documents
 
 - [Documentation Authority Map](DOCUMENTATION_AUTHORITY_MAP.md)

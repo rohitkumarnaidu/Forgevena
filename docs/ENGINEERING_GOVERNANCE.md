@@ -153,3 +153,7 @@ The current release-evidence policy is effective from `v1.3.1`. Every stable rel
 Older releases use `historical-assurance`, `failed-as-recorded`, or `not-certified`. Their gaps feed future rule improvements and regression tests; they do not justify moving tags, rewriting publication history, or fabricating missing evidence.
 
 External standards are tracked through the [Research and Standards Radar](strategy/RESEARCH_AND_STANDARDS_RADAR.md). A mapping is not certification. Certification language requires an approved scope, independent assessment, current evidence, accountable owner, expiry, and explicit maintainer approval.
+
+### Prerelease Identity
+
+An RC version in source metadata authorizes candidate validation only. Generated references must expose that identity reproducibly while public installation guidance continues to name the current stable release. Promotion requires the release checkpoint, immutable signed tag, protected publication, and channel verification; source metadata alone never establishes stable support.

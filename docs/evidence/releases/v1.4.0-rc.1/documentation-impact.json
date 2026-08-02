@@ -1,0 +1,263 @@
+{
+  "schemaVersion": 2,
+  "changeId": "release-v1.4.0-rc.1",
+  "title": "Forgevena v1.4.0-rc.1 preparation",
+  "owner": "release-engineering",
+  "generatedAt": "2026-08-02T04:45:14.960Z",
+  "checkpoint": "release",
+  "comparison": {
+    "base": null,
+    "head": null
+  },
+  "changedFiles": [
+    "CHANGELOG.md",
+    "README.md",
+    "RELEASE.md",
+    "VERSION",
+    "docs/ENGINEERING_GOVERNANCE.md",
+    "docs/ROADMAP.md",
+    "docs/assets/visual-evidence.json",
+    "docs/examples/executable-evidence.json",
+    "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+    "docs/reference/generated/cli.md",
+    "docs/reference/generated/manifest.json",
+    "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+    "docs/release/V1_4_RELEASE_CHECKLIST.md",
+    "docs/strategy/PLATFORM_CONSTITUTION.md",
+    "package-lock.json",
+    "package.json",
+    "src/documentation-generator.js",
+    "test/documentation-generator.test.js",
+    "test/release-completion-evidence.test.js",
+    "test/release.test.js",
+    "test/upgrade.test.js"
+  ],
+  "changeProfile": "implementation",
+  "affectedComponents": [
+    "build-testing-and-dependencies",
+    "governance-and-policy",
+    "open-source-governance",
+    "public-contract",
+    "release-version-and-distribution"
+  ],
+  "implementationFiles": [
+    "package-lock.json",
+    "package.json",
+    "src/documentation-generator.js"
+  ],
+  "documentationFiles": [
+    "CHANGELOG.md",
+    "README.md",
+    "RELEASE.md",
+    "docs/ENGINEERING_GOVERNANCE.md",
+    "docs/ROADMAP.md",
+    "docs/assets/visual-evidence.json",
+    "docs/examples/executable-evidence.json",
+    "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+    "docs/reference/generated/cli.md",
+    "docs/reference/generated/manifest.json",
+    "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+    "docs/release/V1_4_RELEASE_CHECKLIST.md",
+    "docs/strategy/PLATFORM_CONSTITUTION.md"
+  ],
+  "testFiles": [
+    "test/documentation-generator.test.js",
+    "test/release-completion-evidence.test.js",
+    "test/release.test.js",
+    "test/upgrade.test.js"
+  ],
+  "requirements": [
+    {
+      "id": "constitutional-alignment",
+      "component": "governance-and-policy",
+      "criticality": "critical",
+      "reason": "governance-and-policy changes require synchronized constitutional alignment.",
+      "candidateDocuments": [
+        "docs/strategy/PLATFORM_CONSTITUTION.md"
+      ],
+      "matchedDocuments": [
+        "docs/strategy/PLATFORM_CONSTITUTION.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "documentation-governance",
+      "component": "governance-and-policy",
+      "criticality": "critical",
+      "reason": "governance-and-policy changes require synchronized documentation governance.",
+      "candidateDocuments": [
+        "docs/governance/"
+      ],
+      "matchedDocuments": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "engineering-governance",
+      "component": "governance-and-policy",
+      "criticality": "critical",
+      "reason": "governance-and-policy changes require synchronized engineering governance.",
+      "candidateDocuments": [
+        "docs/ENGINEERING_GOVERNANCE.md"
+      ],
+      "matchedDocuments": [
+        "docs/ENGINEERING_GOVERNANCE.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "implementation-documentation-coupling",
+      "component": "cross-cutting",
+      "criticality": "critical",
+      "reason": "Implementation changes require documentation in the same change.",
+      "candidateDocuments": [
+        "docs/",
+        "README.md",
+        "CHANGELOG.md",
+        "SECURITY.md",
+        "SUPPORTED_VERSIONS.md",
+        "CONTRIBUTING.md",
+        "GOVERNANCE.md",
+        "ROADMAP.md",
+        "RELEASE.md",
+        "AGENTS.md"
+      ],
+      "matchedDocuments": [
+        "CHANGELOG.md",
+        "README.md",
+        "RELEASE.md",
+        "docs/ENGINEERING_GOVERNANCE.md",
+        "docs/ROADMAP.md",
+        "docs/assets/visual-evidence.json",
+        "docs/examples/executable-evidence.json",
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md",
+        "docs/reference/generated/cli.md",
+        "docs/reference/generated/manifest.json",
+        "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+        "docs/release/V1_4_RELEASE_CHECKLIST.md",
+        "docs/strategy/PLATFORM_CONSTITUTION.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "implementation-test-coupling",
+      "component": "cross-cutting",
+      "criticality": "important",
+      "reason": "Implementation changes require executable validation or a governed not-applicable rationale.",
+      "candidateDocuments": [
+        "test/"
+      ],
+      "matchedDocuments": [
+        "test/documentation-generator.test.js",
+        "test/release-completion-evidence.test.js",
+        "test/release.test.js",
+        "test/upgrade.test.js"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "open-source-governance",
+      "component": "open-source-governance",
+      "criticality": "important",
+      "reason": "open-source-governance changes require synchronized open source governance.",
+      "candidateDocuments": [
+        "README.md",
+        "CONTRIBUTING.md",
+        "SECURITY.md",
+        "GOVERNANCE.md"
+      ],
+      "matchedDocuments": [
+        "README.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "public-generated-reference",
+      "component": "public-contract",
+      "criticality": "important",
+      "reason": "public-contract changes require synchronized public generated reference.",
+      "candidateDocuments": [
+        "docs/reference/generated/"
+      ],
+      "matchedDocuments": [
+        "docs/reference/generated/cli.md",
+        "docs/reference/generated/manifest.json"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "public-product-guidance",
+      "component": "public-contract",
+      "criticality": "important",
+      "reason": "public-contract changes require synchronized public product guidance.",
+      "candidateDocuments": [
+        "README.md",
+        "docs/ROADMAP.md"
+      ],
+      "matchedDocuments": [
+        "README.md",
+        "docs/ROADMAP.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "release-history",
+      "component": "release-version-and-distribution",
+      "criticality": "critical",
+      "reason": "release-version-and-distribution changes require synchronized release history.",
+      "candidateDocuments": [
+        "CHANGELOG.md",
+        "docs/releases/",
+        "docs/release/RELEASE_HISTORY.md"
+      ],
+      "matchedDocuments": [
+        "CHANGELOG.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "release-operations",
+      "component": "release-version-and-distribution",
+      "criticality": "critical",
+      "reason": "release-version-and-distribution changes require synchronized release operations.",
+      "candidateDocuments": [
+        "RELEASE.md",
+        "docs/release/PACKAGE_PUBLISHING.md",
+        "docs/release/RELEASE_STRATEGY.md"
+      ],
+      "matchedDocuments": [
+        "RELEASE.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "testing-build-guidance",
+      "component": "build-testing-and-dependencies",
+      "criticality": "important",
+      "reason": "build-testing-and-dependencies changes require synchronized testing build guidance.",
+      "candidateDocuments": [
+        "docs/testing/",
+        "docs/release/"
+      ],
+      "matchedDocuments": [
+        "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+        "docs/release/V1_4_RELEASE_CHECKLIST.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    }
+  ],
+  "blockers": [],
+  "decision": "ready"
+}

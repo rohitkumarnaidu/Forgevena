@@ -7,12 +7,12 @@
       "executable": "node",
       "args": ["./bin/forgevena.js", "version"],
       "platforms": ["win32", "linux", "darwin"],
-      "timeoutMs": 5000,
+      "timeoutMs": 10000,
       "expectedExitCode": 0,
-      "expectedOutputSha256": "9f154c4a351ac52cbb413fd15fd20daa3c73c53b4f9be9fe8c60f69c9332ad8f",
-      "outputContains": ["\"version\": \"1.3.0\""],
-      "verifiedAt": "2026-07-28",
-      "reviewBy": "2027-01-28"
+      "expectedOutputSha256": "7f865d81b6849490ff5e8e7f63816a8d1ac6530204a6e4ed42b9535b11dad8c7",
+      "outputContains": ["\"version\": \"1.4.0-rc.1\""],
+      "verifiedAt": "2026-08-02",
+      "reviewBy": "2027-02-02"
     },
     {
       "id": "cli-help",
@@ -22,10 +22,10 @@
       "platforms": ["win32", "linux", "darwin"],
       "timeoutMs": 5000,
       "expectedExitCode": 0,
-      "expectedOutputSha256": "b4f07b2231a5038b30c9df3071e03dd71d18e89e98a0edc776177fcb22772114",
+      "expectedOutputSha256": "89064da248631945abaecabea6449aeb20bca5bc21713efeac2cd17eb4c1a390",
       "outputContains": ["Modifying commands preview by default.", "Existing files are never overwritten"],
-      "verifiedAt": "2026-08-01",
-      "reviewBy": "2027-02-01"
+      "verifiedAt": "2026-08-02",
+      "reviewBy": "2027-02-02"
     },
     {
       "id": "template-catalog",

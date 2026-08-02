@@ -30,6 +30,8 @@ Enterprise project bootstrap, governed AI providers, MCP and plugin controls, se
 
 Modern engineering teams repeatedly solve the same setup, governance, integration, and release problems. Forgevena turns those practices into an additive and auditable developer platform without replacing application code or silently transmitting project data.
 
+**Release status:** `v1.3.0` remains the current stable installation. Repository metadata may identify `v1.4.0-rc.1` while its provider-platform release candidate is validated; prerelease metadata is not a stable-support claim.
+
 ## Features
 
 - **Enterprise bootstrap:** React, Next.js, FastAPI, Express, Python, Flutter, AI agent, RAG, full-stack AI, microservices, library, CLI, blank, and enterprise templates.

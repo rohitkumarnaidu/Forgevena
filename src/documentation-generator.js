@@ -6,6 +6,7 @@ import { listProviderProfiles } from "./providers.js";
 import { listTemplates } from "./template-catalog.js";
 import { listCapabilities } from "./capabilities.js";
 import { documentationGovernanceSources } from "./documentation-catalog.js";
+import { PLATFORM_VERSION } from "./version.js";
 
 const OUTPUT_ROOT = path.join("docs", "reference", "generated");
 const COMMANDS = [
@@ -14,7 +15,7 @@ const COMMANDS = [
 
 export async function documentationSources(root = process.cwd()) {
   return {
-    "cli.md": table("Generated CLI Reference", ["Command", "Purpose"], COMMANDS.map(([command, purpose]) => [`\`${command}\``, command === "doctor" ? "Inspect health read-only; `--apply` records health and audit evidence." : purpose])),
+    "cli.md": `${table("Generated CLI Reference", ["Command", "Purpose"], COMMANDS.map(([command, purpose]) => [`\`${command}\``, command === "doctor" ? "Inspect health read-only; `--apply` records health and audit evidence." : purpose]))}\nSource package version: \`${PLATFORM_VERSION}\`. A prerelease source version is candidate metadata and does not replace the current stable installation guidance.\n`,
     "providers.md": `${table("Generated Provider Reference", ["Provider", "Kind", "Capabilities", "Credential source"], listProviderProfiles().map((provider) => [`\`${provider.name}\``, provider.kind, provider.capabilities.join(", "), provider.environmentVariable ? `\`${provider.environmentVariable}\`` : "host-managed"]))}\nCompatibility fixture checksums use UTF-8 content normalized to LF so evidence remains deterministic across Windows, macOS, and Linux checkouts.\n`,
     "modules.md": table("Generated Module Reference", ["Module", "Lifecycle"], supportedModules().map((module) => [`\`${module}\``, "initialize, install, update, validate, status, remove, rollback"])),
     "templates.md": table("Generated Template Reference", ["Template", "Availability"], listTemplates().map((template) => [`\`${template}\``, "built-in; exportable as package"])),
