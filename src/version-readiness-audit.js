@@ -1,4 +1,5 @@
-import { access, mkdir, readFile, writeFile } from "node:fs/promises";
+import { access, mkdir, open, readFile, rename, rm } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
 import path from "node:path";
 import { FUTURE_VERSIONS, loadVersionDocumentationSources } from "./version-documentation.js";
 
@@ -20,6 +21,7 @@ export const SCORE_CATEGORIES = [
 const SEVERITIES = new Set(["critical", "high", "medium", "low", "opportunity"]);
 const VERDICTS = new Set(["approve", "hold", "reject"]);
 const AGENTS = ["engineeringTeam", "codex", "claudeCode", "cursor", "geminiCli", "futureAiSystems"];
+const generatedWriteQueues = new Map();
 
 export async function bootstrapVersionReadinessAudits(root) {
   const { catalog } = await loadVersionDocumentationSources(root);
@@ -36,7 +38,7 @@ export async function bootstrapVersionReadinessAudits(root) {
         ? { ...current, schemaVersion: 2, inheritedDependencyBlockers: inheritedFrom(predecessor) }
         : createProspectiveVersionReadinessAudit(specification, index, predecessor);
     await mkdir(path.dirname(target), { recursive: true });
-    await writeFile(target, `${JSON.stringify(audit, null, 2)}\n`, "utf8");
+    await writeGeneratedFile(target, `${JSON.stringify(audit, null, 2)}\n`);
     audits.push(audit);
   }
   return audits;
@@ -71,11 +73,53 @@ export async function validateVersionReadinessAudits(root, { versions = AUDITED_
 }
 
 export async function writeVersionReadinessReports(root, audits, { comparison = true } = {}) {
-  for (const audit of audits) await writeFile(path.join(root, auditMarkdownPath(audit.auditedVersion)), renderAuditMarkdown(audit), "utf8");
+  for (const audit of audits) await writeGeneratedFile(path.join(root, auditMarkdownPath(audit.auditedVersion)), renderAuditMarkdown(audit));
   if (!comparison) return;
-  await writeFile(path.join(root, "docs/reports/VERSION_IMPLEMENTATION_READINESS_COMPARISON.md"), renderComparisonMarkdown(audits), "utf8");
-  await writeFile(path.join(root, "docs/reports/VERSION_READINESS_DEPENDENCY_MAP.md"), renderDependencyMapMarkdown(audits), "utf8");
-  await writeFile(path.join(root, "docs/reports/VERSION_READINESS_BLOCKER_OWNERSHIP_MATRIX.md"), renderOwnershipMatrixMarkdown(audits), "utf8");
+  await writeGeneratedFile(path.join(root, "docs/reports/VERSION_IMPLEMENTATION_READINESS_COMPARISON.md"), renderComparisonMarkdown(audits));
+  await writeGeneratedFile(path.join(root, "docs/reports/VERSION_READINESS_DEPENDENCY_MAP.md"), renderDependencyMapMarkdown(audits));
+  await writeGeneratedFile(path.join(root, "docs/reports/VERSION_READINESS_BLOCKER_OWNERSHIP_MATRIX.md"), renderOwnershipMatrixMarkdown(audits));
+}
+
+export async function writeGeneratedFile(target, contents) {
+  const previous = generatedWriteQueues.get(target) ?? Promise.resolve();
+  const operation = previous.catch(() => {}).then(() => writeGeneratedFileAtomically(target, contents));
+  generatedWriteQueues.set(target, operation);
+  try {
+    await operation;
+  } finally {
+    if (generatedWriteQueues.get(target) === operation) generatedWriteQueues.delete(target);
+  }
+}
+
+async function writeGeneratedFileAtomically(target, contents) {
+  await mkdir(path.dirname(target), { recursive: true });
+  const temporary = `${target}.${randomUUID()}.tmp`;
+  let handle;
+  try {
+    handle = await open(temporary, "wx", 0o600);
+    await handle.writeFile(contents, "utf8");
+    await handle.sync();
+    await handle.close();
+    handle = undefined;
+    await replaceGeneratedFile(temporary, target);
+  } catch (error) {
+    if (handle) await handle.close().catch(() => {});
+    await rm(temporary, { force: true }).catch(() => {});
+    throw error;
+  }
+}
+
+async function replaceGeneratedFile(temporary, target) {
+  const retryableCodes = new Set(["EACCES", "EBUSY", "EPERM"]);
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    try {
+      await rename(temporary, target);
+      return;
+    } catch (error) {
+      if (!retryableCodes.has(error?.code) || attempt === 7) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 25 * (attempt + 1)));
+    }
+  }
 }
 
 function renderAuditMarkdownRaw(audit) {
@@ -348,9 +392,9 @@ async function preserveBaselineAudit(root, version, audit) {
   const baselineMarkdown = path.join(directory, "baseline-hold-audit.md");
   try { await access(baselineJson); }
   catch {
-    await writeFile(baselineJson, `${JSON.stringify(audit, null, 2)}\n`, "utf8");
+    await writeGeneratedFile(baselineJson, `${JSON.stringify(audit, null, 2)}\n`);
     const currentMarkdown = await readFile(path.join(directory, "audit.md"), "utf8").catch(() => renderAuditMarkdown(audit));
-    await writeFile(baselineMarkdown, currentMarkdown, "utf8");
+    await writeGeneratedFile(baselineMarkdown, currentMarkdown);
   }
 }
 

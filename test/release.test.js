@@ -93,14 +93,20 @@ test("documentation CI checks the complete canonical documentation set", async (
 
 test("public entry points reference the current stable release", async () => {
   const packageJson = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
+  const releases = await readFile(new URL("../docs/releases/index.md", import.meta.url), "utf8");
+  const stableVersion = releases.match(/^- \[(\d+\.\d+\.\d+)\]/m)?.[1];
+  assert.ok(stableVersion, "release index must identify the current stable version");
   const readme = await readFile(new URL("../README.md", import.meta.url), "utf8");
   const homepage = await readFile(new URL("../docs/index.md", import.meta.url), "utf8");
   const gettingStarted = await readFile(new URL("../docs/getting-started/index.md", import.meta.url), "utf8");
   const installation = await readFile(new URL("../docs/installation/index.md", import.meta.url), "utf8");
   const docsReadme = await readFile(new URL("../docs/README.md", import.meta.url), "utf8");
   for (const contents of [readme, homepage, gettingStarted, installation, docsReadme]) {
-    assert.match(contents, new RegExp(packageJson.version.replaceAll(".", "\\.")));
+    assert.match(contents, new RegExp(stableVersion.replaceAll(".", "\\.")));
     assert.doesNotMatch(contents, /npm install --global forgevena@1\.[01]\.0/);
+  }
+  if (packageJson.version.includes("-")) {
+    assert.notEqual(packageJson.version, stableVersion);
   }
 });
 

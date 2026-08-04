@@ -1,6 +1,6 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { AUDITED_VERSIONS, normalizeGeneratedMarkdown } from "../src/version-readiness-audit.js";
+import { AUDITED_VERSIONS, normalizeGeneratedMarkdown, writeGeneratedFile } from "../src/version-readiness-audit.js";
 
 const requestedVersion = valueAfter("--version");
 if (requestedVersion && !AUDITED_VERSIONS.includes(requestedVersion)) throw new Error(`Unknown future version ${requestedVersion}.`);
@@ -14,8 +14,7 @@ for (const version of versions) {
   const plan = renderVersionPlan(audit);
   const target = path.join(directory, "remediation-plan.md");
   if (apply) {
-    await mkdir(directory, { recursive: true });
-    await writeFile(target, plan, "utf8");
+    await writeGeneratedFile(target, plan);
   } else if (normalizeGeneratedMarkdown(await readFile(target, "utf8").catch(() => "")) !== normalizeGeneratedMarkdown(plan)) {
     throw new Error(`${target} is missing or stale; run with --apply`);
   }
@@ -26,7 +25,7 @@ const writeComparison = !requestedVersion;
 if (writeComparison) {
   const comparisonTarget = path.join("docs", "reports", "VERSION_IMPLEMENTATION_READINESS_REMEDIATION_PLAN.md");
   const comparison = renderCrossVersionPlan(audits);
-  if (apply) await writeFile(comparisonTarget, comparison, "utf8");
+  if (apply) await writeGeneratedFile(comparisonTarget, comparison);
   else if (normalizeGeneratedMarkdown(await readFile(comparisonTarget, "utf8").catch(() => "")) !== normalizeGeneratedMarkdown(comparison)) throw new Error(`${comparisonTarget} is missing or stale; run with --apply`);
 }
 

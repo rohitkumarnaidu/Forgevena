@@ -6,4 +6,4 @@ Before promotion, complete the [Release Checklist](docs/RELEASE_CHECKLIST.md), v
 
 Published tags and release evidence are immutable. Never retag a release. Any code, metadata, documentation, package, or artifact correction requires the next semantic version.
 
-The `v1.4.0` provider platform remains unreleased while its Tier-3 change is at the push checkpoint. A release candidate requires hosted cross-platform, Docker, migration, compatibility, and credential-gated live-provider evidence; local offline fixtures alone cannot promote provider support to stable.
+The `v1.4.0` provider platform remains unreleased after passing its Tier-3 merge checkpoint. Repository version `1.4.0-rc.1` prepares immutable candidate validation; it does not make `v1.4.0` stable. Candidate promotion requires release-checkpoint evidence, cross-platform installation and migration rehearsals, compatibility evidence, and protected signed-tag publication. Credential-gated live-provider evidence is mandatory before stable provider certification; local offline fixtures alone cannot satisfy that boundary.
