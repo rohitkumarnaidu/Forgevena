@@ -9,7 +9,7 @@ import {
   REQUIRED_IMPLEMENTATION_CONTRACT_SECTIONS, assessImplementationContract, normalizeGeneratedMarkdown,
   renderAuditMarkdown, renderComparisonMarkdown,
   renderDependencyMapMarkdown, renderOwnershipMatrixMarkdown, validateVersionReadinessAudits,
-  validateVersionReadinessAuditRecord, writeVersionReadinessReports,
+  validateVersionReadinessAuditRecord, writeGeneratedFile, writeVersionReadinessReports,
 } from "../src/version-readiness-audit.js";
 import { loadVersionDocumentationSources } from "../src/version-documentation.js";
 
@@ -60,6 +60,23 @@ test("generated audit verification accepts Windows line endings", async () => {
     const result = JSON.parse(execFileSync(process.execPath, [script, "--all", "--verify", "--comparison"], { cwd: temporaryRoot, encoding: "utf8" }));
     assert.equal(result.valid, true);
     assert.equal(result.versions, 16);
+  } finally {
+    await rm(temporaryRoot, { recursive: true, force: true });
+  }
+});
+
+test("atomic generated evidence writes never expose truncated JSON to concurrent readers", async () => {
+  const temporaryRoot = await mkdtemp(path.join(os.tmpdir(), "forgevena-readiness-atomic-"));
+  const target = path.join(temporaryRoot, "audit.json");
+  try {
+    await writeGeneratedFile(target, `${JSON.stringify({ sequence: -1 })}\n`);
+    await Promise.all(Array.from({ length: 32 }, async (_, sequence) => {
+      await writeGeneratedFile(target, `${JSON.stringify({ sequence })}\n`);
+      const observed = JSON.parse(await readFile(target, "utf8"));
+      assert.equal(Number.isInteger(observed.sequence), true);
+    }));
+    const final = JSON.parse(await readFile(target, "utf8"));
+    assert.equal(Number.isInteger(final.sequence), true);
   } finally {
     await rm(temporaryRoot, { recursive: true, force: true });
   }
