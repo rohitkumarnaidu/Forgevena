@@ -2,5 +2,5 @@
 
 - Decision: **READY**
 - Checkpoint: `release`
-- Requirements: 11
+- Requirements: 22
 - Blockers: 0
