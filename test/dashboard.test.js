@@ -36,6 +36,17 @@ test("dashboard is loopback-only and token protected", async () => {
     const platform = await platformResponse.json();
     assert.deepEqual(platform.mcpServers, []);
     assert.deepEqual(platform.plugins, []);
+    const agentsResponse = await dashboardRequest(base, dashboard.token, "/api/agents");
+    assert.equal(agentsResponse.status, 200);
+    const agents = await agentsResponse.json();
+    assert.ok(agents.agents.some((item) => item.id === "engineering-copilot"));
+    assert.equal(agents.policy.humanPromotionRequired, true);
+    assert.equal(agents.policy.sourceContentExcluded, true);
+    const workflowsResponse = await dashboardRequest(base, dashboard.token, "/api/workflows");
+    assert.equal(workflowsResponse.status, 200);
+    const workflows = await workflowsResponse.json();
+    assert.deepEqual(workflows.runs, []);
+    assert.equal(workflows.policy.humanPromotionRequired, true);
     const cloudsResponse = await fetch(`${base}/api/clouds`, { headers: { "x-ai-workspace-session": dashboard.token } });
     assert.equal(cloudsResponse.status, 200);
     assert.equal((await cloudsResponse.json()).clouds.length, 7);
@@ -65,6 +76,46 @@ test("dashboard credential endpoint never echoes a secret", async () => {
   }
 });
 
+test("dashboard manages named credential slots without returning secret values", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "provider-dashboard-slots-"));
+  const dashboard = await startDashboard(root);
+  const base = `http://${dashboard.host}:${dashboard.port}`;
+  const post = (pathname, body) => dashboardRequest(base, dashboard.token, pathname, { method: "POST", body });
+  try {
+    const primary = await post("/api/providers/credential", { provider: "gemini", keyId: "primary", secret: "primary-dashboard-secret" });
+    assert.equal((await primary.json()).configured, true);
+    const created = await post("/api/providers/credential", { provider: "gemini", keyId: "personal", secret: "personal-dashboard-secret" });
+    assert.equal((await created.json()).configured, true);
+    const activated = await post("/api/providers/credential/activate", { provider: "gemini", keyId: "personal" });
+    assert.equal((await activated.json()).activated, true);
+    const model = await post("/api/providers/model", { provider: "gemini", model: "gemini-2.5-flash" });
+    assert.equal((await model.json()).model, "gemini-2.5-flash");
+    const rotated = await post("/api/providers/credential/rotate", { provider: "gemini", keyId: "personal", secret: "rotated-dashboard-secret" });
+    assert.equal((await rotated.json()).rotated, true);
+    const quarantined = await post("/api/providers/credential/remove", { provider: "gemini", keyId: "personal", nextKeyId: "primary" });
+    assert.equal((await quarantined.json()).removed, true);
+    const recovered = await post("/api/providers/credential/recover", { provider: "gemini", keyId: "personal" });
+    assert.equal((await recovered.json()).recovered, true);
+    const payload = await (await dashboardRequest(base, dashboard.token, "/api/providers")).json();
+    const slots = payload.credentials.gemini.keys;
+    assert.equal(slots.find((entry) => entry.keyId === "primary").active, true);
+    assert.equal(slots.find((entry) => entry.keyId === "personal").status, "active");
+    assert.equal(payload.profiles.find((entry) => entry.name === "gemini").defaultModel, "gemini-2.5-flash");
+    assert.deepEqual(payload.testHistory.records, []);
+    assert.doesNotMatch(JSON.stringify(payload), /primary-dashboard-secret|personal-dashboard-secret|rotated-dashboard-secret/);
+    const source = await (await fetch(`${base}/dashboard-ui.js`)).text();
+    assert.match(source, /Add or rotate key/);
+    assert.match(source, /Quarantine/);
+    assert.match(source, /Save model/);
+    assert.match(source, /Recent consented tests/);
+    assert.doesNotMatch(source, /prompt\("Choose the replacement/);
+    assert.match(source, /forgevena-dashboard-theme/);
+  } finally {
+    await dashboard.close();
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 test("dashboard serves HTML with security headers and rejects unauthorized origins", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "provider-dashboard-security-"));
   const dashboard = await startDashboard(root);
@@ -72,9 +123,30 @@ test("dashboard serves HTML with security headers and rejects unauthorized origi
   try {
     const page = await fetch(base);
     assert.equal(page.status, 200);
-    assert.match(await page.text(), /AI Workspace Settings/);
+    const pageHtml = await page.text();
+    assert.match(pageHtml, /Forgevena Command Center/);
+    assert.match(pageHtml, /<script src="\/dashboard-ui\.js"><\/script>/);
     assert.equal(page.headers.get("x-frame-options"), "DENY");
     assert.equal(page.headers.get("cache-control"), "no-store");
+    assert.match(page.headers.get("content-security-policy"), /script-src 'self'/);
+    assert.equal((await fetch(`${base}/favicon.ico`)).status, 204);
+
+    const script = await fetch(`${base}/dashboard-ui.js`);
+    assert.equal(script.status, 200);
+    assert.match(script.headers.get("content-type"), /application\/javascript/);
+    const source = await script.text();
+    assert.match(source, /Provider workspace/);
+    assert.match(source, /confirmDataEgress: true/);
+    assert.match(source, /forgevena-dashboard-theme/);
+    assert.match(source, /Use dark mode/);
+    assert.match(source, /Compatibility evidence/);
+    assert.match(source, /Agent command center/);
+    assert.match(source, /Runs and workflows/);
+    assert.match(source, /plan-only-by-default/);
+    assert.doesNotMatch(source, /api\/workflows\/run/);
+    assert.match(source, /scrollIntoView/);
+    assert.doesNotMatch(source, /AI Workspace Settings/);
+    assert.doesNotMatch(source, /Test response:/);
 
     const crossOrigin = await dashboardRequest(base, dashboard.token, "/api/providers", {
       headers: { origin: "https://example.invalid" },

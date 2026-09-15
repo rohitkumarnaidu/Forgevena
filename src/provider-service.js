@@ -34,6 +34,15 @@ export class ProviderService {
     }
     return this.registry.migrate({ legacyWorkspace, legacyProfiles, ...options });
   }
+  async configureModel(provider, model) {
+    const normalized = String(model ?? "").trim();
+    if (!/^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$/.test(normalized)) throw new Error("Model IDs must contain only letters, numbers, dots, underscores, colons, slashes, or hyphens.");
+    const registry = await this.registry.read();
+    const current = registry.profiles[provider] ?? profileFromDefinition(provider);
+    const profile = { ...current, defaultModel: normalized, allowedModels: [...new Set([...(current.allowedModels ?? []), normalized])] };
+    await this.registry.registerProfile(profile);
+    return { provider, model: normalized, storedIn: "provider-registry", storesSecrets: false };
+  }
 }
 
 export function createProviderService(root, options) { return new ProviderService(root, options); }

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 2,
+  "changeId": "v1.4.0-rc.1-local-smoke",
+  "title": "Record v1.4.0 RC local smoke evidence",
+  "owner": "Release Engineering",
+  "generatedAt": "2026-08-04T19:47:34.543Z",
+  "checkpoint": "release",
+  "comparison": {
+    "base": null,
+    "head": null
+  },
+  "changedFiles": [
+    "docs/evidence/releases/v1.4.0-rc.1/LOCAL_SMOKE_VALIDATION.md",
+    "docs/reference/generated/ai-documentation-index.json",
+    "docs/reference/generated/documentation-catalog.json",
+    "docs/reference/generated/documentation-coverage-matrix.md",
+    "docs/reference/generated/documentation-health.json",
+    "docs/reference/generated/documentation-health.md",
+    "docs/reference/generated/manifest.json",
+    "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+    "docs/release/V1_4_RELEASE_CHECKLIST.md",
+    "docs/versions/v1.4.0/evidence/README.md"
+  ],
+  "changeProfile": "documentation",
+  "affectedComponents": [],
+  "implementationFiles": [],
+  "documentationFiles": [
+    "docs/evidence/releases/v1.4.0-rc.1/LOCAL_SMOKE_VALIDATION.md",
+    "docs/reference/generated/ai-documentation-index.json",
+    "docs/reference/generated/documentation-catalog.json",
+    "docs/reference/generated/documentation-coverage-matrix.md",
+    "docs/reference/generated/documentation-health.json",
+    "docs/reference/generated/documentation-health.md",
+    "docs/reference/generated/manifest.json",
+    "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+    "docs/release/V1_4_RELEASE_CHECKLIST.md",
+    "docs/versions/v1.4.0/evidence/README.md"
+  ],
+  "testFiles": [],
+  "requirements": [],
+  "blockers": [],
+  "decision": "ready"
+}

@@ -24,6 +24,11 @@ export const CREDENTIAL_DEFINITIONS = Object.freeze({
 const SECRET_DIRECTORY = path.join(".ai-workspace", "local-secrets");
 const VAULT_SCHEMA_VERSION = 2;
 const PBKDF2_ITERATIONS = 600_000;
+const SLOT_SCHEMA_VERSION = 1;
+const SLOT_RETENTION_DAYS = 30;
+const SLOT_HISTORY_LIMIT = 5;
+const SLOT_AUDIT_LIMIT = 100;
+const SLOT_ID_PATTERN = /^(?:primary|[a-z][a-z0-9-]{0,31})$/;
 const derivePbkdf2 = promisify(pbkdf2);
 
 export function listCredentialDefinitions() {
@@ -46,14 +51,17 @@ export async function initializeCredentialPlaceholders(root, { dryRun = true } =
   return { ...plan, dryRun: false, created: [relative] };
 }
 
-export async function configureCredential(root, name, secret, { dryRun = true, storage = "local" } = {}) {
+export async function configureCredential(root, name, secret, { dryRun = true, storage = "local", keyId = "primary" } = {}) {
   const environmentVariable = credentialVariable(name);
+  validateKeyId(keyId);
   if (!["local", "encrypted"].includes(storage)) throw new Error("Credential storage must be local or encrypted.");
-  const relative = storage === "encrypted" ? path.join(".credentials", `${name}.enc.json`) : path.join(SECRET_DIRECTORY, `${name}.env`);
+  await cleanupExpiredQuarantine(root, name);
+  const relative = credentialPath(name, keyId, storage);
   const target = path.join(root, relative);
   const exists = await pathExists(target);
   const plan = {
     credential: name,
+    keyId,
     environmentVariable,
     storage,
     dryRun,
@@ -67,21 +75,25 @@ export async function configureCredential(root, name, secret, { dryRun = true, s
   await mkdir(path.dirname(target), { recursive: true });
   const contents = storage === "encrypted" ? await encryptCredential(environmentVariable, secret.trim()) : `${environmentVariable}=${secret.trim()}\n`;
   await writeFile(target, contents, { encoding: "utf8", mode: 0o600, flag: "wx" });
-  return { ...plan, dryRun: false, configured: true, credentialStored: relative };
+  await updateSlotManifest(root, name, (manifest) => {
+    const now = new Date().toISOString();
+    const slots = { ...manifest.slots, [keyId]: { keyId, storage, status: "active", createdAt: manifest.slots[keyId]?.createdAt ?? now, rotatedAt: manifest.slots[keyId]?.rotatedAt ?? null, validatedAt: null } };
+    return appendSlotAudit({ ...manifest, activeKeyId: manifest.activeKeyId ?? keyId, slots }, { action: "configured", keyId, storage, at: now });
+  });
+  return { ...plan, dryRun: false, configured: true, credentialStored: relative, activeKeyId: (await readSlotManifest(root, name)).activeKeyId };
 }
 
-export async function credentialStatus(root, name) {
+export async function credentialStatus(root, name, { keyId = null } = {}) {
   const environmentVariable = credentialVariable(name);
+  await cleanupExpiredQuarantine(root, name);
+  const manifest = await readSlotManifest(root, name);
+  const activeKeyId = keyId ?? manifest.activeKeyId ?? "primary";
+  validateKeyId(activeKeyId);
   const source = process.env[environmentVariable]
     ? "process-environment"
-    : await pathExists(path.join(root, ".credentials", `${name}.enc.json`))
-      ? "encrypted-local-secret"
-    : await pathExists(path.join(root, SECRET_DIRECTORY, `${name}.env`))
-      ? "workspace-local-secret"
-      : await legacyEnvironmentContains(root, environmentVariable)
-        ? "legacy-dotenv"
-        : null;
-  return { credential: name, environmentVariable, configured: Boolean(source), source };
+    : await storageForSlot(root, name, activeKeyId)
+      ?? (activeKeyId === "primary" && await legacyEnvironmentContains(root, environmentVariable) ? "legacy-dotenv" : null);
+  return { credential: name, environmentVariable, keyId: activeKeyId, activeKeyId: manifest.activeKeyId ?? "primary", configured: Boolean(source), source, slots: await listCredentialKeys(root, name, { manifest }) };
 }
 
 export async function readCredential(root, nameOrVariable) {
@@ -89,30 +101,41 @@ export async function readCredential(root, nameOrVariable) {
   if (!entry) throw new Error(`Unknown credential: ${nameOrVariable}.`);
   const [name, environmentVariable] = entry;
   if (process.env[environmentVariable]) return process.env[environmentVariable];
-  const encrypted = await readEncryptedCredential(path.join(root, ".credentials", `${name}.enc.json`), environmentVariable);
+  const manifest = await readSlotManifest(root, name);
+  const keyId = manifest.activeKeyId ?? "primary";
+  const encrypted = await readEncryptedCredential(path.join(root, credentialPath(name, keyId, "encrypted")), environmentVariable);
   if (encrypted) return encrypted;
-  const managed = await readVariable(path.join(root, SECRET_DIRECTORY, `${name}.env`), environmentVariable);
+  const managed = await readVariable(path.join(root, credentialPath(name, keyId, "local")), environmentVariable);
   return managed || await readVariable(path.join(root, ".env"), environmentVariable);
 }
 
-export async function validateCredential(root, name) {
-  const status = await credentialStatus(root, name);
+export async function validateCredential(root, name, { keyId = null, dryRun = true } = {}) {
+  const status = await credentialStatus(root, name, { keyId });
   if (!status.configured) return { ...status, valid: false, issues: ["Credential is not configured."] };
-  try { const value = await readCredential(root, name); return { ...status, valid: Boolean(value?.trim()), issues: value?.trim() ? [] : ["Credential value is empty or unreadable."] }; }
-  catch (error) { return { ...status, valid: false, issues: [error.message] }; }
+  if (status.source === "process-environment") return { ...status, valid: true, issues: [], validationRecorded: false, message: "The owning process environment was detected but is not managed or audited by Forgevena." };
+  try {
+    const value = await readManagedSlot(root, name, status.keyId, status.source);
+    const valid = Boolean(value?.trim());
+    const result = { ...status, valid, issues: valid ? [] : ["Credential value is empty or unreadable."], validationRecorded: false };
+    if (!valid || dryRun) return result;
+    const at = new Date().toISOString();
+    await updateSlotManifest(root, name, (manifest) => appendSlotAudit({ ...manifest, slots: { ...manifest.slots, [status.keyId]: { ...(manifest.slots[status.keyId] ?? { keyId: status.keyId }), validatedAt: at } } }, { action: "validated", keyId: status.keyId, at }));
+    return { ...result, validationRecorded: true, validatedAt: at };
+  } catch (error) { return { ...status, valid: false, issues: [error.message], validationRecorded: false }; }
 }
 
-export async function rotateCredential(root, name, secret, { dryRun = true, storage = "local" } = {}) {
-  const status = await credentialStatus(root, name);
+export async function rotateCredential(root, name, secret, { dryRun = true, storage = "local", keyId = "primary" } = {}) {
+  validateKeyId(keyId);
+  const status = await credentialStatus(root, name, { keyId });
   if (!status.configured || ["process-environment", "legacy-dotenv"].includes(status.source)) return { credential: name, dryRun, rotated: false, manualRequired: true, message: "Only workspace-managed credentials can be rotated. Rotate external credentials through their owning secret manager." };
-  const source = status.source === "encrypted-local-secret" ? path.join(".credentials", `${name}.enc.json`) : path.join(SECRET_DIRECTORY, `${name}.env`);
-  const archive = path.join(".credentials", "archive", `${name}-${Date.now()}${path.extname(source)}`);
-  const plan = { credential: name, dryRun, move: { from: source, to: archive }, replacementStorage: storage, secretReturned: false };
+  const source = credentialPath(name, keyId, status.source === "encrypted-local-secret" ? "encrypted" : "local");
+  const archive = slotArchivePath(name, keyId, source, "archive");
+  const plan = { credential: name, keyId, dryRun, move: { from: source, to: archive }, replacementStorage: storage, secretReturned: false };
   if (dryRun) return plan;
   if (!secret?.trim()) throw new Error("A non-empty replacement credential is required.");
   const sourcePath = path.join(root, source);
   const archivePath = path.join(root, archive);
-  const replacement = storage === "encrypted" ? path.join(root, ".credentials", `${name}.enc.json`) : path.join(root, SECRET_DIRECTORY, `${name}.env`);
+  const replacement = path.join(root, credentialPath(name, keyId, storage));
   const temporary = `${replacement}.${Date.now()}.rotation`;
   await mkdir(path.dirname(archivePath), { recursive: true });
   await mkdir(path.dirname(replacement), { recursive: true });
@@ -127,32 +150,49 @@ export async function rotateCredential(root, name, secret, { dryRun = true, stor
     if (await pathExists(archivePath) && !(await pathExists(sourcePath))) await copyFile(archivePath, sourcePath);
     throw error;
   }
-  await pruneHistory(path.join(root, ".credentials", "archive"), name, 5);
+  await pruneHistory(path.join(root, ".credentials", "archive"), `${name}-${keyId}`, SLOT_HISTORY_LIMIT);
+  await updateSlotManifest(root, name, (manifest) => appendSlotAudit({ ...manifest, slots: { ...manifest.slots, [keyId]: { ...(manifest.slots[keyId] ?? { keyId, createdAt: new Date().toISOString() }), keyId, storage, status: "active", rotatedAt: new Date().toISOString() } } }, { action: "rotated", keyId, storage, at: new Date().toISOString() }));
   return { ...plan, dryRun: false, rotated: true, archived: archive, credentialStored: path.relative(root, replacement), vaultVersion: storage === "encrypted" ? VAULT_SCHEMA_VERSION : null };
 }
 
-export async function removeCredential(root, name, { dryRun = true } = {}) {
-  const status = await credentialStatus(root, name);
+export async function removeCredential(root, name, { dryRun = true, keyId = "primary", nextKeyId = null } = {}) {
+  validateKeyId(keyId);
+  if (nextKeyId !== null) validateKeyId(nextKeyId);
+  const status = await credentialStatus(root, name, { keyId });
   if (!status.configured || ["process-environment", "legacy-dotenv"].includes(status.source)) return { credential: name, dryRun, removed: false, manualRequired: status.configured, message: status.configured ? "Remove the credential through its owning environment or secret manager." : "Credential is not configured." };
-  const source = status.source === "encrypted-local-secret" ? path.join(".credentials", `${name}.enc.json`) : path.join(SECRET_DIRECTORY, `${name}.env`);
-  const quarantine = path.join(".credentials", "removed", `${name}-${Date.now()}${path.extname(source)}`);
-  if (dryRun) return { credential: name, dryRun: true, move: { from: source, to: quarantine }, destructiveDelete: false };
+  const source = credentialPath(name, keyId, status.source === "encrypted-local-secret" ? "encrypted" : "local");
+  const quarantine = slotArchivePath(name, keyId, source, "removed");
+  const active = status.activeKeyId === keyId;
+  const available = (await listCredentialKeys(root, name)).filter((slot) => slot.keyId !== keyId && slot.status === "active");
+  if (active && available.length && !nextKeyId) return { credential: name, keyId, dryRun, removed: false, requiresNextKeyId: true, availableKeyIds: available.map((slot) => slot.keyId), message: "Select --next-key-id before quarantining the active slot." };
+  if (nextKeyId && !available.some((slot) => slot.keyId === nextKeyId)) throw new Error(`Replacement key slot ${nextKeyId} is not active.`);
+  if (dryRun) return { credential: name, keyId, dryRun: true, move: { from: source, to: quarantine }, nextKeyId, destructiveDelete: false };
   await mkdir(path.join(root, path.dirname(quarantine)), { recursive: true });
   await rename(path.join(root, source), path.join(root, quarantine));
-  return { credential: name, dryRun: false, removed: true, quarantined: quarantine, destructiveDelete: false };
+  await updateSlotManifest(root, name, (manifest) => {
+    const now = new Date().toISOString();
+    const slots = { ...manifest.slots, [keyId]: { ...(manifest.slots[keyId] ?? { keyId }), status: "quarantined", removedAt: now, recoveryExpiresAt: new Date(Date.now() + SLOT_RETENTION_DAYS * 86_400_000).toISOString() } };
+    return appendSlotAudit({ ...manifest, activeKeyId: active ? (nextKeyId ?? null) : manifest.activeKeyId, slots }, { action: "quarantined", keyId, at: now });
+  });
+  return { credential: name, keyId, dryRun: false, removed: true, quarantined: quarantine, destructiveDelete: false };
 }
 
 export async function backupCredentials(root, { dryRun = true } = {}) {
-  const entries = await Promise.all(Object.keys(CREDENTIAL_DEFINITIONS).map((name) => credentialStatus(root, name)));
-  const managed = entries.filter(({ source }) => ["workspace-local-secret", "encrypted-local-secret"].includes(source));
+  const entries = await Promise.all(Object.keys(CREDENTIAL_DEFINITIONS).map(async (name) => ({ name, keys: await listCredentialKeys(root, name) })));
+  const managed = entries.flatMap(({ name, keys }) => keys.filter(({ status }) => status === "active").map((slot) => ({ credential: name, keyId: slot.keyId, storage: slot.storage, source: credentialPath(name, slot.keyId, slot.storage) })));
   const backupRoot = path.join(".credentials", "backups", new Date().toISOString().replace(/[:.]/g, "-"));
-  if (dryRun) return { dryRun: true, credentials: managed.map(({ credential, source }) => ({ credential, source })), backupRoot, containsSecrets: true };
+  if (dryRun) return {
+    dryRun: true,
+    credentials: managed.map(({ credential, storage }) => ({ credential, source: storage === "encrypted" ? "encrypted-local-secret" : "workspace-local-secret" })),
+    slots: managed.map(({ credential, keyId, source }) => ({ credential, keyId, source })),
+    backupRoot,
+    containsSecrets: true,
+  };
   await mkdir(path.join(root, backupRoot), { recursive: true });
   for (const entry of managed) {
-    const source = entry.source === "encrypted-local-secret" ? path.join(".credentials", `${entry.credential}.enc.json`) : path.join(SECRET_DIRECTORY, `${entry.credential}.env`);
-    await copyFile(path.join(root, source), path.join(root, backupRoot, path.basename(source)));
+    await copyFile(path.join(root, entry.source), path.join(root, backupRoot, `${entry.credential}-${entry.keyId}${path.extname(entry.source)}`));
   }
-  return { dryRun: false, backedUp: managed.map(({ credential }) => credential), backupRoot, containsSecrets: true };
+  return { dryRun: false, backedUp: managed.map(({ credential, keyId }) => ({ credential, keyId })), backupRoot, containsSecrets: true };
 }
 
 export async function auditCredentialVault(root) {
@@ -209,20 +249,63 @@ export async function migrateLegacyCredential(root, name, { dryRun = true, yes =
   return { ...plan, dryRun: false, migrated: true, schemaVersion: VAULT_SCHEMA_VERSION, secretReturned: false };
 }
 
-export async function recoverCredential(root, name, { dryRun = true } = {}) {
+export async function listCredentialKeys(root, name, { manifest = null } = {}) {
   credentialVariable(name);
-  const active = path.join(root, ".credentials", `${name}.enc.json`);
-  if (await pathExists(active)) return { credential: name, dryRun, recovered: false, skipped: true, message: "An active encrypted credential exists and was not overwritten." };
-  const archiveDirectory = path.join(root, ".credentials", "archive");
-  let candidates = [];
-  try { candidates = (await readdir(archiveDirectory)).filter((entry) => entry.startsWith(`${name}-`) && entry.endsWith(".json")).sort().reverse(); } catch (error) { if (error?.code !== "ENOENT") throw error; }
-  if (!candidates.length) return { credential: name, dryRun, recovered: false, message: "No encrypted rotation history is available." };
-  const source = path.join(archiveDirectory, candidates[0]);
-  await readEncryptedCredential(source, credentialVariable(name));
-  const plan = { credential: name, dryRun, source: path.relative(root, source), destination: path.relative(root, active), integrityValidated: true, overwrite: false };
+  const resolved = manifest ?? await readSlotManifest(root, name);
+  const slots = { ...resolved.slots };
+  for (const storage of ["encrypted", "local"]) {
+    const target = path.join(root, credentialPath(name, "primary", storage));
+    if (await pathExists(target)) slots.primary ??= { keyId: "primary", storage, status: "active", createdAt: null, rotatedAt: null, validatedAt: null };
+  }
+  return Object.values(slots).map((slot) => ({
+    keyId: slot.keyId,
+    storage: slot.storage ?? "local",
+    status: slot.status ?? "active",
+    active: resolved.activeKeyId === slot.keyId,
+    createdAt: slot.createdAt ?? null,
+    rotatedAt: slot.rotatedAt ?? null,
+    validatedAt: slot.validatedAt ?? null,
+    recoveryExpiresAt: slot.recoveryExpiresAt ?? null,
+    secretReturned: false,
+  })).sort((left, right) => left.keyId.localeCompare(right.keyId));
+}
+
+export async function credentialKeyAudit(root, name) {
+  credentialVariable(name);
+  const manifest = await readSlotManifest(root, name);
+  return { schemaVersion: SLOT_SCHEMA_VERSION, credential: name, activeKeyId: manifest.activeKeyId ?? "primary", audit: manifest.audit.map(({ action, keyId, storage, at }) => ({ action, keyId, storage: storage ?? null, at })), secretValuesReturned: false };
+}
+
+export async function activateCredentialKey(root, name, keyId, { dryRun = true } = {}) {
+  validateKeyId(keyId);
+  const status = await credentialStatus(root, name, { keyId });
+  if (status.source === "process-environment") return { credential: name, keyId, dryRun, activated: false, manualRequired: true, message: "The process environment overrides managed key selection. Change the owning environment or restart without it." };
+  if (!status.configured || status.source === "legacy-dotenv") return { credential: name, keyId, dryRun, activated: false, message: "Only an active managed key slot can be selected." };
+  const plan = { credential: name, keyId, dryRun, previousKeyId: status.activeKeyId, activeKeyId: keyId };
   if (dryRun) return plan;
-  await mkdir(path.dirname(active), { recursive: true });
-  await copyFile(source, active, constants.COPYFILE_EXCL);
+  await updateSlotManifest(root, name, (manifest) => appendSlotAudit({ ...manifest, activeKeyId: keyId }, { action: "activated", keyId, at: new Date().toISOString() }));
+  return { ...plan, dryRun: false, activated: true };
+}
+
+export async function recoverCredential(root, name, { dryRun = true, keyId = "primary" } = {}) {
+  credentialVariable(name);
+  validateKeyId(keyId);
+  await cleanupExpiredQuarantine(root, name);
+  const manifest = await readSlotManifest(root, name);
+  const active = path.join(root, credentialPath(name, keyId, manifest.slots[keyId]?.storage ?? "encrypted"));
+  if (await pathExists(active)) return { credential: name, keyId, dryRun, recovered: false, skipped: true, message: "An active managed credential exists and was not overwritten." };
+  const candidates = await archivedSlotCandidates(root, name, keyId);
+  if (!candidates.length) return { credential: name, keyId, dryRun, recovered: false, message: "No managed rotation or quarantine history is available." };
+  const source = candidates[0];
+  const storage = source.endsWith(".json") ? "encrypted" : "local";
+  if (storage === "encrypted") await readEncryptedCredential(source, credentialVariable(name));
+  else if (!await readVariable(source, credentialVariable(name))) throw new Error("Recovered local credential is empty or unreadable.");
+  const destination = path.join(root, credentialPath(name, keyId, storage));
+  const plan = { credential: name, keyId, dryRun, source: path.relative(root, source), destination: path.relative(root, destination), integrityValidated: true, overwrite: false };
+  if (dryRun) return plan;
+  await mkdir(path.dirname(destination), { recursive: true });
+  await copyFile(source, destination, constants.COPYFILE_EXCL);
+  await updateSlotManifest(root, name, (current) => appendSlotAudit({ ...current, activeKeyId: current.activeKeyId ?? keyId, slots: { ...current.slots, [keyId]: { ...(current.slots[keyId] ?? { keyId }), keyId, storage, status: "active", recoveryExpiresAt: null } } }, { action: "recovered", keyId, storage, at: new Date().toISOString() }));
   return { ...plan, dryRun: false, recovered: true };
 }
 
@@ -230,6 +313,81 @@ function credentialVariable(name) {
   const variable = CREDENTIAL_DEFINITIONS[name];
   if (!variable) throw new Error(`Choose one of: ${Object.keys(CREDENTIAL_DEFINITIONS).join(", ")}.`);
   return variable;
+}
+function validateKeyId(keyId) {
+  if (typeof keyId !== "string" || !SLOT_ID_PATTERN.test(keyId)) throw new Error("Credential key IDs must use lowercase letters, numbers, and hyphens, start with a letter, and be at most 32 characters.");
+  return keyId;
+}
+function credentialPath(name, keyId, storage) {
+  if (keyId === "primary") return storage === "encrypted" ? path.join(".credentials", `${name}.enc.json`) : path.join(SECRET_DIRECTORY, `${name}.env`);
+  return storage === "encrypted" ? path.join(".credentials", "slots", name, `${keyId}.enc.json`) : path.join(SECRET_DIRECTORY, `${name}.slots`, `${keyId}.env`);
+}
+function slotManifestPath(name) { return path.join(SECRET_DIRECTORY, `${name}.slots.json`); }
+function slotArchivePath(name, keyId, source, directory) { return path.join(".credentials", directory, `${name}-${keyId}-${Date.now()}${path.extname(source)}`); }
+function emptySlotManifest(name) { return { schemaVersion: SLOT_SCHEMA_VERSION, credential: name, activeKeyId: "primary", slots: {}, audit: [] }; }
+async function readSlotManifest(root, name) {
+  const target = path.join(root, slotManifestPath(name));
+  try {
+    const value = JSON.parse(await readFile(target, "utf8"));
+    if (value.schemaVersion !== SLOT_SCHEMA_VERSION || value.credential !== name || typeof value.slots !== "object" || !Array.isArray(value.audit)) throw new Error("Credential slot metadata is invalid.");
+    if (value.activeKeyId !== null) validateKeyId(value.activeKeyId ?? "primary");
+    return { ...emptySlotManifest(name), ...value, slots: { ...value.slots }, audit: value.audit.slice(-SLOT_AUDIT_LIMIT) };
+  } catch (error) { if (error?.code === "ENOENT") return emptySlotManifest(name); throw error; }
+}
+async function updateSlotManifest(root, name, transform) {
+  const target = path.join(root, slotManifestPath(name));
+  const current = await readSlotManifest(root, name);
+  const next = transform(current);
+  const temporary = `${target}.${Date.now()}.tmp`;
+  await mkdir(path.dirname(target), { recursive: true });
+  await writeFile(temporary, `${JSON.stringify(next, null, 2)}\n`, { encoding: "utf8", mode: 0o600, flag: "wx" });
+  await rename(temporary, target);
+  return next;
+}
+function appendSlotAudit(manifest, event) { return { ...manifest, schemaVersion: SLOT_SCHEMA_VERSION, credential: manifest.credential, audit: [...manifest.audit, event].slice(-SLOT_AUDIT_LIMIT) }; }
+async function storageForSlot(root, name, keyId) {
+  if (await pathExists(path.join(root, credentialPath(name, keyId, "encrypted")))) return "encrypted-local-secret";
+  if (await pathExists(path.join(root, credentialPath(name, keyId, "local")))) return "workspace-local-secret";
+  return null;
+}
+async function archivedSlotCandidates(root, name, keyId) {
+  const archives = [];
+  const quarantined = [];
+  for (const directory of ["removed", "archive"]) {
+    const target = path.join(root, ".credentials", directory);
+    try {
+      for (const entry of await readdir(target)) {
+        const legacyPrimary = keyId === "primary" && new RegExp(`^${name}-\\d`).test(entry);
+        if (!entry.startsWith(`${name}-${keyId}-`) && !legacyPrimary) continue;
+        (directory === "archive" ? archives : quarantined).push(path.join(target, entry));
+      }
+    }
+    catch (error) { if (error?.code !== "ENOENT") throw error; }
+  }
+  return archives.sort().reverse().concat(quarantined.sort().reverse());
+}
+async function cleanupExpiredQuarantine(root, name) {
+  const manifest = await readSlotManifest(root, name);
+  const expired = Object.values(manifest.slots).filter((slot) => slot.status === "quarantined" && slot.recoveryExpiresAt && Date.parse(slot.recoveryExpiresAt) <= Date.now());
+  if (!expired.length) return [];
+  const removedDirectory = path.join(root, ".credentials", "removed");
+  for (const slot of expired) {
+    try { for (const entry of await readdir(removedDirectory)) if (entry.startsWith(`${name}-${slot.keyId}-`)) await rm(path.join(removedDirectory, entry), { force: true }); }
+    catch (error) { if (error?.code !== "ENOENT") throw error; }
+  }
+  await updateSlotManifest(root, name, (current) => {
+    const slots = { ...current.slots };
+    for (const slot of expired) slots[slot.keyId] = { ...slots[slot.keyId], status: "purged", recoveryExpiresAt: null };
+    return appendSlotAudit({ ...current, slots }, { action: "quarantine-expired", keyId: null, at: new Date().toISOString() });
+  });
+  return expired.map((slot) => slot.keyId);
+}
+async function readManagedSlot(root, name, keyId, source) {
+  const variable = credentialVariable(name);
+  if (source === "encrypted-local-secret") return readEncryptedCredential(path.join(root, credentialPath(name, keyId, "encrypted")), variable);
+  if (source === "workspace-local-secret") return readVariable(path.join(root, credentialPath(name, keyId, "local")), variable);
+  if (source === "legacy-dotenv") return readVariable(path.join(root, ".env"), variable);
+  return null;
 }
 async function legacyEnvironmentContains(root, variable) { return Boolean(await readVariable(path.join(root, ".env"), variable)); }
 async function readVariable(target, variable) {

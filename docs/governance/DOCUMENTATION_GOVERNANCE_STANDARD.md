@@ -80,6 +80,8 @@ The binding operational procedure is the [Documentation Synchronization Policy](
 
 Documentation-only changes remain governed changes: they must preserve authority, navigation, metadata, accessibility, terminology, examples, and freshness. Emergency changes use the documented break-glass path and receive time-bounded follow-up rather than an undocumented exception.
 
+The optional `dashboard-next/` App Router console is an active presentation surface, not a documentation authority. Its user journeys, accessibility behavior, privacy boundary, route inventory, and setup instructions are maintained through the provider platform runbook and the app's README; generated API metadata remains owned by Forgevena Core and the loopback dashboard contract.
+
 ## Historical Records
 
 Historical documents remain immutable evidence. They are excluded from current completeness claims, indexed in the generated historical-document index, and linked to current canonical guidance. Corrections use an erratum or a new superseding document rather than rewriting history.

@@ -1,0 +1,10 @@
+"use client";
+
+import { useMemo } from "react";
+import { DataState, Empty, PageHeader, Panel, StatusBadge, useDashboard } from "../ui";
+
+export default function EvidencePage() {
+  const view = useDashboard("providers", { compatibility: [] });
+  const records = useMemo(() => (view.data?.compatibility ?? []).map(([provider, evidence]) => ({ provider, ...(evidence ?? {}) })), [view.data]);
+  return <DataState loading={view.loading} error={view.error}><PageHeader eyebrow="Evidence / verification" title="Keep claims inspectable." description="Evidence is dated, local metadata. It supports decisions but never becomes a deceptive composite security score." action={<StatusBadge tone="good">No secrets rendered</StatusBadge>} /><div className="grid"><Panel className="span-4" title="Current records"><p className="metric-value">{records.length}</p><p className="muted">Provider compatibility records found in this workspace.</p></Panel><Panel className="span-4" title="Fresh"><p className="metric-value">{records.filter((record) => record.freshness === "fresh").length}</p><p className="muted">Freshness is independent from identity, vulnerability, and support evidence.</p></Panel><Panel className="span-4" title="Action"><p className="metric-value">Review</p><p className="muted">Use the provider page to run a consented check and retain normalized metadata.</p></Panel></div><section className="section"><Panel title="Evidence register" subtitle="Prompts, responses, credentials, and source content are excluded.">{records.length ? <div className="list">{records.map((record) => <div className="list-item" key={record.provider}><div className="list-copy"><strong>{record.provider}</strong><span>{record.evidenceId ?? "No evidence ID"} · {record.lastVerifiedAt ?? "Not verified"}</span></div><StatusBadge tone={record.freshness === "fresh" ? "good" : "warn"}>{record.freshness ?? "unverified"}</StatusBadge></div>)}</div> : <Empty title="No evidence records yet">Connect the local workspace and run a consented provider test to create metadata-only evidence.</Empty>}</Panel></section></DataState>;
+}

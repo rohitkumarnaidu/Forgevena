@@ -48,11 +48,13 @@ export async function recordProviderUsage(root, provider, usage) {
 function validatePolicy(policy) {
   if (!["guarded", "budgeted", "unrestricted"].includes(policy.mode)) throw new Error("Policy mode must be guarded, budgeted, or unrestricted.");
   for (const field of ["maxInputCharacters", "maxOutputTokens", "timeoutMs", "monthlyRequestLimit", "maxAttempts"]) {
-    if (!Number.isInteger(Number(policy[field])) || Number(policy[field]) <= 0) throw new Error(`${field} must be a positive integer.`);
-    policy[field] = Number(policy[field]);
+    const value = Number(policy[field]);
+    if (!Number.isFinite(value) || !Number.isInteger(value) || value <= 0) throw new Error(`${field} must be a positive integer.`);
+    policy[field] = value;
   }
-  if (!Number.isInteger(Number(policy.retries)) || Number(policy.retries) < 0 || Number(policy.retries) > 3) throw new Error("retries must be an integer between 0 and 3.");
-  policy.retries = Number(policy.retries);
+  const retries = Number(policy.retries);
+  if (!Number.isFinite(retries) || !Number.isInteger(retries) || retries < 0 || retries > 3) throw new Error("retries must be an integer between 0 and 3.");
+  policy.retries = retries;
   if (policy.maxAttempts > 3) throw new Error("maxAttempts cannot exceed 3.");
   policy.requireCurrentCompatibility = policy.requireCurrentCompatibility === true || policy.requireCurrentCompatibility === "true";
   for (const field of ["maxTotalTokens", "maxEstimatedCost"]) if (policy[field] !== null && policy[field] !== undefined) { const number = Number(policy[field]); if (!Number.isFinite(number) || number < 0) throw new Error(`${field} must be null or a non-negative number.`); policy[field] = number; }

@@ -1,0 +1,17 @@
+{
+  "name": "forgevena-command-center",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Next.js command center for the local Forgevena dashboard APIs.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^15.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  }
+}

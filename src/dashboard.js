@@ -1,13 +1,20 @@
 import http from "node:http";
 import { randomBytes, timingSafeEqual } from "node:crypto";
+import { readdir, readFile } from "node:fs/promises";
+import path from "node:path";
 import { createProviderService } from "./provider-service.js";
 import { readProviderPolicy, setProviderPolicy } from "./provider-policy.js";
 import { listMcpServers, registerMcpServer, setMcpActivation } from "./mcp.js";
 import { listPlugins, setPluginEnabled } from "./plugins.js";
 import { configureRender, executeRenderDeployment, generateRenderBlueprint, renderDeploymentPlan, validateRenderBlueprint } from "./render.js";
-import { configureCredential, credentialStatus } from "./credentials.js";
+import { activateCredentialKey, configureCredential, credentialKeyAudit, credentialStatus, listCredentialKeys, recoverCredential, removeCredential, rotateCredential, validateCredential } from "./credentials.js";
 import { inspectEcosystem } from "./ecosystem-health.js";
 import { listCloudPlatforms, validateCloudPlatform } from "./clouds.js";
+import { DASHBOARD_UI_SCRIPT } from "./dashboard-ui.js";
+import { providerTestHistory, recordProviderTest } from "./provider-test-history.js";
+import { engineeringCopilotPlan } from "./engineering-copilot.js";
+import { projectIndexStatus } from "./project-index.js";
+import { loadWorkflow, planWorkflow } from "./workflow-engine.js";
 
 const HOST = "127.0.0.1";
 const MAX_BODY_BYTES = 64 * 1024;
@@ -36,25 +43,45 @@ async function handleRequest(root, token, providerService, request, response) {
   securityHeaders(response);
   try {
     const url = new URL(request.url, `http://${HOST}`);
-    if (request.method === "GET" && url.pathname === "/") return html(response, dashboardHtml());
+    if (request.method === "GET" && url.pathname === "/") return html(response, dashboardShell());
+    if (request.method === "GET" && url.pathname === "/dashboard-ui.js") return javascript(response, DASHBOARD_UI_SCRIPT);
+    if (request.method === "GET" && url.pathname === "/favicon.ico") return empty(response, 204);
     if (!authorized(request, token)) return json(response, 401, { error: "unauthorized" });
     if (request.method === "GET" && url.pathname === "/api/providers") {
-      const profiles = providerService.list();
+      const persisted = await providerService.registry.read();
+      const profiles = providerService.list().map((profile) => ({ ...profile, ...(persisted.profiles[profile.name] ?? {}) }));
       const status = await providerService.status();
       const policies = Object.fromEntries(await Promise.all(profiles.map(async ({ name }) => [name, await readProviderPolicy(root, name)])));
-      return json(response, 200, { profiles, status, policies, compatibility: await Promise.all(profiles.map(async ({ name }) => [name, await providerService.registry.compatibility(name)])) });
+      const credentials = Object.fromEntries(await Promise.all(profiles.map(async ({ name }) => [name, await credentialDashboardSummary(root, name)])));
+      const models = Object.fromEntries(status.map((entry) => [entry.provider, Array.isArray(entry.models) ? entry.models : []]));
+      return json(response, 200, { profiles, status, policies, credentials, models, testHistory: await providerTestHistory(root), compatibility: await Promise.all(profiles.map(async ({ name }) => [name, await providerService.registry.compatibility(name)])) });
     }
+    if (request.method === "GET" && url.pathname === "/api/agents") return json(response, 200, await dashboardAgents(root, providerService));
+    if (request.method === "GET" && url.pathname === "/api/workflows") return json(response, 200, await dashboardWorkflows(root));
     if (request.method === "GET" && url.pathname === "/api/platform") return json(response, 200, { mcpServers: await listMcpServers(root), plugins: await listPlugins(root), render: { ...(await validateRenderBlueprint(root)), credential: await credentialStatus(root, "render") }, ecosystem: await inspectEcosystem(root) });
     if (request.method === "GET" && url.pathname === "/api/clouds") return json(response, 200, { clouds: await Promise.all(listCloudPlatforms().map(({ name }) => validateCloudPlatform(root, name))) });
     if (request.method !== "POST") return json(response, 404, { error: "not_found" });
     const body = await readJson(request);
     if (url.pathname === "/api/providers/profile") return json(response, 200, await providerService.initialize(body.provider, { dryRun: false }));
-    if (url.pathname === "/api/providers/credential") return json(response, 200, await providerService.configureCredential(body.provider, body.secret, { dryRun: false }));
+    if (url.pathname === "/api/providers/credential") return json(response, 200, await configureCredential(root, body.provider, body.secret, { dryRun: false, keyId: body.keyId ?? "primary", storage: body.storage ?? "local" }));
+    if (url.pathname === "/api/providers/credential/activate") return json(response, 200, await activateCredentialKey(root, body.provider, body.keyId, { dryRun: false }));
+    if (url.pathname === "/api/providers/credential/rotate") return json(response, 200, await rotateCredential(root, body.provider, body.secret, { dryRun: false, keyId: body.keyId ?? "primary", storage: body.storage ?? "local" }));
+    if (url.pathname === "/api/providers/credential/remove") return json(response, 200, await removeCredential(root, body.provider, { dryRun: false, keyId: body.keyId ?? "primary", nextKeyId: body.nextKeyId ?? null }));
+    if (url.pathname === "/api/providers/credential/recover") return json(response, 200, await recoverCredential(root, body.provider, { dryRun: false, keyId: body.keyId ?? "primary" }));
     if (url.pathname === "/api/providers/policy") return json(response, 200, await setProviderPolicy(root, body.provider, body.policy ?? {}, { dryRun: false }));
+    if (url.pathname === "/api/providers/model") return json(response, 200, await providerService.configureModel(body.provider, body.model));
     if (url.pathname === "/api/providers/test") {
       if (body.confirmDataEgress !== true) return json(response, 400, { error: "consent_required", message: "Confirm external data transmission before testing a provider." });
       const result = await providerService.invoke(body.provider, { prompt: "Reply only with OK.", model: body.model, idempotency: "read-only" });
-      return json(response, 200, { schemaVersion: 1, operationId: result.operationId, status: "success", provider: result.provider, model: result.model, text: result.text, usage: result.usage, compatibilityEvidenceId: result.compatibilityEvidenceId ?? null, warnings: result.warnings ?? [] });
+      const credentialValidation = await validateManagedCredential(root, body.provider);
+      const history = await recordProviderTest(root, result);
+      return json(response, 200, { schemaVersion: 1, operationId: result.operationId, status: "success", provider: result.provider, model: result.model, usage: history.usage, compatibilityEvidenceId: history.compatibilityEvidenceId, warnings: history.warningCodes, credentialValidation, secretValuesReturned: false, responseContentReturned: false });
+    }
+    if (url.pathname === "/api/agents/plan") return json(response, 200, await engineeringCopilotPlan(root, body.objective, { provider: body.provider, model: body.model }));
+    if (url.pathname === "/api/workflows/plan") {
+      const workflowPath = safeWorkspacePath(root, body.workflow);
+      const workflow = await loadWorkflow(workflowPath);
+      return json(response, 200, { ...planWorkflow(workflow), source: path.relative(root, workflowPath).replaceAll("\\", "/"), previewOnly: true });
     }
     if (url.pathname === "/api/mcp/register") return json(response, 200, await registerMcpServer(root, body, { dryRun: false }));
     if (url.pathname === "/api/mcp/activation") {
@@ -101,7 +128,7 @@ async function readJson(request) {
 
 function securityHeaders(response) {
   response.setHeader("cache-control", "no-store");
-  response.setHeader("content-security-policy", "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'");
+  response.setHeader("content-security-policy", "default-src 'self'; script-src 'self'; style-src 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'");
   response.setHeader("referrer-policy", "no-referrer");
   response.setHeader("x-content-type-options", "nosniff");
   response.setHeader("x-frame-options", "DENY");
@@ -120,6 +147,87 @@ function html(response, value) {
   response.end(value);
 }
 
+async function dashboardAgents(root, providerService) {
+  const profiles = providerService.list();
+  const statuses = await providerService.status();
+  const agents = statuses.filter((entry) => entry.runtime?.capabilities?.includes("agent-execute")).map((entry) => ({
+    id: entry.provider,
+    name: entry.provider,
+    kind: "host-adapter",
+    service: profiles.find((profile) => profile.name === entry.provider)?.service ?? entry.provider,
+    status: entry.runtime?.executableAvailable ? "available" : "attention",
+    capabilities: entry.runtime?.capabilities ?? [],
+    authority: "host-managed",
+    execution: "compatibility-only",
+    sourceContentSent: false,
+    mutationRequiresConsent: true,
+  }));
+  let index;
+  try { index = await projectIndexStatus(root); } catch { index = { indexed: false }; }
+  return {
+    schemaVersion: 1,
+    agents: [{ id: "engineering-copilot", name: "Engineering Copilot", kind: "read-only-planner", service: "Forgevena Core", status: index.indexed ? "ready" : "needs-index", capabilities: ["metadata-plan", "recommendations"], authority: "read-only", execution: "plan-only-by-default", sourceContentSent: false, mutationRequiresConsent: true }, ...agents],
+    policy: { humanPromotionRequired: true, externalTransmissionRequiresConsent: true, sourceContentExcluded: true, unboundedLoops: false },
+    index,
+  };
+}
+
+async function dashboardWorkflows(root) {
+  const runs = [];
+  const runRoot = path.join(root, ".ai-workspace", "workflows", "runs");
+  try {
+    for (const entry of await readdir(runRoot, { withFileTypes: true })) {
+      if (!entry.isFile() || !entry.name.endsWith(".json")) continue;
+      try {
+        const value = JSON.parse(await readFile(path.join(runRoot, entry.name), "utf8"));
+        if (value?.schemaVersion === 1 && value.runId && value.workflow) runs.push({ runId: value.runId, workflow: value.workflow.id, version: value.workflow.version, status: value.status, cursor: value.cursor, totalNodes: value.workflow.order?.length ?? 0, updatedAt: value.updatedAt, resumable: !["completed", "failed"].includes(value.status) });
+      } catch { continue; }
+    }
+  } catch (error) { if (error?.code !== "ENOENT") throw error; }
+  return { schemaVersion: 1, runs: runs.sort((left, right) => String(right.updatedAt).localeCompare(String(left.updatedAt))), policy: { deterministic: true, bounded: true, consentCheckpoints: true, humanPromotionRequired: true } };
+}
+
+function safeWorkspacePath(root, value) {
+  const relative = String(value ?? "").trim();
+  if (!relative || path.isAbsolute(relative) || relative.includes("..") || !relative.toLowerCase().endsWith(".json")) throw new Error("Workflow must be a relative JSON file inside the workspace.");
+  return path.join(root, relative);
+}
+
+async function credentialDashboardSummary(root, provider) {
+  try { return { status: await credentialStatus(root, provider), keys: await listCredentialKeys(root, provider), audit: await credentialKeyAudit(root, provider) }; }
+  catch (error) {
+    if (/Choose one of:/.test(error.message)) return { status: { credential: provider, configured: false, source: "host-managed" }, keys: [], audit: { schemaVersion: 1, audit: [], secretValuesReturned: false } };
+    throw error;
+  }
+}
+
+async function validateManagedCredential(root, provider) {
+  try { return await validateCredential(root, provider, { dryRun: false }); }
+  catch (error) {
+    if (/Choose one of:/.test(error.message)) return { credential: provider, valid: true, source: "host-managed", recorded: false };
+    throw error;
+  }
+}
+
+function javascript(response, value) {
+  response.statusCode = 200;
+  response.setHeader("content-type", "application/javascript; charset=utf-8");
+  response.end(value);
+}
+
+function empty(response, status) {
+  response.statusCode = status;
+  response.end();
+}
+
+function dashboardShell() {
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Forgevena Command Center</title><style>
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#1d241f;background:#eceee9;font-synthesis:none}*{box-sizing:border-box}body{margin:0;min-width:320px;background:linear-gradient(135deg,#edf0eb 0%,#e4e8e1 100%)}button,input,select{font:inherit}.console-shell{min-height:100vh;display:grid;grid-template-columns:238px minmax(0,1fr)}.sidebar{background:#18201d;color:#dbe5dd;padding:28px 18px;display:flex;flex-direction:column;gap:24px}.brand{font-size:12px;font-weight:800;letter-spacing:.18em;color:#bcff79}.sidebar-copy{margin:-16px 0 0;font-size:13px;color:#94a59b}.nav{display:grid;gap:6px}.nav-item{padding:10px 12px;border-radius:8px;font-size:14px;color:#aebbb2}.nav-item.active{background:#2a3730;color:#fff}.sidebar-foot{margin-top:auto;padding-top:16px;border-top:1px solid #35423a;font-size:12px;color:#9aa99f}.content{padding:clamp(24px,5vw,64px);max-width:1500px;width:100%;margin:0 auto}.topbar{display:flex;justify-content:space-between;gap:28px;align-items:flex-start;border-bottom:1px solid #cfd5cc;padding-bottom:34px}.eyebrow{margin:0 0 12px;text-transform:uppercase;font-weight:800;letter-spacing:.12em;font-size:11px;color:#628645}.h1,h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(40px,6vw,74px);letter-spacing:-.055em;line-height:.92;margin:0;color:#1e2721}.lede{max-width:650px;font-size:17px;line-height:1.6;color:#59665e;margin:20px 0 0}.security-note{max-width:300px;padding:15px 16px;border-left:3px solid #8ac35c;background:#f7faf3;display:grid;gap:4px;font-size:13px;color:#546159}.security-note strong{color:#344c29}.notice{margin:22px 0 0;padding:14px 16px;border-radius:8px;font-size:14px}.notice-info{background:#edf3e9;color:#3f5930}.notice-success{background:#e3f4db;color:#245524}.notice-warning{background:#fff0ca;color:#6e4b00}.notice-danger{background:#f9e0dc;color:#7e2720}.section{padding-top:36px}.section-heading{display:flex;justify-content:space-between;gap:20px;align-items:baseline;margin-bottom:18px}.section h2{margin:0;color:#27342b;font-size:21px;letter-spacing:-.02em}.muted{margin:5px 0 0;color:#6a756d;font-size:13px;line-height:1.45}.provider-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}.provider-card,.integration-card{background:rgba(255,255,252,.78);border:1px solid #d3dad1;border-radius:12px;padding:19px;box-shadow:0 10px 25px rgba(38,54,42,.05)}.provider-card{display:flex;flex-direction:column;gap:15px}.card-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.provider-title{display:flex;gap:10px;align-items:center}.provider-title h3,.integration-card h3{margin:0;font-size:16px;color:#1d2d22}.provider-mark{width:31px;height:31px;border-radius:9px;display:grid;place-items:center;background:#e1ecd6;color:#3d6030;font-weight:800}.badge{display:inline-flex;white-space:nowrap;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700}.badge-good{background:#d9efd0;color:#326d2a}.badge-quiet{background:#edf0eb;color:#69746c}.capabilities{margin:0;color:#59675e;font-size:13px;line-height:1.45}.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0}.fact{padding:9px;background:#f3f5f1;border-radius:7px}.fact dt{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#7a857d}.fact dd{margin:4px 0 0;font-size:12px;color:#38463d;overflow-wrap:anywhere}.controls{display:grid;gap:9px;margin-top:auto}.controls input,.controls select{min-height:38px;padding:8px 10px;border:1px solid #cbd5ca;border-radius:7px;background:#fff;color:#253229}.policy-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.button{min-height:38px;padding:8px 12px;border-radius:7px;border:1px solid transparent;cursor:pointer;font-weight:700;font-size:13px}.button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #b6dc8f;outline-offset:2px}.button:disabled{opacity:.55;cursor:wait}.primary{background:#334c2b;color:#fff}.primary:hover{background:#263d20}.secondary{background:#eff3ec;color:#344a37;border-color:#ced7cc}.text{background:transparent;color:#4e733b;text-align:left;padding-left:0}.integration-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.integrations{padding-bottom:40px}.fatal{margin:10vh auto;max-width:640px;background:#fff1ef;color:#702820;padding:24px;border-radius:12px}@media(max-width:760px){.console-shell{grid-template-columns:1fr}.sidebar{padding:18px;gap:12px}.nav{grid-template-columns:repeat(4,1fr);overflow:auto}.nav-item{white-space:nowrap;text-align:center;font-size:12px}.sidebar-foot{display:none}.content{padding:26px 18px}.topbar{display:grid}.facts{grid-template-columns:1fr}.section-heading{display:grid}.security-note{max-width:none}}@media(prefers-reduced-motion:no-preference){.provider-card,.integration-card{transition:transform .18s ease,box-shadow .18s ease}.provider-card:hover,.integration-card:hover{transform:translateY(-2px);box-shadow:0 16px 28px rgba(38,54,42,.09)}}
+</style></head><body><div id="app" aria-live="polite">Loading Forgevena Command Center…</div><script src="/dashboard-ui.js"></script></body></html>`;
+}
+
 function dashboardHtml() {
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -135,7 +243,7 @@ async function loadPlatform(){const data=await api('/api/platform');document.que
 async function run(name,work){const target=document.querySelector('#status-'+name);try{target.textContent='Working…';const value=await work();target.textContent=value}catch(error){target.textContent=error.message}}
 function saveKey(name){run(name,async()=>{const field=document.querySelector('#key-'+name);await api('/api/providers/credential',{provider:name,secret:field.value});field.value='';return'Credential configured'})}
 function savePolicy(name){run(name,async()=>{await api('/api/providers/policy',{provider:name,policy:{mode:document.querySelector('#mode-'+name).value}});return'Policy saved'})}
-function testProvider(name){run(name,async()=>{if(!confirm('Send a fixed health prompt to '+name+'?'))return'Cancelled';const result=await api('/api/providers/test',{provider:name,confirmDataEgress:true});return'Test response: '+result.text})}
+function testProvider(name){run(name,async()=>{if(!confirm('Send a fixed health prompt to '+name+'?'))return'Cancelled';await api('/api/providers/test',{provider:name,confirmDataEgress:true});return'Connection test completed. Response content was not retained.'})}
 function addMcp(){const name=document.querySelector('#mcp-name').value;const url=document.querySelector('#mcp-url').value;const variable=document.querySelector('#mcp-env').value;run('mcp',async()=>{await api('/api/mcp/register',{name,transport:'http',url,headerEnvironment:variable?{Authorization:variable}:{}});await loadPlatform();return'Registered disabled MCP server'})}
 function generateRender(){run('render',async()=>{await api('/api/render/generate',{});await loadPlatform();return'Render Blueprint generated or preserved'})}
 function saveRenderKey(){run('render',async()=>{const field=document.querySelector('#render-key');await api('/api/render/credential',{secret:field.value});field.value='';return'Render credential configured'})}

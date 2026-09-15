@@ -118,6 +118,10 @@ Forgevena must not privilege a registry operator, cloud, provider, publisher, or
 - Every autonomous loop, recursion path, and delegation chain is bounded by iterations, duration, resources, cost, cancellation, and human authority.
 - Unbounded autonomous loops, hidden external effects, unrestricted lifecycle scripts, and credential distribution to untrusted capabilities are prohibited.
 
+### Presentation and command-center surfaces
+
+The local dashboard and the optional `dashboard-next/` App Router console are presentation surfaces over the same Core services. They must not create a parallel provider registry, credential store, workflow executor, policy engine, audit authority, or release authority. A richer UI may compose existing APIs, but it must preserve loopback authentication, normalized metadata responses, preview-first mutation, explicit consent, human promotion, local/offline operation, and no-telemetry defaults.
+
 ## 13. Governance
 
 [Engineering Governance](../ENGINEERING_GOVERNANCE.md) defines intake, review thresholds, readiness, completion, waivers, debt, incidents, releases, and evidence. The [Platform Blueprint](FORGEVENA_PLATFORM_BLUEPRINT.md) defines current product scope. The [Versioned Product Roadmap](FORGEVENA_VERSIONED_PRODUCT_ROADMAP.md) defines approved dependency order. The [Innovation Opportunity Portfolio](INNOVATION_OPPORTUNITY_PORTFOLIO.md) contains uncommitted ideas governed by the Evidence Funnel.

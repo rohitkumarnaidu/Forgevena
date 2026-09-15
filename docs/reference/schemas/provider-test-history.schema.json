@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forgevena.dev/schemas/provider-test-history/v1",
+  "title": "Forgevena Provider Test History v1",
+  "type": "object",
+  "required": ["schemaVersion", "records"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "records": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "required": ["provider", "model", "operationId", "status", "testedAt", "usage", "compatibilityEvidenceId", "warningCodes"],
+        "properties": {
+          "provider": { "type": "string" },
+          "model": { "type": ["string", "null"] },
+          "operationId": { "type": ["string", "null"] },
+          "status": { "enum": ["success", "failed"] },
+          "testedAt": { "type": "string", "format": "date-time" },
+          "usage": {
+            "type": ["object", "null"],
+            "additionalProperties": { "type": "number" }
+          },
+          "compatibilityEvidenceId": { "type": ["string", "null"] },
+          "warningCodes": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

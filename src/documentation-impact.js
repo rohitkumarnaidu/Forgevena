@@ -60,7 +60,7 @@ const RULES = [
   rule("observability-and-operations", ["src/diagnostics.js", "src/ecosystem-health.js", "src/logging.js"], [
     obligation("observability-operations", "important", ["docs/operations/", "docs/runbooks/"]),
   ]),
-  rule("dashboard-ui-ux-accessibility", ["src/dashboard.js", "website/overrides/", "website/docs/"], [
+  rule("dashboard-ui-ux-accessibility", ["src/dashboard.js", "dashboard-next/", "website/overrides/", "website/docs/"], [
     obligation("dashboard-user-guidance", "important", ["docs/website/", "docs/operations/"]),
     obligation("accessibility-evidence", "critical", ["docs/reports/ACCESSIBILITY_REPORT.md"]),
   ]),

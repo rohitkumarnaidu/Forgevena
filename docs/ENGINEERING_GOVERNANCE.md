@@ -132,6 +132,10 @@ A roadmap-order or committed-scope change requires all of the following before i
 
 New ideas remain in the Innovation Opportunity Portfolio until promoted through the Evidence Funnel. They cannot enter the current release merely because they are valuable, easy, related, or already documented.
 
+### Dashboard and presentation-layer changes
+
+The optional `dashboard-next/` Next.js application is governed as a presentation layer. Its routes must call existing Core services through authenticated, allowlisted APIs and must not introduce a second runtime authority. Dashboard changes require accessibility evidence, keyboard and responsive interaction coverage, secret-redaction tests, documentation synchronization, and parity with the loopback dashboard's consent and policy boundaries. Direct workflow execution, hidden provider transmission, raw source display, and credential persistence in the browser are prohibited.
+
 Emergency security or data-loss work may interrupt the sequence only through a patch or incident track approved by the responsible maintainer. The exception must be narrowly scoped, preserve evidence, document why normal ordering was unsafe, and reconcile the roadmap immediately after containment. Emergency work does not authorize unrelated redesign.
 
 Every release closes with roadmap reconciliation classifying work as completed, deferred, rejected, discovered, deprecated, retired, or moved through an approved change. Implementation, tests, documentation, version metadata, tags, packages, and release evidence must agree before the next version begins.

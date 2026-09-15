@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "changeId": "v1.4.0-rc.1-local-smoke",
+  "checkpoint": "release",
+  "generatedAt": "2026-08-04T19:47:34.543Z",
+  "decision": "ready",
+  "reports": {
+    "documentation-impact.json": {
+      "sha256": "22adabf57ac111501d1f7a21216c1ec9e6426a89ff7fb2decd62c7beed55151a",
+      "bytes": 1621
+    },
+    "documentation-impact.md": {
+      "sha256": "b8a4f61033624430b6c435306c97de49a29c52ccc8b0d8b29704d8d7872c5b1e",
+      "bytes": 1023
+    },
+    "updated-documents.md": {
+      "sha256": "19e736cbec52c58099eda084b5b5a58a07e99521bea5cf995e04b9afa220c207",
+      "bytes": 550
+    },
+    "missing-documentation.md": {
+      "sha256": "7424b9bb1c66e1fd5c29a0e4e45db7f91a42350f86c1ca91ebd9554f33d0bbe2",
+      "bytes": 79
+    },
+    "documentation-coverage.md": {
+      "sha256": "eada4e852a5f0de4f20598d1a5c650975d3de46c45c986b6f3bc261b53fc3967",
+      "bytes": 727
+    },
+    "documentation-quality.json": {
+      "sha256": "8a87c67f41b0c4a1ec2356698a5c2ec504c619cffccc0233125443f0f6b3dd7a",
+      "bytes": 1435
+    },
+    "documentation-synchronization.md": {
+      "sha256": "432f12c08b771eaff84a8245a2259a275d9dd94623e534eed13ece3e1c016a46",
+      "bytes": 118
+    },
+    "release-documentation-summary.md": {
+      "sha256": "7de64fda9805e4103c1c8a2ffcb2a837db3d1dd5b7c19decd6e99518312325d2",
+      "bytes": 93
+    },
+    "version-history-impact.md": {
+      "sha256": "bbcc6e2ca9a1829b68ac414bee4ffb72a84aa6c4f9e81e379f4f0f02a4506911",
+      "bytes": 82
+    },
+    "migration-impact.md": {
+      "sha256": "9e9de55be656ce219b098dccdfb144cb59da37a659415b4545b3bd2b9faa0971",
+      "bytes": 105
+    },
+    "repository-health.md": {
+      "sha256": "2b8f211e9aee8e5fe745e9e0dcd6485b1d92c9ff4a734b1373591aa47fcc79a2",
+      "bytes": 131
+    }
+  }
+}

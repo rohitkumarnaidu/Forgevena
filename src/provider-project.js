@@ -11,10 +11,27 @@ export async function configureProjectProviders(root, updates, { dryRun = true }
   const current = await readProjectProviderConfig(root);
   const next = { ...current, ...clean(updates) };
   for (const name of [next.defaultProvider, next.fallbackProvider, next.embeddingProvider, ...next.priority].filter(Boolean)) providerDefinition(name);
-  if (!(Number(next.temperature) >= 0 && Number(next.temperature) <= 2)) throw new Error("Temperature must be between 0 and 2.");
-  if (!(Number(next.maxOutputTokens) > 0) || !(Number(next.retries) >= 0) || Number(next.retries) > 3 || !(Number(next.timeoutMs) > 0) || !(Number(next.maxAttempts) > 0) || Number(next.maxAttempts) > 3) throw new Error("Token, retry, timeout, and attempt values must be positive limits within governed maximums.");
-  if (next.maxTotalTokens !== null && !(Number(next.maxTotalTokens) > 0)) throw new Error("maxTotalTokens must be null or a positive number.");
-  if (next.maxEstimatedCost !== null && !(Number(next.maxEstimatedCost) >= 0)) throw new Error("maxEstimatedCost must be null or a non-negative number.");
+  const temperature = Number(next.temperature);
+  if (!Number.isFinite(temperature) || temperature < 0 || temperature > 2) throw new Error("Temperature must be between 0 and 2.");
+  next.temperature = temperature;
+  for (const field of ["maxOutputTokens", "timeoutMs", "maxAttempts"]) {
+    const value = Number(next[field]);
+    if (!Number.isFinite(value) || !Number.isInteger(value) || value <= 0 || (field === "maxAttempts" && value > 3)) throw new Error("Token, retry, timeout, and attempt values must be positive limits within governed maximums.");
+    next[field] = value;
+  }
+  const retries = Number(next.retries);
+  if (!Number.isFinite(retries) || !Number.isInteger(retries) || retries < 0 || retries > 3) throw new Error("Token, retry, timeout, and attempt values must be positive limits within governed maximums.");
+  next.retries = retries;
+  if (next.maxTotalTokens !== null) {
+    const value = Number(next.maxTotalTokens);
+    if (!Number.isFinite(value) || !Number.isInteger(value) || value <= 0) throw new Error("maxTotalTokens must be null or a positive integer.");
+    next.maxTotalTokens = value;
+  }
+  if (next.maxEstimatedCost !== null) {
+    const value = Number(next.maxEstimatedCost);
+    if (!Number.isFinite(value) || value < 0) throw new Error("maxEstimatedCost must be null or a non-negative number.");
+    next.maxEstimatedCost = value;
+  }
   next.requireCurrentCompatibility = next.requireCurrentCompatibility === true || next.requireCurrentCompatibility === "true";
   const plan = { dryRun, path: CONFIG_PATH, previous: current, next, storesSecrets: false };
   if (dryRun) return plan;
