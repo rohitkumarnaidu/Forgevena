@@ -2,20 +2,20 @@
   "schemaVersion": 1,
   "changeId": "v1.4-rc-promotion",
   "checkpoint": "release",
-  "generatedAt": "2026-10-02T17:27:17.173Z",
+  "generatedAt": "2026-10-02T17:38:52.986Z",
   "decision": "ready",
   "reports": {
     "documentation-impact.json": {
-      "sha256": "f35e4c9399c5c8274531ddfc42861df86f57696ce7be6e0bcfa99502d804205b",
-      "bytes": 7394
+      "sha256": "ab686c98b8e8ba18f99b7dd9925f116fdc6c9d573ec6715015ea5850c8a1f23b",
+      "bytes": 1734
     },
     "documentation-impact.md": {
-      "sha256": "f1ef2772bcdb61eae2650a150607b6e79c8d00f53de3c29cf0b182d4a69b407c",
-      "bytes": 3957
+      "sha256": "d7062d3948833ada6c9784bc483bf96014602c4eedb7b50aa62058fe6fd21134",
+      "bytes": 1082
     },
     "updated-documents.md": {
-      "sha256": "57bbb45f56662965724959314ffaa1876c57b74148cad82b6fd41fd6cc33116c",
-      "bytes": 1673
+      "sha256": "6708660c5cb20f64f471a088285d29d0b413b8bff7f452c97e070aa06476fcec",
+      "bytes": 603
     },
     "missing-documentation.md": {
       "sha256": "7424b9bb1c66e1fd5c29a0e4e45db7f91a42350f86c1ca91ebd9554f33d0bbe2",
@@ -30,7 +30,7 @@
       "bytes": 1435
     },
     "documentation-synchronization.md": {
-      "sha256": "dcd2b063c72c849b58080f91dfc24929395302892db981a6293e3b1ab92ee892",
+      "sha256": "432f12c08b771eaff84a8245a2259a275d9dd94623e534eed13ece3e1c016a46",
       "bytes": 118
     },
     "release-documentation-summary.md": {
