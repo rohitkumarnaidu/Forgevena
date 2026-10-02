@@ -2480,6 +2480,150 @@
       ]
     },
     {
+      "id": "doc:evidence/changes/v1.4-rc2-preparation/documentation-coverage",
+      "path": "docs/evidence/changes/v1.4-rc2-preparation/documentation-coverage.md",
+      "title": "Generated Documentation Coverage Matrix",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Generated Documentation Coverage Matrix.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc2-preparation/documentation-impact",
+      "path": "docs/evidence/changes/v1.4-rc2-preparation/documentation-impact.md",
+      "title": "Documentation Impact Report",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Documentation Impact Report.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc2-preparation/documentation-synchronization",
+      "path": "docs/evidence/changes/v1.4-rc2-preparation/documentation-synchronization.md",
+      "title": "Documentation Synchronization Report",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Documentation Synchronization Report.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc2-preparation/migration-impact",
+      "path": "docs/evidence/changes/v1.4-rc2-preparation/migration-impact.md",
+      "title": "Migration Impact Summary",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Migration Impact Summary.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc2-preparation/missing-documentation",
+      "path": "docs/evidence/changes/v1.4-rc2-preparation/missing-documentation.md",
+      "title": "Missing Documentation Report",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Missing Documentation Report.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc2-preparation/release-documentation-summary",
+      "path": "docs/evidence/changes/v1.4-rc2-preparation/release-documentation-summary.md",
+      "title": "Release Documentation Summary",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Release Documentation Summary.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc2-preparation/repository-health",
+      "path": "docs/evidence/changes/v1.4-rc2-preparation/repository-health.md",
+      "title": "Repository Health Report",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Repository Health Report.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc2-preparation/updated-documents",
+      "path": "docs/evidence/changes/v1.4-rc2-preparation/updated-documents.md",
+      "title": "Updated Document List",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Updated Document List.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc2-preparation/version-history-impact",
+      "path": "docs/evidence/changes/v1.4-rc2-preparation/version-history-impact.md",
+      "title": "Version History Impact",
+      "classification": "governance-evidence",
+      "authority": null,
+      "purpose": "Retain governance evidence for Version History Impact.",
+      "lifecycle": "maintained",
+      "versions": [
+        "1.4"
+      ],
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ]
+    },
+    {
       "id": "doc:evidence/changes/v1.4.0-provider-platform/readme",
       "path": "docs/evidence/changes/v1.4.0-provider-platform/README.md",
       "title": "v1.4.0 Provider Platform Change Evidence",

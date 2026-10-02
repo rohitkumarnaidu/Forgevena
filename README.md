@@ -30,7 +30,7 @@ Enterprise project bootstrap, governed AI providers, MCP and plugin controls, se
 
 Modern engineering teams repeatedly solve the same setup, governance, integration, and release problems. Forgevena turns those practices into an additive and auditable developer platform without replacing application code or silently transmitting project data.
 
-**Release status:** `v1.3.0` remains the current stable installation. Repository metadata may identify `v1.4.0-rc.1` while its provider-platform release candidate is validated; prerelease metadata is not a stable-support claim.
+**Release status:** `v1.3.0` remains the current stable installation. Repository metadata may identify `v1.4.0-rc.2` while the merged provider-platform changes are validated; prerelease metadata is not a stable-support claim. The previously published `v1.4.0-rc.1` remains immutable.
 
 ## Features
 
