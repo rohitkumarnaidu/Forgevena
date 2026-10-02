@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "changeId": "v1.4-rc-promotion",
-  "title": "v1.4 RC promotion readiness follow-up",
+  "title": "Ollama Cloud smoke evidence",
   "owner": "Provider Platform Working Group",
-  "generatedAt": "2026-10-02T17:38:52.986Z",
+  "generatedAt": "2026-10-02T17:57:04.208Z",
   "checkpoint": "release",
   "comparison": {
     "base": null,
@@ -13,11 +13,12 @@
     "cspell.json",
     "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.json",
     "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.md",
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-synchronization.md",
     "docs/evidence/changes/v1.4-rc-promotion/documentation/evidence-manifest.json",
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/migration-impact.md",
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/missing-documentation.md",
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/updated-documents.md"
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/updated-documents.md",
+    "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.json",
+    "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.md",
+    "docs/providers/compatibility-matrix.md",
+    "docs/release/V1_4_RELEASE_CHECKLIST.md"
   ],
   "changeProfile": "documentation",
   "affectedComponents": [],
@@ -25,11 +26,12 @@
   "documentationFiles": [
     "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.json",
     "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.md",
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-synchronization.md",
     "docs/evidence/changes/v1.4-rc-promotion/documentation/evidence-manifest.json",
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/migration-impact.md",
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/missing-documentation.md",
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/updated-documents.md"
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/updated-documents.md",
+    "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.json",
+    "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.md",
+    "docs/providers/compatibility-matrix.md",
+    "docs/release/V1_4_RELEASE_CHECKLIST.md"
   ],
   "testFiles": [],
   "requirements": [],

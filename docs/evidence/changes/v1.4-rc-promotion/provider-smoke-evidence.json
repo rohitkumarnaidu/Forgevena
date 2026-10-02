@@ -49,7 +49,30 @@
       "limitations": [
         "The local runtime and model discovery were healthy, but inference did not complete within the enforced 60-second request deadline.",
         "No response or model output was retained; local invocation compatibility remains unverified."
-      ]
+      ],
+      "cloudTest": {
+        "outcome": "passed",
+        "service": "Ollama Cloud",
+        "requestedModel": "gemma4:cloud",
+        "reportedModel": "gemma4",
+        "runtimeVersion": "0.35.0",
+        "testedOn": "2026-10-02",
+        "attempts": 1,
+        "commandOperationId": "67788379-7d7f-4d5c-9b95-21d7671a0a92",
+        "invocationOperationId": "dde8d363-8d9a-4fea-9564-4fcb5b917612",
+        "usage": {
+          "inputTokens": 18,
+          "outputTokens": 2
+        },
+        "promptRetained": false,
+        "responseRetained": false,
+        "dataEgress": "One fixed synthetic health prompt was sent to Ollama Cloud.",
+        "supportClaim": "preview",
+        "limitations": [
+          "This validates one account-backed cloud invocation only and does not establish local inference compatibility or general availability.",
+          "The Ollama response identified the model as gemma4; the requested tag was gemma4:cloud."
+        ]
+      }
     }
   ]
 }

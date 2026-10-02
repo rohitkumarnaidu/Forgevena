@@ -25,6 +25,7 @@
 - [x] Credential-gated and consent-gated Gemini smoke test passes (2026-10-02; sanitized evidence retained; preview claim only).
 - [ ] Credential-gated and consent-gated OpenRouter smoke test passes.
 - [ ] Explicit local Ollama smoke test passes against a pinned version.
+- [x] Ollama Cloud `gemma4:cloud` minimal smoke test passes (2026-10-02; preview evidence only; does not satisfy the local Ollama gate).
 - [ ] Compatibility records include model or server versions, verification dates, expiry, limitations, and sanitized evidence.
 
 ## Release Candidate and Publication
