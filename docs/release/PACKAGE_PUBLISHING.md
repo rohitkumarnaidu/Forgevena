@@ -2,13 +2,17 @@
 
 Pushing a verified signed tag matching `v*` starts `.github/workflows/release.yml`. The workflow generates release notes; builds and smoke-tests native Windows, Linux, and macOS executables; uploads the npm archive, checksums, SBOM, provenance, release-verification reports, distribution manifest, and package-manager bundles; creates or updates the GitHub Release; and publishes all configured package channels. Stable tags publish npm and container `latest`; prerelease tags publish npm `next` and never move container `latest`.
 
+## Release evidence gate
+
+Before packaging, the workflow generates release-checkpoint documentation-impact evidence from the previous immutable tag to the requested tag. Publication proceeds only when the report has no mandatory blockers and its decision is `ready`. A `hold` is a release stop, not a warning: do not bypass it or manually publish artifacts. Correct the missing documentation or generated references in a reviewed change, prepare a new versioned candidate, and use a new signed tag. Never move or reuse a published or failed tag. A workflow-dispatch repair uses the selected tag's source and must pass the same release gate.
+
 Maintainers can repair an existing immutable tag by manually running `Automated Release` with `release_tag` set to that tag and `publish` enabled. Leave `publish_packages` disabled when only release notes or downloads need repair. The workflow checks out the tag itself, not `main`, and skips package versions that already exist when registry retries are explicitly enabled.
 
 Release verification is generated only after all six Windows, Ubuntu, and macOS jobs for Node.js 20 and 22 pass. `RELEASE_VERIFICATION.md` is appended to the release description, while `release-verification.json` provides a stable machine-readable evidence contract. Both files link to the exact GitHub Actions run and jobs.
 
 ## npm
 
-The automated release job uses the protected `npm-release` environment and npm Trusted Publishing through GitHub Actions OIDC. `release.yml` is the only authorized npm publisher, uses Node.js 22.14.0 with npm 11.5.1, requests `id-token: write`, and does not read a long-lived npm publication token. Existing immutable versions are detected and skipped safely. Verify with `npm view forgevena version` and `npm view forgevena dist-tags`.
+The automated release job uses the protected `npm-release` environment and npm Trusted Publishing through GitHub Actions OIDC. `release.yml` is the only authorized npm publisher, uses Node.js 22.14.0 with npm 11.5.1, requests `id-token: write`, and does not read a long-lived npm publication token. Existing immutable versions are detected and skipped safely. A successful workflow is not proof of channel publication until the protected environment has been approved and registry state is verified with `npm view forgevena version` and `npm view forgevena dist-tags`.
 
 ## GitHub Packages
 

@@ -48,7 +48,7 @@ const RULES = [
   rule("build-testing-and-dependencies", ["package-lock.json", "scripts/run-tests.js", "scripts/build-", ".github/workflows/ci", ".github/workflows/package", ".github/workflows/docs"], [
     obligation("testing-build-guidance", "important", ["docs/testing/", "docs/release/"]),
   ]),
-  rule("governance-and-policy", ["src/governance", "src/org-policy.js", "src/change-readiness.js", "src/documentation-"], [
+  rule("governance-and-policy", ["src/governance", "src/org-policy.js", "src/change-readiness.js", "src/documentation-impact.js", "src/documentation-evidence.js", "src/documentation-catalog.js", "src/documentation-assets.js", "src/version-documentation.js"], [
     obligation("engineering-governance", "critical", ["docs/ENGINEERING_GOVERNANCE.md"]),
     obligation("documentation-governance", "critical", ["docs/governance/"]),
     obligation("constitutional-alignment", "critical", ["docs/strategy/PLATFORM_CONSTITUTION.md"]),

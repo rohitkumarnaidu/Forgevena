@@ -78,6 +78,8 @@ Implementation and documentation move together:
 
 The binding operational procedure is the [Documentation Synchronization Policy](DOCUMENTATION_SYNCHRONIZATION_POLICY.md). The machine-readable impact report separates deterministic change detection from human review and links each implementation surface to its canonical documentation, tests, diagrams, examples, compatibility, migration, rollback, and release obligations.
 
+Generated references are verified against their source metadata before merge and release. Changes to a generator require focused tests and regenerated outputs; changing generator implementation alone does not imply that governance policy changed. Release-checkpoint impact reports must be `ready` with no mandatory blockers before artifacts are packaged.
+
 Documentation-only changes remain governed changes: they must preserve authority, navigation, metadata, accessibility, terminology, examples, and freshness. Emergency changes use the documented break-glass path and receive time-bounded follow-up rather than an undocumented exception.
 
 The optional `dashboard-next/` App Router console is an active presentation surface, not a documentation authority. Its user journeys, accessibility behavior, privacy boundary, route inventory, and setup instructions are maintained through the provider platform runbook and the app's README; generated API metadata remains owned by Forgevena Core and the loopback dashboard contract.

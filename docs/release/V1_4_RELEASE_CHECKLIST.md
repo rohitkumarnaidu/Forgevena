@@ -32,11 +32,12 @@
 
 - [x] Signed `v1.4.0-rc.1` is created from the approved release commit without moving any prior tag.
 - [x] Candidate branch package lifecycle rehearsal passes on Ubuntu, Windows, and macOS: install stable `1.3.0`, initialize an isolated workspace, install the branch-built `1.4.0-rc.1` tarball, migrate, validate, roll back, install offline from the warmed cache, uninstall, and verify workspace preservation. Hosted evidence: [Package Validation run 37025295232](https://github.com/rohitkumarnaidu/Forgevena/actions/runs/37025295232) for source commit `071df0d` (Node.js 22 on `ubuntu-latest`, `windows-latest`, and `macos-latest`); local Windows rehearsal also passed.
-- [ ] Publish the reviewed merged source as immutable `v1.4.0-rc.2`; never replace or move the already-published RC1 tag.
-- [ ] Repeat the complete lifecycle rehearsal against the published RC2 artifacts on Ubuntu, Windows, and macOS, including install, upgrade/migration, rollback, offline install, uninstall, and workspace preservation.
+- [x] Create and verify the signed `v1.4.0-rc.2` tag on merged PR #54. Its release workflow stopped at the mandatory documentation-impact gate (`provider-generated-reference` and `release-operations`); no RC2 artifacts or package channels were published. The immutable RC2 tag is retained and must not be moved or reused.
+- [ ] Correct the generated provider reference and release-operation guidance in a reviewed change; prepare and validate a new immutable prerelease candidate before publication.
+- [ ] Repeat the complete lifecycle rehearsal against the successfully published candidate artifacts on Ubuntu, Windows, and macOS, including install, upgrade/migration, rollback, offline install, uninstall, and workspace preservation.
 - [x] RC SBOM, provenance, checksums, verification reports, and native package bundles agree on `1.4.0-rc.1`; stable assets must later agree on `1.4.0`.
 - [ ] The signed stable `v1.4.0` tag is created only after all Tier-3 gates pass.
-- [x] RC npm (`next`), GitHub Release, GitHub Packages, GHCR, and downloadable assets publish successfully.
+- [x] RC1 npm (`next`), GitHub Release, GitHub Packages, GHCR, and downloadable assets publish successfully. RC2 did not publish; verify `next` and all channels independently after a later candidate passes its release gate.
 - [ ] Documentation deployment is verified against the final stable `v1.4.0` release commit.
 - [ ] Post-release installation, health, rollback, and channel verification passes.
 

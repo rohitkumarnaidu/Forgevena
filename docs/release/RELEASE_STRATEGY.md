@@ -16,12 +16,13 @@ git tag -s v1.3.0 -m "Forgevena v1.3.0"
 git push origin v1.3.0
 ```
 
-Use annotated tags (`git tag -a`) when signing infrastructure is unavailable, but record the exception. Never move or replace a published tag.
+Release tags must be signed and verified before they are pushed. If signing infrastructure is unavailable, stop publication and restore signing access; an unsigned tag is not an approved substitute. Never move, replace, or reuse a published or failed tag.
 
 ## Publication
 
 1. Update `VERSION`, package metadata, changelog, migration notes, and supported versions.
 2. Run tests, documentation, security, package, Docker, upgrade, and rollback gates.
+2a. Require release-checkpoint documentation-impact evidence to return `ready`; a `hold` blocks packaging and publication until a reviewed correction is included in a new candidate.
 3. Merge the release preparation through the protected `main` branch.
 4. Create and push the signed tag from the validated release commit.
 5. Allow `Automated Release` to generate changelog-based release notes, archives, checksums, supply-chain evidence, the GitHub Release, npm package, GitHub Package, and container images.

@@ -29,6 +29,7 @@ Forgevena exists to make software delivery governable from idea to production. I
 - **Explainability:** Plans, policy decisions, compatibility results, health findings, and recommendations disclose reasons and evidence.
 - **Recoverability:** Managed mutations have ownership records, validation, bounded history, and precise rollback behavior.
 - **Verifiability:** Trust claims are supported by tests, signatures, provenance, compatibility evidence, and dated reports.
+- **Generated-reference safety:** Generated references are derived from approved source metadata, and must never include credential values, restricted prompts, or provider payloads.
 - **Interoperability:** Providers, plugins, templates, skills, workflows, IDEs, and services use versioned contracts rather than duplicated domain logic.
 - **Accessibility:** CLI, documentation, dashboards, templates, and future interfaces must support inclusive, keyboard-accessible, readable operation.
 - **Sustainability:** Design decisions account for maintenance load, operational cost, compute cost, energy use, and contributor succession.

@@ -13,4 +13,5 @@
 | `cursor` | agent-host | agent-execute, auth-status, mcp-host | `CURSOR_API_KEY` |
 | `windsurf` | agent-host | auth-status, mcp-host | host-managed |
 
+Credential resolution uses a process environment variable as a read-only override, then the active managed key slot, then legacy compatibility paths. Generated references contain credential-source names only; secret values are never included.
 Compatibility fixture checksums use UTF-8 content normalized to LF so evidence remains deterministic across Windows, macOS, and Linux checkouts.
