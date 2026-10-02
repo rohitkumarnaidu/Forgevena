@@ -2,20 +2,20 @@
   "schemaVersion": 1,
   "changeId": "credential-slots-cli-dashboard",
   "checkpoint": "merge",
-  "generatedAt": "2026-10-02T14:49:56.929Z",
+  "generatedAt": "2026-10-02T15:21:21.089Z",
   "decision": "ready",
   "reports": {
     "documentation-impact.json": {
-      "sha256": "4aef2c9bfc46f9de54158e58cd3ce13a70520d3771c94969421d09af0ea2104d",
-      "bytes": 12460
+      "sha256": "d7c1eb4798806a8650cf91bcf26879bdcd76e2bb03f066cfa33e3798ad45c272",
+      "bytes": 9167
     },
     "documentation-impact.md": {
-      "sha256": "f0b14f82c58e33648b91c6971929e6f62185734723efeb667332dd3bd9bc357c",
-      "bytes": 5516
+      "sha256": "f82ce9194a2944639741d728bea2c65520001444f11cb486d0a12cc738962e35",
+      "bytes": 3361
     },
     "updated-documents.md": {
-      "sha256": "aed29d3567fee39e83116d0ea93e1da1d86acc0979f6b41ca569d50a09b6681b",
-      "bytes": 1778
+      "sha256": "9c490082c509439179afca1231d46d3152bf8393acfaa119f65c549d93db26b8",
+      "bytes": 789
     },
     "missing-documentation.md": {
       "sha256": "7424b9bb1c66e1fd5c29a0e4e45db7f91a42350f86c1ca91ebd9554f33d0bbe2",

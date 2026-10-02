@@ -30,7 +30,8 @@
 ## Release Candidate and Publication
 
 - [x] Signed `v1.4.0-rc.1` is created from the approved release commit without moving any prior tag.
-- [ ] Clean install, upgrade, migration, rollback, offline, cancellation, and uninstall rehearsals pass on all supported operating systems. Windows npm and standalone installation, Ubuntu standalone smoke, Docker, deterministic migration/rollback, cancellation, and hosted platform checks are retained; clean artifact-install and uninstall rehearsals remain for macOS and Linux.
+- [x] Candidate branch package lifecycle rehearsal passes on Ubuntu, Windows, and macOS: install stable `1.3.0`, initialize an isolated workspace, install the branch-built `1.4.0-rc.1` tarball, migrate, validate, roll back, install offline from the warmed cache, uninstall, and verify workspace preservation. Hosted evidence: [Package Validation run 37025295232](https://github.com/rohitkumarnaidu/Forgevena/actions/runs/37025295232) for source commit `071df0d` (Node.js 22 on `ubuntu-latest`, `windows-latest`, and `macos-latest`); local Windows rehearsal also passed.
+- [ ] Repeat the lifecycle rehearsal against the newly published immutable release candidate after this PR is merged. Because `v1.4.0-rc.1` is immutable and does not contain this branch's changes, publish a new prerelease version (for example, `1.4.0-rc.2`) rather than replacing or retagging RC1.
 - [x] RC SBOM, provenance, checksums, verification reports, and native package bundles agree on `1.4.0-rc.1`; stable assets must later agree on `1.4.0`.
 - [ ] The signed stable `v1.4.0` tag is created only after all Tier-3 gates pass.
 - [x] RC npm (`next`), GitHub Release, GitHub Packages, GHCR, and downloadable assets publish successfully.
