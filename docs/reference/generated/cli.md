@@ -34,4 +34,4 @@
 | `config` | Read, update, import, or export safe configuration. |
 | `upgrade` | Upgrade managed workspace state or roll back. |
 
-Source package version: `1.4.0-rc.1`. A prerelease source version is candidate metadata and does not replace the current stable installation guidance.
+Source package version: `1.4.0-rc.2`. A prerelease source version is candidate metadata and does not replace the current stable installation guidance.

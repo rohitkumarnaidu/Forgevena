@@ -4,6 +4,8 @@
 
 The software-controlled implementation of the `v1.4.0` Production Provider Platform is complete at the **merge** checkpoint. PR [#42](https://github.com/rohitkumarnaidu/Forgevena/pull/42) merged as commit `0dc68066c7c3cf9fbab8d7669e21ba96ea5b01a2` after all pull-request checks passed, and the release-candidate preparation merged as [PR #44](https://github.com/rohitkumarnaidu/Forgevena/pull/44) at commit `41fe1f47fbc744425a4fe15773ca0aa12522c386`. Signed `v1.4.0-rc.1` is published as a prerelease. It is not a stable release; promotion remains on **HOLD** until credential-gated live-provider evidence and the remaining clean-install/rehearsal matrix complete.
 
+PR [#53](https://github.com/rohitkumarnaidu/Forgevena/pull/53) subsequently merged the credential-slot and dashboard readiness changes at commit `bbb56f7de055e8d60537c7117cbce9516a3b8592`. RC1 predates that merge and remains immutable. RC2 preparation is in progress; no RC2 tag or publication exists until the version-bump change is reviewed, merged, and release validation succeeds.
+
 ## Implemented
 
 | Area | Result | Evidence |

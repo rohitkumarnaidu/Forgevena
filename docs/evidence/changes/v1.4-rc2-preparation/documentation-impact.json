@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 2,
+  "changeId": "v1.4-rc2-preparation",
+  "title": "Prepare immutable v1.4.0-rc.2 candidate",
+  "owner": "Release Engineering",
+  "generatedAt": "2026-10-02T19:53:49.356Z",
+  "checkpoint": "push",
+  "comparison": {
+    "base": null,
+    "head": null
+  },
+  "changedFiles": [
+    "CHANGELOG.md",
+    "README.md",
+    "VERSION",
+    "docs/assets/visual-evidence.json",
+    "docs/evidence/changes/v1.4-rc2-preparation/documentation-coverage.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/documentation-impact.json",
+    "docs/evidence/changes/v1.4-rc2-preparation/documentation-impact.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/documentation-quality.json",
+    "docs/evidence/changes/v1.4-rc2-preparation/documentation-synchronization.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/evidence-manifest.json",
+    "docs/evidence/changes/v1.4-rc2-preparation/migration-impact.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/missing-documentation.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/release-documentation-summary.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/repository-health.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/updated-documents.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/version-history-impact.md",
+    "docs/examples/executable-evidence.json",
+    "docs/reference/generated/ai-documentation-index.json",
+    "docs/reference/generated/cli.md",
+    "docs/reference/generated/documentation-catalog.json",
+    "docs/reference/generated/documentation-coverage-matrix.md",
+    "docs/reference/generated/documentation-health.json",
+    "docs/reference/generated/documentation-health.md",
+    "docs/reference/generated/manifest.json",
+    "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+    "docs/release/V1_4_RELEASE_CHECKLIST.md",
+    "package-lock.json",
+    "package.json",
+    "test/documentation-generator.test.js",
+    "test/upgrade.test.js"
+  ],
+  "changeProfile": "implementation",
+  "affectedComponents": [
+    "build-testing-and-dependencies",
+    "open-source-governance",
+    "public-contract",
+    "release-version-and-distribution"
+  ],
+  "implementationFiles": [
+    "package-lock.json",
+    "package.json"
+  ],
+  "documentationFiles": [
+    "CHANGELOG.md",
+    "README.md",
+    "docs/assets/visual-evidence.json",
+    "docs/evidence/changes/v1.4-rc2-preparation/documentation-coverage.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/documentation-impact.json",
+    "docs/evidence/changes/v1.4-rc2-preparation/documentation-impact.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/documentation-quality.json",
+    "docs/evidence/changes/v1.4-rc2-preparation/documentation-synchronization.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/evidence-manifest.json",
+    "docs/evidence/changes/v1.4-rc2-preparation/migration-impact.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/missing-documentation.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/release-documentation-summary.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/repository-health.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/updated-documents.md",
+    "docs/evidence/changes/v1.4-rc2-preparation/version-history-impact.md",
+    "docs/examples/executable-evidence.json",
+    "docs/reference/generated/ai-documentation-index.json",
+    "docs/reference/generated/cli.md",
+    "docs/reference/generated/documentation-catalog.json",
+    "docs/reference/generated/documentation-coverage-matrix.md",
+    "docs/reference/generated/documentation-health.json",
+    "docs/reference/generated/documentation-health.md",
+    "docs/reference/generated/manifest.json",
+    "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+    "docs/release/V1_4_RELEASE_CHECKLIST.md"
+  ],
+  "testFiles": [
+    "test/documentation-generator.test.js",
+    "test/upgrade.test.js"
+  ],
+  "requirements": [
+    {
+      "id": "implementation-documentation-coupling",
+      "component": "cross-cutting",
+      "criticality": "critical",
+      "reason": "Implementation changes require documentation in the same change.",
+      "candidateDocuments": [
+        "docs/",
+        "README.md",
+        "CHANGELOG.md",
+        "SECURITY.md",
+        "SUPPORTED_VERSIONS.md",
+        "CONTRIBUTING.md",
+        "GOVERNANCE.md",
+        "ROADMAP.md",
+        "RELEASE.md",
+        "AGENTS.md"
+      ],
+      "matchedDocuments": [
+        "CHANGELOG.md",
+        "README.md",
+        "docs/assets/visual-evidence.json",
+        "docs/evidence/changes/v1.4-rc2-preparation/documentation-coverage.md",
+        "docs/evidence/changes/v1.4-rc2-preparation/documentation-impact.json",
+        "docs/evidence/changes/v1.4-rc2-preparation/documentation-impact.md",
+        "docs/evidence/changes/v1.4-rc2-preparation/documentation-quality.json",
+        "docs/evidence/changes/v1.4-rc2-preparation/documentation-synchronization.md",
+        "docs/evidence/changes/v1.4-rc2-preparation/evidence-manifest.json",
+        "docs/evidence/changes/v1.4-rc2-preparation/migration-impact.md",
+        "docs/evidence/changes/v1.4-rc2-preparation/missing-documentation.md",
+        "docs/evidence/changes/v1.4-rc2-preparation/release-documentation-summary.md",
+        "docs/evidence/changes/v1.4-rc2-preparation/repository-health.md",
+        "docs/evidence/changes/v1.4-rc2-preparation/updated-documents.md",
+        "docs/evidence/changes/v1.4-rc2-preparation/version-history-impact.md",
+        "docs/examples/executable-evidence.json",
+        "docs/reference/generated/ai-documentation-index.json",
+        "docs/reference/generated/cli.md",
+        "docs/reference/generated/documentation-catalog.json",
+        "docs/reference/generated/documentation-coverage-matrix.md",
+        "docs/reference/generated/documentation-health.json",
+        "docs/reference/generated/documentation-health.md",
+        "docs/reference/generated/manifest.json",
+        "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+        "docs/release/V1_4_RELEASE_CHECKLIST.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "implementation-test-coupling",
+      "component": "cross-cutting",
+      "criticality": "important",
+      "reason": "Implementation changes require executable validation or a governed not-applicable rationale.",
+      "candidateDocuments": [
+        "test/"
+      ],
+      "matchedDocuments": [
+        "test/documentation-generator.test.js",
+        "test/upgrade.test.js"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "open-source-governance",
+      "component": "open-source-governance",
+      "criticality": "important",
+      "reason": "open-source-governance changes require synchronized open source governance.",
+      "candidateDocuments": [
+        "README.md",
+        "CONTRIBUTING.md",
+        "SECURITY.md",
+        "GOVERNANCE.md"
+      ],
+      "matchedDocuments": [
+        "README.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "public-generated-reference",
+      "component": "public-contract",
+      "criticality": "important",
+      "reason": "public-contract changes require synchronized public generated reference.",
+      "candidateDocuments": [
+        "docs/reference/generated/"
+      ],
+      "matchedDocuments": [
+        "docs/reference/generated/ai-documentation-index.json",
+        "docs/reference/generated/cli.md",
+        "docs/reference/generated/documentation-catalog.json",
+        "docs/reference/generated/documentation-coverage-matrix.md",
+        "docs/reference/generated/documentation-health.json",
+        "docs/reference/generated/documentation-health.md",
+        "docs/reference/generated/manifest.json"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "public-product-guidance",
+      "component": "public-contract",
+      "criticality": "important",
+      "reason": "public-contract changes require synchronized public product guidance.",
+      "candidateDocuments": [
+        "README.md",
+        "docs/ROADMAP.md"
+      ],
+      "matchedDocuments": [
+        "README.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "release-history",
+      "component": "release-version-and-distribution",
+      "criticality": "critical",
+      "reason": "release-version-and-distribution changes require synchronized release history.",
+      "candidateDocuments": [
+        "CHANGELOG.md",
+        "docs/releases/",
+        "docs/release/RELEASE_HISTORY.md"
+      ],
+      "matchedDocuments": [
+        "CHANGELOG.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "release-operations",
+      "component": "release-version-and-distribution",
+      "criticality": "critical",
+      "reason": "release-version-and-distribution changes require synchronized release operations.",
+      "candidateDocuments": [
+        "RELEASE.md",
+        "docs/release/PACKAGE_PUBLISHING.md",
+        "docs/release/RELEASE_STRATEGY.md"
+      ],
+      "matchedDocuments": [],
+      "status": "not-applicable",
+      "mandatory": true,
+      "rationale": "No tag or publication is performed by this preparation PR; signed RC2 publication runs only after review, merge, and release validation."
+    },
+    {
+      "id": "testing-build-guidance",
+      "component": "build-testing-and-dependencies",
+      "criticality": "important",
+      "reason": "build-testing-and-dependencies changes require synchronized testing build guidance.",
+      "candidateDocuments": [
+        "docs/testing/",
+        "docs/release/"
+      ],
+      "matchedDocuments": [
+        "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+        "docs/release/V1_4_RELEASE_CHECKLIST.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    }
+  ],
+  "blockers": [],
+  "decision": "ready"
+}
