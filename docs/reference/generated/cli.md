@@ -15,6 +15,7 @@
 | `update` | Add newly managed missing assets. |
 | `rollback` | Remove unchanged assets owned by a managed operation. |
 | `integrations` | Manage integration lifecycle. |
+| `credentials` | Manage masked provider credential slots, activation, rotation, quarantine, and recovery. |
 | `providers` | Configure, validate, invoke, stream, cancel, and inspect governed provider adapters with explicit transmission consent. |
 | `mcp` | Manage MCP definitions and activation. |
 | `plugins` | Manage signed declarative and isolated runtime plugins. |

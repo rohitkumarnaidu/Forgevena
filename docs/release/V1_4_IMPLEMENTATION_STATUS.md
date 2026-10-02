@@ -2,7 +2,7 @@
 
 ## Decision
 
-The software-controlled implementation of the `v1.4.0` Production Provider Platform is complete at the **merge** checkpoint. PR [#42](https://github.com/rohitkumarnaidu/Forgevena/pull/42) merged as commit `0dc68066c7c3cf9fbab8d7669e21ba96ea5b01a2` after all pull-request checks passed, and the post-merge workflows on `main` also passed. It remains an implementation preview and release-candidate preparation, not a stable release. Release promotion remains on **HOLD** until credential-gated live-provider evidence, release-candidate rehearsals, and signed publication complete.
+The software-controlled implementation of the `v1.4.0` Production Provider Platform is complete at the **merge** checkpoint. PR [#42](https://github.com/rohitkumarnaidu/Forgevena/pull/42) merged as commit `0dc68066c7c3cf9fbab8d7669e21ba96ea5b01a2` after all pull-request checks passed, and the release-candidate preparation merged as [PR #44](https://github.com/rohitkumarnaidu/Forgevena/pull/44) at commit `41fe1f47fbc744425a4fe15773ca0aa12522c386`. Signed `v1.4.0-rc.1` is published as a prerelease. It is not a stable release; promotion remains on **HOLD** until credential-gated live-provider evidence and the remaining clean-install/rehearsal matrix complete.
 
 ## Implemented
 
@@ -22,22 +22,25 @@ The software-controlled implementation of the `v1.4.0` Production Provider Platf
 
 | Gate | Result |
 | --- | --- |
-| Node tests | 361 passed locally and in hosted CI |
+| Node tests | 362 passed locally and in hosted CI |
 | Overall line coverage | 95.88% |
 | Overall branch coverage | 85.52% |
 | Overall function coverage | 92.03% |
 | Mutation gate | 100% |
 | Tier-3 merge readiness | 100/100, no blockers |
-| Package clean install | Passed |
-| Standalone binaries | Passed on Windows, Ubuntu, and macOS |
-| Docker non-root CLI | Passed in Package Validation |
+| Package clean install | Published RC installed in an isolated Windows npm prefix |
+| Standalone binaries | Hosted Windows, Ubuntu, and macOS builds passed; published Windows and Ubuntu artifacts smoke-tested |
+| Docker non-root CLI | Local Node 22 container version, read-only doctor, and mounted-workspace dry run passed |
+| RC distribution | GitHub prerelease assets, npm `next`, GitHub Packages, and GHCR `1.4.0-rc.1` published |
 | Documentation and governance | Documentation CI, Mermaid, links, and strict build passed |
+
+The exact local release-candidate commands, observed safety behavior, and remaining boundaries are retained in [v1.4.0-rc.1 local smoke validation](../evidence/releases/v1.4.0-rc.1/LOCAL_SMOKE_VALIDATION.md).
 
 ## Exact Remaining Boundaries
 
 1. Credential-gated, consent-gated live smoke tests for supported hosted providers; Ollama requires an explicitly available local endpoint.
-2. `v1.4.0-rc.1` clean install, upgrade from the previous two stable releases, migration, rollback, offline, cancellation, and uninstall rehearsals.
-3. Release-only SBOM, provenance, checksums, native packages, compatibility evidence, and known limitations.
-4. Signed RC and stable tags, protected registry publication, documentation deployment, and post-release verification.
+2. Clean artifact-install, upgrade, rollback, offline, cancellation, and uninstall rehearsals on macOS and Linux. Windows and Ubuntu standalone smoke evidence, deterministic migration/rollback, Docker, and hosted platform coverage are already retained.
+3. Dated compatibility evidence with provider and model/server versions, expiry, limitations, and sanitized results.
+4. Stable `v1.4.0` tag, final documentation deployment verification, and post-release installation, health, rollback, and channel verification.
 
 No private credential, billing action, live request, tag, package publication, or deployment is performed by local deterministic validation.

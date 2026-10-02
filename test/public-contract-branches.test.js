@@ -56,7 +56,9 @@ test("provider policy validates every numeric boundary and usage period", async 
     await assert.rejects(() => setProviderPolicy(root, "openai", { mode: "invalid" }), /Policy mode/);
     for (const field of ["maxInputCharacters", "maxOutputTokens", "timeoutMs", "monthlyRequestLimit"]) {
       await assert.rejects(() => setProviderPolicy(root, "openai", { [field]: 0 }), new RegExp(field));
+      await assert.rejects(() => setProviderPolicy(root, "openai", { [field]: 1.5 }), new RegExp(field));
     }
+    await assert.rejects(() => setProviderPolicy(root, "openai", { timeoutMs: Number.POSITIVE_INFINITY }), /timeoutMs/);
     await assert.rejects(() => setProviderPolicy(root, "openai", { retries: -1 }), /retries/);
     await assert.rejects(() => setProviderPolicy(root, "openai", { retries: 6 }), /retries/);
     const preview = await setProviderPolicy(root, "openai", { mode: "budgeted", retries: "3", maxInputCharacters: "100" });
@@ -81,8 +83,14 @@ test("project provider configuration validates optional and numeric branches", a
     await assert.rejects(() => configureProjectProviders(root, { defaultProvider: "missing" }), /Choose one of/);
     for (const temperature of [-0.1, 2.1]) await assert.rejects(() => configureProjectProviders(root, { temperature }), /Temperature/);
     await assert.rejects(() => configureProjectProviders(root, { maxOutputTokens: 0 }), /positive limits/);
+    for (const [field, value] of [["maxOutputTokens", 1.5], ["retries", 0.5], ["timeoutMs", Number.POSITIVE_INFINITY], ["maxAttempts", Number.NaN], ["maxTotalTokens", 100.5]]) {
+      await assert.rejects(() => configureProjectProviders(root, { [field]: value }), /positive limits|positive integer/);
+    }
     await assert.rejects(() => configureProjectProviders(root, { retries: -1 }), /positive limits/);
     await assert.rejects(() => configureProjectProviders(root, { timeoutMs: 0 }), /positive limits/);
+    const decimalPlan = await configureProjectProviders(root, { temperature: 1.5, maxEstimatedCost: 0.25 });
+    assert.equal(decimalPlan.next.temperature, 1.5);
+    assert.equal(decimalPlan.next.maxEstimatedCost, 0.25);
     const applied = await configureProjectProviders(root, { defaultProvider: "ollama", fallbackProvider: "openai", embeddingProvider: "gemini", priority: ["ollama", "openai"] }, { dryRun: false });
     assert.equal(applied.configured, true);
     assert.equal((await readProjectProviderConfig(root)).defaultProvider, "ollama");

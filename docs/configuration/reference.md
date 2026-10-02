@@ -28,4 +28,10 @@ ai-workspace config import --input safe-config.json --dry-run
 
 Safe exports exclude credential values and runtime payloads. Unknown configuration keys fail validation.
 
+## Provider credential slots
+
+Provider credentials can use isolated named slots. `primary` remains compatible with existing 1.x paths, while additional slots are stored in ignored provider-scoped locations. Registry metadata records only slot IDs, storage mode, lifecycle state, timestamps, and bounded audit events; it never records secret values.
+
+Credential resolution is: process environment override, explicit managed active slot, then legacy compatibility paths. Environment-owned values cannot be activated, rotated, quarantined, recovered, or marked validated by Forgevena. Managed slot validation writes only a timestamp and metadata-only audit event. Backups cover every active managed slot and identify slots without returning values. See [Credential slot operations](../runbooks/CREDENTIAL_SLOT_OPERATIONS.md) and the [credential slot schema](../reference/schemas/credential-slot.schema.json).
+
 See [Environment variables](../reference/environment-variables.md) and [schemas](../reference/schemas/).

@@ -1,0 +1,33 @@
+# Updated Document List
+
+- `docs/CLI.md`
+- `docs/PROVIDER_CONFIGURATION.md`
+- `docs/cli/reference.md`
+- `docs/configuration/reference.md`
+- `docs/evidence/changes/credential-slots-cli-dashboard/documentation-coverage.md`
+- `docs/evidence/changes/credential-slots-cli-dashboard/documentation-impact.json`
+- `docs/evidence/changes/credential-slots-cli-dashboard/documentation-impact.md`
+- `docs/evidence/changes/credential-slots-cli-dashboard/documentation-quality.json`
+- `docs/evidence/changes/credential-slots-cli-dashboard/documentation-synchronization.md`
+- `docs/evidence/changes/credential-slots-cli-dashboard/evidence-manifest.json`
+- `docs/evidence/changes/credential-slots-cli-dashboard/migration-impact.md`
+- `docs/evidence/changes/credential-slots-cli-dashboard/missing-documentation.md`
+- `docs/evidence/changes/credential-slots-cli-dashboard/release-documentation-summary.md`
+- `docs/evidence/changes/credential-slots-cli-dashboard/repository-health.md`
+- `docs/evidence/changes/credential-slots-cli-dashboard/updated-documents.md`
+- `docs/evidence/changes/credential-slots-cli-dashboard/version-history-impact.md`
+- `docs/examples/executable-evidence.json`
+- `docs/operations/runbooks.md`
+- `docs/providers/adapter-contract.md`
+- `docs/providers/reference.md`
+- `docs/reference/generated/ai-documentation-index.json`
+- `docs/reference/generated/cli.md`
+- `docs/reference/generated/documentation-catalog.json`
+- `docs/reference/generated/documentation-coverage-matrix.md`
+- `docs/reference/generated/documentation-health.json`
+- `docs/reference/generated/documentation-health.md`
+- `docs/reference/generated/manifest.json`
+- `docs/release/V1_4_IMPLEMENTATION_STATUS.md`
+- `docs/release/V1_4_RELEASE_CHECKLIST.md`
+- `docs/schemas/index.md`
+- `docs/security/guide.md`

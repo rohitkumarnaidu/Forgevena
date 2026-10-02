@@ -76,6 +76,13 @@ test("package validation smoke-tests host-native executables before tagging", as
   assert.match(workflow, /node22-macos-x64/);
   assert.match(workflow, /macos-15-intel/);
   assert.match(workflow, /Smoke-test standalone executable/);
+  assert.match(workflow, /npm lifecycle on \$\{\{ matrix\.os \}\}/);
+  assert.match(workflow, /os: \[ubuntu-latest, windows-latest, macos-latest\]/);
+  assert.match(workflow, /forgevena@1\.3\.0/);
+  assert.match(workflow, /upgrade rollback --apply --yes --structured/);
+  assert.match(workflow, /npm install --offline/);
+  assert.match(workflow, /npm uninstall --prefix "\$TEST_ROOT" forgevena/);
+  assert.match(workflow, /test -f "\$WORKSPACE\/\.ai-workspace\/workspace\.json"/);
   assert.match(builder, /argon2-win32-x64-msvc/);
   assert.match(builder, /argon2-linux-x64-gnu/);
   assert.match(builder, /argon2-darwin-x64/);

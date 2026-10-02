@@ -37,11 +37,12 @@ test("vault handler routes lifecycle operations and validates required subjects"
 });
 
 test("credential handler covers list, status, validation, backup, and removal", async () => {
+  const validationCalls = [];
   const services = {
     listCredentialDefinitions: () => [{ name: "openai" }, { name: "render" }],
     credentialStatus: async (_root, name) => ({ credential: name, configured: name === "openai" }),
     initializeCredentialPlaceholders: async () => ({ initialized: true }),
-    validateCredential: async (_root, name) => ({ credential: name, valid: name === "openai" }),
+    validateCredential: async (...args) => { validationCalls.push(args); return { credential: args[1], valid: args[1] === "openai" }; },
     backupCredentials: async () => ({ backedUp: ["openai"] }),
     removeCredential: async (_root, name) => ({ removed: name }),
   };
@@ -50,7 +51,10 @@ test("credential handler covers list, status, validation, backup, and removal", 
   assert.equal((await credentialCommand("root", ["status", "openai"], options, services)).configured, true);
   assert.equal((await credentialCommand("root", ["status"], options, services)).credentials.length, 2);
   assert.equal((await credentialCommand("root", ["validate", "openai"], options, services)).valid, true);
+  assert.deepEqual(validationCalls.at(-1).slice(1), ["openai", { keyId: "primary", dryRun: true }]);
   assert.equal((await credentialCommand("root", ["validate"], options, services)).credentials.length, 2);
+  await credentialCommand("root", ["validate", "openai", "--key-id", "work"], { ...options, dryRun: false, apply: true }, services);
+  assert.deepEqual(validationCalls.at(-1).slice(1), ["openai", { keyId: "work", dryRun: false }]);
   assert.deepEqual((await credentialCommand("root", ["backup"], options, services)).backedUp, ["openai"]);
   assert.equal((await credentialCommand("root", ["remove", "render"], options, services)).removed, "render");
   await assert.rejects(() => credentialCommand("root", ["invalid"], options, services), (error) => error.code === "CLI_CREDENTIAL_ACTION_INVALID");
@@ -73,6 +77,23 @@ test("credential configuration preserves routed storage and masked input boundar
   assert.equal(calls.at(-1)[2], "masked-value");
   await assert.rejects(() => credentialCommand("root", ["configure"], options, services), (error) => error.code === "CLI_CREDENTIAL_REQUIRED");
   await assert.rejects(() => credentialCommand("root", ["configure", "openai"], { ...options, dryRun: false, nonInteractive: true }, services), (error) => error.code === "CLI_CREDENTIAL_INTERACTIVE_REQUIRED");
+});
+
+test("credential key commands route named slot lifecycle without accepting secrets as arguments", async () => {
+  const calls = [];
+  const services = {
+    listCredentialDefinitions: () => [],
+    listCredentialKeys: async (_root, name) => [{ keyId: "work", active: true, credential: name }],
+    credentialKeyAudit: async () => ({ audit: [{ action: "activated", keyId: "work" }] }),
+    activateCredentialKey: async (...args) => { calls.push(args); return { activated: true, keyId: args[2] }; },
+    removeCredential: async (...args) => { calls.push(args); return { removed: true, keyId: args[2].keyId, nextKeyId: args[2].nextKeyId }; },
+    recoverCredential: async (...args) => { calls.push(args); return { recovered: true, keyId: args[2].keyId }; },
+  };
+  assert.equal((await credentialCommand("root", ["keys", "openai"], options, services)).keys[0].keyId, "work");
+  assert.equal((await credentialCommand("root", ["activate", "openai", "--key-id", "work"], options, services)).keyId, "work");
+  assert.deepEqual(await credentialCommand("root", ["remove", "openai", "--key-id", "work", "--next-key-id", "primary"], options, services), { removed: true, keyId: "work", nextKeyId: "primary" });
+  assert.equal((await credentialCommand("root", ["recover", "openai", "--key-id", "work"], options, services)).recovered, true);
+  assert.equal(calls.some((call) => JSON.stringify(call).includes("secret")), false);
 });
 
 test("credential rotation honors preview, manual ownership, and interactive safety", async () => {

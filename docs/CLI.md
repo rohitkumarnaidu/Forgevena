@@ -8,7 +8,6 @@ All mutating project commands use dry-run mode unless `--apply` is supplied. Exi
 
 | Command | Behavior |
 | --- | --- |
-| `doctor` | Detects operating system, developer tools, and project stack without writing files. |
 | `create <name>` | Creates an empty-destination project from a named template. |
 | `init` | Adds only missing workspace assets to the current repository. |
 | `add <module>` | Adds one approved additive module. |

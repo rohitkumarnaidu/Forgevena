@@ -40,7 +40,7 @@
 | `install [tool]` | consent flags | Official global tool installation plan/action. |
 | `reference [name]` | consent flags | Reference repository clone plan/action. |
 | `providers <action> [name]` | see provider actions below | Provider lifecycle, policy, auth, invocation, dashboard. |
-| `credentials <action> [name]` | `--storage local\|encrypted` | Secret initialization, masked setup, rotation, validation, backup, removal. |
+| `credentials <action> [provider]` | `--key-id`, `--storage local\|encrypted`, `--next-key-id` | Manage masked provider slots, activation, rotation, quarantine, recovery, validation, and backup. |
 | `mcp <action> [name]` | definition/host flags | Register, validate, activate, health-check, or remove. |
 | `plugins <action> [source-or-id]` | trust and safety flags | Install/update declarative signed plugins and control activation. |
 | `cloud list` | none | List supported cloud adapters. |
@@ -51,7 +51,22 @@
 | `config [key value]` | `export\|import`, safety flags | Read/set safe config or transfer it. |
 | `upgrade [rollback]` | safety flags | Upgrade managed workspace state or restore snapshot. |
 
-Provider actions are `list`, `init`, `configure`, `status`, `doctor`, `validate`, `update`, `remove`, `models`, `project`, `mcp`, `invoke`, `test`, `verify`, `login`, `logout`, `limits`, and `dashboard`.
+Provider actions are `list`, `init`, `configure`, `status`, `doctor`, `validate`, `update`, `remove`, `models`, `project`, `mcp`, `invoke`, `stream`, `cancel`, `test`, `verify`, `login`, `logout`, `limits`, and `dashboard`. `invoke`, `stream`, `test`, and `verify` transmit the supplied prompt to an external provider, require `--apply --yes`, and record provider usage; `cancel` takes an operation ID and cancels an active invocation without transmitting a prompt.
+
+## Credential slots
+
+`primary` remains the backward-compatible default slot. `personal`, `work`, and `staging` are suggested names; custom lowercase hyphenated IDs are supported. Values are accepted only through masked local input and are never returned by commands.
+
+```powershell
+forgevena credentials keys gemini
+forgevena credentials configure gemini --key-id work --storage encrypted --apply
+forgevena credentials activate gemini --key-id work --apply
+forgevena credentials rotate gemini --key-id work --apply
+forgevena credentials remove gemini --key-id work --next-key-id primary --apply
+forgevena credentials recover gemini --key-id work --apply
+```
+
+Removal quarantines managed values for 30 days. Forgevena does not silently switch the active slot, and process-environment keys remain owned by the external environment.
 
 ## Output and exit codes
 

@@ -29,11 +29,12 @@
 
 ## Release Candidate and Publication
 
-- [ ] `v1.4.0-rc.1` is created from the approved release commit without moving any prior tag.
-- [ ] Clean install, upgrade, migration, rollback, offline, cancellation, and uninstall rehearsals pass on all supported operating systems.
-- [ ] RC SBOM, provenance, checksums, verification reports, known limitations, and native package bundles agree on `1.4.0-rc.1`; stable assets must later agree on `1.4.0`.
+- [x] Signed `v1.4.0-rc.1` is created from the approved release commit without moving any prior tag.
+- [ ] Clean install, upgrade, migration, rollback, offline, cancellation, and uninstall rehearsals pass on all supported operating systems. Windows npm and standalone installation, Ubuntu standalone smoke, Docker, deterministic migration/rollback, cancellation, and hosted platform checks are retained; clean artifact-install and uninstall rehearsals remain for macOS and Linux.
+- [x] RC SBOM, provenance, checksums, verification reports, and native package bundles agree on `1.4.0-rc.1`; stable assets must later agree on `1.4.0`.
 - [ ] The signed stable `v1.4.0` tag is created only after all Tier-3 gates pass.
-- [ ] npm, GitHub Release, GitHub Packages, GHCR, documentation, and downloadable assets publish successfully.
+- [x] RC npm (`next`), GitHub Release, GitHub Packages, GHCR, and downloadable assets publish successfully.
+- [ ] Documentation deployment is verified against the final stable `v1.4.0` release commit.
 - [ ] Post-release installation, health, rollback, and channel verification passes.
 
 Any code, metadata, compatibility, or packaging correction after publication requires `v1.4.1`; published tags are immutable.
