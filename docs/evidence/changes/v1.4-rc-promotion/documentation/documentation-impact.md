@@ -5,7 +5,7 @@
 - **Checkpoint:** `release`
 - **Profile:** `documentation`
 - **Decision:** **READY**
-- **Generated:** 2026-10-02T17:57:04.208Z
+- **Generated:** 2026-10-02T18:09:38.345Z
 
 ## Affected Components
 
@@ -19,14 +19,9 @@
 
 ## Changed Documentation
 
-- `docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.json`
-- `docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.md`
-- `docs/evidence/changes/v1.4-rc-promotion/documentation/evidence-manifest.json`
-- `docs/evidence/changes/v1.4-rc-promotion/documentation/updated-documents.md`
 - `docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.json`
 - `docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.md`
 - `docs/providers/compatibility-matrix.md`
-- `docs/release/V1_4_RELEASE_CHECKLIST.md`
 
 ## Blockers
 

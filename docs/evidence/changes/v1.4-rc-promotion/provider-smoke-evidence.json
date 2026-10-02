@@ -50,6 +50,21 @@
         "The local runtime and model discovery were healthy, but inference did not complete within the enforced 60-second request deadline.",
         "No response or model output was retained; local invocation compatibility remains unverified."
       ],
+      "additionalLocalTest": {
+        "outcome": "timed-out",
+        "model": "gemma4:12b",
+        "modelDigest": "sha256:4eb23ef187e2c5462566d6a1d3bbbc2f1346d0b4327cbb66d58fffbcc9b2b05c",
+        "testedOn": "2026-10-02",
+        "attempts": 1,
+        "timeoutMs": 60000,
+        "operationId": "e00f1666-ca46-492f-86d0-6a0fd17e5783",
+        "discovery": "healthy",
+        "invocation": "timed-out",
+        "responseRetained": false,
+        "limitations": [
+          "The installed local Gemma model was discovered but did not complete the bounded smoke request within 60 seconds."
+        ]
+      },
       "cloudTest": {
         "outcome": "passed",
         "service": "Ollama Cloud",

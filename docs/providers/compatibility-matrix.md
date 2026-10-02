@@ -20,7 +20,7 @@ This matrix distinguishes deterministic offline contract evidence from live acco
 | `claude` | Anthropic | Verified | Not executed | Preview |
 | `gemini` | Google Gemini | Verified | Passed 2026-10-02 (`gemini-2.5-flash`; retained evidence) | Preview |
 | `openrouter` | OpenRouter | Verified | Not executed | Preview |
-| `ollama` | Ollama | Verified | Local `deepseek-r1:8b` timed out twice at 60 seconds; requested Ollama Cloud `gemma4:cloud` smoke passed once (2026-10-02; retained evidence) | Preview |
+| `ollama` | Ollama | Verified | Local `deepseek-r1:8b` (2 attempts) and `gemma4:12b` (1 attempt) timed out at 60 seconds; requested Ollama Cloud `gemma4:cloud` smoke passed once (2026-10-02; retained evidence) | Preview |
 
 The public `claude` identifier remains stable throughout 1.x while metadata identifies Anthropic as the service. Codex, Cursor, and Windsurf remain compatibility-only agent-host integrations and are not included in the five-provider certification claim.
 

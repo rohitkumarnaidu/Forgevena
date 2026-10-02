@@ -1,37 +1,26 @@
 {
   "schemaVersion": 2,
   "changeId": "v1.4-rc-promotion",
-  "title": "Ollama Cloud smoke evidence",
+  "title": "Ollama local and cloud smoke evidence",
   "owner": "Provider Platform Working Group",
-  "generatedAt": "2026-10-02T17:57:04.208Z",
+  "generatedAt": "2026-10-02T18:09:38.345Z",
   "checkpoint": "release",
   "comparison": {
     "base": null,
     "head": null
   },
   "changedFiles": [
-    "cspell.json",
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.json",
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.md",
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/evidence-manifest.json",
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/updated-documents.md",
     "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.json",
     "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.md",
-    "docs/providers/compatibility-matrix.md",
-    "docs/release/V1_4_RELEASE_CHECKLIST.md"
+    "docs/providers/compatibility-matrix.md"
   ],
   "changeProfile": "documentation",
   "affectedComponents": [],
   "implementationFiles": [],
   "documentationFiles": [
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.json",
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.md",
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/evidence-manifest.json",
-    "docs/evidence/changes/v1.4-rc-promotion/documentation/updated-documents.md",
     "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.json",
     "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.md",
-    "docs/providers/compatibility-matrix.md",
-    "docs/release/V1_4_RELEASE_CHECKLIST.md"
+    "docs/providers/compatibility-matrix.md"
   ],
   "testFiles": [],
   "requirements": [],
