@@ -11,6 +11,56 @@ permissions:
   contents: read
 
 jobs:
+  npm-lifecycle:
+    name: npm lifecycle on ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Pack current branch artifact
+        run: npm pack --pack-destination "$RUNNER_TEMP"
+        shell: bash
+      - name: Install, migrate, rollback, offline-install, and uninstall
+        shell: bash
+        run: |
+          TEMP_ROOT="$(cygpath -u "$RUNNER_TEMP" 2>/dev/null || printf '%s' "$RUNNER_TEMP")"
+          TARBALL="$(ls "$TEMP_ROOT"/forgevena-*.tgz | head -n 1)"
+          TEST_ROOT="$TEMP_ROOT/forgevena-lifecycle"
+          WORKSPACE="$TEST_ROOT/workspace"
+          OFFLINE_ROOT="$TEMP_ROOT/forgevena-offline"
+          mkdir -p "$TEST_ROOT" "$WORKSPACE"
+
+          npm install --ignore-scripts --prefix "$TEST_ROOT" forgevena@1.3.0
+          node "$TEST_ROOT/node_modules/forgevena/bin/forgevena.js" version
+          cd "$WORKSPACE"
+          node "$TEST_ROOT/node_modules/forgevena/bin/forgevena.js" init --apply --structured
+
+          npm install --ignore-scripts --prefix "$TEST_ROOT" "$TARBALL"
+          node "$TEST_ROOT/node_modules/forgevena/bin/forgevena.js" version
+          node "$TEST_ROOT/node_modules/forgevena/bin/forgevena.js" upgrade --apply --structured
+          node "$TEST_ROOT/node_modules/forgevena/bin/forgevena.js" state validate --structured
+          node "$TEST_ROOT/node_modules/forgevena/bin/forgevena.js" upgrade rollback --apply --yes --structured
+          node "$TEST_ROOT/node_modules/forgevena/bin/forgevena.js" state validate --structured
+          node "$TEST_ROOT/node_modules/forgevena/bin/forgevena.js" doctor --structured
+
+          npm install --offline --ignore-scripts --prefix "$OFFLINE_ROOT" "$TARBALL"
+          node "$OFFLINE_ROOT/node_modules/forgevena/bin/forgevena.js" version
+
+          npm uninstall --prefix "$TEST_ROOT" forgevena
+          test -f "$WORKSPACE/.ai-workspace/workspace.json"
+          if test -e "$TEST_ROOT/node_modules/forgevena"; then
+            echo "Forgevena package remains installed after uninstall." >&2
+            exit 1
+          fi
+
   standalone:
     strategy:
       matrix:

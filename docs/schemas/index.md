@@ -15,6 +15,7 @@ Canonical JSON Schemas are stored in `docs/reference/schemas/`:
 - version specifications, feature traceability, and evidence requirements.
 - foundation authority maps and resolved version bundles.
 - prospective version implementation-readiness audits.
+- named provider credential slots, bounded audit records, and quarantine lifecycle metadata.
 
 The [change-readiness scorecard schema](../reference/schemas/change-readiness-scorecard.schema.json) defines the retained machine-readable evidence used by push, merge, and release gates. The canonical scoring rules and applicability profiles are documented in the [Enterprise Change Readiness Scorecard](../governance/CHANGE_READINESS_SCORECARD.md).
 
@@ -35,3 +36,7 @@ Schemas document public persisted contracts. Runtime validation remains authorit
 The version-documentation schemas are [version spec](../reference/schemas/version-spec.schema.json), [version feature](../reference/schemas/version-feature.schema.json), [evidence requirements](../reference/schemas/version-evidence-requirements.schema.json), [foundation map](../reference/schemas/foundation-map.schema.json), and [resolved bundle](../reference/schemas/resolved-version-bundle.schema.json). They govern planning metadata and do not fabricate future implementation or certification evidence.
 
 The [version implementation-readiness audit schema](../reference/schemas/version-implementation-readiness-audit.schema.json) defines prospective, release-blocking audit evidence for all 16 future version packages. Schema v2 separates version-owned findings from inherited predecessor blockers, enforces complete committed-feature traceability, and prevents approval below the 95/100 gate or while material questions remain. Audit verdicts remain independent from implementation completion and cannot fabricate future test, compatibility, or certification results.
+
+The [credential slot schema](../reference/schemas/credential-slot.schema.json) describes safe provider slot metadata only. It intentionally excludes credential values, passphrases, tokens, authorization headers, prompts, and responses.
+
+The [provider test history schema](../reference/schemas/provider-test-history.schema.json) defines the bounded, metadata-only history shown in the loopback dashboard. It excludes prompts, responses, credential values, authorization headers, and provider payloads.

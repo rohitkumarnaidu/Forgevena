@@ -22,7 +22,7 @@
       "platforms": ["win32", "linux", "darwin"],
       "timeoutMs": 5000,
       "expectedExitCode": 0,
-      "expectedOutputSha256": "89064da248631945abaecabea6449aeb20bca5bc21713efeac2cd17eb4c1a390",
+      "expectedOutputSha256": "e2133fd85fdcff1a59d734217c36935ac01d98e9188b3970ea245a8056f0defe",
       "outputContains": ["Modifying commands preview by default.", "Existing files are never overwritten"],
       "verifiedAt": "2026-08-02",
       "reviewBy": "2027-02-02"

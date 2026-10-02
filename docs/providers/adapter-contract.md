@@ -22,4 +22,6 @@ The invocation coordinator applies one deadline across attempts, limits automati
 
 Prompts, responses, tool payloads, credentials, and authorization headers are restricted data. They are excluded from logs, diagnostics, registries, fixtures, errors, and compatibility evidence.
 
+The loopback dashboard is a presentation client of this contract. It may save a reviewed provider model to registry metadata and show locally discovered Ollama models already returned by provider status. Its consented health-test endpoint returns normalized metadata only and retains a bounded history defined by the [provider test history schema](../reference/schemas/provider-test-history.schema.json); response content and raw payloads are not a dashboard contract.
+
 Recorded compatibility fixtures use SHA-256 over UTF-8 content normalized to LF. Verification therefore remains deterministic when Git checks out the same fixture with CRLF on Windows, while any semantic fixture change still fails closed.

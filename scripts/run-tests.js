@@ -7,7 +7,7 @@ import process from "node:process";
 const configured = process.env.FORGEVENA_TEST_TMPDIR;
 const fallback = path.resolve(configured || path.join("cache", "test-tmp"));
 const temporaryRoot = await writableTemporaryRoot(fallback);
-const args = ["--test", "--test-force-exit"];
+const args = ["--test", "--test-force-exit", "--test-concurrency=1"];
 if (process.argv.includes("--coverage")) {
   args.push(
     "--experimental-test-coverage",

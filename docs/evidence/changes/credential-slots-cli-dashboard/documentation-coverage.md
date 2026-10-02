@@ -10,7 +10,7 @@
 | canonical-architecture | 11 |
 | canonical-policy | 6 |
 | generated-reference | 26 |
-| governance-evidence | 183 |
+| governance-evidence | 173 |
 | historical-record | 87 |
 | operational-runbook | 4 |
 | product-strategy | 221 |
@@ -20,16 +20,16 @@
 | Persona | Documents |
 |---|---:|
 | users | 132 |
-| developers | 119 |
-| maintainers | 669 |
+| developers | 118 |
+| maintainers | 659 |
 | enterprise-reviewers | 169 |
-| ai-coding-agents | 582 |
+| ai-coding-agents | 572 |
 
 ## Content-Type Coverage
 
 | Type | Documents |
 |---|---:|
-| evidence | 270 |
+| evidence | 260 |
 | explanation | 275 |
 | how-to | 35 |
 | reference | 86 |

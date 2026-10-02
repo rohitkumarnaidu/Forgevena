@@ -13,27 +13,30 @@
 
 ## Hosted Merge Evidence
 
-- [x] Pull-request CI passes on Windows, Ubuntu, and macOS with Node.js 20 and 22.
-- [x] Hosted coverage, mutation, security, package, Docker, documentation, Mermaid, and link checks pass.
-- [x] Tier-3 review confirms critical controls at 100%, important controls at least 95%, and standard controls at least 90%.
-- [x] The implementation pull request is approved and merged without bypassing unresolved blockers.
+- [ ] Pull-request CI passes on Windows, Ubuntu, and macOS with Node.js 20 and 22, including the required broken-link check.
+- [ ] Hosted coverage, mutation, security, package, Docker, documentation, Mermaid, and link checks pass.
+- [ ] Tier-3 review confirms critical controls at 100%, important controls at least 95%, and standard controls at least 90%.
+- [ ] The implementation pull request is approved and merged without bypassing unresolved blockers.
 
 ## Live Compatibility Evidence
 
 - [ ] Credential-gated and consent-gated OpenAI smoke test passes.
 - [ ] Credential-gated and consent-gated Anthropic/Claude smoke test passes.
-- [ ] Credential-gated and consent-gated Gemini smoke test passes.
+- [x] Credential-gated and consent-gated Gemini smoke test passes (2026-10-02; sanitized evidence retained; preview claim only).
 - [ ] Credential-gated and consent-gated OpenRouter smoke test passes.
 - [ ] Explicit local Ollama smoke test passes against a pinned version.
+- [x] Ollama Cloud `gemma4:cloud` minimal smoke test passes (2026-10-02; preview evidence only; does not satisfy the local Ollama gate).
 - [ ] Compatibility records include model or server versions, verification dates, expiry, limitations, and sanitized evidence.
 
 ## Release Candidate and Publication
 
-- [ ] `v1.4.0-rc.1` is created from the approved release commit without moving any prior tag.
-- [ ] Clean install, upgrade, migration, rollback, offline, cancellation, and uninstall rehearsals pass on all supported operating systems.
-- [ ] RC SBOM, provenance, checksums, verification reports, known limitations, and native package bundles agree on `1.4.0-rc.1`; stable assets must later agree on `1.4.0`.
+- [x] Signed `v1.4.0-rc.1` is created from the approved release commit without moving any prior tag.
+- [x] Candidate branch package lifecycle rehearsal passes on Ubuntu, Windows, and macOS: install stable `1.3.0`, initialize an isolated workspace, install the branch-built `1.4.0-rc.1` tarball, migrate, validate, roll back, install offline from the warmed cache, uninstall, and verify workspace preservation. Hosted evidence: [Package Validation run 37025295232](https://github.com/rohitkumarnaidu/Forgevena/actions/runs/37025295232) for source commit `071df0d` (Node.js 22 on `ubuntu-latest`, `windows-latest`, and `macos-latest`); local Windows rehearsal also passed.
+- [ ] Repeat the lifecycle rehearsal against the newly published immutable release candidate after this PR is merged. Because `v1.4.0-rc.1` is immutable and does not contain this branch's changes, publish a new prerelease version (for example, `1.4.0-rc.2`) rather than replacing or moving the RC1 tag.
+- [x] RC SBOM, provenance, checksums, verification reports, and native package bundles agree on `1.4.0-rc.1`; stable assets must later agree on `1.4.0`.
 - [ ] The signed stable `v1.4.0` tag is created only after all Tier-3 gates pass.
-- [ ] npm, GitHub Release, GitHub Packages, GHCR, documentation, and downloadable assets publish successfully.
+- [x] RC npm (`next`), GitHub Release, GitHub Packages, GHCR, and downloadable assets publish successfully.
+- [ ] Documentation deployment is verified against the final stable `v1.4.0` release commit.
 - [ ] Post-release installation, health, rollback, and channel verification passes.
 
 Any code, metadata, compatibility, or packaging correction after publication requires `v1.4.1`; published tags are immutable.

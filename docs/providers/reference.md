@@ -28,6 +28,8 @@ Profiles store references, never secret values. Runtime requests enforce prompt,
 
 Use `providers update` to preview migration into `.ai-workspace/providers/registry.json`; add `--apply` to commit after the plan is reviewed. Compatibility evidence expires after 90 days for hosted providers and 180 days for pinned Ollama versions.
 
+The local dashboard saves selected provider models as profile metadata and never as credentials. It may display status-discovered Ollama models, while hosted model IDs are validated before storage. A consented test returns and retains only bounded operational metadata—never prompt or response content. See the [provider configuration guide](../PROVIDER_CONFIGURATION.md) for the key-slot and dashboard workflow.
+
 Offline fixture integrity is verified with SHA-256 after canonical UTF-8 line-ending normalization. This prevents checkout-specific CRLF conversion from invalidating otherwise identical evidence across supported operating systems.
 
 ## Best practices

@@ -8,7 +8,8 @@ test("CLI help documents bootstrap options", async () => {
   const { stdout } = await promisify(execFile)("node", ["./bin/ai-workspace.js", "--help"]);
   assert.match(stdout, /create <name>/);
   assert.match(stdout, /integrations/);
-  assert.match(stdout, /credentials <init\|list\|configure\|rotate\|validate\|status\|backup\|remove>/);
+  assert.match(stdout, /credentials <init\|list\|keys\|configure\|activate\|rotate\|recover\|validate\|status\|backup\|remove>/);
+  assert.match(stdout, /credentials activate\|recover\|remove <provider> --key-id <id> --apply/);
   assert.match(stdout, /providers <list\|init\|configure\|status\|doctor\|validate\|update\|remove\|models\|project\|mcp\|invoke/);
   assert.match(stdout, /test\|verify\|login/);
   assert.match(stdout, /mcp <list\|add\|validate\|health/);

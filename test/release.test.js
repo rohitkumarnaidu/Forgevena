@@ -16,6 +16,11 @@ test("release checksums are deterministic SHA-256 values", async () => {
   assert.equal(releaseChecksum(contents), releaseChecksum(contents));
 });
 
+test("repository-mutating generated-evidence tests run serially", async () => {
+  const runner = await readFile(new URL("../scripts/run-tests.js", import.meta.url), "utf8");
+  assert.match(runner, /--test-concurrency=1/);
+});
+
 test("publication metadata derives the current version and canonical repository", async () => {
   const workflow = await readFile(new URL("../.github/workflows/publish.yml", import.meta.url), "utf8");
   const generator = await readFile(new URL("../scripts/generate-distribution.js", import.meta.url), "utf8");
@@ -76,6 +81,13 @@ test("package validation smoke-tests host-native executables before tagging", as
   assert.match(workflow, /node22-macos-x64/);
   assert.match(workflow, /macos-15-intel/);
   assert.match(workflow, /Smoke-test standalone executable/);
+  assert.match(workflow, /npm lifecycle on \$\{\{ matrix\.os \}\}/);
+  assert.match(workflow, /os: \[ubuntu-latest, windows-latest, macos-latest\]/);
+  assert.match(workflow, /forgevena@1\.3\.0/);
+  assert.match(workflow, /upgrade rollback --apply --yes --structured/);
+  assert.match(workflow, /npm install --offline/);
+  assert.match(workflow, /npm uninstall --prefix "\$TEST_ROOT" forgevena/);
+  assert.match(workflow, /test -f "\$WORKSPACE\/\.ai-workspace\/workspace\.json"/);
   assert.match(builder, /argon2-win32-x64-msvc/);
   assert.match(builder, /argon2-linux-x64-gnu/);
   assert.match(builder, /argon2-darwin-x64/);

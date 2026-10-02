@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 2,
+  "changeId": "v1.4-rc-promotion",
+  "title": "Ollama local and cloud smoke evidence",
+  "owner": "Provider Platform Working Group",
+  "generatedAt": "2026-10-02T18:09:38.345Z",
+  "checkpoint": "release",
+  "comparison": {
+    "base": null,
+    "head": null
+  },
+  "changedFiles": [
+    "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.json",
+    "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.md",
+    "docs/providers/compatibility-matrix.md"
+  ],
+  "changeProfile": "documentation",
+  "affectedComponents": [],
+  "implementationFiles": [],
+  "documentationFiles": [
+    "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.json",
+    "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.md",
+    "docs/providers/compatibility-matrix.md"
+  ],
+  "testFiles": [],
+  "requirements": [],
+  "blockers": [],
+  "decision": "ready"
+}

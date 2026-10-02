@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { auditCredentialVault, backupCredentials, configureCredential, credentialStatus, initializeCredentialPlaceholders, migrateLegacyCredential, readCredential, recoverCredential, removeCredential, rotateCredential, validateCredential } from "../src/credentials.js";
+import { activateCredentialKey, auditCredentialVault, backupCredentials, configureCredential, credentialKeyAudit, credentialStatus, initializeCredentialPlaceholders, listCredentialKeys, migrateLegacyCredential, readCredential, recoverCredential, removeCredential, rotateCredential, validateCredential } from "../src/credentials.js";
 
 test("credential placeholders contain names but no values", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "credential-placeholders-"));
@@ -46,7 +46,7 @@ test("encrypted credentials rotate, validate, back up, and remove without deleti
     const rotatedPayload = JSON.parse(await readFile(path.join(root, ".credentials", "openai.enc.json"), "utf8"));
     const protectedMetadata = JSON.parse(Buffer.from(rotatedPayload.protected, "base64").toString("utf8"));
     assert.equal(protectedMetadata.credentialVersion, 2);
-    assert.deepEqual((await backupCredentials(root, { dryRun: false })).backedUp, ["openai"]);
+    assert.deepEqual((await backupCredentials(root, { dryRun: false })).backedUp, [{ credential: "openai", keyId: "primary" }]);
     const removed = await removeCredential(root, "openai", { dryRun: false });
     assert.equal(removed.destructiveDelete, false);
     assert.equal((await credentialStatus(root, "openai")).configured, false);
@@ -140,6 +140,32 @@ test("credential plans are additive and reject invalid configuration", async () 
     assert.equal(existing.configured, false);
     assert.equal(existing.manualRequired, true);
     assert.equal(await readCredential(root, "openai"), "first");
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test("named credential slots activate, rotate, quarantine, recover, and redact audit metadata", async () => {
+  const root = await mkdtemp(path.join(tmpdir(), "credential-slots-"));
+  try {
+    await configureCredential(root, "gemini", "personal-secret", { dryRun: false, keyId: "personal" });
+    await configureCredential(root, "gemini", "work-secret", { dryRun: false, keyId: "work" });
+    assert.equal(await readCredential(root, "gemini"), null);
+    assert.equal((await activateCredentialKey(root, "gemini", "personal", { dryRun: false })).activated, true);
+    assert.equal(await readCredential(root, "gemini"), "personal-secret");
+    await rotateCredential(root, "gemini", "work-secret-v2", { dryRun: false, keyId: "work" });
+    const removal = await removeCredential(root, "gemini", { dryRun: false, keyId: "personal", nextKeyId: "work" });
+    assert.equal(removal.removed, true);
+    assert.equal((await credentialStatus(root, "gemini")).activeKeyId, "work");
+    assert.equal(await readCredential(root, "gemini"), "work-secret-v2");
+    const keys = await listCredentialKeys(root, "gemini");
+    assert.equal(keys.find((entry) => entry.keyId === "personal").status, "quarantined");
+    const validation = await validateCredential(root, "gemini", { keyId: "work", dryRun: false });
+    assert.equal(validation.valid, true);
+    assert.equal((await listCredentialKeys(root, "gemini")).find((entry) => entry.keyId === "work").validatedAt !== null, true);
+    const audit = await credentialKeyAudit(root, "gemini");
+    assert.equal(audit.audit.some((entry) => entry.action === "validated" && entry.keyId === "work"), true);
+    assert.equal(JSON.stringify(audit).includes("personal-secret"), false);
+    assert.equal(JSON.stringify(audit).includes("work-secret-v2"), false);
+    await assert.rejects(() => configureCredential(root, "gemini", "bad", { dryRun: false, keyId: "Personal Key" }), /key IDs/i);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 

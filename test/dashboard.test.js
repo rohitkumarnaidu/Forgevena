@@ -142,7 +142,9 @@ test("dashboard serves HTML with security headers and rejects unauthorized origi
     assert.match(source, /Compatibility evidence/);
     assert.match(source, /Agent command center/);
     assert.match(source, /Runs and workflows/);
-    assert.match(source, /plan-only-by-default/);
+    assert.match(source, /agent\.execution/);
+    const agents = await (await dashboardRequest(base, dashboard.token, "/api/agents")).json();
+    assert.equal(agents.agents.find((agent) => agent.id === "engineering-copilot")?.execution, "plan-only-by-default");
     assert.doesNotMatch(source, /api\/workflows\/run/);
     assert.match(source, /scrollIntoView/);
     assert.doesNotMatch(source, /AI Workspace Settings/);

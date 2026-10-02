@@ -17,7 +17,7 @@
     "toolchain", "frontmatter", "codebase", "localhost", "noninteractive", "preflight",
     "ciphertext", "retryable", "Forgevena", "forgevena", "CODEOWNERS", "DOCKERHUB",
     "Astryx", "automatable", "checksummed", "deeplink", "diffable", "doctl",
-    "embeddinggemma", "flyctl", "flyio", "googlecloud", "hotfixes", "rohitkumarnaidu",
+    "embeddinggemma", "gemma4", "flyctl", "flyio", "googlecloud", "hotfixes", "rohitkumarnaidu",
     "SLSA", "unreviewed", "WCAG", "Winget", "backpressure", "exfiltration",
     "explainability", "forgeregistry", "hostable", "inspectable", "irreproducible",
     "journaled", "livelock", "lockfiles", "operationalizes", "previewable", "Reranker",
@@ -27,6 +27,6 @@
     "Rohit", "Kumar", "Naidu", "findability", "retag", "airgap", "agentspace",
     "transactionally", "unsandboxed", "overinterpreted", "checkpointed",
     "disconnectable", "nonportable", "pkgs", "PKCE", "reaudit", "seccomp",
-    "Synchronizable"
+    "Synchronizable", "unconfigured", "resumability", "DeepSeek"
   ]
 }
