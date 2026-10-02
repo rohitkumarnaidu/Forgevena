@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 2,
+  "changeId": "v1.4-rc-promotion",
+  "title": "v1.4 RC promotion readiness follow-up",
+  "owner": "Provider Platform Working Group",
+  "generatedAt": "2026-10-02T17:27:17.173Z",
+  "checkpoint": "release",
+  "comparison": {
+    "base": null,
+    "head": null
+  },
+  "changedFiles": [
+    "docs/contributor/index.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-coverage.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.json",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-quality.json",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-synchronization.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/evidence-manifest.json",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/migration-impact.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/missing-documentation.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/release-documentation-summary.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/repository-health.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/updated-documents.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/version-history-impact.md",
+    "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.json",
+    "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.md",
+    "docs/providers/compatibility-matrix.md",
+    "docs/reference/generated/ai-documentation-index.json",
+    "docs/reference/generated/documentation-catalog.json",
+    "docs/reference/generated/documentation-coverage-matrix.md",
+    "docs/reference/generated/documentation-health.json",
+    "docs/reference/generated/documentation-health.md",
+    "docs/reference/generated/manifest.json",
+    "docs/release/V1_4_RELEASE_CHECKLIST.md",
+    "docs/releases/index.md",
+    "docs/troubleshooting/index.md",
+    "scripts/run-tests.js",
+    "test/release.test.js"
+  ],
+  "changeProfile": "implementation",
+  "affectedComponents": [
+    "build-testing-and-dependencies"
+  ],
+  "implementationFiles": [
+    "scripts/run-tests.js"
+  ],
+  "documentationFiles": [
+    "docs/contributor/index.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-coverage.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.json",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-quality.json",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-synchronization.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/evidence-manifest.json",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/migration-impact.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/missing-documentation.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/release-documentation-summary.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/repository-health.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/updated-documents.md",
+    "docs/evidence/changes/v1.4-rc-promotion/documentation/version-history-impact.md",
+    "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.json",
+    "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.md",
+    "docs/providers/compatibility-matrix.md",
+    "docs/reference/generated/ai-documentation-index.json",
+    "docs/reference/generated/documentation-catalog.json",
+    "docs/reference/generated/documentation-coverage-matrix.md",
+    "docs/reference/generated/documentation-health.json",
+    "docs/reference/generated/documentation-health.md",
+    "docs/reference/generated/manifest.json",
+    "docs/release/V1_4_RELEASE_CHECKLIST.md",
+    "docs/releases/index.md",
+    "docs/troubleshooting/index.md"
+  ],
+  "testFiles": [
+    "test/release.test.js"
+  ],
+  "requirements": [
+    {
+      "id": "implementation-documentation-coupling",
+      "component": "cross-cutting",
+      "criticality": "critical",
+      "reason": "Implementation changes require documentation in the same change.",
+      "candidateDocuments": [
+        "docs/",
+        "README.md",
+        "CHANGELOG.md",
+        "SECURITY.md",
+        "SUPPORTED_VERSIONS.md",
+        "CONTRIBUTING.md",
+        "GOVERNANCE.md",
+        "ROADMAP.md",
+        "RELEASE.md",
+        "AGENTS.md"
+      ],
+      "matchedDocuments": [
+        "docs/contributor/index.md",
+        "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-coverage.md",
+        "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.json",
+        "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-impact.md",
+        "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-quality.json",
+        "docs/evidence/changes/v1.4-rc-promotion/documentation/documentation-synchronization.md",
+        "docs/evidence/changes/v1.4-rc-promotion/documentation/evidence-manifest.json",
+        "docs/evidence/changes/v1.4-rc-promotion/documentation/migration-impact.md",
+        "docs/evidence/changes/v1.4-rc-promotion/documentation/missing-documentation.md",
+        "docs/evidence/changes/v1.4-rc-promotion/documentation/release-documentation-summary.md",
+        "docs/evidence/changes/v1.4-rc-promotion/documentation/repository-health.md",
+        "docs/evidence/changes/v1.4-rc-promotion/documentation/updated-documents.md",
+        "docs/evidence/changes/v1.4-rc-promotion/documentation/version-history-impact.md",
+        "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.json",
+        "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.md",
+        "docs/providers/compatibility-matrix.md",
+        "docs/reference/generated/ai-documentation-index.json",
+        "docs/reference/generated/documentation-catalog.json",
+        "docs/reference/generated/documentation-coverage-matrix.md",
+        "docs/reference/generated/documentation-health.json",
+        "docs/reference/generated/documentation-health.md",
+        "docs/reference/generated/manifest.json",
+        "docs/release/V1_4_RELEASE_CHECKLIST.md",
+        "docs/releases/index.md",
+        "docs/troubleshooting/index.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "implementation-test-coupling",
+      "component": "cross-cutting",
+      "criticality": "important",
+      "reason": "Implementation changes require executable validation or a governed not-applicable rationale.",
+      "candidateDocuments": [
+        "test/"
+      ],
+      "matchedDocuments": [
+        "test/release.test.js"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "testing-build-guidance",
+      "component": "build-testing-and-dependencies",
+      "criticality": "important",
+      "reason": "build-testing-and-dependencies changes require synchronized testing build guidance.",
+      "candidateDocuments": [
+        "docs/testing/",
+        "docs/release/"
+      ],
+      "matchedDocuments": [
+        "docs/release/V1_4_RELEASE_CHECKLIST.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    }
+  ],
+  "blockers": [],
+  "decision": "ready"
+}

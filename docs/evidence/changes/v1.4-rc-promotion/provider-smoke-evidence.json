@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "changeId": "v1.4-rc-promotion",
+  "recordedOn": "2026-10-02",
+  "purpose": "Sanitized v1.4 provider smoke-test evidence; not a stable certification decision.",
+  "privacy": {
+    "credentialsRetained": false,
+    "promptsRetained": false,
+    "responsesRetained": false,
+    "rawPayloadsRetained": false,
+    "authorizationHeadersRetained": false
+  },
+  "providers": [
+    {
+      "provider": "gemini",
+      "outcome": "passed",
+      "model": "gemini-2.5-flash",
+      "testedOn": "2026-10-02",
+      "attempts": 1,
+      "operationId": "3c20a40a-657b-46f6-8d9d-ebff25465877",
+      "usage": {
+        "promptTokens": 6,
+        "candidateTokens": 1,
+        "totalTokens": 10,
+        "thoughtTokens": 3
+      },
+      "supportClaim": "preview",
+      "limitations": [
+        "One minimal account-backed request only; this does not establish general availability, quota, regional, or lifecycle guarantees.",
+        "No stable support certification is claimed."
+      ]
+    },
+    {
+      "provider": "ollama",
+      "outcome": "timed-out",
+      "runtimeVersion": "0.35.0",
+      "model": "deepseek-r1:8b",
+      "modelDigest": "sha256:6995872bfe4c521a67b32da386cd21d5c6e819b6e0d62f79f64ec83be99f5763",
+      "testedOn": "2026-10-02",
+      "attempts": 2,
+      "timeoutMsPerAttempt": 60000,
+      "operationIds": [
+        "ad6819bb-5dd1-4853-9511-364c266deefd",
+        "861ebc27-b1eb-4235-8361-cffc5647c2d1"
+      ],
+      "discovery": "healthy",
+      "invocation": "timed-out",
+      "supportClaim": "preview",
+      "limitations": [
+        "The local runtime and model discovery were healthy, but inference did not complete within the enforced 60-second request deadline.",
+        "No response or model output was retained; local invocation compatibility remains unverified."
+      ]
+    }
+  ]
+}

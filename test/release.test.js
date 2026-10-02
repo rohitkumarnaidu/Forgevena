@@ -16,6 +16,11 @@ test("release checksums are deterministic SHA-256 values", async () => {
   assert.equal(releaseChecksum(contents), releaseChecksum(contents));
 });
 
+test("repository-mutating generated-evidence tests run serially", async () => {
+  const runner = await readFile(new URL("../scripts/run-tests.js", import.meta.url), "utf8");
+  assert.match(runner, /--test-concurrency=1/);
+});
+
 test("publication metadata derives the current version and canonical repository", async () => {
   const workflow = await readFile(new URL("../.github/workflows/publish.yml", import.meta.url), "utf8");
   const generator = await readFile(new URL("../scripts/generate-distribution.js", import.meta.url), "utf8");

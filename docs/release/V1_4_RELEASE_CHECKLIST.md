@@ -13,16 +13,16 @@
 
 ## Hosted Merge Evidence
 
-- [x] Pull-request CI passes on Windows, Ubuntu, and macOS with Node.js 20 and 22.
-- [x] Hosted coverage, mutation, security, package, Docker, documentation, Mermaid, and link checks pass.
-- [x] Tier-3 review confirms critical controls at 100%, important controls at least 95%, and standard controls at least 90%.
-- [x] The implementation pull request is approved and merged without bypassing unresolved blockers.
+- [ ] Pull-request CI passes on Windows, Ubuntu, and macOS with Node.js 20 and 22, including the required broken-link check.
+- [ ] Hosted coverage, mutation, security, package, Docker, documentation, Mermaid, and link checks pass.
+- [ ] Tier-3 review confirms critical controls at 100%, important controls at least 95%, and standard controls at least 90%.
+- [ ] The implementation pull request is approved and merged without bypassing unresolved blockers.
 
 ## Live Compatibility Evidence
 
 - [ ] Credential-gated and consent-gated OpenAI smoke test passes.
 - [ ] Credential-gated and consent-gated Anthropic/Claude smoke test passes.
-- [ ] Credential-gated and consent-gated Gemini smoke test passes.
+- [x] Credential-gated and consent-gated Gemini smoke test passes (2026-10-02; sanitized evidence retained; preview claim only).
 - [ ] Credential-gated and consent-gated OpenRouter smoke test passes.
 - [ ] Explicit local Ollama smoke test passes against a pinned version.
 - [ ] Compatibility records include model or server versions, verification dates, expiry, limitations, and sanitized evidence.

@@ -18,9 +18,9 @@ This matrix distinguishes deterministic offline contract evidence from live acco
 | --- | --- | --- | --- | --- |
 | `openai` | OpenAI | Verified | Not executed | Preview |
 | `claude` | Anthropic | Verified | Not executed | Preview |
-| `gemini` | Google Gemini | Verified | Not executed | Preview |
+| `gemini` | Google Gemini | Verified | Passed 2026-10-02 (`gemini-2.5-flash`; retained evidence) | Preview |
 | `openrouter` | OpenRouter | Verified | Not executed | Preview |
-| `ollama` | Ollama | Verified | Not executed | Preview |
+| `ollama` | Ollama | Verified | Timed out after 60 seconds (2026-10-02; retained evidence) | Preview |
 
 The public `claude` identifier remains stable throughout 1.x while metadata identifies Anthropic as the service. Codex, Cursor, and Windsurf remain compatibility-only agent-host integrations and are not included in the five-provider certification claim.
 
@@ -28,6 +28,7 @@ The public `claude` identifier remains stable throughout 1.x while metadata iden
 
 - Manifest: `providers/compatibility-evidence.json`
 - Sanitized fixtures: `providers/fixtures/`
+- Live smoke attempts: [v1.4 RC promotion evidence](../evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.md)
 - Verification command: `npm run providers:verify`
 - Contract tests: `test/provider-compatibility.test.js` and `test/provider-streaming.test.js`
 
