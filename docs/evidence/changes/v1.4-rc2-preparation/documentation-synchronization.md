@@ -1,6 +1,6 @@
 # Documentation Synchronization Report
 
 - Decision: **READY**
-- Checkpoint: `push`
+- Checkpoint: `merge`
 - Requirements: 8
 - Blockers: 0

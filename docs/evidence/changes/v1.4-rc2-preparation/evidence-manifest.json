@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
   "changeId": "v1.4-rc2-preparation",
-  "checkpoint": "push",
-  "generatedAt": "2026-10-02T19:53:49.356Z",
+  "checkpoint": "merge",
+  "generatedAt": "2026-10-02T20:01:43.129Z",
   "decision": "ready",
   "reports": {
     "documentation-impact.json": {
-      "sha256": "8212aaac70e8967a893560f98ba039a88e7111d26df75f933120bf3278e2b3e5",
-      "bytes": 9827
+      "sha256": "aba0ad75908c2a7ab867f93a72246af15516db451eac99170988e27fe393aeca",
+      "bytes": 9868
     },
     "documentation-impact.md": {
-      "sha256": "df63fc4c83dc7b2c203369aa0394dde644e01c611bc166fbd074a4f44f38838a",
-      "bytes": 4465
+      "sha256": "0ecc5f9395f7f186db913168bd3c041515944ca74fa5a3fde88d27ad19a35ffe",
+      "bytes": 4466
     },
     "updated-documents.md": {
       "sha256": "f8271249968a30094028bb533e37a96c37ef59a427397568914cf4648c77f7b8",
@@ -30,8 +30,8 @@
       "bytes": 1435
     },
     "documentation-synchronization.md": {
-      "sha256": "de72995847d824c3f477b7904c350c8fd9c6e894292887b7bd9201e13a0f9f6a",
-      "bytes": 115
+      "sha256": "ff03a0c4658b8bdf03ba7e39a0935914a46043787b0c3ff33253c83e0d86d0fb",
+      "bytes": 116
     },
     "release-documentation-summary.md": {
       "sha256": "7c6ccbdcc606cb0d34eb4eb14b1223c59f31e2d89d36c0cceea76356834c6336",

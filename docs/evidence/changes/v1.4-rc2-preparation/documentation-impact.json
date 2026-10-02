@@ -3,11 +3,11 @@
   "changeId": "v1.4-rc2-preparation",
   "title": "Prepare immutable v1.4.0-rc.2 candidate",
   "owner": "Release Engineering",
-  "generatedAt": "2026-10-02T19:53:49.356Z",
-  "checkpoint": "push",
+  "generatedAt": "2026-10-02T20:01:43.129Z",
+  "checkpoint": "merge",
   "comparison": {
-    "base": null,
-    "head": null
+    "base": "bbb56f7de055e8d60537c7117cbce9516a3b8592",
+    "head": "HEAD"
   },
   "changedFiles": [
     "CHANGELOG.md",

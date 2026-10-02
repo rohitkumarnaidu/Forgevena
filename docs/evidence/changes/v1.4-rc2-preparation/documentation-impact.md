@@ -2,10 +2,10 @@
 
 - **Change:** `v1.4-rc2-preparation`
 - **Owner:** Release Engineering
-- **Checkpoint:** `push`
+- **Checkpoint:** `merge`
 - **Profile:** `implementation`
 - **Decision:** **READY**
-- **Generated:** 2026-10-02T19:53:49.356Z
+- **Generated:** 2026-10-02T20:01:43.129Z
 
 ## Affected Components
 
