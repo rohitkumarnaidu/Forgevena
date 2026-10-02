@@ -27,6 +27,6 @@
     "Rohit", "Kumar", "Naidu", "findability", "retag", "airgap", "agentspace",
     "transactionally", "unsandboxed", "overinterpreted", "checkpointed",
     "disconnectable", "nonportable", "pkgs", "PKCE", "reaudit", "seccomp",
-    "Synchronizable"
+    "Synchronizable", "unconfigured", "resumability"
   ]
 }
