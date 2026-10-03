@@ -25,7 +25,7 @@ Live requests require owner-controlled credentials and explicit consent. Never u
 ## Exact Published-RC3 Lifecycle
 
 - [x] RC1, RC2, and RC3 tags remain immutable. RC2's documentation gate failed and produced no release assets; RC3 is the current published candidate.
-- [ ] Run the manual [published-RC3 lifecycle workflow](../../.github/workflows/v1.4-stable-preflight.yml) against the exact GitHub Release archive on Windows, Linux, and macOS with Node.js 20 and 22.
+- [ ] Run the manual [published-RC3 lifecycle workflow](https://github.com/rohitkumarnaidu/Forgevena/blob/main/.github/workflows/v1.4-stable-preflight.yml) against the exact GitHub Release archive on Windows, Linux, and macOS with Node.js 20 and 22.
 - [ ] Verify the release archive against `RELEASE_SHA256SUMS` and exercise clean install, upgrade from 1.3.0, migration, rollback, offline install, cancellation, uninstall, and workspace preservation in all six OS/Node jobs.
 - [ ] Download the six 90-day workflow artifacts, retain them under `docs/evidence/releases/v1.4.0/lifecycle/`, and record the workflow URL/run ID, source commit, verified artifact SHA-256, and scenario results in [stable-release-readiness.json](../evidence/releases/v1.4.0/stable-release-readiness.json).
 
