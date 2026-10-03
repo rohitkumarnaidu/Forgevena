@@ -26,7 +26,8 @@ test("completion matrix preserves historical failures and separates v1.4 impleme
   assert.match(matrix, /v1\.2\.0.*failed publication/);
   assert.match(matrix, /v1\.2\.2.*failed publication/);
   assert.match(matrix, /v1\.4\.0.*Release HOLD/);
-  assert.match(status, /Signed `v1\.4\.0-rc\.1` is published as a prerelease\. It is not a stable release; promotion remains on \*\*HOLD\*\*/);
-  assert.match(checklist, /\[ \] Credential-gated and consent-gated OpenAI smoke test passes/);
+  assert.match(status, /signed `v1\.4\.0-rc\.3` is published as a GitHub prerelease/);
+  assert.match(status, /Stable promotion is HOLD/);
+  assert.match(checklist, /\[ \] Owner-controlled, consented OpenAI smoke test passes/);
   assert.match(checklist, /\[x\] ProviderAdapter v1/);
 });

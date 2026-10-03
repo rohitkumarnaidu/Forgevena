@@ -63,6 +63,8 @@
     "test:mutation": "node ./scripts/mutation-gate.js",
     "start": "node ./bin/forgevena.js",
     "release:verify": "node ./scripts/verify-release.js",
+    "release:stable-gate": "node ./scripts/verify-stable-release-gate.js",
+    "release:stable-gate:status": "node ./scripts/verify-stable-release-gate.js --allow-hold",
     "release:supply-chain": "node ./scripts/generate-supply-chain.js --apply",
     "docs:generate": "node ./scripts/generate-docs.js --apply",
     "docs:verify": "node ./scripts/generate-docs.js --verify",

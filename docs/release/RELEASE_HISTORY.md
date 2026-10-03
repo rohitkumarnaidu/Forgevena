@@ -4,7 +4,7 @@ Current-rule evaluation of all stable tags is retained in the [Historical Releas
 
 ## Unreleased v1.4.0
 
-Provider-platform implementation is in preview and has not been tagged or published. Offline contract evidence covers five provider adapters, but stable release history must not be added until hosted cross-platform, Docker, migration, live compatibility, release-candidate, and Tier-3 promotion evidence passes.
+Provider-platform implementation is in preview. Immutable prereleases `v1.4.0-rc.1`, `v1.4.0-rc.2` (failed), and `v1.4.0-rc.3` are preserved; RC3 is published but is not stable. Offline contract evidence covers five provider adapters, but stable release history must not be added until exact published-artifact lifecycle, live compatibility, and Tier-3 promotion evidence passes.
 
 ## v1.3.0
 

@@ -1,0 +1,49 @@
+{
+  "$schema": "../../../reference/schemas/stable-release-readiness.schema.json",
+  "schemaVersion": 1,
+  "version": "1.4.0",
+  "candidateTag": "v1.4.0-rc.3",
+  "decision": "hold",
+  "blockers": [
+    "Owner-controlled live smoke evidence is missing for OpenAI, Anthropic/Claude, and OpenRouter.",
+    "Local Ollama inference has not passed; previously tested local models timed out.",
+    "Exact published RC3 lifecycle rehearsal has not passed across the required OS and Node.js matrix.",
+    "Tier-3 stable-release scorecard and owner approval are incomplete.",
+    "The merged stable-promotion commit has not yet promoted package.json from the RC version to exactly 1.4.0."
+  ],
+  "providerEvidence": [
+    { "provider": "openai", "status": "pending", "model": null, "verifiedAt": null, "expiresAt": null, "evidencePath": null, "limitations": ["Owner-controlled credential and explicit smoke-test consent required."] },
+    { "provider": "claude", "status": "pending", "model": null, "verifiedAt": null, "expiresAt": null, "evidencePath": null, "limitations": ["Owner-controlled credential and explicit smoke-test consent required."] },
+    { "provider": "gemini", "status": "passed", "model": "gemini-2.5-flash", "verifiedAt": "2026-10-02T00:00:00Z", "expiresAt": "2026-12-31T00:00:00Z", "evidencePath": "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.json", "limitations": ["One minimal live request; preview evidence only, not a general availability guarantee."] },
+    { "provider": "openrouter", "status": "pending", "model": null, "verifiedAt": null, "expiresAt": null, "evidencePath": null, "limitations": ["Owner-controlled credential and explicit smoke-test consent required."] },
+    { "provider": "ollama", "status": "failed", "model": "deepseek-r1:8b; gemma4:12b", "verifiedAt": "2026-10-02T00:00:00Z", "expiresAt": "2027-03-31T00:00:00Z", "evidencePath": "docs/evidence/changes/v1.4-rc-promotion/provider-smoke-evidence.json", "limitations": ["Both tested local model invocations timed out at 60 seconds; Ollama Cloud does not satisfy local inference evidence."] }
+  ],
+  "preTagRehearsal": {
+    "status": "pending",
+    "candidateTag": "v1.4.0-rc.3",
+    "workflowRunUrl": null,
+    "workflowRunId": null,
+    "commit": null,
+    "completedAt": null,
+    "artifactSha256": null,
+    "matrix": [
+      { "os": "ubuntu-latest", "node": 20, "status": "pending", "artifactSha256": null, "evidencePath": null },
+      { "os": "ubuntu-latest", "node": 22, "status": "pending", "artifactSha256": null, "evidencePath": null },
+      { "os": "windows-latest", "node": 20, "status": "pending", "artifactSha256": null, "evidencePath": null },
+      { "os": "windows-latest", "node": 22, "status": "pending", "artifactSha256": null, "evidencePath": null },
+      { "os": "macos-15-intel", "node": 20, "status": "pending", "artifactSha256": null, "evidencePath": null },
+      { "os": "macos-15-intel", "node": 22, "status": "pending", "artifactSha256": null, "evidencePath": null }
+    ],
+    "scenarios": [
+      { "name": "clean-install", "status": "pending", "evidencePath": null },
+      { "name": "upgrade-migration", "status": "pending", "evidencePath": null },
+      { "name": "rollback", "status": "pending", "evidencePath": null },
+      { "name": "offline-install", "status": "pending", "evidencePath": null },
+      { "name": "cancellation", "status": "pending", "evidencePath": null },
+      { "name": "uninstall", "status": "pending", "evidencePath": null },
+      { "name": "workspace-preservation", "status": "pending", "evidencePath": null }
+    ]
+  },
+  "qualityGates": { "criticalPercent": null, "importantPercent": null, "standardPercent": null, "blockerCount": 5, "scorecardPath": "docs/evidence/releases/v1.4.0/release-scorecard.md" },
+  "approval": { "ownerApproved": false, "approver": null, "approvedAt": null, "reviewRecord": null }
+}

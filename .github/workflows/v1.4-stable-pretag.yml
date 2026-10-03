@@ -1,0 +1,30 @@
+name: v1.4 Stable Pre-Tag Gate
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stable-pretag-readiness:
+    name: Pre-tag stable readiness
+    runs-on: ubuntu-latest
+    environment: stable-release
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Require the protected main branch
+        shell: bash
+        run: test "${GITHUB_REF}" = "refs/heads/main"
+      - name: Confirm the gate is evaluating the dispatched main commit
+        shell: bash
+        run: test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+      - name: Enforce stable evidence before a signed v1.4.0 tag may be created
+        run: npm run release:stable-gate
