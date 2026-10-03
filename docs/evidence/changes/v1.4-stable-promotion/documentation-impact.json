@@ -3,7 +3,7 @@
   "changeId": "v1.4-stable-promotion",
   "title": "v1.4 stable promotion gate and RC3 preflight",
   "owner": "Release Engineering",
-  "generatedAt": "2026-10-03T16:54:19.929Z",
+  "generatedAt": "2026-10-03T17:16:39.771Z",
   "checkpoint": "merge",
   "comparison": {
     "base": "origin/main",
