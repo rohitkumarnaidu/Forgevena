@@ -1,3 +1,35 @@
 # Updated Document List
 
+- `CHANGELOG.md`
+- `README.md`
+- `docs/ROADMAP.md`
+- `docs/assets/visual-evidence.json`
+- `docs/evidence/changes/v1.4-stable-promotion/documentation-coverage.md`
+- `docs/evidence/changes/v1.4-stable-promotion/documentation-impact.json`
+- `docs/evidence/changes/v1.4-stable-promotion/documentation-impact.md`
+- `docs/evidence/changes/v1.4-stable-promotion/documentation-quality.json`
+- `docs/evidence/changes/v1.4-stable-promotion/documentation-synchronization.md`
+- `docs/evidence/changes/v1.4-stable-promotion/evidence-manifest.json`
+- `docs/evidence/changes/v1.4-stable-promotion/migration-impact.md`
+- `docs/evidence/changes/v1.4-stable-promotion/missing-documentation.md`
+- `docs/evidence/changes/v1.4-stable-promotion/release-documentation-summary.md`
+- `docs/evidence/changes/v1.4-stable-promotion/repository-health.md`
+- `docs/evidence/changes/v1.4-stable-promotion/updated-documents.md`
+- `docs/evidence/changes/v1.4-stable-promotion/version-history-impact.md`
 - `docs/evidence/releases/v1.4.0/release-scorecard.md`
+- `docs/evidence/releases/v1.4.0/stable-release-readiness.json`
+- `docs/operations/runbooks.md`
+- `docs/reference/generated/ai-documentation-index.json`
+- `docs/reference/generated/documentation-catalog.json`
+- `docs/reference/generated/documentation-coverage-matrix.md`
+- `docs/reference/generated/documentation-health.json`
+- `docs/reference/generated/documentation-health.md`
+- `docs/reference/generated/manifest.json`
+- `docs/reference/schemas/stable-release-readiness.schema.json`
+- `docs/release/PACKAGE_PUBLISHING.md`
+- `docs/release/RELEASE_HISTORY.md`
+- `docs/release/V1_0_TO_V1_4_COMPLETION_MATRIX.md`
+- `docs/release/V1_4_IMPLEMENTATION_STATUS.md`
+- `docs/release/V1_4_RELEASE_CHECKLIST.md`
+- `docs/schemas/index.md`
+- `website/mkdocs.yml`

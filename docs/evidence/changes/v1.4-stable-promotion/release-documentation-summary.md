@@ -1,3 +1,3 @@
 # Release Documentation Summary
 
-Not applicable: no release or distribution surface changed.
+Release or distribution surfaces changed; release history and operations evidence are mandatory.
