@@ -69,6 +69,29 @@ test("signed tags automate changelog, release, and package publication", async (
   assert.match(workflow, /Docker Hub credentials are absent; publishing GHCR only/);
   assert.match(workflow, /make_latest: \$\{\{ steps\.channel\.outputs\.make_latest \}\}/);
   assert.doesNotMatch(workflow, /prerelease: true/);
+  assert.match(workflow, /stable-readiness:/);
+  assert.match(workflow, /run: npm run release:stable-gate/);
+  assert.match(workflow, /environment: stable-release/);
+  assert.match(workflow, /needs: \[artifacts, stable-readiness, stable-approval\]/);
+});
+
+test("stable promotion preflight uses the immutable RC3 artifact and six OS-Node jobs", async () => {
+  const workflow = await readFile(new URL("../.github/workflows/v1.4-stable-preflight.yml", import.meta.url), "utf8");
+  const validator = await readFile(new URL("../src/stable-release-gate.js", import.meta.url), "utf8");
+  assert.match(workflow, /forgevena-1\.4\.0-rc\.3\.tgz/);
+  assert.match(workflow, /RELEASE_SHA256SUMS/);
+  assert.match(workflow, /os: \[ubuntu-latest, windows-latest, macos-15-intel\]/);
+  assert.match(workflow, /node: \[20, 22\]/);
+  for (const scenario of ["clean-install", "upgrade-migration", "rollback", "offline-install", "cancellation", "uninstall", "workspace-preservation"]) assert.match(workflow, new RegExp(scenario));
+  assert.match(validator, /manifest.version !== "1\.4\.0"/);
+});
+
+test("v1.4 stable readiness is checked on promotion pull requests before merge", async () => {
+  const workflow = await readFile(new URL("../.github/workflows/v1.4-stable-readiness.yml", import.meta.url), "utf8");
+  assert.match(workflow, /pull_request:/);
+  assert.match(workflow, /docs\/evidence\/releases\/v1\.4\.0/);
+  assert.match(workflow, /VERSION.*1\.4\.0/s);
+  assert.match(workflow, /run: npm run release:stable-gate/);
 });
 
 test("package validation smoke-tests host-native executables before tagging", async () => {

@@ -30,7 +30,7 @@ Enterprise project bootstrap, governed AI providers, MCP and plugin controls, se
 
 Modern engineering teams repeatedly solve the same setup, governance, integration, and release problems. Forgevena turns those practices into an additive and auditable developer platform without replacing application code or silently transmitting project data.
 
-**Release status:** `v1.3.0` remains the current stable installation. `v1.4.0-rc.3` is a candidate under release validation and is not yet published; prerelease metadata is not a stable-support claim. RC1 and the failed RC2 tag remain immutable.
+**Release status:** `v1.3.0` remains the current stable installation. `v1.4.0-rc.3` is a published prerelease candidate, not a stable release; promotion remains on hold pending provider compatibility evidence, exact-artifact lifecycle rehearsals, the reviewed release scorecard, and explicit release approval. RC1, RC2, and RC3 remain immutable.
 
 ## Features
 
@@ -66,7 +66,7 @@ forgevena version
 forgevena doctor
 ```
 
-The current tap supports x64 release assets. Use npm on arm64 until native arm64 assets are published. Winget `1.2.3` is published upstream; Chocolatey `1.2.3` has passed automated checks and remains in human moderation. See the [installation guide](docs/installation/index.md) for authoritative channel versions and status.
+The current tap supports x64 release assets. Use npm on arm64 until native arm64 assets are published. Winget `1.2.3` is published upstream; Chocolatey `1.2.3` was rejected after its moderation window elapsed and remains closed historical evidence. No package manager has a stable `1.4.0` release yet. See the [installation guide](docs/installation/index.md) for authoritative channel versions and status.
 
 For an existing repository, always preview first:
 

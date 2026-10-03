@@ -16,6 +16,7 @@ Canonical JSON Schemas are stored in `docs/reference/schemas/`:
 - foundation authority maps and resolved version bundles.
 - prospective version implementation-readiness audits.
 - named provider credential slots, bounded audit records, and quarantine lifecycle metadata.
+- v1.4.0 stable-release readiness, provider evidence freshness, pre-tag lifecycle rehearsals, release scorecard thresholds, and owner approval.
 
 The [change-readiness scorecard schema](../reference/schemas/change-readiness-scorecard.schema.json) defines the retained machine-readable evidence used by push, merge, and release gates. The canonical scoring rules and applicability profiles are documented in the [Enterprise Change Readiness Scorecard](../governance/CHANGE_READINESS_SCORECARD.md).
 
@@ -26,6 +27,8 @@ The [documentation impact schema](../reference/schemas/documentation-impact.sche
 The [documentation evidence bundle schema](../reference/schemas/documentation-evidence-bundle.schema.json) defines checksummed pull-request and release synchronization reports. The [visual evidence schema](../reference/schemas/visual-evidence.schema.json) and [executable example schema](../reference/schemas/executable-example-evidence.schema.json) prevent stale images, inaccessible visual claims, unsafe command execution, and unverifiable examples.
 
 The [release retrospective schema](../reference/schemas/release-retrospective.schema.json) defines immutable, evidence-aware evaluation of historical stable tags. It separates historical assurance from current-rule certification and fails future releases closed when prospective governance evidence is missing.
+
+The [stable release readiness schema](../reference/schemas/stable-release-readiness.schema.json) defines the v1.4.0 evidence gate. It keeps the release on HOLD until fresh live-provider evidence, the exact published-RC lifecycle matrix, Tier-3 quality thresholds, and recorded owner approval are complete.
 
 Schema v2 enforces profile-specific domain targets and separate module-criticality targets: standard modules require 90%, important modules 95%, and critical modules 100% at merge and release. An overall score cannot compensate for a failed domain or module.
 

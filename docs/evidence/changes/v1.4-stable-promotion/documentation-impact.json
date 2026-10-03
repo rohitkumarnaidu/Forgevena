@@ -1,0 +1,330 @@
+{
+  "schemaVersion": 2,
+  "changeId": "v1.4-stable-promotion",
+  "title": "v1.4 stable promotion gate and RC3 preflight",
+  "owner": "Release Engineering",
+  "generatedAt": "2026-10-03T16:16:30.165Z",
+  "checkpoint": "merge",
+  "comparison": {
+    "base": null,
+    "head": null
+  },
+  "changedFiles": [
+    ".github/workflows/release.yml",
+    ".github/workflows/v1.4-stable-preflight.yml",
+    ".github/workflows/v1.4-stable-readiness.yml",
+    "CHANGELOG.md",
+    "README.md",
+    "docs/ROADMAP.md",
+    "docs/assets/visual-evidence.json",
+    "docs/evidence/changes/v1.4-stable-promotion/documentation-coverage.md",
+    "docs/evidence/changes/v1.4-stable-promotion/documentation-impact.json",
+    "docs/evidence/changes/v1.4-stable-promotion/documentation-impact.md",
+    "docs/evidence/changes/v1.4-stable-promotion/documentation-quality.json",
+    "docs/evidence/changes/v1.4-stable-promotion/documentation-synchronization.md",
+    "docs/evidence/changes/v1.4-stable-promotion/evidence-manifest.json",
+    "docs/evidence/changes/v1.4-stable-promotion/migration-impact.md",
+    "docs/evidence/changes/v1.4-stable-promotion/missing-documentation.md",
+    "docs/evidence/changes/v1.4-stable-promotion/release-documentation-summary.md",
+    "docs/evidence/changes/v1.4-stable-promotion/repository-health.md",
+    "docs/evidence/changes/v1.4-stable-promotion/updated-documents.md",
+    "docs/evidence/changes/v1.4-stable-promotion/version-history-impact.md",
+    "docs/evidence/releases/v1.4.0/release-scorecard.md",
+    "docs/evidence/releases/v1.4.0/stable-release-readiness.json",
+    "docs/operations/runbooks.md",
+    "docs/reference/generated/ai-documentation-index.json",
+    "docs/reference/generated/documentation-catalog.json",
+    "docs/reference/generated/documentation-coverage-matrix.md",
+    "docs/reference/generated/documentation-health.json",
+    "docs/reference/generated/documentation-health.md",
+    "docs/reference/generated/manifest.json",
+    "docs/reference/schemas/stable-release-readiness.schema.json",
+    "docs/release/PACKAGE_PUBLISHING.md",
+    "docs/release/RELEASE_HISTORY.md",
+    "docs/release/V1_0_TO_V1_4_COMPLETION_MATRIX.md",
+    "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+    "docs/release/V1_4_RELEASE_CHECKLIST.md",
+    "docs/schemas/index.md",
+    "package.json",
+    "scripts/rehearse-installed-cancellation.js",
+    "scripts/verify-stable-release-gate.js",
+    "src/stable-release-gate.js",
+    "test/release-completion-evidence.test.js",
+    "test/release.test.js",
+    "test/stable-release-gate.test.js",
+    "website/mkdocs.yml"
+  ],
+  "changeProfile": "implementation",
+  "affectedComponents": [
+    "api-and-contracts",
+    "cloud-infrastructure-and-deployment",
+    "open-source-governance",
+    "public-contract",
+    "release-version-and-distribution"
+  ],
+  "implementationFiles": [
+    ".github/workflows/release.yml",
+    ".github/workflows/v1.4-stable-preflight.yml",
+    ".github/workflows/v1.4-stable-readiness.yml",
+    "package.json",
+    "scripts/rehearse-installed-cancellation.js",
+    "scripts/verify-stable-release-gate.js",
+    "src/stable-release-gate.js"
+  ],
+  "documentationFiles": [
+    "CHANGELOG.md",
+    "README.md",
+    "docs/ROADMAP.md",
+    "docs/assets/visual-evidence.json",
+    "docs/evidence/changes/v1.4-stable-promotion/documentation-coverage.md",
+    "docs/evidence/changes/v1.4-stable-promotion/documentation-impact.json",
+    "docs/evidence/changes/v1.4-stable-promotion/documentation-impact.md",
+    "docs/evidence/changes/v1.4-stable-promotion/documentation-quality.json",
+    "docs/evidence/changes/v1.4-stable-promotion/documentation-synchronization.md",
+    "docs/evidence/changes/v1.4-stable-promotion/evidence-manifest.json",
+    "docs/evidence/changes/v1.4-stable-promotion/migration-impact.md",
+    "docs/evidence/changes/v1.4-stable-promotion/missing-documentation.md",
+    "docs/evidence/changes/v1.4-stable-promotion/release-documentation-summary.md",
+    "docs/evidence/changes/v1.4-stable-promotion/repository-health.md",
+    "docs/evidence/changes/v1.4-stable-promotion/updated-documents.md",
+    "docs/evidence/changes/v1.4-stable-promotion/version-history-impact.md",
+    "docs/evidence/releases/v1.4.0/release-scorecard.md",
+    "docs/evidence/releases/v1.4.0/stable-release-readiness.json",
+    "docs/operations/runbooks.md",
+    "docs/reference/generated/ai-documentation-index.json",
+    "docs/reference/generated/documentation-catalog.json",
+    "docs/reference/generated/documentation-coverage-matrix.md",
+    "docs/reference/generated/documentation-health.json",
+    "docs/reference/generated/documentation-health.md",
+    "docs/reference/generated/manifest.json",
+    "docs/reference/schemas/stable-release-readiness.schema.json",
+    "docs/release/PACKAGE_PUBLISHING.md",
+    "docs/release/RELEASE_HISTORY.md",
+    "docs/release/V1_0_TO_V1_4_COMPLETION_MATRIX.md",
+    "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+    "docs/release/V1_4_RELEASE_CHECKLIST.md",
+    "docs/schemas/index.md",
+    "website/mkdocs.yml"
+  ],
+  "testFiles": [
+    "test/release-completion-evidence.test.js",
+    "test/release.test.js",
+    "test/stable-release-gate.test.js"
+  ],
+  "requirements": [
+    {
+      "id": "contract-reference",
+      "component": "api-and-contracts",
+      "criticality": "critical",
+      "reason": "api-and-contracts changes require synchronized contract reference.",
+      "candidateDocuments": [
+        "docs/api/",
+        "docs/schemas/index.md",
+        "docs/reference/generated/"
+      ],
+      "matchedDocuments": [
+        "docs/reference/generated/ai-documentation-index.json",
+        "docs/reference/generated/documentation-catalog.json",
+        "docs/reference/generated/documentation-coverage-matrix.md",
+        "docs/reference/generated/documentation-health.json",
+        "docs/reference/generated/documentation-health.md",
+        "docs/reference/generated/manifest.json",
+        "docs/schemas/index.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "deployment-guidance",
+      "component": "cloud-infrastructure-and-deployment",
+      "criticality": "important",
+      "reason": "cloud-infrastructure-and-deployment changes require synchronized deployment guidance.",
+      "candidateDocuments": [
+        "docs/deployment/",
+        "docs/release/"
+      ],
+      "matchedDocuments": [
+        "docs/release/PACKAGE_PUBLISHING.md",
+        "docs/release/RELEASE_HISTORY.md",
+        "docs/release/V1_0_TO_V1_4_COMPLETION_MATRIX.md",
+        "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+        "docs/release/V1_4_RELEASE_CHECKLIST.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "implementation-documentation-coupling",
+      "component": "cross-cutting",
+      "criticality": "critical",
+      "reason": "Implementation changes require documentation in the same change.",
+      "candidateDocuments": [
+        "docs/",
+        "README.md",
+        "CHANGELOG.md",
+        "SECURITY.md",
+        "SUPPORTED_VERSIONS.md",
+        "CONTRIBUTING.md",
+        "GOVERNANCE.md",
+        "ROADMAP.md",
+        "RELEASE.md",
+        "AGENTS.md"
+      ],
+      "matchedDocuments": [
+        "CHANGELOG.md",
+        "README.md",
+        "docs/ROADMAP.md",
+        "docs/assets/visual-evidence.json",
+        "docs/evidence/changes/v1.4-stable-promotion/documentation-coverage.md",
+        "docs/evidence/changes/v1.4-stable-promotion/documentation-impact.json",
+        "docs/evidence/changes/v1.4-stable-promotion/documentation-impact.md",
+        "docs/evidence/changes/v1.4-stable-promotion/documentation-quality.json",
+        "docs/evidence/changes/v1.4-stable-promotion/documentation-synchronization.md",
+        "docs/evidence/changes/v1.4-stable-promotion/evidence-manifest.json",
+        "docs/evidence/changes/v1.4-stable-promotion/migration-impact.md",
+        "docs/evidence/changes/v1.4-stable-promotion/missing-documentation.md",
+        "docs/evidence/changes/v1.4-stable-promotion/release-documentation-summary.md",
+        "docs/evidence/changes/v1.4-stable-promotion/repository-health.md",
+        "docs/evidence/changes/v1.4-stable-promotion/updated-documents.md",
+        "docs/evidence/changes/v1.4-stable-promotion/version-history-impact.md",
+        "docs/evidence/releases/v1.4.0/release-scorecard.md",
+        "docs/evidence/releases/v1.4.0/stable-release-readiness.json",
+        "docs/operations/runbooks.md",
+        "docs/reference/generated/ai-documentation-index.json",
+        "docs/reference/generated/documentation-catalog.json",
+        "docs/reference/generated/documentation-coverage-matrix.md",
+        "docs/reference/generated/documentation-health.json",
+        "docs/reference/generated/documentation-health.md",
+        "docs/reference/generated/manifest.json",
+        "docs/reference/schemas/stable-release-readiness.schema.json",
+        "docs/release/PACKAGE_PUBLISHING.md",
+        "docs/release/RELEASE_HISTORY.md",
+        "docs/release/V1_0_TO_V1_4_COMPLETION_MATRIX.md",
+        "docs/release/V1_4_IMPLEMENTATION_STATUS.md",
+        "docs/release/V1_4_RELEASE_CHECKLIST.md",
+        "docs/schemas/index.md",
+        "website/mkdocs.yml"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "implementation-test-coupling",
+      "component": "cross-cutting",
+      "criticality": "important",
+      "reason": "Implementation changes require executable validation or a governed not-applicable rationale.",
+      "candidateDocuments": [
+        "test/"
+      ],
+      "matchedDocuments": [
+        "test/release-completion-evidence.test.js",
+        "test/release.test.js",
+        "test/stable-release-gate.test.js"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "open-source-governance",
+      "component": "open-source-governance",
+      "criticality": "important",
+      "reason": "open-source-governance changes require synchronized open source governance.",
+      "candidateDocuments": [
+        "README.md",
+        "CONTRIBUTING.md",
+        "SECURITY.md",
+        "GOVERNANCE.md"
+      ],
+      "matchedDocuments": [
+        "README.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "operations-and-rollback",
+      "component": "cloud-infrastructure-and-deployment",
+      "criticality": "critical",
+      "reason": "cloud-infrastructure-and-deployment changes require synchronized operations and rollback.",
+      "candidateDocuments": [
+        "docs/operations/",
+        "docs/runbooks/"
+      ],
+      "matchedDocuments": [
+        "docs/operations/runbooks.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "public-generated-reference",
+      "component": "public-contract",
+      "criticality": "important",
+      "reason": "public-contract changes require synchronized public generated reference.",
+      "candidateDocuments": [
+        "docs/reference/generated/"
+      ],
+      "matchedDocuments": [
+        "docs/reference/generated/ai-documentation-index.json",
+        "docs/reference/generated/documentation-catalog.json",
+        "docs/reference/generated/documentation-coverage-matrix.md",
+        "docs/reference/generated/documentation-health.json",
+        "docs/reference/generated/documentation-health.md",
+        "docs/reference/generated/manifest.json"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "public-product-guidance",
+      "component": "public-contract",
+      "criticality": "important",
+      "reason": "public-contract changes require synchronized public product guidance.",
+      "candidateDocuments": [
+        "README.md",
+        "docs/ROADMAP.md"
+      ],
+      "matchedDocuments": [
+        "README.md",
+        "docs/ROADMAP.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "release-history",
+      "component": "release-version-and-distribution",
+      "criticality": "critical",
+      "reason": "release-version-and-distribution changes require synchronized release history.",
+      "candidateDocuments": [
+        "CHANGELOG.md",
+        "docs/releases/",
+        "docs/release/RELEASE_HISTORY.md"
+      ],
+      "matchedDocuments": [
+        "CHANGELOG.md",
+        "docs/release/RELEASE_HISTORY.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    },
+    {
+      "id": "release-operations",
+      "component": "release-version-and-distribution",
+      "criticality": "critical",
+      "reason": "release-version-and-distribution changes require synchronized release operations.",
+      "candidateDocuments": [
+        "RELEASE.md",
+        "docs/release/PACKAGE_PUBLISHING.md",
+        "docs/release/RELEASE_STRATEGY.md"
+      ],
+      "matchedDocuments": [
+        "docs/release/PACKAGE_PUBLISHING.md"
+      ],
+      "status": "pass",
+      "mandatory": true
+    }
+  ],
+  "blockers": [],
+  "decision": "ready"
+}

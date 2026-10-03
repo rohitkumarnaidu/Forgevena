@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Publish immutable prerelease `v1.4.0-rc.3` and add a fail-closed stable-promotion gate plus exact-RC3 cross-platform lifecycle workflow; stable `v1.4.0` remains blocked on retained provider and artifact evidence, quality gates, human review, and owner approval.
+- Correct public release/channel status: Chocolatey `1.2.3` is rejected historical evidence, and no stable `1.4.0` package-manager submission is claimed.
 - Prepare `v1.4.0-rc.3` with corrected provider-reference and release-operation evidence after RC2 was held by mandatory release documentation checks. RC2 remains an immutable failed candidate and is not reused; RC1 remains unchanged.
 - Add the preview `ProviderAdapter v1` platform for OpenAI, Anthropic/Claude, Gemini, OpenRouter, and Ollama with normalized invocation, ordered streaming, bounded retry and fallback, compatibility evidence, registry migration, and restricted-data redaction.
 - Preserve Codex, Cursor, and Windsurf as compatibility-only agent-host integrations; stable provider certification remains blocked on dated, credential-gated live evidence and the complete `v1.4.0` release gate.

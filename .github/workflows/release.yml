@@ -187,9 +187,32 @@ jobs:
           path: dist/
           if-no-files-found: error
 
-  github-release:
+  stable-readiness:
     needs: artifacts
-    if: startsWith(inputs.release_tag || github.ref_name, 'v') && (github.event_name == 'push' || inputs.publish)
+    if: ${{ (inputs.release_tag || github.ref_name) == 'v1.4.0' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ env.RELEASE_REF }}
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Enforce v1.4.0 stable evidence gate
+        run: npm run release:stable-gate
+
+  stable-approval:
+    needs: stable-readiness
+    if: ${{ needs.stable-readiness.result == 'success' && (inputs.release_tag || github.ref_name) == 'v1.4.0' }}
+    runs-on: ubuntu-latest
+    environment: stable-release
+    steps:
+      - name: Confirm protected stable-release environment approval
+        run: echo "Protected stable-release environment approved the v1.4.0 publication job."
+
+  github-release:
+    needs: [artifacts, stable-readiness, stable-approval]
+    if: ${{ always() && needs.artifacts.result == 'success' && (needs.stable-readiness.result == 'success' || needs.stable-readiness.result == 'skipped') && (needs.stable-approval.result == 'success' || needs.stable-approval.result == 'skipped') && startsWith(inputs.release_tag || github.ref_name, 'v') && (github.event_name == 'push' || inputs.publish) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write

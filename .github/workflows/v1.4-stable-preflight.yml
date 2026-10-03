@@ -1,0 +1,80 @@
+name: v1.4 Stable Promotion Preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  published-rc-lifecycle:
+    name: Published RC3 lifecycle / ${{ matrix.os }} / Node ${{ matrix.node }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-15-intel]
+        node: [20, 22]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Download and verify exact published RC3 package
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="1.4.0-rc.3"
+          gh release download "v${VERSION}" --repo "${GITHUB_REPOSITORY}" \
+            --pattern "forgevena-${VERSION}.tgz" \
+            --pattern RELEASE_SHA256SUMS \
+            --dir "${RUNNER_TEMP}"
+          cd "${RUNNER_TEMP}"
+          grep -E "  forgevena-${VERSION}\\.tgz$" RELEASE_SHA256SUMS > candidate.sha256
+          test -s candidate.sha256
+          sha256sum --check candidate.sha256
+      - name: Install stable, upgrade to RC3, migrate, roll back, and validate
+        shell: bash
+        run: |
+          TEMP_ROOT="$(cygpath -u "${RUNNER_TEMP}" 2>/dev/null || printf '%s' "${RUNNER_TEMP}")"
+          TARBALL="${TEMP_ROOT}/forgevena-1.4.0-rc.3.tgz"
+          TEST_ROOT="${TEMP_ROOT}/forgevena-rc3-lifecycle"
+          WORKSPACE="${TEST_ROOT}/workspace"
+          OFFLINE_ROOT="${TEMP_ROOT}/forgevena-rc3-offline"
+          mkdir -p "${TEST_ROOT}" "${WORKSPACE}"
+
+          npm install --ignore-scripts --prefix "${TEST_ROOT}" forgevena@1.3.0
+          node "${TEST_ROOT}/node_modules/forgevena/bin/forgevena.js" version
+          cd "${WORKSPACE}"
+          node "${TEST_ROOT}/node_modules/forgevena/bin/forgevena.js" init --apply --structured
+
+          npm install --ignore-scripts --prefix "${TEST_ROOT}" "${TARBALL}"
+          node "${TEST_ROOT}/node_modules/forgevena/bin/forgevena.js" version
+          node "${TEST_ROOT}/node_modules/forgevena/bin/forgevena.js" upgrade --apply --structured
+          node "${TEST_ROOT}/node_modules/forgevena/bin/forgevena.js" state validate --structured
+          node "${TEST_ROOT}/node_modules/forgevena/bin/forgevena.js" upgrade rollback --apply --yes --structured
+          node "${TEST_ROOT}/node_modules/forgevena/bin/forgevena.js" state validate --structured
+          node "${TEST_ROOT}/node_modules/forgevena/bin/forgevena.js" doctor --structured
+
+          npm install --offline --ignore-scripts --prefix "${OFFLINE_ROOT}" "${TARBALL}"
+          node "${OFFLINE_ROOT}/node_modules/forgevena/bin/forgevena.js" version
+          node "${GITHUB_WORKSPACE}/scripts/rehearse-installed-cancellation.js" "${TEST_ROOT}/node_modules/forgevena"
+
+          ARTIFACT_SHA="$(awk '{print $1}' "${TEMP_ROOT}/candidate.sha256")"
+          CANDIDATE_VERSION="$(node -e 'const fs=require("node:fs"); console.log(JSON.parse(fs.readFileSync(process.argv[1],"utf8")).version)' "${TEST_ROOT}/node_modules/forgevena/package.json")"
+          OFFLINE_VERSION="$(node -e 'const fs=require("node:fs"); console.log(JSON.parse(fs.readFileSync(process.argv[1],"utf8")).version)' "${OFFLINE_ROOT}/node_modules/forgevena/package.json")"
+
+          npm uninstall --prefix "${TEST_ROOT}" forgevena
+          test -f "${WORKSPACE}/.ai-workspace/workspace.json"
+          test ! -e "${TEST_ROOT}/node_modules/forgevena"
+          node -e 'const fs=require("node:fs"); const [file, os, node, artifactSha, candidateVersion, offlineVersion] = process.argv.slice(1); fs.writeFileSync(file, JSON.stringify({schemaVersion:1, candidateTag:"v1.4.0-rc.3", artifactSha256:artifactSha, checksumVerified:true, os, node:Number(node), baselineVersion:"1.3.0", candidateVersion, offlineVersion, status:"passed", scenarios:["clean-install","upgrade-migration","rollback","offline-install","cancellation","uninstall","workspace-preservation"], workflowRunId:process.env.GITHUB_RUN_ID, commit:process.env.GITHUB_SHA, secretsRetained:false}, null, 2)+"\n")' \
+            "${RUNNER_TEMP}/lifecycle-evidence.json" "${{ matrix.os }}" "${{ matrix.node }}" "${ARTIFACT_SHA}" "${CANDIDATE_VERSION}" "${OFFLINE_VERSION}"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: v1.4-rc3-lifecycle-${{ matrix.os }}-node${{ matrix.node }}
+          path: ${{ runner.temp }}/lifecycle-evidence.json
+          if-no-files-found: error
+          retention-days: 90

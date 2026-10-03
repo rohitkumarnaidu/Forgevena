@@ -33,8 +33,10 @@ Use `Retry Package Publication` only for GitHub Packages or container failures. 
 Current external evidence:
 
 - Winget `1.2.3` was accepted and published through [microsoft/winget-pkgs PR 404506](https://github.com/microsoft/winget-pkgs/pull/404506). Maintainers verify propagation with `winget source update` and `winget show --id RohitKumarNaidu.Forgevena --exact`.
-- Chocolatey `1.2.3` passed package validation and automated installation testing. It remains under human moderation at the [Chocolatey package page](https://community.chocolatey.org/packages/forgevena/1.2.3); no repository change can accelerate that external review.
+- Chocolatey `1.2.3` was rejected on 2026-10-01 because it did not progress within 15 days after the last review message. This is a closed historical submission, not a permanent package ban. If v1.4 is released, submit a new `1.4.0` package after stable artifacts exist; include `LICENSE.txt`, verify distribution rights and checksums, and wait for normal automated and human review at the [Chocolatey package page](https://community.chocolatey.org/packages/forgevena/1.2.3). The old version must not be represented as pending or reopened without explicit Chocolatey administration.
 - The Homebrew tap publishes `1.3.0`. External channel versions may trail npm and must be reported independently rather than described as one synchronized release.
+
+The v1.4.0 release candidate `v1.4.0-rc.3` is published as a prerelease. No stable `1.4.0` publication or package-manager submission is authorized until owner-account provider evidence, exact-RC artifact lifecycle testing, the Tier-3 scorecard, and the pre-tag gate in [the v1.4 release checklist](V1_4_RELEASE_CHECKLIST.md) pass. Once stable assets exist, submit a new Homebrew update, Winget `1.4.0` PR, and Chocolatey `1.4.0` package; track each upstream review independently.
 
 ## Rollback
 

@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forgevena.dev/schemas/stable-release-readiness/v1",
+  "title": "Forgevena Stable Release Readiness v1",
+  "type": "object",
+  "required": ["schemaVersion", "version", "candidateTag", "decision", "blockers", "providerEvidence", "preTagRehearsal", "qualityGates", "approval"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "version": { "const": "1.4.0" },
+    "candidateTag": { "type": "string", "pattern": "^v1\\.4\\.0-rc\\.[0-9]+$" },
+    "decision": { "enum": ["hold", "ready"] },
+    "blockers": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "providerEvidence": {
+      "type": "array", "minItems": 5, "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": ["provider", "status", "model", "verifiedAt", "expiresAt", "evidencePath", "limitations"],
+        "properties": {
+          "provider": { "enum": ["openai", "claude", "gemini", "openrouter", "ollama"] },
+          "status": { "enum": ["pending", "passed", "failed"] },
+          "model": { "type": ["string", "null"] },
+          "verifiedAt": { "type": ["string", "null"], "format": "date-time" },
+          "expiresAt": { "type": ["string", "null"], "format": "date-time" },
+          "evidencePath": { "type": ["string", "null"] },
+          "limitations": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    },
+    "preTagRehearsal": {
+      "type": "object",
+      "required": ["status", "candidateTag", "workflowRunUrl", "workflowRunId", "commit", "completedAt", "artifactSha256", "matrix", "scenarios"],
+      "properties": {
+        "status": { "enum": ["pending", "passed", "failed"] },
+        "candidateTag": { "type": "string" },
+        "workflowRunUrl": { "type": ["string", "null"] },
+        "workflowRunId": { "type": ["integer", "null"] },
+        "commit": { "type": ["string", "null"], "pattern": "^[a-f0-9]{40}$" },
+        "completedAt": { "type": ["string", "null"], "format": "date-time" },
+        "artifactSha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+        "matrix": { "type": "array", "items": { "type": "object", "required": ["os", "node", "status", "artifactSha256", "evidencePath"], "properties": { "os": { "enum": ["ubuntu-latest", "windows-latest", "macos-15-intel"] }, "node": { "enum": [20, 22] }, "status": { "enum": ["pending", "passed", "failed"] }, "artifactSha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" }, "evidencePath": { "type": ["string", "null"] } }, "additionalProperties": false } },
+        "scenarios": { "type": "array", "items": { "type": "object", "required": ["name", "status", "evidencePath"], "properties": { "name": { "enum": ["clean-install", "upgrade-migration", "rollback", "offline-install", "cancellation", "uninstall", "workspace-preservation"] }, "status": { "enum": ["pending", "passed", "failed"] }, "evidencePath": { "type": ["string", "null"] } }, "additionalProperties": false } }
+      },
+      "additionalProperties": false
+    },
+    "qualityGates": {
+      "type": "object",
+      "required": ["criticalPercent", "importantPercent", "standardPercent", "blockerCount", "scorecardPath"],
+      "properties": {
+        "criticalPercent": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "importantPercent": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "standardPercent": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "blockerCount": { "type": "integer", "minimum": 0 },
+        "scorecardPath": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "approval": {
+      "type": "object",
+      "required": ["ownerApproved", "approver", "approvedAt", "reviewRecord"],
+      "properties": {
+        "ownerApproved": { "type": "boolean" },
+        "approver": { "type": ["string", "null"] },
+        "approvedAt": { "type": ["string", "null"], "format": "date-time" },
+        "reviewRecord": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,36 @@
+name: v1.4 Stable Readiness
+
+on:
+  pull_request:
+    paths:
+      - "package.json"
+      - "docs/evidence/releases/v1.4.0/**"
+      - ".github/workflows/v1.4-stable-readiness.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stable-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Determine whether this change promotes v1.4.0
+        id: scope
+        shell: bash
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" || "${VERSION}" == "1.4.0" ]]; then
+            echo "required=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "required=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Enforce the complete v1.4.0 readiness gate
+        if: steps.scope.outputs.required == 'true'
+        run: npm run release:stable-gate
