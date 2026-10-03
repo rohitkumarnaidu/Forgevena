@@ -2,7 +2,7 @@
 
 **Decision: HOLD.** This is a release-checkpoint assessment, not the earlier push-readiness scorecard. No stable tag or publication is authorized.
 
-**Outstanding mandatory blockers: 5.** Percentages are intentionally unscored until release evidence is complete; no score is inferred from the earlier push checkpoint.
+**Outstanding mandatory blockers: 5.** Percentages are intentionally left blank until release evidence is complete; no score is inferred from the earlier push checkpoint.
 
 | Gate | Required | Current evidence | Decision |
 | --- | ---: | --- | --- |

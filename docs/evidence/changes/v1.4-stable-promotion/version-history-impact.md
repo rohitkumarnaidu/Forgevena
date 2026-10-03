@@ -1,3 +1,3 @@
 # Version History Impact
 
-Version-history synchronization is required before promotion.
+Not applicable: no version or release metadata changed.

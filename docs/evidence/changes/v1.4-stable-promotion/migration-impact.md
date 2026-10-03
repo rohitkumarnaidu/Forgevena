@@ -1,3 +1,3 @@
 # Migration Impact Summary
 
-- `operations-and-rollback`: pass
+Not applicable: no migration, recovery, or rollback obligation was detected.

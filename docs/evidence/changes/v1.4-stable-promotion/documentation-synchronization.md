@@ -2,5 +2,5 @@
 
 - Decision: **READY**
 - Checkpoint: `merge`
-- Requirements: 10
+- Requirements: 0
 - Blockers: 0
