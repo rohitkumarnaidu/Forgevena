@@ -2,15 +2,15 @@
   "schemaVersion": 1,
   "changeId": "v1.4-stable-promotion",
   "checkpoint": "merge",
-  "generatedAt": "2026-10-03T17:16:39.771Z",
+  "generatedAt": "2026-10-03T17:28:50.485Z",
   "decision": "ready",
   "reports": {
     "documentation-impact.json": {
-      "sha256": "7a2bb1179984f2e79f29b019ba3ca14e8a960962f4f34cac2c38d68fd6466645",
+      "sha256": "841c7380f01b250e931bde32604a17e3d9f472ade5245bd1a7c85dd75645a1c2",
       "bytes": 12966
     },
     "documentation-impact.md": {
-      "sha256": "bd5697433539f625319e3fc0c205bc6127d33dff1e450f3fd93fa3007c0a3ade",
+      "sha256": "ccfc977f7d6d073c3041d8a6bd4bd4ad0ab6d0144aed83dc35af4d2e254b74e7",
       "bytes": 5710
     },
     "updated-documents.md": {
