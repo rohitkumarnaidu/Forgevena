@@ -7383,6 +7383,348 @@
       }
     },
     {
+      "id": "doc:evidence/changes/v1.4-rc3-release-gate/documentation-coverage",
+      "path": "docs/evidence/changes/v1.4-rc3-release-gate/documentation-coverage.md",
+      "title": "Generated Documentation Coverage Matrix",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Generated Documentation Coverage Matrix.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.4"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc3-release-gate/documentation-impact",
+      "path": "docs/evidence/changes/v1.4-rc3-release-gate/documentation-impact.md",
+      "title": "Documentation Impact Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Documentation Impact Report.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.4"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc3-release-gate/documentation-synchronization",
+      "path": "docs/evidence/changes/v1.4-rc3-release-gate/documentation-synchronization.md",
+      "title": "Documentation Synchronization Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Documentation Synchronization Report.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.4"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc3-release-gate/migration-impact",
+      "path": "docs/evidence/changes/v1.4-rc3-release-gate/migration-impact.md",
+      "title": "Migration Impact Summary",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Migration Impact Summary.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.4"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc3-release-gate/missing-documentation",
+      "path": "docs/evidence/changes/v1.4-rc3-release-gate/missing-documentation.md",
+      "title": "Missing Documentation Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Missing Documentation Report.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.4"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc3-release-gate/release-documentation-summary",
+      "path": "docs/evidence/changes/v1.4-rc3-release-gate/release-documentation-summary.md",
+      "title": "Release Documentation Summary",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Release Documentation Summary.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.4"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc3-release-gate/repository-health",
+      "path": "docs/evidence/changes/v1.4-rc3-release-gate/repository-health.md",
+      "title": "Repository Health Report",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Repository Health Report.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.4"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc3-release-gate/updated-documents",
+      "path": "docs/evidence/changes/v1.4-rc3-release-gate/updated-documents.md",
+      "title": "Updated Document List",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Updated Document List.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.4"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
+      "id": "doc:evidence/changes/v1.4-rc3-release-gate/version-history-impact",
+      "path": "docs/evidence/changes/v1.4-rc3-release-gate/version-history-impact.md",
+      "title": "Version History Impact",
+      "classification": "governance-evidence",
+      "contentType": "evidence",
+      "authority": null,
+      "sourceOfTruth": "Forgevena maintained documentation",
+      "purpose": "Retain governance evidence for Version History Impact.",
+      "audiences": [
+        "maintainers",
+        "ai-coding-agents"
+      ],
+      "owner": "Release and Operations Maintainers",
+      "reviewers": [
+        "Documentation Maintainers",
+        "Domain Maintainer"
+      ],
+      "versions": [
+        "1.4"
+      ],
+      "lifecycle": "maintained",
+      "criticality": "important",
+      "lastVerified": "2026-07-28",
+      "reviewBy": "2027-01-24",
+      "replacement": null,
+      "related": [
+        "docs/governance/DOCUMENTATION_GOVERNANCE_STANDARD.md"
+      ],
+      "relevance": {
+        "security": false,
+        "privacy": false,
+        "accessibility": false,
+        "regulatory": false,
+        "operations": true,
+        "aiAgents": false
+      }
+    },
+    {
       "id": "doc:evidence/changes/v1.4.0-provider-platform/readme",
       "path": "docs/evidence/changes/v1.4.0-provider-platform/README.md",
       "title": "v1.4.0 Provider Platform Change Evidence",
@@ -26232,20 +26574,20 @@
     }
   ],
   "summary": {
-    "total": 678,
+    "total": 687,
     "byClassification": {
       "active-guide": 131,
       "canonical-architecture": 11,
       "canonical-policy": 6,
       "generated-reference": 26,
-      "governance-evidence": 192,
+      "governance-evidence": 201,
       "historical-record": 87,
       "operational-runbook": 4,
       "product-strategy": 221
     },
     "byLifecycle": {
       "archived": 87,
-      "maintained": 591
+      "maintained": 600
     }
   }
 }

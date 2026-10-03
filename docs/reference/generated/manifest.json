@@ -2,19 +2,19 @@
   "schemaVersion": 1,
   "generator": "forgevena",
   "files": {
-    "ai-documentation-index.json": "fadc2a07e83f7dc0503154c075a6f929a19441c4567bd0393e8682a8093b6166",
+    "ai-documentation-index.json": "3057dcaaa6267e6ee74a5168b64ece3d30cd9914a25ac8f9441e6858896a5456",
     "ai-documentation-index.md": "f833d30cfe5900aa5c841caf50716c117a9885592a65cf23a57299ba403f8558",
     "capabilities.md": "e1f98d79c936e253bed4cde24d5b0c3ad0ef07b344ef6cf0b5198c7964df9304",
-    "cli.md": "65714e3946418db3d76adab9979e451ea51a32609068c65a34243195a95f5f43",
-    "documentation-catalog.json": "3bfeb4576b1d9e3aa001c7001fcf6106bbb7603090b1b46c512f9e5a66201cd6",
-    "documentation-coverage-matrix.md": "1a8bb0080c30f212b51c883ff19966749a1747ca17973feff93aa371fd7488e0",
+    "cli.md": "bb35d33790cc0b0d03068dde06bf90884208ac1b22b4cb56d5bf3e421e1c060d",
+    "documentation-catalog.json": "23f2c3f871e4baf56b6525c4ab29e6482098d46db462df3ce025e7aac0a90a7a",
+    "documentation-coverage-matrix.md": "20b01af793fcf25a8f9d4177c6cb6a6823359fd49e640bdc02245ff7e3036cc6",
     "documentation-debt.md": "b74b3a905674e03812b0923b424b3c0399e4891b154d6d4318d146a441b308da",
     "documentation-drift.md": "772ceeb1fead3217a5283bb947403e5aa6bf62be88acecff2d49de9eac263e36",
-    "documentation-health.json": "7d2ed5b47436ef8a7bc40288cc525b2acb18dee51550993283f842831471e0dc",
-    "documentation-health.md": "426d69de80c1ac3ac4eb135a6df446634956c2057c6e8d9f944b64ae429e9b6f",
+    "documentation-health.json": "2ac2ce652c239b523f01ae993f228ca59755da2f971dbf1398fa7c86fac49a91",
+    "documentation-health.md": "749d0dce0a6652313dff0a05625ccb8faeef52ed4450e7af95a56f72b264b1e7",
     "historical-document-index.md": "a1ada8f73d33e010d9080925ee1cfea48518f0cbc9ae264984254d53b563e040",
     "modules.md": "1aead4bd080d11eb64b5e78eeda391798e8ffa4aa5d7ad38acbb518b6508525d",
-    "providers.md": "ef2f26ac4268dde04376c552679234e7822e7874324b0f9b0645970fd7f2644c",
+    "providers.md": "2b4e81ba5bcf615e6f7308dea7371a958859aa5aa7a21d889e332db4f3fb9465",
     "templates.md": "c15a5dab0c45cd110c9e968fd9ffc746fbb75e270ec323fce5217278d8a6a47d"
   }
 }

@@ -76,6 +76,8 @@ Significant changes must retain both human-readable and machine-readable scoreca
 
 Published tags are immutable. A failed publication may be retried only when code and metadata are unchanged; otherwise use the next patch version.
 
+Before packaging, the release workflow must generate release-checkpoint documentation-impact evidence with a `ready` decision and no mandatory blockers. A `hold` stops packaging and publication. Correct the source and documentation in a reviewed change, then use a new immutable prerelease candidate; workflow-dispatch recovery must evaluate the selected tag's source under the same gate. Neither maintainer urgency nor an environment approval waives a failed release gate.
+
 ## 8. Deprecation and Migration
 
 Deprecation uses the [Deprecation Notice Template](governance/DEPRECATION_NOTICE_TEMPLATE.md), appears in CLI and documentation where applicable, provides migration and rollback guidance, and remains active for at least two minor releases unless a security emergency is approved. State and contract migrations are preview-first, tested against supported versions, and preserve recoverable backups.

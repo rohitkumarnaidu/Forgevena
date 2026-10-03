@@ -29,6 +29,16 @@ test("documentation-only changes remain valid without implementation evidence", 
   assert.equal(validateDocumentationImpactReport(report).valid, true);
 });
 
+test("generated-reference implementation is not misclassified as governance policy", () => {
+  const report = analyzeDocumentationImpact([
+    "src/documentation-generator.js",
+    "test/documentation-generator.test.js",
+    "docs/reference/generated/providers.md",
+  ], { generatedAt: "2026-07-28T00:00:00.000Z" });
+  assert.equal(report.decision, "ready");
+  assert.deepEqual(report.affectedComponents, []);
+});
+
 test("impact report validation rejects forged decisions and malformed requirements", () => {
   const report = analyzeDocumentationImpact(["src/cli.js"], { generatedAt: "invalid" });
   report.decision = "ready";

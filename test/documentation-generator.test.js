@@ -15,6 +15,7 @@ test("canonical documentation is additive and detects drift", async () => {
     assert.equal(generated.created.length, 15);
     assert.equal((await verifyCanonicalDocumentation(root)).valid, true);
     assert.ok((await readFile(path.join(root, "docs/reference/generated/cli.md"), "utf8")).includes(`Source package version: \`${PLATFORM_VERSION}\``));
+    assert.match(await readFile(path.join(root, "docs/reference/generated/providers.md"), "utf8"), /read-only override, then the active managed key slot, then legacy compatibility paths/);
     assert.equal((await generateCanonicalDocumentation(root, { dryRun: false })).skipped.length, 15);
     const cliPath = path.join(root, "docs/reference/generated/cli.md");
     await writeFile(cliPath, (await readFile(cliPath, "utf8")).replace(/\n/g, "\r\n"));

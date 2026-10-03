@@ -9,8 +9,8 @@
       "platforms": ["win32", "linux", "darwin"],
       "timeoutMs": 10000,
       "expectedExitCode": 0,
-      "expectedOutputSha256": "a3d08636f6b6fd58a294aa941b7353f26247e1a7d3f3bd2eb2492a0316bc01f8",
-      "outputContains": ["\"version\": \"1.4.0-rc.2\""],
+      "expectedOutputSha256": "4c330ba50452ba17469d24851e07a787d796d8bbe176dc3b5a1ec4fa12b2b05d",
+      "outputContains": ["\"version\": \"1.4.0-rc.3\""],
       "verifiedAt": "2026-10-03",
       "reviewBy": "2027-04-03"
     },
@@ -22,7 +22,7 @@
       "platforms": ["win32", "linux", "darwin"],
       "timeoutMs": 5000,
       "expectedExitCode": 0,
-      "expectedOutputSha256": "082c47daaf0d442fa8c49f0254951980c2a06db68ca4c266e175bd55a2c6ac2a",
+      "expectedOutputSha256": "4c75eaf1ef0512d4c0a9ee7ce4ec6ac2ae6c085292068d8064344f3b5eb2184f",
       "outputContains": ["Modifying commands preview by default.", "Existing files are never overwritten"],
       "verifiedAt": "2026-10-03",
       "reviewBy": "2027-04-03"
