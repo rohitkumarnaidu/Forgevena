@@ -36,7 +36,8 @@ Live requests require owner-controlled credentials and explicit consent. Never u
 - [ ] Require the `v1.4 Stable Readiness` check on the promotion PR and verify it passes before merge; restrict `v1.4.0` tag creation to release owners through repository rules. These owner-managed GitHub settings are not validated by repository CI.
 - [ ] Require normal PR review and hosted CI for all evidence and gate changes; no admin bypass.
 - [ ] Configure the GitHub `stable-release` environment with a required approver and protect creation of the stable tag through repository rules. Environment approval gates publication; it does not replace pre-tag evidence or tag-creation protection.
-- [ ] Only after the pre-tag gate passes, create and verify a new signed `v1.4.0` tag from the reviewed merge commit. Never move or reuse RC tags.
+- [ ] After merging the reviewed promotion PR, dispatch the `v1.4 Stable Pre-Tag Gate` on `main` and wait for its protected `stable-release` approval and successful readiness result. A tag-triggered publication check is defense-in-depth, not a substitute for this pre-tag run.
+- [ ] Only after that hosted pre-tag gate passes, create and verify a new signed `v1.4.0` tag from the reviewed merge commit. Never move or reuse RC tags.
 - [ ] Verify stable GitHub Release and downloadable artifacts, npm `latest`, GitHub Packages, GHCR and configured Docker Hub, checksums, SBOM, provenance, and final Pages deployment.
 - [ ] Verify stable installation, health, version, rollback, and checksums after publication.
 

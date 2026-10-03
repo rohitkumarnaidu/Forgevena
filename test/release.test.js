@@ -78,12 +78,28 @@ test("signed tags automate changelog, release, and package publication", async (
 test("stable promotion preflight uses the immutable RC3 artifact and six OS-Node jobs", async () => {
   const workflow = await readFile(new URL("../.github/workflows/v1.4-stable-preflight.yml", import.meta.url), "utf8");
   const validator = await readFile(new URL("../src/stable-release-gate.js", import.meta.url), "utf8");
+  const checksumVerifier = await readFile(new URL("../scripts/verify-release-artifact-checksum.js", import.meta.url), "utf8");
   assert.match(workflow, /forgevena-1\.4\.0-rc\.3\.tgz/);
   assert.match(workflow, /RELEASE_SHA256SUMS/);
+  assert.match(workflow, /verify-release-artifact-checksum\.js/);
+  assert.match(workflow, /ref: \$\{\{ github\.sha \}\}/);
+  assert.match(workflow, /SOURCE_COMMIT="\$\(git rev-parse HEAD\)"/);
+  assert.match(workflow, /SOURCE_COMMIT.*GITHUB_SHA/);
+  assert.match(checksumVerifier, /createHash\("sha256"\)/);
   assert.match(workflow, /os: \[ubuntu-latest, windows-latest, macos-15-intel\]/);
   assert.match(workflow, /node: \[20, 22\]/);
   for (const scenario of ["clean-install", "upgrade-migration", "rollback", "offline-install", "cancellation", "uninstall", "workspace-preservation"]) assert.match(workflow, new RegExp(scenario));
   assert.match(validator, /manifest.version !== "1\.4\.0"/);
+});
+
+test("stable tag readiness has a protected pre-tag workflow on main", async () => {
+  const workflow = await readFile(new URL("../.github/workflows/v1.4-stable-pretag.yml", import.meta.url), "utf8");
+  assert.match(workflow, /workflow_dispatch:/);
+  assert.match(workflow, /environment: stable-release/);
+  assert.match(workflow, /refs\/heads\/main/);
+  assert.match(workflow, /git rev-parse HEAD/);
+  assert.match(workflow, /run: npm run release:stable-gate/);
+  assert.doesNotMatch(workflow, /git push|gh release create/);
 });
 
 test("v1.4 stable readiness is checked on promotion pull requests before merge", async () => {

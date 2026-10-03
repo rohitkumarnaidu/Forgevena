@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { runStableReleaseGate, verifyStableReleaseGate } from "../src/stable-release-gate.js";
@@ -14,6 +14,14 @@ test("stable release gate reports the current record as HOLD without failing hol
   assert.equal(result.valid, false);
   assert.equal(result.accepted, true);
   assert.ok(result.issues.some((issue) => issue.includes("openai")));
+});
+
+test("stable release readiness schema permits its canonical schema declaration", async () => {
+  const schema = JSON.parse(await readFile(path.join(process.cwd(), "docs/reference/schemas/stable-release-readiness.schema.json"), "utf8"));
+  const instance = JSON.parse(await readFile(path.join(process.cwd(), "docs/evidence/releases/v1.4.0/stable-release-readiness.json"), "utf8"));
+  assert.equal(schema.additionalProperties, false);
+  assert.ok(Object.hasOwn(schema.properties, "$schema"));
+  for (const property of Object.keys(instance)) assert.ok(Object.hasOwn(schema.properties, property), `schema must allow ${property}`);
 });
 
 test("stable release gate accepts complete, fresh evidence and exact six-job lifecycle matrix", async () => {

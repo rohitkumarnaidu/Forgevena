@@ -1,17 +1,18 @@
 {
   "schemaVersion": 2,
   "changeId": "v1.4-stable-promotion",
-  "title": "v1.4 stable promotion gate and RC3 preflight",
-  "owner": "Release Engineering",
-  "generatedAt": "2026-10-03T17:28:50.485Z",
+  "title": "Forgevena v1.4 stable promotion gates",
+  "owner": "rohitkumarnaidu",
+  "generatedAt": "2026-10-03T19:24:52.003Z",
   "checkpoint": "merge",
   "comparison": {
-    "base": "origin/main",
-    "head": "HEAD"
+    "base": null,
+    "head": null
   },
   "changedFiles": [
     ".github/workflows/release.yml",
     ".github/workflows/v1.4-stable-preflight.yml",
+    ".github/workflows/v1.4-stable-pretag.yml",
     ".github/workflows/v1.4-stable-readiness.yml",
     "CHANGELOG.md",
     "README.md",
@@ -47,8 +48,10 @@
     "docs/schemas/index.md",
     "package.json",
     "scripts/rehearse-installed-cancellation.js",
+    "scripts/verify-release-artifact-checksum.js",
     "scripts/verify-stable-release-gate.js",
     "src/stable-release-gate.js",
+    "test/release-artifact-checksum.test.js",
     "test/release-completion-evidence.test.js",
     "test/release.test.js",
     "test/stable-release-gate.test.js",
@@ -65,9 +68,11 @@
   "implementationFiles": [
     ".github/workflows/release.yml",
     ".github/workflows/v1.4-stable-preflight.yml",
+    ".github/workflows/v1.4-stable-pretag.yml",
     ".github/workflows/v1.4-stable-readiness.yml",
     "package.json",
     "scripts/rehearse-installed-cancellation.js",
+    "scripts/verify-release-artifact-checksum.js",
     "scripts/verify-stable-release-gate.js",
     "src/stable-release-gate.js"
   ],
@@ -107,6 +112,7 @@
     "website/mkdocs.yml"
   ],
   "testFiles": [
+    "test/release-artifact-checksum.test.js",
     "test/release-completion-evidence.test.js",
     "test/release.test.js",
     "test/stable-release-gate.test.js"
@@ -217,6 +223,7 @@
         "test/"
       ],
       "matchedDocuments": [
+        "test/release-artifact-checksum.test.js",
         "test/release-completion-evidence.test.js",
         "test/release.test.js",
         "test/stable-release-gate.test.js"
