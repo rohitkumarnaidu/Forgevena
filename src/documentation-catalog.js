@@ -271,7 +271,7 @@ function versions(documentPath, classification) {
 }
 
 function reviewDate(criticality) {
-  return criticality === "critical" ? "2026-10-26" : criticality === "important" ? "2027-01-24" : "2027-07-28";
+  return criticality === "critical" ? "2027-04-26" : criticality === "important" ? "2027-07-24" : "2027-10-28";
 }
 
 function currentReplacement(documentPath) {
